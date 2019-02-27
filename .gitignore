@@ -1,0 +1,8 @@
+# .gitignore
+# created on Fec 27, 2019
+
+# ignore pyc files
+*.pyc
+
+# ignore virtualenv folder in /dezhouw_ghonigsb
+/dezhouw_ghonigsb/venv
