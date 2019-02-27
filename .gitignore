@@ -6,3 +6,6 @@
 
 # ignore virtualenv folder
 /venv
+
+# ignore auth.json file
+/auth.json
