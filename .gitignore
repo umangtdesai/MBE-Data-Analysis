@@ -4,5 +4,5 @@
 # ignore pyc files
 *.pyc
 
-# ignore virtualenv folder in /dezhouw_ghonigsb
-/dezhouw_ghonigsb/venv
+# ignore virtualenv folder
+/venv
