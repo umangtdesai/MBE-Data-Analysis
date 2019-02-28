@@ -9,3 +9,6 @@
 
 # ignore auth.json file
 /auth.json
+
+# ignore provenance.html file
+/provenance.html
