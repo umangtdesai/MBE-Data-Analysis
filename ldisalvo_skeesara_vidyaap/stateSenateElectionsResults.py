@@ -1,5 +1,5 @@
 """
-CS506 : ballot_question
+CS506 : stateSenateElectionsResults
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
 Description :
 
@@ -18,10 +18,10 @@ import csv
 import io
 
 
-class ballotQuestionsResults(dml.Algorithm):
+class stateSenateElectionsResults(dml.Algorithm):
     contributor = 'ldisalvo_skeesara_vidyaap'
-    reads = ['ldisalvo_skeesara_vidyaap.ballotQuestions']
-    writes = ['ldisalvo_skeesara_vidyaap.ballotQuestionsResults']
+    reads = ['ldisalvo_skeesara_vidyaap.stateSenateElections']
+    writes = ['ldisalvo_skeesara_vidyaap.stateSenateElectionsResults']
 
     @staticmethod
     def execute(trial=False):
@@ -35,23 +35,23 @@ class ballotQuestionsResults(dml.Algorithm):
         repo.authenticate('ldisalvo_skeesara_vidyaap', 'ldisalvo_skeesara_vidyaap')
 
         #get list of question ids
-        questionsIds = list(repo['ldisalvo_skeesara_vidyaap.ballotQuestions'].find({}, {"_id":1}))
-        questionResultsRows = []
+        electionIds = list(repo['ldisalvo_skeesara_vidyaap.stateSenateElections'].find({}, {"_id":1}))
+        electionResultsRows = []
 
-        for question in questionsIds:
+        for question in electionIds:
             id = question['_id']
-            url = 'http://electionstats.state.ma.us/ballot_questions/download/{id}/precincts_include:1/'.format(id=id)
+            url = 'http://electionstats.state.ma.us/elections/download/{id}/precincts_include:1/'.format(id=id)
             csvString = urllib.request.urlopen(url).read().decode("utf-8")
             reader = csv.DictReader(io.StringIO(csvString))
             data = json.loads(json.dumps(list(reader)))
-            data = [ballotQuestionsResults.cleanData(row, id) for row in data]
-            questionResultsRows.extend(data)
+            data = [stateSenateElectionsResults.cleanData(row, id) for row in data[1:]]
+            electionResultsRows.extend(data)
 
-        repo.dropCollection("ballotQuestionsResults")
-        repo.createCollection("ballotQuestionsResults")
-        repo['ldisalvo_skeesara_vidyaap.ballotQuestionsResults'].insert_many(questionResultsRows)
-        repo['ldisalvo_skeesara_vidyaap.ballotQuestionsResults'].metadata({'complete': True})
-        print(repo['ldisalvo_skeesara_vidyaap.ballotQuestionsResults'].metadata())
+        repo.dropCollection("stateSenateElectionsResults")
+        repo.createCollection("stateSenateElectionsResults")
+        repo['ldisalvo_skeesara_vidyaap.stateSenateElectionsResults'].insert_many(electionResultsRows)
+        repo['ldisalvo_skeesara_vidyaap.stateSenateElectionsResults'].metadata({'complete': True})
+        print(repo['ldisalvo_skeesara_vidyaap.stateSenateElectionsResults'].metadata())
 
         repo.logout()
 
@@ -64,13 +64,12 @@ class ballotQuestionsResults(dml.Algorithm):
         '''Add additional fields and convert appropriate values to integers'''
 
         # Add ID field
-        precinctDictionary['Question ID'] = id
+        precinctDictionary['Election ID'] = id
 
-        # Convert Yes, No, Blanks, Total Votes Values to integers
-        precinctDictionary['Yes'] = int(precinctDictionary['Yes'].replace(',',''))
-        precinctDictionary['No'] = int(precinctDictionary['No'].replace(',',''))
-        precinctDictionary['Blanks'] = int(precinctDictionary['Blanks'].replace(',',''))
-        precinctDictionary['Total Votes Cast'] = int(precinctDictionary['Total Votes Cast'].replace(',',''))
+        keysToChange = list(precinctDictionary.keys())[3:-1]
+        for key in keysToChange:
+            precinctDictionary[key] = int(precinctDictionary[key].replace(',',''))
+            precinctDictionary[key.replace('.','')] = precinctDictionary.pop(key)
 
         return precinctDictionary
 
@@ -142,5 +141,4 @@ doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
-
 ## eof
