@@ -4,12 +4,13 @@
 |-----------|---------|-----------|-----------|--------------|
 |Dezhou Wang|Michael  |HONG-XIN   |dezhouw    |dezhouw@bu.edu|
 |           |         |ghonigsberg|ghonigsb   |              |
+
 ---
 
 ### Project Goal
 (To modify) How does flood affect Boston?
----
 
+---
 
 ### Resources
 (To modify)
@@ -18,19 +19,22 @@
 * Zoning Data
 * Census
 * Uber Traffic
+
 ---
 
 ### Idiosyncratic Details
 (To add) Specific things in auth.json
+
 ---
 
 ### Algorithms
 (To add) How obtain data? How combine data? Any tranformation?
+
 ---
 
 ### Environment
 * Python 3.7.2
 * pip 19.0.3
-# prov==1.5.3
+* prov==1.5.3
 * dml==0.0.16.0
 * protoql==0.0.3.0
