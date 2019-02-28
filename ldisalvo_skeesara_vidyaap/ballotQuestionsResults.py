@@ -1,5 +1,5 @@
 """
-CS506 : ballot_question
+CS504 : ballot_question
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
 Description :
 
@@ -16,28 +16,42 @@ import datetime
 import uuid
 import csv
 import io
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, BALLOT_QUESTIONS, BALLOT_QUESTIONS_RESULTS
 
 
 class ballotQuestionsResults(dml.Algorithm):
-    contributor = 'ldisalvo_skeesara_vidyaap'
-    reads = ['ldisalvo_skeesara_vidyaap.ballotQuestions']
-    writes = ['ldisalvo_skeesara_vidyaap.ballotQuestionsResults']
+    contributor = TEAM_NAME
+    reads = [BALLOT_QUESTIONS]
+    writes = [BALLOT_QUESTIONS_RESULTS]
 
     @staticmethod
     def execute(trial=False):
-        '''Retrieve and store all MA ballot question voter data 2000 - 2018'''
+        """
+            Retrieve ballot question results data from electionstats and insert into collection
+            ex) {
+                    "Locality" : "Bourne",
+                    "Ward" : "-",
+                    "Pct" : "7",
+                    "Yes" : 375,
+                    "No" : 914,
+                    "Blanks" : 26,
+                    "Total Votes Cast" : 1315,
+                    "Question ID" : "7303"
+                }
+        """
 
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ldisalvo_skeesara_vidyaap', 'ldisalvo_skeesara_vidyaap')
+        repo.authenticate(TEAM_NAME, TEAM_NAME)
 
-        #get list of question ids
-        questionsIds = list(repo['ldisalvo_skeesara_vidyaap.ballotQuestions'].find({}, {"_id":1}))
+        # Get list of question ids from collection
+        questionsIds = list(repo[BALLOT_QUESTIONS].find({}, {"_id":1}))
         questionResultsRows = []
 
+        # Use question ids to retrieve data from electionstats for each ballot question
         for question in questionsIds:
             id = question['_id']
             url = 'http://electionstats.state.ma.us/ballot_questions/download/{id}/precincts_include:1/'.format(id=id)
@@ -47,11 +61,12 @@ class ballotQuestionsResults(dml.Algorithm):
             data = [ballotQuestionsResults.cleanData(row, id) for row in data]
             questionResultsRows.extend(data)
 
+        # Insert rows into collection
         repo.dropCollection("ballotQuestionsResults")
         repo.createCollection("ballotQuestionsResults")
-        repo['ldisalvo_skeesara_vidyaap.ballotQuestionsResults'].insert_many(questionResultsRows)
-        repo['ldisalvo_skeesara_vidyaap.ballotQuestionsResults'].metadata({'complete': True})
-        print(repo['ldisalvo_skeesara_vidyaap.ballotQuestionsResults'].metadata())
+        repo[BALLOT_QUESTIONS_RESULTS].insert_many(questionResultsRows)
+        repo[BALLOT_QUESTIONS_RESULTS].metadata({'complete': True})
+        print(repo[BALLOT_QUESTIONS_RESULTS].metadata())
 
         repo.logout()
 
@@ -61,7 +76,7 @@ class ballotQuestionsResults(dml.Algorithm):
 
     @staticmethod
     def cleanData(precinctDictionary, id):
-        '''Add additional fields and convert appropriate values to integers'''
+        """ Add Question ID field, change num votes values to int"""
 
         # Add ID field
         precinctDictionary['Question ID'] = id

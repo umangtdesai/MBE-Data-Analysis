@@ -1,5 +1,5 @@
 """
-CS506 : stateHouseElections
+CS504 : stateHouseElections
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
 Description :
 
@@ -13,38 +13,59 @@ import prov.model
 import datetime
 import uuid
 from bs4 import BeautifulSoup
-from requests import get
-from requests.exceptions import RequestException
-from contextlib import closing
+from ldisalvo_skeesara_vidyaap.helper.scraper import scraper
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_HOUSE_ELECTIONS
 
 
 class stateHouseElections(dml.Algorithm):
-    contributor = 'ldisalvo_skeesara_vidyaap'
+    contributor = TEAM_NAME
     reads = []
-    writes = ['ldisalvo_skeesara_vidyaap.stateHouseElections']
+    writes = [STATE_HOUSE_ELECTIONS]
 
     @staticmethod
     def execute(trial=False):
-        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        """
+            Scrape electionstats to get data about each MA general state house election (2000-2018)
+            and insert into collection
+            ex) {
+                    "_id" : "131672",
+                    "year" : 2018,
+                    "district" : "3rd Bristol",
+                    "candidates" :
+                    [ {
+                        "name" : "Shaunna L. O'Connell",
+                        "party" : "Republican",
+                        "isWinner" : true
+                    },
+                    {
+                        "name" : "Emily Jm Farrer",
+                        "party" : "Democratic",
+                        "isWinner" : false
+                    } ]
+                }
+        """
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ldisalvo_skeesara_vidyaap', 'ldisalvo_skeesara_vidyaap')
+        repo.authenticate(TEAM_NAME, TEAM_NAME)
 
-        raw_html = stateHouseElections.simple_get('http://electionstats.state.ma.us/elections/search/year_from:2000/year_to:2018/office_id:8/stage:General')
+        # Get HTML of page and pull all election divs
+        raw_html = scraper.simple_get('http://electionstats.state.ma.us/elections/search/year_from:2000/year_to:2018/office_id:8/stage:General')
         html = BeautifulSoup(raw_html, 'html.parser')
         electionsList = html.findAll("tr", {"class": "election_item"})
 
         electionsRows = []
 
+        # Build row for each election
         for election in electionsList:
             electionData = {}
             electionData['_id'] = election['id'].split('-')[-1]
             electionData['year'] = int(election.findAll("td", {"class": "year"})[0].contents[0])
             electionData['district'] = election.findAll("td", {"class": ""})[1].contents[0]
 
+            # Build sub json for candidates containing name, party, and isWinner
             electionData['candidates'] = []
             table = election.find("table", {"class": "candidates"})
 
@@ -57,11 +78,12 @@ class stateHouseElections(dml.Algorithm):
 
             electionsRows.append(electionData)
 
+        # Insert rows into collection
         repo.dropCollection("stateHouseElections")
         repo.createCollection("stateHouseElections")
-        repo['ldisalvo_skeesara_vidyaap.stateHouseElections'].insert_many(electionsRows)
-        repo['ldisalvo_skeesara_vidyaap.stateHouseElections'].metadata({'complete': True})
-        print(repo['ldisalvo_skeesara_vidyaap.stateHouseElections'].metadata())
+        repo[STATE_HOUSE_ELECTIONS].insert_many(electionsRows)
+        repo[STATE_HOUSE_ELECTIONS].metadata({'complete': True})
+        print(repo[STATE_HOUSE_ELECTIONS].metadata())
 
         repo.logout()
 
@@ -139,40 +161,6 @@ class stateHouseElections(dml.Algorithm):
             else ''
         candidateData['isWinner'] = isWinner
         return candidateData
-
-    def simple_get(url):
-        """
-        Attempts to get the content at `url` by making an HTTP GET request.
-        If the content-type of response is some kind of HTML/XML, return the
-        text content, otherwise return None.
-        """
-        try:
-            with closing(get(url, stream=True)) as resp:
-                if stateHouseElections.is_good_response(resp):
-                    return resp.content
-                else:
-                    return None
-
-        except RequestException as e:
-            stateHouseElections.log_error('Error during requests to {0} : {1}'.format(url, str(e)))
-            return None
-
-    def is_good_response(resp):
-        """
-        Returns True if the response seems to be HTML, False otherwise.
-        """
-        content_type = resp.headers['Content-Type'].lower()
-        return (resp.status_code == 200
-                and content_type is not None
-                and content_type.find('html') > -1)
-
-    def log_error(e):
-        """
-        It is always a good idea to log errors.
-        This function just prints them, but you can
-        make it do anything.
-        """
-        print(e)
 
 
 '''

@@ -1,5 +1,5 @@
 """
-CS506 : ballot_questions
+CS504 : ballot_questions
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
 Description :
 
@@ -13,31 +13,47 @@ import prov.model
 import datetime
 import uuid
 from bs4 import BeautifulSoup
-from requests import get
-from requests.exceptions import RequestException
-from contextlib import closing
+from ldisalvo_skeesara_vidyaap.helper.scraper import scraper
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, BALLOT_QUESTIONS
 
 class ballotQuestions(dml.Algorithm):
-    contributor = 'ldisalvo_skeesara_vidyaap'
+    contributor = TEAM_NAME
     reads = []
-    writes = ['ldisalvo_skeesara_vidyaap.ballotQuestions']
+    writes = [BALLOT_QUESTIONS]
 
     @staticmethod
     def execute(trial=False):
-        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        """
+            Scrape electionstats to get data about each MA ballot question (2000-2018)
+            and insert into collection
+            ex) {
+                    "_id" : "7322",
+                    "year" : 2018,
+                    "number" : "4",
+                    "description" : "SUMMARY Sections 3 to 7 of Chapter 44B of the General Laws
+                        of Massachusetts, also known as the Community Preservation Act (the 'Act'),
+                        establishes a dedicated funding source for the: acquisition, creation and
+                        preservation of open space; acquisition, preservation, rehabilitation and
+                        restoration of hi...",
+                    "type" : "Local Question",
+                    "location" : "Various cities/towns"
+                }
+        """
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ldisalvo_skeesara_vidyaap', 'ldisalvo_skeesara_vidyaap')
+        repo.authenticate(TEAM_NAME, TEAM_NAME)
 
-        raw_html = ballotQuestions.simple_get('http://electionstats.state.ma.us/ballot_questions/search/year_from:2000/year_to:2018')
+        # Get HTML of page and pull all ballot question divs
+        raw_html = scraper.simple_get('http://electionstats.state.ma.us/ballot_questions/search/year_from:2000/year_to:2018')
         html = BeautifulSoup(raw_html, 'html.parser')
         questionList = html.findAll("tr", {"class": "election_item"})
 
         ballotQuestionsRows = []
 
+        # Build row for each ballot questions
         for question in questionList:
             questionData = {}
             questionData['_id'] = question['id'].split('-')[-1]
@@ -50,11 +66,12 @@ class ballotQuestions(dml.Algorithm):
             questionData['location'] = question.findAll("td", {"class": "bq_location"})[0].contents[0]
             ballotQuestionsRows.append(questionData)
 
+        # Insert rows into collection
         repo.dropCollection("ballotQuestions")
         repo.createCollection("ballotQuestions")
-        repo['ldisalvo_skeesara_vidyaap.ballotQuestions'].insert_many(ballotQuestionsRows)
-        repo['ldisalvo_skeesara_vidyaap.ballotQuestions'].metadata({'complete': True})
-        print(repo['ldisalvo_skeesara_vidyaap.ballotQuestions'].metadata())
+        repo[BALLOT_QUESTIONS].insert_many(ballotQuestionsRows)
+        repo[BALLOT_QUESTIONS].metadata({'complete': True})
+        print(repo[BALLOT_QUESTIONS].metadata())
 
         repo.logout()
 
@@ -119,40 +136,6 @@ class ballotQuestions(dml.Algorithm):
         repo.logout()
 
         return doc
-
-    def simple_get(url):
-        """
-        Attempts to get the content at `url` by making an HTTP GET request.
-        If the content-type of response is some kind of HTML/XML, return the
-        text content, otherwise return None.
-        """
-        try:
-            with closing(get(url, stream=True)) as resp:
-                if ballotQuestions.is_good_response(resp):
-                    return resp.content
-                else:
-                    return None
-
-        except RequestException as e:
-            ballotQuestions.log_error('Error during requests to {0} : {1}'.format(url, str(e)))
-            return None
-
-    def is_good_response(resp):
-        """
-        Returns True if the response seems to be HTML, False otherwise.
-        """
-        content_type = resp.headers['Content-Type'].lower()
-        return (resp.status_code == 200
-                and content_type is not None
-                and content_type.find('html') > -1)
-
-    def log_error(e):
-        """
-        It is always a good idea to log errors.
-        This function just prints them, but you can
-        make it do anything.
-        """
-        print(e)
 
 
 '''

@@ -1,5 +1,5 @@
 """
-CS506 : stateHouseElectionsResults
+CS504 : stateHouseElectionsResults
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
 Description :
 
@@ -16,28 +16,43 @@ import datetime
 import uuid
 import csv
 import io
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_HOUSE_ELECTIONS, STATE_HOUSE_ELECTIONS_RESULTS
 
 
 class stateHouseElectionsResults(dml.Algorithm):
-    contributor = 'ldisalvo_skeesara_vidyaap'
-    reads = ['ldisalvo_skeesara_vidyaap.stateHouseElections']
-    writes = ['ldisalvo_skeesara_vidyaap.stateHouseElectionsResults']
+    contributor = TEAM_NAME
+    reads = [STATE_HOUSE_ELECTIONS]
+    writes = [STATE_HOUSE_ELECTIONS_RESULTS]
 
     @staticmethod
     def execute(trial=False):
-        '''Retrieve and store all MA ballot question voter data 2000 - 2018'''
+        """
+            Retrieve election results data from electionstats and insert into collection
+            ex) {
+                    "City/Town" : "Barnstable",
+                    "Ward" : "-",
+                    "Pct" : "7",
+                    "Election ID" : "131582",
+                    "William L Crocker, Jr" : 1079,
+                    "Paul J Cusack" : 1059,
+                    "All Others" : 5,
+                    "Blanks" : 42,
+                    "Total Votes Cast" : 2185
+                }
+        """
 
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ldisalvo_skeesara_vidyaap', 'ldisalvo_skeesara_vidyaap')
+        repo.authenticate(TEAM_NAME, TEAM_NAME)
 
-        #get list of question ids
-        electionIds = list(repo['ldisalvo_skeesara_vidyaap.stateHouseElections'].find({}, {"_id":1}))
+        # Get list of election ids from collection
+        electionIds = list(repo[STATE_HOUSE_ELECTIONS].find({}, {"_id":1}))
         electionResultsRows = []
 
+        # Use election ids to retrieve data from electionstats for each state house election
         for question in electionIds:
             id = question['_id']
             url = 'http://electionstats.state.ma.us/elections/download/{id}/precincts_include:1/'.format(id=id)
@@ -47,11 +62,12 @@ class stateHouseElectionsResults(dml.Algorithm):
             data = [stateHouseElectionsResults.cleanData(row, id) for row in data[1:]]
             electionResultsRows.extend(data)
 
+        # Insert rows into collection
         repo.dropCollection("stateHouseElectionsResults")
         repo.createCollection("stateHouseElectionsResults")
-        repo['ldisalvo_skeesara_vidyaap.stateHouseElectionsResults'].insert_many(electionResultsRows)
-        repo['ldisalvo_skeesara_vidyaap.stateHouseElectionsResults'].metadata({'complete': True})
-        print(repo['ldisalvo_skeesara_vidyaap.stateHouseElectionsResults'].metadata())
+        repo[STATE_HOUSE_ELECTIONS_RESULTS].insert_many(electionResultsRows)
+        repo[STATE_HOUSE_ELECTIONS_RESULTS].metadata({'complete': True})
+        print(repo[STATE_HOUSE_ELECTIONS_RESULTS].metadata())
 
         repo.logout()
 
@@ -61,7 +77,7 @@ class stateHouseElectionsResults(dml.Algorithm):
 
     @staticmethod
     def cleanData(precinctDictionary, id):
-        '''Add additional fields and convert appropriate values to integers'''
+        """ Add Election ID field, change num votes values to int, remove '.' from middle initial"""
 
         # Add ID field
         precinctDictionary['Election ID'] = id
