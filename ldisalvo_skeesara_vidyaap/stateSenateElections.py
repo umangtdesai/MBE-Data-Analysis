@@ -15,14 +15,15 @@ import dml
 import prov.model
 
 from bs4 import BeautifulSoup
-from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_SENATE_ELECTIONS
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_SENATE_ELECTIONS, STATE_SENATE_ELECTIONS_NAME, STATE_SENATE_GENERAL_2000_2018_URL
 from ldisalvo_skeesara_vidyaap.helper.scraper import scraper
 
 
 class stateSenateElections(dml.Algorithm):
     contributor = TEAM_NAME
     reads = []
-    writes = [STATE_SENATE_ELECTIONS]
+    writes = [STATE_SENATE_ELECTIONS_NAME]
+
 
     @staticmethod
     def execute(trial=False):
@@ -52,7 +53,7 @@ class stateSenateElections(dml.Algorithm):
         repo.authenticate(TEAM_NAME, TEAM_NAME)
 
         # Get HTML of page and pull all election divs
-        raw_html = scraper.simple_get('http://electionstats.state.ma.us/elections/search/year_from:2000/year_to:2018/office_id:9/stage:General')
+        raw_html = scraper.simple_get(STATE_SENATE_GENERAL_2000_2018_URL)
         html = BeautifulSoup(raw_html, 'html.parser')
         electionsList = html.findAll("tr", {"class": "election_item"})
 
@@ -79,11 +80,12 @@ class stateSenateElections(dml.Algorithm):
             electionsRows.append(electionData)
 
         # Insert rows into collection
-        repo.dropCollection("stateSenateElections")
-        repo.createCollection("stateSenateElections")
-        repo[STATE_SENATE_ELECTIONS].insert_many(electionsRows)
-        repo[STATE_SENATE_ELECTIONS].metadata({'complete': True})
-        print(repo[STATE_SENATE_ELECTIONS].metadata())
+        repo.dropCollection("stateSenateElection")
+        repo.dropCollection(STATE_SENATE_ELECTIONS)
+        repo.createCollection(STATE_SENATE_ELECTIONS)
+        repo[STATE_SENATE_ELECTIONS_NAME].insert_many(electionsRows)
+        repo[STATE_SENATE_ELECTIONS_NAME].metadata({'complete': True})
+        print(repo[STATE_SENATE_ELECTIONS_NAME].metadata())
 
         repo.logout()
 

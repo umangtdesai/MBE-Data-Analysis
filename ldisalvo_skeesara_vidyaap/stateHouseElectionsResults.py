@@ -18,13 +18,13 @@ import dml
 import prov.model
 import urllib.request
 
-from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_HOUSE_ELECTIONS, STATE_HOUSE_ELECTIONS_RESULTS
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_HOUSE_ELECTIONS_RESULTS, STATE_HOUSE_ELECTIONS_NAME, STATE_HOUSE_ELECTIONS_RESULTS_NAME, ELECTION_DOWNLOAD_RESULTS_URL
 
 
 class stateHouseElectionsResults(dml.Algorithm):
     contributor = TEAM_NAME
-    reads = [STATE_HOUSE_ELECTIONS]
-    writes = [STATE_HOUSE_ELECTIONS_RESULTS]
+    reads = [STATE_HOUSE_ELECTIONS_NAME]
+    writes = [STATE_HOUSE_ELECTIONS_RESULTS_NAME]
 
     @staticmethod
     def execute(trial=False):
@@ -51,13 +51,13 @@ class stateHouseElectionsResults(dml.Algorithm):
         repo.authenticate(TEAM_NAME, TEAM_NAME)
 
         # Get list of election ids from collection
-        electionIds = list(repo[STATE_HOUSE_ELECTIONS].find({}, {"_id":1}))
+        electionIds = list(repo[STATE_HOUSE_ELECTIONS_NAME].find({}, {"_id":1}))
         electionResultsRows = []
 
         # Use election ids to retrieve data from electionstats for each state house election
         for question in electionIds:
             id = question['_id']
-            url = 'http://electionstats.state.ma.us/elections/download/{id}/precincts_include:1/'.format(id=id)
+            url = ELECTION_DOWNLOAD_RESULTS_URL.format(id=id)
             csvString = urllib.request.urlopen(url).read().decode("utf-8")
             reader = csv.DictReader(io.StringIO(csvString))
             data = json.loads(json.dumps(list(reader)))
@@ -65,11 +65,11 @@ class stateHouseElectionsResults(dml.Algorithm):
             electionResultsRows.extend(data)
 
         # Insert rows into collection
-        repo.dropCollection("stateHouseElectionsResults")
-        repo.createCollection("stateHouseElectionsResults")
-        repo[STATE_HOUSE_ELECTIONS_RESULTS].insert_many(electionResultsRows)
-        repo[STATE_HOUSE_ELECTIONS_RESULTS].metadata({'complete': True})
-        print(repo[STATE_HOUSE_ELECTIONS_RESULTS].metadata())
+        repo.dropCollection(STATE_HOUSE_ELECTIONS_RESULTS)
+        repo.createCollection(STATE_HOUSE_ELECTIONS_RESULTS)
+        repo[STATE_HOUSE_ELECTIONS_RESULTS_NAME].insert_many(electionResultsRows)
+        repo[STATE_HOUSE_ELECTIONS_RESULTS_NAME].metadata({'complete': True})
+        print(repo[STATE_HOUSE_ELECTIONS_RESULTS_NAME].metadata())
 
         repo.logout()
 

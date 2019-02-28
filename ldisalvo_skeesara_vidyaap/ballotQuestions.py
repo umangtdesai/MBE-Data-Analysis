@@ -15,13 +15,13 @@ import dml
 import prov.model
 
 from bs4 import BeautifulSoup
-from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, BALLOT_QUESTIONS
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, BALLOT_QUESTIONS, BALLOT_QUESTIONS_NAME, BALLOT_QUESTION_2000_2018_URL
 from ldisalvo_skeesara_vidyaap.helper.scraper import scraper
 
 class ballotQuestions(dml.Algorithm):
     contributor = TEAM_NAME
     reads = []
-    writes = [BALLOT_QUESTIONS]
+    writes = [BALLOT_QUESTIONS_NAME]
 
     @staticmethod
     def execute(trial=False):
@@ -49,7 +49,7 @@ class ballotQuestions(dml.Algorithm):
         repo.authenticate(TEAM_NAME, TEAM_NAME)
 
         # Get HTML of page and pull all ballot question divs
-        raw_html = scraper.simple_get('http://electionstats.state.ma.us/ballot_questions/search/year_from:2000/year_to:2018')
+        raw_html = scraper.simple_get(BALLOT_QUESTION_2000_2018_URL)
         html = BeautifulSoup(raw_html, 'html.parser')
         questionList = html.findAll("tr", {"class": "election_item"})
 
@@ -69,11 +69,11 @@ class ballotQuestions(dml.Algorithm):
             ballotQuestionsRows.append(questionData)
 
         # Insert rows into collection
-        repo.dropCollection("ballotQuestions")
-        repo.createCollection("ballotQuestions")
-        repo[BALLOT_QUESTIONS].insert_many(ballotQuestionsRows)
-        repo[BALLOT_QUESTIONS].metadata({'complete': True})
-        print(repo[BALLOT_QUESTIONS].metadata())
+        repo.dropCollection(BALLOT_QUESTIONS)
+        repo.createCollection(BALLOT_QUESTIONS)
+        repo[BALLOT_QUESTIONS_NAME].insert_many(ballotQuestionsRows)
+        repo[BALLOT_QUESTIONS_NAME].metadata({'complete': True})
+        print(repo[BALLOT_QUESTIONS_NAME].metadata())
 
         repo.logout()
 

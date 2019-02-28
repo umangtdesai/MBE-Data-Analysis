@@ -18,13 +18,13 @@ import dml
 import prov.model
 import urllib.request
 
-from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, BALLOT_QUESTIONS, BALLOT_QUESTIONS_RESULTS
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, BALLOT_QUESTIONS_RESULTS, BALLOT_QUESTIONS_NAME, BALLOT_QUESTIONS_RESULTS_NAME, BALLOT_QUESTION_DOWNLOAD_RESULTS_URL
 
 
 class ballotQuestionsResults(dml.Algorithm):
     contributor = TEAM_NAME
-    reads = [BALLOT_QUESTIONS]
-    writes = [BALLOT_QUESTIONS_RESULTS]
+    reads = [BALLOT_QUESTIONS_NAME]
+    writes = [BALLOT_QUESTIONS_RESULTS_NAME]
 
     @staticmethod
     def execute(trial=False):
@@ -50,13 +50,13 @@ class ballotQuestionsResults(dml.Algorithm):
         repo.authenticate(TEAM_NAME, TEAM_NAME)
 
         # Get list of question ids from collection
-        questionsIds = list(repo[BALLOT_QUESTIONS].find({}, {"_id":1}))
+        questionsIds = list(repo[BALLOT_QUESTIONS_NAME].find({}, {"_id":1}))
         questionResultsRows = []
 
         # Use question ids to retrieve data from electionstats for each ballot question
         for question in questionsIds:
             id = question['_id']
-            url = 'http://electionstats.state.ma.us/ballot_questions/download/{id}/precincts_include:1/'.format(id=id)
+            url = BALLOT_QUESTION_DOWNLOAD_RESULTS_URL.format(id=id)
             csvString = urllib.request.urlopen(url).read().decode("utf-8")
             reader = csv.DictReader(io.StringIO(csvString))
             data = json.loads(json.dumps(list(reader)))
@@ -64,11 +64,11 @@ class ballotQuestionsResults(dml.Algorithm):
             questionResultsRows.extend(data)
 
         # Insert rows into collection
-        repo.dropCollection("ballotQuestionsResults")
-        repo.createCollection("ballotQuestionsResults")
-        repo[BALLOT_QUESTIONS_RESULTS].insert_many(questionResultsRows)
-        repo[BALLOT_QUESTIONS_RESULTS].metadata({'complete': True})
-        print(repo[BALLOT_QUESTIONS_RESULTS].metadata())
+        repo.dropCollection(BALLOT_QUESTIONS_RESULTS)
+        repo.createCollection(BALLOT_QUESTIONS_RESULTS)
+        repo[BALLOT_QUESTIONS_RESULTS_NAME].insert_many(questionResultsRows)
+        repo[BALLOT_QUESTIONS_RESULTS_NAME].metadata({'complete': True})
+        print(repo[BALLOT_QUESTIONS_RESULTS_NAME].metadata())
 
         repo.logout()
 
