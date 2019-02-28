@@ -6,10 +6,11 @@ import datetime
 import uuid
 import csv
 import io
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, FUSION_TABLE_URL, COUNTY_SHAPE, COUNTY_SHAPE_NAME
 
 
 class countyShapes(dml.Algorithm):
-    contributor = 'ldisalvo_skeesara_vidyaap'
+    contributor = TEAM_NAME
     reads = []
     writes = ['ldisalvo_skeesara_vidyaap.countyShape']
 
@@ -21,9 +22,9 @@ class countyShapes(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ldisalvo_skeesara_vidyaap', 'ldisalvo_skeesara_vidyaap')
+        repo.authenticate(TEAM_NAME, TEAM_NAME)
 
-        url = 'http://datamechanics.io/data/massachusetts_counties.csv'
+        url = FUSION_TABLE_URL
 
         csv_string = urllib.request.urlopen(url).read().decode("utf-8")
         reader = csv.DictReader(io.StringIO(csv_string))
@@ -38,11 +39,11 @@ class countyShapes(dml.Algorithm):
             new_json['Geo_ID'] = county['GEO_ID2']
             new_list += [new_json]
 
-        repo.dropCollection("countyShape")
-        repo.createCollection("countyShape")
-        repo['ldisalvo_skeesara_vidyaap.countyShape'].insert_many(new_list)
-        repo['ldisalvo_skeesara_vidyaap.countyShape'].metadata({'complete': True})
-        print(repo['ldisalvo_skeesara_vidyaap.countyShape'].metadata())
+        repo.dropCollection(COUNTY_SHAPE)
+        repo.createCollection(COUNTY_SHAPE)
+        repo[COUNTY_SHAPE_NAME].insert_many(new_list)
+        repo[COUNTY_SHAPE_NAME].metadata({'complete': True})
+        print(repo[COUNTY_SHAPE_NAME].metadata())
 
         repo.logout()
 
@@ -114,5 +115,6 @@ doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
-
+cs = countyShapes()
+cs.execute()
 ## eof
