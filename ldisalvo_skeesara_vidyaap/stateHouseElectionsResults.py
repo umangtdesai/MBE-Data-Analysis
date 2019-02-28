@@ -8,14 +8,16 @@ Notes :
 February 28, 2019
 """
 
-import urllib.request
+import csv
+import datetime
+import io
 import json
+import uuid
+
 import dml
 import prov.model
-import datetime
-import uuid
-import csv
-import io
+import urllib.request
+
 from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_HOUSE_ELECTIONS, STATE_HOUSE_ELECTIONS_RESULTS
 
 

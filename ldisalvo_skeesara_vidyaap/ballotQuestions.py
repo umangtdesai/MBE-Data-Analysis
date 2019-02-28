@@ -8,13 +8,15 @@ Notes :
 February 27, 2019
 """
 
-import dml
-import prov.model
 import datetime
 import uuid
+
+import dml
+import prov.model
+
 from bs4 import BeautifulSoup
-from ldisalvo_skeesara_vidyaap.helper.scraper import scraper
 from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, BALLOT_QUESTIONS
+from ldisalvo_skeesara_vidyaap.helper.scraper import scraper
 
 class ballotQuestions(dml.Algorithm):
     contributor = TEAM_NAME

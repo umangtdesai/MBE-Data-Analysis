@@ -8,9 +8,9 @@ Notes : This code was taken from https://realpython.com/python-web-scraping-prac
 February 28, 2019
 """
 
+from contextlib import closing
 from requests import get
 from requests.exceptions import RequestException
-from contextlib import closing
 
 class scraper:
     def simple_get(url):

@@ -8,14 +8,16 @@ Notes :
 February 26, 2019
 """
 
-import urllib.request
+import csv
+import datetime
+import io
 import json
+import uuid
+
+import urllib.request
 import dml
 import prov.model
-import datetime
-import uuid
-import csv
-import io
+
 from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_SENATE_ELECTIONS, STATE_SENATE_ELECTIONS_RESULTS
 
 class stateSenateElectionsResults(dml.Algorithm):
