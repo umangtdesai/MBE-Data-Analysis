@@ -20,11 +20,15 @@ STATE_HOUSE_ELECTIONS = "stateHouseElections"
 STATE_HOUSE_ELECTIONS_RESULTS = "stateHouseElectionsResults"
 STATE_HOUSE_ELECTIONS_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=STATE_HOUSE_ELECTIONS)
 STATE_HOUSE_ELECTIONS_RESULTS_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=STATE_HOUSE_ELECTIONS_RESULTS)
+HOUSE_DISTRICT_IDEOLOGIES = "houseDistrictIdeologies"
+HOUSE_DISTRICT_IDEOLOGIES_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=HOUSE_DISTRICT_IDEOLOGIES)
 
 STATE_SENATE_ELECTIONS = "stateSenateElections"
 STATE_SENATE_ELECTIONS_RESULTS = "stateSenateElectionsResults"
 STATE_SENATE_ELECTIONS_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=STATE_SENATE_ELECTIONS)
 STATE_SENATE_ELECTIONS_RESULTS_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=STATE_SENATE_ELECTIONS_RESULTS)
+SENATE_DISTRICT_IDEOLOGIES = "senateDistrictIdeologies"
+SENATE_DISTRICT_IDEOLOGIES_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=SENATE_DISTRICT_IDEOLOGIES)
 
 DEMOGRAPHIC_DATA_COUNTY = "demographicDataCounty"
 DEMOGRAPHIC_DATA_COUNTY_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=DEMOGRAPHIC_DATA_COUNTY)

@@ -47,6 +47,36 @@ contains: demographic data by country from census.gov
 
 fields: available at https://www.census.gov/quickfacts/fact/table/ma/PST045217
 
+## Transformations
+### House District Ideology
+Calculates a basic ideology score for each state house electoral district (160) by counting number of Democratic and Republican wins from 2000 to 2018
+
+```
+{
+    "district" : "1st Barnstable",
+    "percentDem" : 25,
+    "percentRepub" : 75,
+    "numDemWins" : 1,
+    "numRepubWins" : 3,
+    "numElections" : 4
+}
+```
+
+### Senate District Ideology
+Calculates a basic ideology score for each state senate electoral district (51) by counting number of Democratic and Republican wins from 2000 to 2018
+
+```
+{
+    "district" : "1st Hampden and Hampshire",
+    "percentDem" : 70, 
+    "percentRepub" : 30, 
+    "numDemWins" : 7,
+    "numRepubWins" : 3, 
+    "numElections" : 10 
+}
+
+```
+
 ## Additional Python Libraries
 You may need to import the following libraries to access our datasets: bs4, pandas, requests, csv, io
 
@@ -55,3 +85,5 @@ They can be installed by running the requirements.txt file
 ```
 pip3 install requirements.txt
 ```
+
+If you get a 'SSL: CERTIFICATE_VERIFY_FAILED' error, you need to install certificates for your version of Python. In MacOS, navigate to Finder->Applications->Python3.7 and double click on 'InstallCertificates.command' and then on 'UpdateShellProfile.command'.
