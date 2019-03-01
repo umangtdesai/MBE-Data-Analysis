@@ -1,7 +1,7 @@
 """
 CS504 : demographicData.py
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
-Description : Retrieval of demographic data by county using census.gov
+Description : Retrieval of demographic data by town using census.gov
 
 February 28, 2019
 """
@@ -27,15 +27,13 @@ class demographicDataTown(dml.Algorithm):
     @staticmethod
     def execute(trial=False):
         """
-            Retrieve demographic data by country from census.gov and insert into collection
+            Retrieve demographic data by town from census.gov and insert into collection
             ex)
-             { "Barnstable County, Massachusetts":
-                {"Population estimates, July 1, 2017,  (V2017)": "213,444",
-                "Population estimates base, April 1, 2010,  (V2017)": "215,868",
-                "Population, percent change - April 1, 2010 (estimates base) to July 1, 2017,  (V2017)": "-1.1%",
-                "Population, Census, April 1, 2010": "215,888",
-                "Persons under 5 years, percent": "3.6%",
-                "Persons under 18 years, percent": "15.1%",
+             { "Winchester town, Middlesex County, Massachusetts":
+               {"Population estimates, July 1, 2017,  (V2017)": "23,339",
+                "Population estimates base, April 1, 2010,  (V2017)": "23,797",
+                "Population, percent change - April 1, 2010 (estimates base) to July 1, 2017,  (V2017)": "-1.9%",
+                "Population, Census, April 1, 2010": "23,793",
                 ..........................}
             }
         """
@@ -46,7 +44,7 @@ class demographicDataTown(dml.Algorithm):
         repo = client.repo
         repo.authenticate(TEAM_NAME, TEAM_NAME)
 
-        # Retrieve data from census.gov for each county (note: retrieval generates csv with max of 6 locations)
+        # Retrieve data from census.gov for each town (note: retrieval generates csv with max of 6 locations)
         town_divisions = [MA_TOWN_LIST[:6], MA_TOWN_LIST[6:12], MA_TOWN_LIST[12:18], MA_TOWN_LIST[18:24],
                             MA_TOWN_LIST[24:30], MA_TOWN_LIST[30:36], MA_TOWN_LIST[36:42], MA_TOWN_LIST[42:48],
                             MA_TOWN_LIST[48:54], MA_TOWN_LIST[54:60], MA_TOWN_LIST[60:66], MA_TOWN_LIST[66:72],
@@ -63,7 +61,6 @@ class demographicDataTown(dml.Algorithm):
                 towns += (town.lower().replace(",", "") + "massachusetts,").replace(" ", "")
             towns = towns[:-1]
             url = TOWN_URL[:43] + towns + COUNTY_URL[43:]
-            #print(url)
             df = pd.read_csv(urllib.request.urlopen(url))
             df = df.drop(df.index[-20:])
             df.set_index("Fact", inplace=True)
@@ -71,7 +68,6 @@ class demographicDataTown(dml.Algorithm):
             df = df[~df.index.str.contains("Note")]
             cols = list(df)
             all_dfs.append(df)
-            #break
 
         for df in all_dfs:
             df.columns = cols
@@ -152,7 +148,7 @@ class demographicDataTown(dml.Algorithm):
         repo.logout()
 
         return doc
-demographicDataTown.execute()
+
 '''
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
