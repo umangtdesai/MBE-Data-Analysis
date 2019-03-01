@@ -85,7 +85,7 @@ class getStreetlightLocation(dml.Algorithm):
 
         streetlightLocation = doc.entity('dat:nhuang54_wud#streetlightLocation', {prov.model.PROV_LABEL:'Traffic Signal', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(streetlightLocation, this_script)
-        doc.wasGeneratedBy(streetlightLocation, get_lost, endTime)
+        doc.wasGeneratedBy(streetlightLocation, get_streetlightLocation, endTime)
         doc.wasDerivedFrom(streetlightLocation, resource, get_streetlightLocation, get_streetlightLocation, get_streetlightLocation)
 
         repo.logout()
