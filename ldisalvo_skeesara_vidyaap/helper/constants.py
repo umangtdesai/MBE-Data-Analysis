@@ -33,3 +33,9 @@ STATE_SENATE_GENERAL_2000_2018_URL = "http://electionstats.state.ma.us/elections
 
 BALLOT_QUESTION_DOWNLOAD_RESULTS_URL = "http://electionstats.state.ma.us/ballot_questions/download/{id}/precincts_include:1/"
 ELECTION_DOWNLOAD_RESULTS_URL = "http://electionstats.state.ma.us/elections/download/{id}/precincts_include:1/"
+
+
+#county shape data
+FUSION_TABLE_URL = "http://datamechanics.io/data/massachusetts_counties.csv"
+COUNTY_SHAPE = "countyShape"
+COUNTY_SHAPE_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=COUNTY_SHAPE)
