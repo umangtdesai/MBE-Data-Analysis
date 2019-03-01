@@ -1,16 +1,12 @@
 """
 CS504 : demographicData.py
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
-Description :
-
-Notes :
+Description : Retrieval of demographic data by county using census.gov
 
 February 28, 2019
 """
 
-import csv
 import datetime
-import io
 import json
 import uuid
 import pandas as pd
@@ -19,29 +15,29 @@ import dml
 import prov.model
 import urllib.request
 
-from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, COUNTY_URL, MA_COUNTY_LIST
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, COUNTY_URL, MA_COUNTY_LIST, DEMOGRAPHIC_DATA_COUNTY, \
+    DEMOGRAPHIC_DATA_COUNTY_NAME
 
 
 class demographicDataCounty(dml.Algorithm):
     contributor = TEAM_NAME
     reads = []
-    writes = ['ldisalvo_skeesara_vidyaap.DEMOGRAPHIC_DATA_COUNTY']
+    writes = [DEMOGRAPHIC_DATA_COUNTY_NAME]
 
     @staticmethod
     def execute(trial=False):
         """
             Retrieve demographic data by country from census.gov and insert into collection
-            #########FIX THIS############## ex) {
-                    "City/Town" : "Barnstable",
-                    "Ward" : "-",
-                    "Pct" : "7",
-                    "Election ID" : "131582",
-                    "William L Crocker, Jr" : 1079,
-                    "Paul J Cusack" : 1059,
-                    "All Others" : 5,
-                    "Blanks" : 42,
-                    "Total Votes Cast" : 2185
-                }
+            ex)
+             { "Barnstable County, Massachusetts":
+                {"Population estimates, July 1, 2017,  (V2017)": "213,444",
+                "Population estimates base, April 1, 2010,  (V2017)": "215,868",
+                "Population, percent change - April 1, 2010 (estimates base) to July 1, 2017,  (V2017)": "-1.1%",
+                "Population, Census, April 1, 2010": "215,888",
+                "Persons under 5 years, percent": "3.6%",
+                "Persons under 18 years, percent": "15.1%",
+                ..........................}
+            }
         """
         startTime = datetime.datetime.now()
 
@@ -51,9 +47,7 @@ class demographicDataCounty(dml.Algorithm):
         repo.authenticate(TEAM_NAME, TEAM_NAME)
 
         # Retrieve data from census.gov for each county (note: retrieval generates csv with max of 6 locations)
-        url = COUNTY_URL
         county_divisions = [MA_COUNTY_LIST[:6], MA_COUNTY_LIST[6:12], MA_COUNTY_LIST[12:14]]
-        response = []
         all_dfs= []
         for divisions in county_divisions:
             counties = ""
@@ -76,14 +70,12 @@ class demographicDataCounty(dml.Algorithm):
         df = joined_df.dropna(axis=1, how='all')
         df_to_json = [json.loads((df.to_json(orient='index')))]
 
-        #print(type(df_to_json[0]))
-
         # Insert rows into collection
-        repo.dropCollection("DEMOGRAPHIC_DATA_COUNTY")
-        repo.createCollection("DEMOGRAPHIC_DATA_COUNTY")
-        repo["ldisalvo_skeesara_vidyaap.DEMOGRAPHIC_DATA_COUNTY"].insert_many(df_to_json)
-        repo["ldisalvo_skeesara_vidyaap.DEMOGRAPHIC_DATA_COUNTY"].metadata({'complete': True})
-        print(repo["ldisalvo_skeesara_vidyaap.DEMOGRAPHIC_DATA_COUNTY"].metadata())
+        repo.dropCollection(DEMOGRAPHIC_DATA_COUNTY)
+        repo.createCollection(DEMOGRAPHIC_DATA_COUNTY)
+        repo[DEMOGRAPHIC_DATA_COUNTY_NAME].insert_many(df_to_json)
+        repo[DEMOGRAPHIC_DATA_COUNTY_NAME].metadata({'complete': True})
+        print(repo[DEMOGRAPHIC_DATA_COUNTY_NAME].metadata())
 
         repo.logout()
 
@@ -149,8 +141,6 @@ class demographicDataCounty(dml.Algorithm):
         repo.logout()
 
         return doc
-
-#demographicDataCounty.execute()
 
 '''
 # This is example code you might use for debugging this module.
