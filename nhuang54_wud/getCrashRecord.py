@@ -4,12 +4,25 @@ import dml
 import prov.model
 import datetime
 import uuid
-import geojson
 
-class getTrafficSignal(dml.Algorithm):
+def csv_to_json(url):
+    file = urllib.request.urlopen(url).read().decode("utf-8")  # retrieve file from datamechanics.io
+    dict_values = []
+    entries = file.split('\n')
+
+    keys = entries[0].split(',')  # retrieve column names for keys
+
+    for r in entries[1:-1]:
+        val = r.split(',')
+        val[-1] = val[-1][:-1]
+        dictionary = dict([(keys[i], val[i]) for i in range(len(keys))])
+        dict_values.append(dictionary)
+    return dict_values
+
+class getCrashRecord(dml.Algorithm):
     contributor = 'nhuang54_wud'
     reads = []
-    writes = ['nhuang54_wud.trafficSignal']
+    writes = ['nhuang54_wud.crashRecord']
 
     @staticmethod
     def execute(trial = False):
@@ -21,18 +34,16 @@ class getTrafficSignal(dml.Algorithm):
         repo = client.repo
         repo.authenticate('nhuang54_wud', 'nhuang54_wud')
 
-        # Get Traffic Signals data in area of Boston
-        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/eee77dc4ab3d479f83b2100542285727_12.geojson'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        gj = geojson.loads(response)
-        r = gj['features']
+        # get the csv file from website and turn into json object
+        url = 'https://data.boston.gov/dataset/7b29c1b2-7ec2-4023-8292-c24f5d8f0905/resource/e4bfe397-6bfc-49c5-9367-c879fac7401d/download/crash_open_data.csv'
+        json_file = csv_to_json(url)
         
         # Store in DB
-        repo.dropCollection("trafficSignal")
-        repo.createCollection("trafficSignal")
-        repo['nhuang54_wud.trafficSignal'].insert_many(json_file)
-        repo['nhuang54_wud.trafficSignal'].metadata({'complete':True})
-        print(repo['nhuang54_wud.trafficSignal'].metadata())
+        repo.dropCollection("crashRecord")
+        repo.createCollection("crashRecord")
+        repo['nhuang54_wud.crashRecord'].insert_many(json_file)
+        repo['nhuang54_wud.crashRecord'].metadata({'complete':True})
+        print(repo['nhuang54_wud.crashRecord'].metadata())
 
         repo.logout()
 
@@ -61,21 +72,21 @@ class getTrafficSignal(dml.Algorithm):
         # Resource:
         doc.add_namespace('bod', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
-        this_script = doc.agent('alg:nhuang54_wud#getTrafficSignal', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bod:eee77dc4ab3d479f83b2100542285727_12', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_trafficSignal = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_trafficSignal, this_script)
+        this_script = doc.agent('alg:nhuang54_wud#getCrashSignal', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('bod:7b29c1b2-7ec2-4023-8292-c24f5d8f0905/resource/e4bfe397-6bfc-49c5-9367-c879fac7401d/download/crash_open_data', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_crashRecord = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_crashRecord, this_script)
 
-        doc.usage(get_trafficSignal, resource, startTime, None,
+        doc.usage(get_crashRecord, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':''
                   }
                   )
 
-        trafficSignal = doc.entity('dat:nhuang54_wud#trafficSignal', {prov.model.PROV_LABEL:'Traffic Signal', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(trafficSignal, this_script)
-        doc.wasGeneratedBy(trafficSignal, get_trafficSignal, endTime)
-        doc.wasDerivedFrom(trafficSignal, resource, get_trafficSignal, get_trafficSignal, get_trafficSignal)
+        crashRecord = doc.entity('dat:nhuang54_wud#crashRecord', {prov.model.PROV_LABEL:'Traffic Signal', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(crashRecord, this_script)
+        doc.wasGeneratedBy(crashRecord, get_crashRecord, endTime)
+        doc.wasDerivedFrom(crashRecord, resource, get_crashRecord, get_crashRecord, get_crashRecord)
 
         repo.logout()
                   
@@ -86,6 +97,6 @@ class getTrafficSignal(dml.Algorithm):
 ##print(doc.get_provn())
 ##print(json.dumps(json.loads(doc.serialize()), indent=4))
 if __name__ == '__main__':
-    getBikeFatality.execute()
+    getCrashRecord.execute()
 
 ## eof
