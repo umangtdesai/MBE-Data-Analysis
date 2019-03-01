@@ -4,28 +4,12 @@ import dml
 import prov.model
 import datetime
 import uuid
+import geojson
 
-# method to convert csv into json, returns dictionary
-def csv_to_json(url):
-    file = urllib.request.urlopen(url).read().decode("utf-8")  # retrieve file from datamechanics.io
-    dict_values = []
-    entries = file.split('\n')
-
-    # print(entries[0])
-    keys = entries[0].split(',')  # retrieve column names for keys
-
-    for r in entries[1:-1]:
-        val = r.split(',')
-        val[-1] = val[-1][:-1]
-        dictionary = dict([(keys[i], val[i]) for i in range(len(keys))])
-        dict_values.append(dictionary)
-    return dict_values
-
-
-class getBikeFatality(dml.Algorithm):
+class getTrafficSignal(dml.Algorithm):
     contributor = 'nhuang54_wud'
     reads = []
-    writes = ['nhuang54_wud.bikeFatality']
+    writes = ['nhuang54_wud.trafficSignal']
 
     @staticmethod
     def execute(trial = False):
@@ -37,14 +21,18 @@ class getBikeFatality(dml.Algorithm):
         repo = client.repo
         repo.authenticate('nhuang54_wud', 'nhuang54_wud')
 
-        url = 'https://data.boston.gov/dataset/d326a4e3-75f2-42ac-9b32-e2920566d04c/resource/92f18923-d4ec-4c17-9405-4e0da63e1d6c/download/fatality_open_data.csv'
-        json_file = csv_to_json(url)
+        # Get Traffic Signals data in area of Boston
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/eee77dc4ab3d479f83b2100542285727_12.geojson'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        gj = geojson.loads(response)
+        r = gj['features']
         
-        repo.dropCollection("bikeFatality")
-        repo.createCollection("bikeFatality")
-        repo['nhuang54_wud.bikeFatality'].insert_many(json_file)
-        repo['nhuang54_wud.bikeFatality'].metadata({'complete':True})
-        print(repo['nhuang54_wud.bikeFatality'].metadata())
+        # Store in DB
+        repo.dropCollection("trafficSignal")
+        repo.createCollection("trafficSignal")
+        repo['nhuang54_wud.trafficSignal'].insert_many(json_file)
+        repo['nhuang54_wud.trafficSignal'].metadata({'complete':True})
+        print(repo['nhuang54_wud.trafficSignal'].metadata())
 
         repo.logout()
 
@@ -101,13 +89,10 @@ class getBikeFatality(dml.Algorithm):
                   
         return doc
 
-'''
-# This is example code you might use for debugging this module.
-# Please remove all top-level function calls before submitting.
-example.execute()
-doc = example.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
-'''
+##example.execute()
+##doc = example.provenance()
+##print(doc.get_provn())
+##print(json.dumps(json.loads(doc.serialize()), indent=4))
+
 
 ## eof
