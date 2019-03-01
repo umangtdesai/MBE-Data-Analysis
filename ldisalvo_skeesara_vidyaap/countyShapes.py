@@ -16,7 +16,17 @@ class countyShapes(dml.Algorithm):
 
     @staticmethod
     def execute(trial=False):
-        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        """
+            Read from Google Fusion table (uploaded to datamechanics.io)
+            to get geoJSON data about each county
+            and insert into collection
+            ex) {
+                    "_id" : "7322",
+                    "Name" : Barnstable,
+                    "Shape" : "<Polygon> ... ",
+                    "Geo_ID" : "25001",
+                }
+        """
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -115,6 +125,4 @@ doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
-cs = countyShapes()
-cs.execute()
 ## eof
