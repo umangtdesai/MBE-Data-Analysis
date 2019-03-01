@@ -97,6 +97,6 @@ class getStreetlightLocation(dml.Algorithm):
 ##print(doc.get_provn())
 ##print(json.dumps(json.loads(doc.serialize()), indent=4))
 if __name__ == '__main__':
-    getBikeFatality.execute()
+    getStreetlightLocation.execute()
 
 ## eof

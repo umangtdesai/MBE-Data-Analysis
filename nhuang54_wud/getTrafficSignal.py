@@ -6,6 +6,20 @@ import datetime
 import uuid
 import geojson
 
+def csv_to_json(url):
+    file = urllib.request.urlopen(url).read().decode("utf-8")  # retrieve file from datamechanics.io
+    dict_values = []
+    entries = file.split('\n')
+
+    keys = entries[0].split(',')  # retrieve column names for keys
+
+    for r in entries[1:-1]:
+        val = r.split(',')
+        val[-1] = val[-1][:-1]
+        dictionary = dict([(keys[i], val[i]) for i in range(len(keys))])
+        dict_values.append(dictionary)
+    return dict_values
+
 class getTrafficSignal(dml.Algorithm):
     contributor = 'nhuang54_wud'
     reads = []
@@ -21,11 +35,9 @@ class getTrafficSignal(dml.Algorithm):
         repo = client.repo
         repo.authenticate('nhuang54_wud', 'nhuang54_wud')
 
-        # Get Traffic Signals data in area of Boston
-        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/eee77dc4ab3d479f83b2100542285727_12.geojson'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        gj = geojson.loads(response)
-        r = gj['features']
+        # Get Traffic Signals csv data in area of Boston
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/eee77dc4ab3d479f83b2100542285727_12.csv'
+        json_file = csv_to_json(url)
         
         # Store in DB
         repo.dropCollection("trafficSignal")
