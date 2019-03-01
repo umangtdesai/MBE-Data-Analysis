@@ -29,6 +29,12 @@ STATE_SENATE_ELECTIONS_RESULTS_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(
 DEMOGRAPHIC_DATA_COUNTY = "demographicDataCounty"
 DEMOGRAPHIC_DATA_COUNTY_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=DEMOGRAPHIC_DATA_COUNTY)
 
+COUNTY_SHAPE = "countyShape"
+COUNTY_SHAPE_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=COUNTY_SHAPE)
+
+POP_DENSITY = "populationDensity"
+POP_DENSITY_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=POP_DENSITY)
+
 # electionstats URLs
 BALLOT_QUESTION_2000_2018_URL = "http://electionstats.state.ma.us/ballot_questions/search/year_from:2000/year_to:2018"
 STATE_HOUSE_GENERAL_2000_2018_URL = "http://electionstats.state.ma.us/elections/search/year_from:2000/year_to:2018/office_id:8/stage:General"
@@ -49,6 +55,3 @@ COUNTY_URL = "https://www.census.gov/quickfacts/fact/csv//PST045218"
 
 #county shape data
 FUSION_TABLE_URL = "http://datamechanics.io/data/massachusetts_counties.csv"
-COUNTY_SHAPE = "countyShape"
-COUNTY_SHAPE_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=COUNTY_SHAPE)
-

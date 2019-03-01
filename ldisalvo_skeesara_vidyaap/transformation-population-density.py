@@ -6,13 +6,13 @@ import datetime
 import uuid
 import csv
 import io
-from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, FUSION_TABLE_URL, COUNTY_SHAPE, COUNTY_SHAPE_NAME
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_HOUSE_ELECTIONS_NAME, COUNTY_SHAPE_NAME, STATE_HOUSE_ELECTIONS_RESULTS_NAME
 
 
 class countyShapes(dml.Algorithm):
     contributor = TEAM_NAME
-    reads = []
-    writes = [COUNTY_SHAPE_NAME]
+    reads = [STATE_HOUSE_ELECTIONS_NAME, STATE_HOUSE_ELECTIONS_RESULTS_NAME]
+    writes = ['ldisalvo_skeesara_vidyaap.countyShape']
 
     @staticmethod
     def execute(trial=False):
