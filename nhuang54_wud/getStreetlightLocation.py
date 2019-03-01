@@ -73,7 +73,7 @@ class getStreetlightLocation(dml.Algorithm):
         doc.add_namespace('bod', 'https://data.boston.gov/dataset/')
 
         this_script = doc.agent('alg:nhuang54_wud#getStreetlightLocation', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('bod:52b0fdad-4037-460c-9c92-290f5774ab2b/resource/c2fcc1e3-c38f-44ad-a0cf-e5ea2a6585b5/download/streetlight-locations', {'prov:label':'getStreetlight', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_streetlightLocation = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_streetlightLocation, this_script)
 
