@@ -4,7 +4,6 @@ import dml
 import prov.model
 import datetime
 import uuid
-import geojson
 
 def csv_to_json(url):
     file = urllib.request.urlopen(url).read().decode("utf-8")  # retrieve file from datamechanics.io
