@@ -33,3 +33,12 @@ STATE_SENATE_GENERAL_2000_2018_URL = "http://electionstats.state.ma.us/elections
 
 BALLOT_QUESTION_DOWNLOAD_RESULTS_URL = "http://electionstats.state.ma.us/ballot_questions/download/{id}/precincts_include:1/"
 ELECTION_DOWNLOAD_RESULTS_URL = "http://electionstats.state.ma.us/elections/download/{id}/precincts_include:1/"
+
+# geographic data
+MA_COUNTY_LIST = ["Barnstable County", "Berkshire County", "Bristol County", "Dukes County", "Essex County",
+                  "Franklin County", "Hampden County", "Hampshire County","Middlesex County", "Nantucket County",
+                  "Norfolk County", "Plymouth County", "Suffolk County", "Worcester County"]
+
+
+# census.gov URLs
+COUNTY_URL = "https://www.census.gov/quickfacts/fact/csv//PST045218"
