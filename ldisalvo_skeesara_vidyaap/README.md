@@ -43,7 +43,12 @@ contains: geoJSON data about each Massachusetts county (taken from Google Fusion
 fields: _id, name, shape, geo_id
 
 ### demographicDataCounty
-contains: demographic data by country from census.gov
+contains: demographic data for Massachusetts by country from census.gov
+
+fields: available at https://www.census.gov/quickfacts/fact/table/ma/PST045217
+
+### demographicDataTown
+contains: demographic data for Massachusetts by town from census.gov
 
 fields: available at https://www.census.gov/quickfacts/fact/table/ma/PST045217
 
