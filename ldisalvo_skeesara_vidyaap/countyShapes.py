@@ -72,45 +72,32 @@ class countyShapes(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
+        repo.authenticate(TEAM_NAME, TEAM_NAME)
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('shapes', 'http://datamechanics.io/data/') # Source for getting the counties' shape-point data
 
-        this_script = doc.agent('alg:alice_bob#example',
+        this_script = doc.agent('alg:ldisalvo_skeesara_vidyaap#countyShapes',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('bdp:wc8w-nujj',
-                              {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'json'})
-        get_found = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
+        resource = doc.entity('shapes:wc8w-nujj',
+                              {'prov:label': 'County Shapes Points', prov.model.PROV_TYPE: 'ont:DataResource',
+                               'ont:Extension': 'csv'})
+        get_shape = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_shape, this_script)
+        doc.usage(get_shape, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                   }
-                  )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
+                   'ont:Query': 'ldisalvo_skeesara_vidyaap/massachusetts_counties.csv'
                    }
                   )
 
-        lost = doc.entity('dat:alice_bob#lost',
-                          {prov.model.PROV_LABEL: 'Animals Lost', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-
-        found = doc.entity('dat:alice_bob#found',
-                           {prov.model.PROV_LABEL: 'Animals Found', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        shapes = doc.entity('dat:ldisalvo_skeesara_vidyaap#countyShape',
+                          {prov.model.PROV_LABEL: 'Shape Data for Each County', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(shapes, this_script)
+        doc.wasGeneratedBy(shapes, get_shape, endTime)
+        doc.wasDerivedFrom(shapes, resource, get_shape, get_shape, get_shape)
 
         repo.logout()
 
