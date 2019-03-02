@@ -69,7 +69,16 @@ class demographicDataCounty(dml.Algorithm):
         joined_df = pd.concat(all_dfs)
         df = joined_df.dropna(axis=1, how='all')
         df = df.reset_index()
-        df = df.rename(columns={'index': 'Town'})
+        df = df.rename(columns={'index': 'County'})
+
+        # Clean data and convert to numeric
+        dfCols = list(df.columns[1:-1])
+        for x in dfCols:
+            df[x] = df[x].str.replace(",", "")
+            df[x] = df[x].str.replace("%", "")
+            df[x] = df[x].str.replace("$", "")
+            df[x] = df[x].str.replace("+", "")
+            df[x] = df[x].apply(pd.to_numeric, errors='coerce')
 
         records = []
         for x in df.to_dict(orient='records'):
