@@ -33,8 +33,18 @@ SENATE_DISTRICT_IDEOLOGIES_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name
 DEMOGRAPHIC_DATA_COUNTY = "demographicDataCounty"
 DEMOGRAPHIC_DATA_COUNTY_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=DEMOGRAPHIC_DATA_COUNTY)
 
+COUNTY_SHAPE = "countyShape"
+COUNTY_SHAPE_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=COUNTY_SHAPE)
+
+WEIGHTED_SENATE_IDEOLOGIES = "weightedSenateIdeologies"
+WEIGHTED_SENATE_IDEOLOGIES_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=WEIGHTED_SENATE_IDEOLOGIES)
+
+WEIGHTED_HOUSE_IDEOLOGIES = "weightedHouseIdeologies"
+WEIGHTED_HOUSE_IDEOLOGIES_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=WEIGHTED_HOUSE_IDEOLOGIES)
+
 DEMOGRAPHIC_DATA_TOWN = "demographicDataTown"
 DEMOGRAPHIC_DATA_TOWN_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=DEMOGRAPHIC_DATA_TOWN)
+
 
 # electionstats URLs
 BALLOT_QUESTION_2000_2018_URL = "http://electionstats.state.ma.us/ballot_questions/search/year_from:2000/year_to:2018"
@@ -124,6 +134,3 @@ TOWN_URL = "https://www.census.gov/quickfacts/fact/csv//PST045218"
 
 #county shape data
 FUSION_TABLE_URL = "http://datamechanics.io/data/massachusetts_counties.csv"
-COUNTY_SHAPE = "countyShape"
-COUNTY_SHAPE_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=COUNTY_SHAPE)
-

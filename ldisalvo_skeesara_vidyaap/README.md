@@ -178,6 +178,38 @@ Calculates a basic ideology score for each state senate electoral district (51) 
 
 ```
 
+
+### Weight Senate Ideology
+Calculates a weighted ideology score for each state senate electoral district by creating a ratio of type of vote to total vote in each year and finding the average
+
+```
+{
+    "district" : "1st Hampden and Hampshire",
+    "Democratic ratio" : .6,
+    "Republican ratio" : .2,
+    "Others ratio" : .1,
+    "Blanks ratios" : .1,
+    "Totals" : 1
+}
+
+```
+
+### Weight House Ideology
+Calculates a weighted ideology score for each state house electoral district by creating a ratio of type of vote to total vote in each year and finding the average
+
+```
+{
+    "district" : "1st Hampden and Hampshire",
+    "Democratic ratio" : .6,
+    "Republican ratio" : .2,
+    "Others ratio" : .1,
+    "Blanks ratios" : .1,
+    "Totals" : 1
+}
+
+```
+
+
 ## Additional Python Libraries
 You may need to import the following libraries to access our datasets: bs4, pandas, requests, csv, io
 

@@ -12,7 +12,7 @@ from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, FUSION_TABLE_U
 class countyShapes(dml.Algorithm):
     contributor = TEAM_NAME
     reads = []
-    writes = ['ldisalvo_skeesara_vidyaap.countyShape']
+    writes = [COUNTY_SHAPE_NAME]
 
     @staticmethod
     def execute(trial=False):
