@@ -109,7 +109,7 @@ class demographicDataCounty(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
+        repo.authenticate(TEAM_NAME, TEAM_NAME)
         doc.add_namespace('alg',
                           'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat',
@@ -117,40 +117,28 @@ class demographicDataCounty(dml.Algorithm):
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('census', 'https://www.census.gov/quickfacts/fact/csv/')
 
-        this_script = doc.agent('alg:alice_bob#example',
+        this_script = doc.agent('alg:'+TEAM_NAME+'#demographicDataCounty',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'],
                                  'ont:Extension': 'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label': '311, Service Requests',
+        resource = doc.entity('census:wc8w-nujj', {'prov:label': 'Census Data by County, Massachusetts',
                                                 prov.model.PROV_TYPE: 'ont:DataResource',
-                                                'ont:Extension': 'json'})
-        get_found = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
+                                                'ont:Extension': 'csv'})
+        get_demographicDataCounty = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_demographicDataCounty, this_script)
+        doc.usage(get_demographicDataCounty, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                   }
-                  )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
+                   'ont:Query': 'worcestercountymassachusetts,hampdencountymassachusetts,hampshirecountymassachusetts,'
+                                'franklincountymassachusetts,berkshirecountymassachusetts,ma/PST045218'
                    }
                   )
 
-        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL: 'Animals Lost',
+        demographicDataCountyEntity = doc.entity('dat:'+TEAM_NAME+'#demographicDataCounty', {prov.model.PROV_LABEL: 'Census Data by County, Massachusetts',
                                                  prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-
-        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL: 'Animals Found',
-                                                   prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        doc.wasAttributedTo(demographicDataCountyEntity, this_script)
+        doc.wasGeneratedBy(demographicDataCountyEntity, get_demographicDataCounty, endTime)
+        doc.wasDerivedFrom(demographicDataCountyEntity, resource, get_demographicDataCounty, get_demographicDataCounty, get_demographicDataCounty)
 
         repo.logout()
 
