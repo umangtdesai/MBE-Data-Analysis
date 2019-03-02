@@ -173,7 +173,7 @@ Calculates a basic ideology score for each state senate electoral district (51) 
 ```
 
 
-### Weight Senate Ideology
+### Weighted Senate Ideology
 Calculates a weighted ideology score for each state senate electoral district by creating a ratio of type of vote to total vote in each year and finding the average
 
 ```
@@ -188,7 +188,7 @@ Calculates a weighted ideology score for each state senate electoral district by
 
 ```
 
-### Weight House Ideology
+### Weighted House Ideology
 Calculates a weighted ideology score for each state house electoral district by creating a ratio of type of vote to total vote in each year and finding the average
 
 ```
