@@ -30,13 +30,13 @@ class demographicDataCounty(dml.Algorithm):
             Retrieve demographic data by country from census.gov and insert into collection
             ex)
              { "Barnstable County, Massachusetts":
-                {"Population estimates, July 1, 2017,  (V2017)": "213,444",
+                "Population estimates, July 1, 2017,  (V2017)": "213,444",
                 "Population estimates base, April 1, 2010,  (V2017)": "215,868",
                 "Population, percent change - April 1, 2010 (estimates base) to July 1, 2017,  (V2017)": "-1.1%",
                 "Population, Census, April 1, 2010": "215,888",
                 "Persons under 5 years, percent": "3.6%",
                 "Persons under 18 years, percent": "15.1%",
-                ..........................}
+                ..........................
             }
         """
         startTime = datetime.datetime.now()
@@ -68,12 +68,17 @@ class demographicDataCounty(dml.Algorithm):
 
         joined_df = pd.concat(all_dfs)
         df = joined_df.dropna(axis=1, how='all')
-        df_to_json = [json.loads((df.to_json(orient='index')))]
+        df = df.reset_index()
+        df = df.rename(columns={'index': 'Town'})
+
+        records = []
+        for x in df.to_dict(orient='records'):
+            records += [x]
 
         # Insert rows into collection
         repo.dropCollection(DEMOGRAPHIC_DATA_COUNTY)
         repo.createCollection(DEMOGRAPHIC_DATA_COUNTY)
-        repo[DEMOGRAPHIC_DATA_COUNTY_NAME].insert_many(df_to_json)
+        repo[DEMOGRAPHIC_DATA_COUNTY_NAME].insert_many(records)
         repo[DEMOGRAPHIC_DATA_COUNTY_NAME].metadata({'complete': True})
         print(repo[DEMOGRAPHIC_DATA_COUNTY_NAME].metadata())
 
