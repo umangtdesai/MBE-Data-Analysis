@@ -27,8 +27,10 @@ class demographics_by_towns(dml.Algorithm):
         startTime = datetime.datetime.now()
         d_t = demographics_by_towns
 
-        d_t_json = d_t.get_data()
 
+        url = "http://datamechanics.io/data/carlosp_jpva_tkay_yllescas/demographics_by_towns.json"
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        d_t_json = json.loads(response)
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -50,6 +52,7 @@ class demographics_by_towns(dml.Algorithm):
         return {"start":startTime, "end":endTime}
     
     @staticmethod
+    
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
             Create the provenance document describing everything happening
