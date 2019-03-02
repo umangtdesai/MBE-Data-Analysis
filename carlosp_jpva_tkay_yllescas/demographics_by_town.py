@@ -7,16 +7,17 @@ import uuid
 import json
 import pandas as pd
 from pprint import pprint
-class demographics_by_town(dml.Algorithm):
+class demographics_by_towns(dml.Algorithm):
     contributor = 'carlosp_jpva_tkay_yllescas'
     reads = []
-    writes = ['carlosp_jpva_tkay_yllescas.demographics_town']
+    writes = ['carlosp_jpva_tkay_yllescas.demographics_towns']
 
     @staticmethod
     def get_data():
         with open('demographics_by_towns.json') as f:
          data = json.load(f)
-        pprint(data)
+        return data
+        
 
 
 
@@ -37,17 +38,10 @@ class demographics_by_town(dml.Algorithm):
         s = json.dumps(d_t_json , sort_keys=True, indent=2)
         repo.dropCollection("demographics_by_town")
         repo.createCollection("demographics_by_town")
-        repo['demographics_by_town'].insert_many(r)
-        repo['alice_bob.lost'].metadata({'complete':True})
-        print(repo['alice_bob.lost'].metadata())
+        repo['carlosp_jpva_tkay_yllescas.demographics_towns'].insert_many(d_t_json)
+        repo['carlosp_jpva_tkay_yllescas.demographics_towns'].metadata({'complete':True})
+        print(repo['carlosp_jpva_tkay_yllescas.demographics_towns'].metadata())
 
-        url = 'http://cs-people.bu.edu/lapets/591/examples/found.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("found")
-        repo.createCollection("found")
-        repo['alice_bob.found'].insert_many(r)
 
         repo.logout()
 
@@ -104,10 +98,9 @@ class demographics_by_town(dml.Algorithm):
                   
         return doc
 
-d_t = demographics_by_town
+d_t = demographics_by_towns
 
-demographics_by_towns_dict = d_t.get_data().to_dict('dem_by_towns')
-pprint(demographics_by_towns_dict)
+d_t.execute()
 
 '''
 # This is example code you might use for debugging this module.
