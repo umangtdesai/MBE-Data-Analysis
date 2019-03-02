@@ -68,11 +68,30 @@ class DataRetrieval(dml.Algorithm):
         repo['jshen97_leochans.7eleven'].metadata({'complete': True})
         print(repo['jshen97_leochans.7eleven'].metadata())
 
+        # retrieve street light location
+        url_light = "https://data.boston.gov/api/3/action/datastore_search?resource_id=c2fcc1e3-c38f-44ad-a0cf-e5ea2a6585b5"
+        json_light = json.loads(urlopen(url_light).read().decode('utf-8'))
+        json_dump_light = json.dumps(json_light, sort_keys=True, indent=2)
+        repo.dropCollection('light')
+        repo.createCollection('light')
+        repo['jshen97_leochans.light'].insert_one(json_light)
+        repo['jshen97_leochans.light'].metadata({'complete': True})
+        print(repo['jshen97_leochans.light'].metadata())
+
+        # retrieve eviction boston
+        url_eviction = "http://datamechanics.io/data/evictions_boston.csv"
+        df_eviction = pd.read_csv(url_eviction, encoding='ISO-8859-1')
+        json_eviction = json.loads(df_eviction.to_json(orient='records'))
+        json_dump_eviction = json.dumps(json_eviction, sort_keys=True, indent=2)
+        repo.dropCollection('eviction')
+        repo.createCollection('eviction')
+        repo['jshen97_leochans.eviction'].insert_many(json_eviction)
+        repo['jshen97_leochans.eviction'].metadata({'complete': True})
+        print(repo['jshen97_leochans.eviction'].metadata())
+
         # retrieve crime.csv
         # @see: http://bpdnews.com/districts for district mapping
         url_crime = "http://datamechanics.io/data/crime.csv"
-        # if using pandas older than 0.19.2, use a string io instead of passing the
-        # url directly
         df_crime = pd.read_csv(url_crime, encoding='ISO-8859-1')
         json_crime = json.loads(df_crime.to_json(orient='records'))
         json_dump_7eleven = json.dumps(json_crime, sort_keys=True, indent=2)
@@ -105,24 +124,30 @@ class DataRetrieval(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('ggl', 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?')
         doc.add_namespace('dio', 'http://datamechanics.io/data/')
+        doc.add_namespace('bdp', 'https://data.boston.gov/')
 
         this_script = doc.agent('alg:jshen97_leochans#DataRetrieval',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource_ggl = doc.entity('ggl:wc8w-nujj', {'prov:label': 'Places Search API', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        resource_dio = doc.entity('dio:wc8w-nujk', {'prov:label': 'Data Mechanics IO', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        resource_ggl = doc.entity('ggl:wc8w-nujj', {'prov:label': 'Places Search API', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':'json'})
+        resource_dio = doc.entity('dio:wc8w-nujk', {'prov:label': 'Data Mechanics IO', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':'csv'})
+        resource_bdp = doc.entity('bdp:c2fc-cle3', {'prov:label': 'Boston Data Portal', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':'json'})
 
         get_cvs = doc.activity('log:uuid' + str(uuid.uuid4()), start_time, end_time)
         get_walgreen = doc.activity('log:uuid' + str(uuid.uuid4()), start_time, end_time)
         get_7eleven = doc.activity('log:uuid' + str(uuid.uuid4()), start_time, end_time)
+        get_light = doc.activity('log:uuid' + str(uuid.uuid4()), start_time, end_time)
+        get_eviction = doc.activity('log:uuid' + str(uuid.uuid4()), start_time, end_time)
         get_crime = doc.activity('log:uuid' + str(uuid.uuid4()), start_time, end_time)
 
         doc.wasAssociatedWith(get_cvs, this_script)
         doc.wasAssociatedWith(get_walgreen, this_script)
         doc.wasAssociatedWith(get_7eleven, this_script)
+        doc.wasAssociatedWith(get_light, this_script)
+        doc.wasAssociatedWith(get_eviction, this_script)
         doc.wasAssociatedWith(get_crime, this_script)
 
         doc.usage(get_cvs, resource_ggl, start_time, None,
-                  {prov.model.PROV_TYPE: 'ont:Query',
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': 'input=CVS%20Boston,%20MA&inputtype=textquery& \
                                  fields=place_id,formatted_address,geometry/ \
                                  location,types,atmosphere,user_rating_total& \
@@ -130,7 +155,7 @@ class DataRetrieval(dml.Algorithm):
                    }
                   )
         doc.usage(get_walgreen, resource_ggl, start_time, None,
-                  {prov.model.PROV_TYPE: 'ont:Query',
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': 'input=Walgreen%20Boston,%20MA&inputtype=textquery& \
                                  fields=place_id,formatted_address,geometry/ \
                                  location,types,atmosphere,user_rating_total& \
@@ -138,20 +163,31 @@ class DataRetrieval(dml.Algorithm):
                    }
                   )
         doc.usage(get_7eleven, resource_ggl, start_time, None,
-                  {prov.model.PROV_TYPE: 'ont:Query',
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': 'input=7Eleven%20Boston,%20MA&inputtype=textquery& \
                                  fields=place_id,formatted_address,geometry/ \
                                  location,types,atmosphere,user_rating_total& \
                                  key=API_KEY'
                    }
                   )
+        doc.usage(get_light, resource_bdp, start_time, None,
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
+                   'ont:Query': 'api/3/action/datastore_search?resource_id=c2fcc1e3-c38f-44ad-a0cf-e5ea2a6585b5 \
+                                &$format=json'
+                   }
+                  )
+        doc.usage(get_eviction, resource_dio, start_time, None,
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
+                   'ont:Query': 'evictions_boston.csv'
+                   }
+                  )
         doc.usage(get_crime, resource_dio, start_time, None,
-                  {prov.model.PROV_TYPE: 'ont:Query',
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': 'crime.csv'
                    }
                   )
 
-        cvs = doc.entity('dat:jshen97_leochans#CVS',
+        cvs = doc.entity('dat:jshen97_leochans#cvs',
                           {prov.model.PROV_LABEL: 'CVS', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(cvs, this_script)
         doc.wasGeneratedBy(cvs, get_cvs, end_time)
@@ -163,24 +199,38 @@ class DataRetrieval(dml.Algorithm):
         doc.wasGeneratedBy(walgreen, get_walgreen, end_time)
         doc.wasDerivedFrom(walgreen, resource_ggl, get_walgreen, get_walgreen, get_walgreen)
 
-        seven_eleven = doc.entity('dat:jshen97_leochans#7Eleven',
+        seven_eleven = doc.entity('dat:jshen97_leochans#seven_eleven',
                          {prov.model.PROV_LABEL: '7Eleven', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(seven_eleven, this_script)
         doc.wasGeneratedBy(seven_eleven, get_7eleven, end_time)
         doc.wasDerivedFrom(seven_eleven, resource_ggl, get_7eleven, get_7eleven, get_7eleven)
 
-        crimelog = doc.entity('dat:jshen97_leochans#crime',
-                         {prov.model.PROV_LABEL: 'Crime', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(crimelog, this_script)
-        doc.wasGeneratedBy(crimelog, get_crime, end_time)
-        doc.wasDerivedFrom(crimelog, resource_dio, get_crime, get_crime, get_crime)
+        street_light = doc.entity('dat:jshen97_leochans#street_light',
+                                  {prov.model.PROV_LABEL: 'Street Light', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(street_light, this_script)
+        doc.wasGeneratedBy(street_light, get_light, end_time)
+        doc.wasDerivedFrom(street_light, resource_bdp, get_light, get_light, get_light)
+
+        eviction = doc.entity('dat:jshen97_leochans#eviction',
+                              {prov.model.PROV_LABEL: 'Evictions Boston', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(eviction, this_script)
+        doc.wasGeneratedBy(eviction, get_eviction, end_time)
+        doc.wasDerivedFrom(eviction, resource_dio, get_eviction, get_eviction, get_eviction)
+
+        crime_log = doc.entity('dat:jshen97_leochans#crime_log',
+                         {prov.model.PROV_LABEL: 'Crime Log', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(crime_log, this_script)
+        doc.wasGeneratedBy(crime_log, get_crime, end_time)
+        doc.wasDerivedFrom(crime_log, resource_dio, get_crime, get_crime, get_crime)
 
         repo.logout()
 
         return doc
 
-
+# debug
+'''
 DataRetrieval.execute()
 doc = DataRetrieval.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
+'''
