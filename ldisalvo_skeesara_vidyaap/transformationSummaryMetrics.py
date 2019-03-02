@@ -1,41 +1,42 @@
 """
 CS504 : demographicData.py
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
-Description : Retrieval of demographic data by town using census.gov
+Description : Transformation of data to generate summary statistics on demographic information
 
 February 28, 2019
 """
 
 import datetime
-import json
 import uuid
-import pandas as pd
+
 
 import dml
 import prov.model
-import urllib.request
 
-from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, COUNTY_URL, MA_TOWN_LIST, DEMOGRAPHIC_DATA_TOWN, \
-    DEMOGRAPHIC_DATA_TOWN_NAME, TOWN_URL
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME,DEMOGRAPHIC_DATA_COUNTY_NAME, DEMOGRAPHIC_DATA_TOWN_NAME, \
+    SUMMARY_DEMOGRAPHICS_METRICS_NAME, SUMMARY_DEMOGRAPHICS_METRICS
 
 
-class demographicDataTown(dml.Algorithm):
+class transformationSummaryMetrics(dml.Algorithm):
     contributor = TEAM_NAME
-    reads = []
-    writes = [DEMOGRAPHIC_DATA_TOWN_NAME]
+    reads = [DEMOGRAPHIC_DATA_COUNTY_NAME, DEMOGRAPHIC_DATA_TOWN_NAME]
+    writes = [SUMMARY_DEMOGRAPHICS_METRICS_NAME]
 
     @staticmethod
     def execute(trial=False):
         """
-            Retrieve demographic data by town from census.gov and insert into collection
+            Retrieve summary demographic data for all facts by county and town and insert into collection
             ex)
-             { "Winchester town, Middlesex County, Massachusetts":
-                "Population estimates, July 1, 2017,  (V2017)": "23,339",
-                "Population estimates base, April 1, 2010,  (V2017)": "23,797",
-                "Population, percent change - April 1, 2010 (estimates base) to July 1, 2017,  (V2017)": "-1.9%",
-                "Population, Census, April 1, 2010": "23,793",
-                ..........................
-            }
+                {'Fact': 'Population estimates, July 1, 2017,  (V2017)',
+                'Town_Min': 'Middleton town, Essex County, Massachusetts',
+                'Town_Min_Val': '9,861',
+                'Town_Max': 'Littleton town, Middlesex County, Massachusetts',
+                'Town_Max_Value': '10,115',
+                'County_Min': 'Worcester County, Massachusetts',
+                'County_Min_Val': '826,116',
+                'County_Max': 'Middlesex County, Massachusetts',
+                'County_Max_Value': '1,602,947'}
+
         """
         startTime = datetime.datetime.now()
 
@@ -44,58 +45,40 @@ class demographicDataTown(dml.Algorithm):
         repo = client.repo
         repo.authenticate(TEAM_NAME, TEAM_NAME)
 
-        # Retrieve data from census.gov for each town (note: retrieval generates csv with max of 6 locations)
-        town_divisions = [MA_TOWN_LIST[:6], MA_TOWN_LIST[6:12], MA_TOWN_LIST[12:18], MA_TOWN_LIST[18:24],
-                            MA_TOWN_LIST[24:30], MA_TOWN_LIST[30:36], MA_TOWN_LIST[36:42], MA_TOWN_LIST[42:48],
-                            MA_TOWN_LIST[48:54], MA_TOWN_LIST[54:60], MA_TOWN_LIST[60:66], MA_TOWN_LIST[66:72],
-                            MA_TOWN_LIST[72:78], MA_TOWN_LIST[78:84], MA_TOWN_LIST[84:90], MA_TOWN_LIST[90:96],
-                            MA_TOWN_LIST[96:102], MA_TOWN_LIST[102:108], MA_TOWN_LIST[108:114], MA_TOWN_LIST[114:120],
-                            MA_TOWN_LIST[120:126], MA_TOWN_LIST[126:132], MA_TOWN_LIST[132:138], MA_TOWN_LIST[138:144],
-                            MA_TOWN_LIST[144:150], MA_TOWN_LIST[150:156], MA_TOWN_LIST[156:162], MA_TOWN_LIST[162:168],
-                            MA_TOWN_LIST[168:174], MA_TOWN_LIST[174:180], MA_TOWN_LIST[180:186], MA_TOWN_LIST[186:192],
-                            MA_TOWN_LIST[192:198]]
-        all_dfs= []
-        for divisions in town_divisions:
-            towns = ""
-            for town in divisions:
-                towns += (town.lower().replace(",", "") + "massachusetts,").replace(" ", "")
-            towns = towns[:-1]
-            url = TOWN_URL[:43] + towns + COUNTY_URL[43:]
-            df = pd.read_csv(urllib.request.urlopen(url))
-            df = df.drop(df.index[-20:])
-            df.set_index("Fact", inplace=True)
-            df = df.transpose()
-            df = df[~df.index.str.contains("Note")]
-            cols = list(df)
-            all_dfs.append(df)
+        # Retrieve facts as keys
+        document = repo[DEMOGRAPHIC_DATA_COUNTY_NAME].find_one()
+        keys = []
+        for key in document:
+            keys += [key]
 
-        for df in all_dfs:
-            df.columns = cols
+        # Remove Fact, Town, and FIPS keys
+        keys = keys[2:-1]
 
-        joined_df = pd.concat(all_dfs)
-        df = joined_df.dropna(axis=1, how='all')
-        df = df.reset_index()
-        df = df.rename(columns={'index': 'Town'})
+        # Initialize collection
+        repo.dropCollection(SUMMARY_DEMOGRAPHICS_METRICS)
+        repo.createCollection(SUMMARY_DEMOGRAPHICS_METRICS)
 
-        # Clean data and convert to numeric
-        dfCols = list(df.columns[1:-1])
-        for x in dfCols:
-            df[x] = df[x].str.replace(",", "")
-            df[x] = df[x].str.replace("%", "")
-            df[x] = df[x].str.replace("$", "")
-            df[x] = df[x].str.replace("+", "")
-            df[x] = df[x].apply(pd.to_numeric, errors='coerce')
+        # Iterate through key facts finding the min and max values among towns and counties
+        for x in keys:
+            queryMaxTown = list(repo[DEMOGRAPHIC_DATA_TOWN_NAME].find({x : {"$ne": float('nan')}}, {"Town": 1, x: 1}).sort(x, -1).limit(1))
+            queryMinTown = list(repo[DEMOGRAPHIC_DATA_TOWN_NAME].find({x : {"$ne": float('nan')}}, {"Town": 1, x: 1}).sort(x, 1).limit(1))
 
-        records = []
-        for x in df.to_dict(orient='records'):
-            records += [x]
+            queryMaxCounty = list(repo[DEMOGRAPHIC_DATA_COUNTY_NAME].find({x : {"$ne": float('nan')}}, {"County": 1, x: 1}).sort(x, -1).limit(1))
+            queryMinCounty = list(repo[DEMOGRAPHIC_DATA_COUNTY_NAME].find({x : {"$ne": float('nan')}}, {"County": 1, x: 1}).sort(x, 1).limit(1))
 
-        # Insert rows into collection
-        repo.dropCollection(DEMOGRAPHIC_DATA_TOWN)
-        repo.createCollection(DEMOGRAPHIC_DATA_TOWN)
-        repo[DEMOGRAPHIC_DATA_TOWN_NAME].insert_many(records)
-        repo[DEMOGRAPHIC_DATA_TOWN_NAME].metadata({'complete': True})
-        print(repo[DEMOGRAPHIC_DATA_TOWN_NAME].metadata())
+            try:
+                queryInsert = {"Fact":x, "Town_Min" : queryMinTown[0]["Town"], "Town_Min_Val": queryMinTown[0][x],
+                               "Town_Max": queryMaxTown[0]["Town"], "Town_Max_Value": queryMaxTown[0][x],
+                               "County_Min" : queryMinCounty[0]["County"], "County_Min_Val": queryMinCounty[0][x],
+                               "County_Max": queryMaxCounty[0]["County"], "County_Max_Value": queryMaxCounty[0][x]}
+
+                repo[SUMMARY_DEMOGRAPHICS_METRICS_NAME].insert_one(queryInsert)
+
+            except:
+                continue
+
+        repo[SUMMARY_DEMOGRAPHICS_METRICS_NAME].metadata({'complete': True})
+        print(repo[SUMMARY_DEMOGRAPHICS_METRICS_NAME].metadata())
 
         repo.logout()
 
@@ -162,6 +145,7 @@ class demographicDataTown(dml.Algorithm):
 
         return doc
 
+transformationSummaryMetrics.execute()
 '''
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
@@ -172,5 +156,7 @@ print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
 
 ## eof
+
+
 
 

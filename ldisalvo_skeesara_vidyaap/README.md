@@ -119,32 +119,26 @@ contains: geoJSON data about each Massachusetts county (taken from Google Fusion
 ### demographicDataCounty
 contains: demographic data for Massachusetts by county from census.gov (to see full list of fields, go to https://www.census.gov/quickfacts/fact/table/ma/PST045217)
 ```
-{ 
-    "Barnstable County, Massachusetts": 
-        {
-            "Population estimates, July 1, 2017,  (V2017)": "213,444",
-            "Population estimates base, April 1, 2010,  (V2017)": "215,868",
-            "Population, percent change - April 1, 2010 (estimates base) to July 1, 2017,  (V2017)": "-1.1%",
-            "Population, Census, April 1, 2010": "215,888",
-            "Persons under 5 years, percent": "3.6%",
-            "Persons under 18 years, percent": "15.1%",
-             ..........................
-        }
+{ "Barnstable County, Massachusetts":
+   "Population estimates, July 1, 2017,  (V2017)": "213,444",
+   "Population estimates base, April 1, 2010,  (V2017)": "215,868",
+   "Population, percent change - April 1, 2010 (estimates base) to July 1, 2017,  (V2017)": "-1.1%",
+   "Population, Census, April 1, 2010": "215,888",
+   "Persons under 5 years, percent": "3.6%",
+   "Persons under 18 years, percent": "15.1%",
+   ..........................
 }
 ```
 
 ### demographicDataTown
 contains: demographic data for Massachusetts by town from census.gov (to see full list of fields, go to https://www.census.gov/quickfacts/fact/table/ma/PST045217)
 ```
-{ 
-    "Winchester town, Middlesex County, Massachusetts":
-        {
-            "Population estimates, July 1, 2017,  (V2017)": "23,339",
-            "Population estimates base, April 1, 2010,  (V2017)": "23,797",
-            "Population, percent change - April 1, 2010 (estimates base) to July 1, 2017,  (V2017)": "-1.9%",
-            "Population, Census, April 1, 2010": "23,793",
-             ..........................
-        }
+{ "Winchester town, Middlesex County, Massachusetts":
+  "Population estimates, July 1, 2017,  (V2017)": "23,339",
+  "Population estimates base, April 1, 2010,  (V2017)": "23,797",
+  "Population, percent change - April 1, 2010 (estimates base) to July 1, 2017,  (V2017)": "-1.9%",
+  "Population, Census, April 1, 2010": "23,793",
+  ..........................
 }
 ```
 
@@ -209,6 +203,22 @@ Calculates a weighted ideology score for each state house electoral district by 
 
 ```
 
+### Demographic Summary Metrics
+Retrieves summary demographic data for all facts by county and town. Displays maximum and minimum values and corresponding towns for each fact.
+```
+{
+    'Fact': 'Population estimates, July 1, 2017,  (V2017)',
+    'Town_Min': 'Middleton town, Essex County, Massachusetts',
+    'Town_Min_Val': '9,861',
+    'Town_Max': 'Littleton town, Middlesex County, Massachusetts',
+    'Town_Max_Value': '10,115',
+    'County_Min': 'Worcester County, Massachusetts',
+    'County_Min_Val': '826,116',
+    'County_Max': 'Middlesex County, Massachusetts',
+    'County_Max_Value': '1,602,947'}
+}
+
+```
 
 ## Additional Python Libraries
 You may need to import the following libraries to access our datasets: bs4, pandas, requests, csv, io
