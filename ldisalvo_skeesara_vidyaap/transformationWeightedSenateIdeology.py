@@ -13,7 +13,16 @@ class transformationWeightedSenateIdeology(dml.Algorithm):
     @staticmethod
     def execute(trial=False):
         """
-
+            Read from State Senate Elections and Results tables to create a weighted average of Democratic,
+            Republican, other, and blank votes over time and insert into collection
+            ex) {
+                    "district" : "1st Hampden and Hampshire",
+                    "Democratic ratio" : .6,
+                    "Republican ratio" : .2,
+                    "Others ratio" : .1,
+                    "Blanks ratios" : .1,
+                    "Totals" : 1
+                }
         """
         startTime = datetime.datetime.now()
 
@@ -85,7 +94,7 @@ class transformationWeightedSenateIdeology(dml.Algorithm):
             else:
                 finalAvgsByDistrict[tup["district"]] = [(dem_ratio, rep_ratio, others_ratio, blanks_ratio)]
 
-
+        # calculate the average over time (using helper) and insert into database
         new_list = []
         for k, v in finalAvgsByDistrict.items():
             avg_tup = transformationWeightedSenateIdeology.tuple_avg(v)
@@ -204,7 +213,3 @@ print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
 ## eof
-
-
-t = transformationWeightedSenateIdeology()
-t.execute()
