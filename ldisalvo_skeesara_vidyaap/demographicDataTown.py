@@ -30,11 +30,11 @@ class demographicDataTown(dml.Algorithm):
             Retrieve demographic data by town from census.gov and insert into collection
             ex)
              { "Winchester town, Middlesex County, Massachusetts":
-               {"Population estimates, July 1, 2017,  (V2017)": "23,339",
+                "Population estimates, July 1, 2017,  (V2017)": "23,339",
                 "Population estimates base, April 1, 2010,  (V2017)": "23,797",
                 "Population, percent change - April 1, 2010 (estimates base) to July 1, 2017,  (V2017)": "-1.9%",
                 "Population, Census, April 1, 2010": "23,793",
-                ..........................}
+                ..........................
             }
         """
         startTime = datetime.datetime.now()
@@ -74,13 +74,17 @@ class demographicDataTown(dml.Algorithm):
 
         joined_df = pd.concat(all_dfs)
         df = joined_df.dropna(axis=1, how='all')
+        df = df.reset_index()
+        df = df.rename(columns={'index': 'Town'})
 
-        df_to_json = [json.loads((df.to_json(orient='index')))]
+        records = []
+        for x in df.to_dict(orient='records'):
+            records += [x]
 
         # Insert rows into collection
         repo.dropCollection(DEMOGRAPHIC_DATA_TOWN)
         repo.createCollection(DEMOGRAPHIC_DATA_TOWN)
-        repo[DEMOGRAPHIC_DATA_TOWN_NAME].insert_many(df_to_json)
+        repo[DEMOGRAPHIC_DATA_TOWN_NAME].insert_many(records)
         repo[DEMOGRAPHIC_DATA_TOWN_NAME].metadata({'complete': True})
         print(repo[DEMOGRAPHIC_DATA_TOWN_NAME].metadata())
 
