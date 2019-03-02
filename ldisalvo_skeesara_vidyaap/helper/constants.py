@@ -133,4 +133,4 @@ COUNTY_URL = "https://www.census.gov/quickfacts/fact/csv//PST045218"
 TOWN_URL = "https://www.census.gov/quickfacts/fact/csv//PST045218"
 
 #county shape data
-FUSION_TABLE_URL = "http://datamechanics.io/data/massachusetts_counties.csv"
+FUSION_TABLE_URL = "http://datamechanics.io/data/ldisalvo_skeesara_vidyaap/massachusetts_counties.csv"
