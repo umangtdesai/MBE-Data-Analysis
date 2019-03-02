@@ -25,7 +25,7 @@ class transformationSummaryMetrics(dml.Algorithm):
     @staticmethod
     def execute(trial=False):
         """
-            Retrieve summary demographic data for all facts by country and town and insert into collection
+            Retrieve summary demographic data for all facts by county and town and insert into collection
             ex)
                 {'Fact': 'Population estimates, July 1, 2017,  (V2017)',
                 'Town_Min': 'Middleton town, Essex County, Massachusetts',
