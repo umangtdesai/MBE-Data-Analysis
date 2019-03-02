@@ -187,14 +187,14 @@ class transformationWeightedSenateIdeology(dml.Algorithm):
                    }
                   )
 
-        weighted_ideology = doc.entity('dat:ldisalvo_skeesara_vidyaap#transformationWeightedHouseIdeology',
-                                       {prov.model.PROV_LABEL: 'Weighted Ideologies of House Elections',
+        weighted_senate_ideology = doc.entity('dat:ldisalvo_skeesara_vidyaap#transformationWeightedSenateIdeology',
+                                       {prov.model.PROV_LABEL: 'Weighted Ideologies of Senate Elections',
                                         prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(weighted_ideology, this_script)
-        doc.wasGeneratedBy(weighted_ideology, get_weighted_senate_ideology, endTime)
-        doc.wasDerivedFrom(weighted_ideology, stateSenateElectionsEntity, get_weighted_senate_ideology, get_weighted_senate_ideology,
+        doc.wasAttributedTo(weighted_senate_ideology, this_script)
+        doc.wasGeneratedBy(weighted_senate_ideology, get_weighted_senate_ideology, endTime)
+        doc.wasDerivedFrom(weighted_senate_ideology, stateSenateElectionsEntity, get_weighted_senate_ideology, get_weighted_senate_ideology,
                            get_weighted_senate_ideology)
-        doc.wasDerivedFrom(weighted_ideology, stateSenateElectionsResultsEntity, get_weighted_senate_ideology,
+        doc.wasDerivedFrom(weighted_senate_ideology, stateSenateElectionsResultsEntity, get_weighted_senate_ideology,
                            get_weighted_senate_ideology, get_weighted_senate_ideology)
 
         repo.logout()
