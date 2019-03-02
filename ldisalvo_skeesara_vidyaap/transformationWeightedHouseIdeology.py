@@ -1,31 +1,19 @@
-import urllib.request
-import json
 import dml
 import prov.model
 import datetime
 import uuid
-import csv
-import io
-from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_HOUSE_ELECTIONS_NAME, COUNTY_SHAPE_NAME, STATE_HOUSE_ELECTIONS_RESULTS_NAME
+from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_HOUSE_ELECTIONS_NAME, STATE_HOUSE_ELECTIONS_RESULTS_NAME, WEIGHTED_HOUSE_IDEOLOGIES_NAME, WEIGHTED_HOUSE_IDEOLOGIES
 
 
-class countyShapes(dml.Algorithm):
+class transformationWeightedHouseIdeology(dml.Algorithm):
     contributor = TEAM_NAME
     reads = [STATE_HOUSE_ELECTIONS_NAME, STATE_HOUSE_ELECTIONS_RESULTS_NAME]
-    writes = ['ldisalvo_skeesara_vidyaap.countyShape']
+    writes = [WEIGHTED_HOUSE_IDEOLOGIES_NAME]
 
     @staticmethod
     def execute(trial=False):
         """
-            Read from Google Fusion table (uploaded to datamechanics.io)
-            to get geoJSON data about each county
-            and insert into collection
-            ex) {
-                    "_id" : "7322",
-                    "Name" : Barnstable,
-                    "Shape" : "<Polygon> ... ",
-                    "Geo_ID" : "25001",
-                }
+
         """
         startTime = datetime.datetime.now()
 
@@ -34,32 +22,122 @@ class countyShapes(dml.Algorithm):
         repo = client.repo
         repo.authenticate(TEAM_NAME, TEAM_NAME)
 
-        url = FUSION_TABLE_URL
 
-        csv_string = urllib.request.urlopen(url).read().decode("utf-8")
-        reader = csv.DictReader(io.StringIO(csv_string))
-        response = json.loads(json.dumps(list(reader)))
+        electionsByDistrict = list(repo[STATE_HOUSE_ELECTIONS_NAME].find({}))
+        finalAvgsByDistrict = {}
+
+
+        for tup in electionsByDistrict:
+            # find the results row with the district totals
+            totalRow = list(repo[STATE_HOUSE_ELECTIONS_RESULTS_NAME].find(
+                {"City/Town":"TOTALS",
+                 "Election ID":tup["_id"]
+                 }))[0]
+
+
+            # find which candidate was the Democrat and which was the Republican
+            dem = ""
+            rep = ""
+            others = []
+
+            for c in tup["candidates"]:
+                candidate = c["party"]
+                if candidate == "Democratic":
+                    dem = c["name"].replace('.','')
+                elif candidate == "Republican":
+                    rep = c["name"].replace('.','')
+                else:
+                    others += [c["name"].replace('.', '')]
+
+            # find the ratio of votes that each candidate got
+
+            total_count = totalRow["Total Votes Cast"]
+            dem_ratio = 0
+            rep_ratio = 0
+            others_count = 0
+
+            for o in others:
+                if o != "":
+                    try:
+                        others_count += totalRow[o]
+                    except KeyError:
+                        print("unable to find 'other' candidate -->", o)
+
+            others_ratio = float(others_count/total_count)
+            blanks_ratio = float(totalRow["Blanks"]/total_count)
+
+            if dem != "":
+                try:
+                    dem_ratio = float(totalRow[dem]/total_count)
+                except KeyError:
+                    print("unable to find dem = ", dem)
+
+
+            if rep != "":
+                try:
+                    rep_ratio = float(totalRow[rep]/total_count)
+                except KeyError:
+                    print("unable to find rep = ", rep)
+
+
+            if tup["district"] in finalAvgsByDistrict:
+                finalAvgsByDistrict[tup["district"]] += [(dem_ratio, rep_ratio, others_ratio, blanks_ratio)]
+            else:
+                finalAvgsByDistrict[tup["district"]] = [(dem_ratio, rep_ratio, others_ratio, blanks_ratio)]
+
 
         new_list = []
-
-        for county in response:
+        for k, v in finalAvgsByDistrict.items():
+            avg_tup = transformationWeightedHouseIdeology.tuple_avg(v)
             new_json = {}
-            new_json['Name'] = county['County Name']
-            new_json['Shape'] = county['geometry']
-            new_json['Geo_ID'] = county['GEO_ID2']
+            new_json["district"] = k
+            new_json["Democratic ratio"] = avg_tup[0]
+            new_json["Republican ratio"] = avg_tup[1]
+            new_json["Others ratio"] = avg_tup[2]
+            new_json["Blanks ratio"] = avg_tup[3]
+            new_json["Total"] = avg_tup[4]
             new_list += [new_json]
 
-        repo.dropCollection(COUNTY_SHAPE)
-        repo.createCollection(COUNTY_SHAPE)
-        repo[COUNTY_SHAPE_NAME].insert_many(new_list)
-        repo[COUNTY_SHAPE_NAME].metadata({'complete': True})
-        print(repo[COUNTY_SHAPE_NAME].metadata())
+
+        repo.dropCollection(WEIGHTED_HOUSE_IDEOLOGIES)
+        repo.createCollection(WEIGHTED_HOUSE_IDEOLOGIES_NAME)
+        repo[WEIGHTED_HOUSE_IDEOLOGIES_NAME].insert_many(new_list)
+        repo[WEIGHTED_HOUSE_IDEOLOGIES_NAME].metadata({'complete': True})
+        print(repo[WEIGHTED_HOUSE_IDEOLOGIES_NAME].metadata())
+
 
         repo.logout()
 
         endTime = datetime.datetime.now()
 
         return {"start": startTime, "end": endTime}
+
+    @staticmethod
+    def tuple_avg(tupList):
+
+        # print("tupList = ", tupList)
+
+        count = 0
+        tupSum = [0]*len(tupList[0])
+
+        for tup in tupList:
+            count += 1
+            for i in range(len(tup)):
+                tupSum[i] += tup[i]
+
+        # print("tupSum = ", tupSum)
+
+        tupAvg = [0]*len(tupSum)
+
+        for i in range(len(tupSum)):
+            tupAvg[i] = tupSum[i]/count
+
+        total = sum(tupAvg)
+        tupAvg += [total]
+
+        return tupAvg
+
+
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):

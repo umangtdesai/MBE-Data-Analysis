@@ -36,8 +36,11 @@ DEMOGRAPHIC_DATA_COUNTY_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=DE
 COUNTY_SHAPE = "countyShape"
 COUNTY_SHAPE_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=COUNTY_SHAPE)
 
-POP_DENSITY = "populationDensity"
-POP_DENSITY_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=POP_DENSITY)
+WEIGHTED_SENATE_IDEOLOGIES = "weightedSenateIdeologies"
+WEIGHTED_SENATE_IDEOLOGIES_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=WEIGHTED_SENATE_IDEOLOGIES)
+
+WEIGHTED_HOUSE_IDEOLOGIES = "weightedHouseIdeologies"
+WEIGHTED_HOUSE_IDEOLOGIES_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=WEIGHTED_HOUSE_IDEOLOGIES)
 
 DEMOGRAPHIC_DATA_TOWN = "demographicDataTown"
 DEMOGRAPHIC_DATA_TOWN_NAME = "ldisalvo_skeesara_vidyaap.{name}".format(name=DEMOGRAPHIC_DATA_TOWN)
