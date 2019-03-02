@@ -6,5 +6,9 @@
   "admin": {
     "name": "admin",
     "pwd": "example"
-  }
+  },
+  "gabe":{
+     "name":"gabe",
+     "pwd": "test"
+   }
 }
