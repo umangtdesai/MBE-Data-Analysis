@@ -35,16 +35,14 @@ class sd_non_registered_coefficient(dml.Algorithm):
 
     def aggregate(R, f):
         keys = {r[0] for r in R}
-        return [(key, f([v for (k,v) in R if k == key])) for key in keys]
+        return [(key, f([int(v.replace(',', '')) for (k,v) in R if k == key])) for key in keys]
 
 
     @staticmethod
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
-        d_t = demographics_by_towns
-
-        d_t_json = d_t.get_data()
+       
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
@@ -57,14 +55,14 @@ class sd_non_registered_coefficient(dml.Algorithm):
         repo.createCollection("sd_registered_demographicsf")
 
         s_d_registered = repo['carlosp_jpva_tkay_yllescas.registered']
-        s_d_nonregistered = repo['carlosp_jpva_tkay_yllescas.non_registered']
+        s_d_non_registered = repo['carlosp_jpva_tkay_yllescas.non_registered']
         registered_by_race = []
         total_caucasian = []
         total_aa = []
         total_hispanic = []
         #basically a select 
         for s_d in s_d_registered.find():
-            name = s_d['sd']
+            name = s_d['SD']
             #we know the senate district name now
             #time to aggregate 
             #extract
@@ -80,25 +78,25 @@ class sd_non_registered_coefficient(dml.Algorithm):
             total_aa.append((name, s_d['AA_35_49']))
             total_aa.append((name, s_d['AA_50_64']))
             total_aa.append((name, s_d['AA_65+']))
-            total_aa.append((name, s_d['AA_Uknown']))
+            total_aa.append((name, s_d['AA_Unknown']))
 
             total_hispanic.append((name, s_d['H_18_24']))
             total_hispanic.append((name, s_d['H_25_34']))
             total_hispanic.append((name, s_d['H_35_49']))
             total_hispanic.append((name, s_d['H_50_64']))
             total_hispanic.append((name, s_d['H_65+']))
-            total_hispanic.append((name, s_d['H_Unkown']))
+            total_hispanic.append((name, s_d['H_Unknown']))
         #now we can aggregate
-        total_caucasian_registered = sd_registered_demographics.aggregate(total_caucasian,sum)
-        total_aa_registered =  sd_registered_demographics.aggregate(total_aa,sum)
-        total_hispanic_registered =  sd_registered_demographics.aggregate(total_hispanic,sum)
+        total_caucasian_registered =  sd_non_registered_coefficient.aggregate(total_caucasian,sum)
+        total_aa_registered =   sd_non_registered_coefficient.aggregate(total_aa,sum)
+        total_hispanic_registered =   sd_non_registered_coefficient.aggregate(total_hispanic,sum)
 
         total_caucasian = []
         total_aa = []
         total_hispanic = []
 
         for s_d in s_d_non_registered.find():
-            name = s_d['sd']
+            name = s_d['SD']
             #we know the senate district name now
             #time to aggregate 
             #extract
@@ -114,7 +112,7 @@ class sd_non_registered_coefficient(dml.Algorithm):
             total_aa.append((name, s_d['AA_35_49']))
             total_aa.append((name, s_d['AA_50_64']))
             total_aa.append((name, s_d['AA_65+']))
-            total_aa.append((name, s_d['AA_Uknown']))
+            total_aa.append((name, s_d['AA_Unknown']))
 
             total_hispanic.append((name, s_d['H_18_24']))
             total_hispanic.append((name, s_d['H_25_34']))
@@ -123,9 +121,9 @@ class sd_non_registered_coefficient(dml.Algorithm):
             total_hispanic.append((name, s_d['H_65+']))
             total_hispanic.append((name, s_d['H_Unkown']))
 
-        total_caucasian_non_registered = sd_registered_demographics.aggregate(total_caucasian,sum)
-        total_aa_non_registered =  sd_registered_demographics.aggregate(total_aa,sum)
-        total_hispanic_non_registered =  sd_registered_demographics.aggregate(total_hispanic,sum)
+        total_caucasian_non_registered =  sd_non_registered_coefficient.aggregate(total_caucasian,sum)
+        total_aa_non_registered =   sd_non_registered_coefficient.aggregate(total_aa,sum)
+        total_hispanic_non_registered =   sd_non_registered_coefficient.aggregate(total_hispanic,sum)
 
 
 
@@ -141,7 +139,7 @@ class sd_non_registered_coefficient(dml.Algorithm):
             for s_d2, total_non_registered in total_caucasian_non_registered:
                 if s_d1 == s_d2:
                     percent = total_non_registered / (total_registered + total_non_registered)
-                    print("district: " + s_d2 + " registered: " +total_registered + " non: " total_non_registered + " % : "+ percent)
+                    print("district: " + s_d2 + " registered: " + str(total_registered )+ " non: "+ str(total_non_registered) + " % : "+ str(percent))
                     percent_of_non_registered_caucasians[s_d1] = percent
                     break;
 
@@ -149,14 +147,14 @@ class sd_non_registered_coefficient(dml.Algorithm):
             for s_d2, total_non_registered in total_aa_non_registered:
                 if s_d1 == s_d2:
                     percent = total_non_registered / (total_registered + total_non_registered)
-                    print("district: " + s_d2 + " registered: " +total_registered + " non: " total_non_registered + " % : "+ percent)
+                    print("district: " + s_d2 + " registered: " + str(total_registered )+ " non: "+ str(total_non_registered) + " % : "+ str(percent))
                     percent_of_non_registered_aa[s_d1] = percent
                     break;
         for s_d1, total_registered in total_hispanic_registered:
             for s_d2, total_non_registered in total_hispanic_non_registered:
                 if s_d1 == s_d2:
                     percent = total_non_registered / (total_registered + total_non_registered)
-                    print("district: " + s_d2 + " registered: " +total_registered + " non: " total_non_registered + " % : "+ percent)
+                    print("district: " + s_d2 + " registered: " + str(total_registered )+ " non: "+ str(total_non_registered) + " % : "+ str(percent))
                     percent_of_non_registered_hispanic[s_d1] = percent
                     break;
 
