@@ -31,7 +31,7 @@ class bpd_employee_earnings(dml.Algorithm):
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)['result']
         repo['hek_kquirk.bpd_employee_earnings'].insert_many(r['records'])
-        while 'next' in r['_links']:
+        while len(r['records']) > 0 and 'next' in r['_links']:
             url = 'https://data.boston.gov' + r['_links']['next']
             response = urllib.request.urlopen(url).read().decode("utf-8")
             r = json.loads(response)['result']
