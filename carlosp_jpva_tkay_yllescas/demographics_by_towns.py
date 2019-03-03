@@ -40,9 +40,9 @@ class demographics_by_towns(dml.Algorithm):
         s = json.dumps(d_t_json , sort_keys=True, indent=2)
         repo.dropCollection("demographics_by_town")
         repo.createCollection("demographics_by_town")
-        repo['carlosp_jpva_tkay_yllescas.demographics_towns'].insert_many(d_t_json)
-        repo['carlosp_jpva_tkay_yllescas.demographics_towns'].metadata({'complete':True})
-        print(repo['carlosp_jpva_tkay_yllescas.demographics_towns'].metadata())
+        repo['carlosp_jpva_tkay_yllescas.demographics_by_towns'].insert_many(d_t_json)
+        repo['carlosp_jpva_tkay_yllescas.demographics_by_towns'].metadata({'complete':True})
+        print(repo['carlosp_jpva_tkay_yllescas.demographics_by_towns'].metadata())
 
 
         repo.logout()
@@ -69,33 +69,21 @@ class demographics_by_towns(dml.Algorithm):
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         #doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:carlosp_jpva_tkay_yllescas#demographics_by_town', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
+        get_demographics_by_town = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_demographics_by_town, this_script)
+        doc.usage(get_demographics_by_town, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+                  'ont:Query':'?type=Demographics+By+Town&$select=type,latitude,longitude,OPEN_DT'
                   }
                   )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
-
-        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-
-        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        demographics_by_town = doc.entity('dat:carlosp_jpva_tkay_yllescas#demographics_by_town', {prov.model.PROV_LABEL:'Demographics by Town', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(demographics_by_town, this_script)
+        doc.wasGeneratedBy(demographics_by_town, get_demographics_by_town, endTime)
+        doc.wasDerivedFrom(demographics_by_town, resource, get_demographics_by_town, get_demographics_by_town, get_demographics_by_town)
 
         repo.logout()
                   
