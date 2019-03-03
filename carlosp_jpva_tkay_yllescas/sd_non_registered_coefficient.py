@@ -9,7 +9,7 @@ import pandas as pd
 from pprint import pprint
 class sd_non_registered_coefficient(dml.Algorithm):
     contributor = 'carlosp_jpva_tkay_yllescas'
-    reads = ['carlosp_jpva_tkay_yllescas.registered', 'carlosp_jpva_tkay_yllescas.non_registered']
+    reads = ['carlosp_jpva_tkay_yllescas.registered', 'carlosp_jpva_tkay_yllescas.non_registered_voters']
     writes = ['carlosp_jpva_tkay_yllescas.sd_non_registered_coefficient']
 
     @staticmethod
@@ -51,12 +51,11 @@ class sd_non_registered_coefficient(dml.Algorithm):
 
         
         #create new collection
-        repo.dropCollection("sd_registered_demographics")
-        repo.createCollection("sd_registered_demographicsf")
+        repo.dropCollection("sd_non_registered_coefficient")
+        repo.createCollection("sd_non_registered_coefficient")
 
         s_d_registered = repo['carlosp_jpva_tkay_yllescas.registered']
-        s_d_non_registered = repo['carlosp_jpva_tkay_yllescas.non_registered']
-        registered_by_race = []
+        s_d_non_registered = repo['carlosp_jpva_tkay_yllescas.non_registered_voters']
         total_caucasian = []
         total_aa = []
         total_hispanic = []
@@ -90,6 +89,7 @@ class sd_non_registered_coefficient(dml.Algorithm):
         total_caucasian_registered =  sd_non_registered_coefficient.aggregate(total_caucasian,sum)
         total_aa_registered =   sd_non_registered_coefficient.aggregate(total_aa,sum)
         total_hispanic_registered =   sd_non_registered_coefficient.aggregate(total_hispanic,sum)
+        print("len is "+ str(len(total_caucasian_registered)))
 
         total_caucasian = []
         total_aa = []
@@ -97,6 +97,7 @@ class sd_non_registered_coefficient(dml.Algorithm):
 
         for s_d in s_d_non_registered.find():
             name = s_d['SD']
+            print("name = " + name)
             #we know the senate district name now
             #time to aggregate 
             #extract
@@ -119,9 +120,10 @@ class sd_non_registered_coefficient(dml.Algorithm):
             total_hispanic.append((name, s_d['H_35_49']))
             total_hispanic.append((name, s_d['H_50_64']))
             total_hispanic.append((name, s_d['H_65+']))
-            total_hispanic.append((name, s_d['H_Unkown']))
+            total_hispanic.append((name, s_d['H_Unknown']))
 
         total_caucasian_non_registered =  sd_non_registered_coefficient.aggregate(total_caucasian,sum)
+        print("first element =  "+ total_caucasian_non_registered[0][0] + " " + str(total_caucasian_non_registered[0][1]))
         total_aa_non_registered =   sd_non_registered_coefficient.aggregate(total_aa,sum)
         total_hispanic_non_registered =   sd_non_registered_coefficient.aggregate(total_hispanic,sum)
 
@@ -135,8 +137,12 @@ class sd_non_registered_coefficient(dml.Algorithm):
         percent_of_non_registered_caucasians = {}
         percent_of_non_registered_aa = {}
         percent_of_non_registered_hispanics = {}
-        for s_d1, total_registered in total_caucasian_registered:
-            for s_d2, total_non_registered in total_caucasian_non_registered:
+        for s_d1 , total_registered in total_caucasian_registered:
+            print("sd1 = "+ s_d1)
+            for s_d2 , total_non_registered in total_caucasian_non_registered:
+                
+                print("sd2 = "+ s_d2)
+
                 if s_d1 == s_d2:
                     percent = total_non_registered / (total_registered + total_non_registered)
                     print("district: " + s_d2 + " registered: " + str(total_registered )+ " non: "+ str(total_non_registered) + " % : "+ str(percent))
@@ -155,15 +161,22 @@ class sd_non_registered_coefficient(dml.Algorithm):
                 if s_d1 == s_d2:
                     percent = total_non_registered / (total_registered + total_non_registered)
                     print("district: " + s_d2 + " registered: " + str(total_registered )+ " non: "+ str(total_non_registered) + " % : "+ str(percent))
-                    percent_of_non_registered_hispanic[s_d1] = percent
+                    percent_of_non_registered_hispanics[s_d1] = percent
                     break;
 
         #now create the new dictionary to upload to mongo
         dictionary_of_coefficients = []
-
+        print ("len of caucasian dict")
+        print(str(len(percent_of_non_registered_caucasians)))
+        i = 0
         for s_d1, total_caucasian in total_caucasian_registered:
+            print("loop number " )
+            print (str(i))
             name = s_d1
-            dictionary_of_coefficients.append( [{name : {'caucasian': percent_of_non_registered_caucasians[s_d1], 'african american': percent_of_non_registered_aa[s_d1], 'hispanic': percent_of_non_registered_hispanic[s_d1] } }])
+            caucasian =  percent_of_non_registered_caucasians[s_d1]
+            aa = percent_of_non_registered_aa[s_d1]
+            hispanic =  percent_of_non_registered_hispanics[s_d1]
+            dictionary_of_coefficients.append( {name : {'caucasian': caucasian, 'african american': aa , 'hispanic': hispanic } })
 
         #cool so now we should have ['001 Berkshire, Hampshire, Franklin & Hampden': ]
 
@@ -182,6 +195,8 @@ class sd_non_registered_coefficient(dml.Algorithm):
         #census demographics (city,ethnicity, total people, total registered)
 
         s_d_json = json.dumps(dictionary_of_coefficients)
+        s_d_json = json.loads(s_d_json)
+        print( s_d_json)
 
         repo['carlosp_jpva_tkay_yllescas.sd_non_registered_coefficient'].insert_many(s_d_json)
         repo['carlosp_jpva_tkay_yllescas.sd_non_registered_coefficient'].metadata({'complete':True})
@@ -243,7 +258,7 @@ class sd_non_registered_coefficient(dml.Algorithm):
         repo.logout()
                   
         return doc
-
+#sd_non_registered_coefficient.execute()
 #d_t = demographics_by_towns
 
 #d_t.execute()
