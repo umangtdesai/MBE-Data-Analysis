@@ -1,4 +1,5 @@
 <b>The Geo-Analysis of Franchising brands in Boston </b><br>
+
 a.     General Description:
 The project picks one or two most popular franchising brand(s) in Boston (i.e. CVS, Walgreen, KFC, Burger King, Macdonald, etc.) 
 to generate/acquire a “target” dataset based on its geographical location. Experiment/Integrate the dataset with other available 
