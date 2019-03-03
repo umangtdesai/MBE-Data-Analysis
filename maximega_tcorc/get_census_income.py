@@ -22,7 +22,7 @@ class get_census_income(dml.Algorithm):
         repo.authenticate('maximega_tcorc', 'maximega_tcorc')
         
         # ------------------ Data retrieval ---------------------
-        url = 'http://datamechanics.io/data/Data_USA_census_income.csv'
+        url = 'http://datamechanics.io/data/maximega_tcorc/Data_USA_census_income.csv'
         data = pd.read_csv(url).to_json(orient = "records")
         json_response = json.loads(data)
 

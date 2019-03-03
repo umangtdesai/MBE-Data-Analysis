@@ -4,6 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
+import pandas as pd
 
 class get_stations(dml.Algorithm):
     contributor = 'maximega_tcorc'
@@ -20,19 +21,11 @@ class get_stations(dml.Algorithm):
         repo = client.repo
         repo.authenticate('maximega_tcorc', 'maximega_tcorc')
 
-        # ----------------- API ACCESS KEYS & INFO ----------------
-        auth = json.load(open('../auth.json', 'r+'))['services']['data.ny.gov']
-        token_key = auth['key']
-        token_value = auth['token']
-        
         # ------------------ Data retrieval ---------------------
-        url = 'https://data.ny.gov/resource/hvwh-qtfg.json'
-        request = urllib.request.Request(url)
-        request.add_header(token_key, token_value)
-        response = urllib.request.urlopen(request)
-        content = response.read()
-        json_response = json.loads(content)
-        json_string = json.dumps(json_response, sort_keys=True, indent=2)
+        url = 'http://datamechanics.io/data/maximega_tcorc/NYC_subway_exit_entrance.csv'
+        data = pd.read_csv(url).to_json(orient = "records")
+        json_response = json.loads(data)
+
 
         # ----------------- Data insertion into Mongodb ------------------
         repo.dropCollection('stations')
