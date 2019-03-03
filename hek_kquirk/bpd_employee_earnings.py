@@ -4,16 +4,17 @@ import dml
 import prov.model
 import datetime
 import uuid
+import bson.code
 
 class bpd_employee_earnings(dml.Algorithm):
     contributor = 'hek_kquirk'
-    reads = []
+    reads = ['hek_kquirk.boston_employee_earnings']
     writes = ['hek_kquirk.bpd_employee_earnings']
 
     @staticmethod
     def execute(trial = False):
         startTime = datetime.datetime.now()
-
+        
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -23,21 +24,9 @@ class bpd_employee_earnings(dml.Algorithm):
         repo.dropCollection("bpd_employee_earnings")
         repo.createCollection("bpd_employee_earnings")
 
-        # Api call for employee earnings dataset
-        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=70129b87-bd4e-49bb-aa09-77644da73503'
-
-        # Can only get 100 entries at a time. Keep querying until there are
-        # no more entries.
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)['result']
-        repo['hek_kquirk.bpd_employee_earnings'].insert_many(r['records'])
-        while len(r['records']) > 0 and 'next' in r['_links']:
-            url = 'https://data.boston.gov' + r['_links']['next']
-            response = urllib.request.urlopen(url).read().decode("utf-8")
-            r = json.loads(response)['result']
-            if len(r['records']) > 0:
-                repo['hek_kquirk.bpd_employee_earnings'].insert_many(r['records'])
-            
+        bpd_earnings = repo['hek_kquirk.boston_employee_earnings'].find({'DEPARTMENT NAME': 'Boston Police Department'})
+        repo['hek_kquirk.bpd_employee_earnings'].insert_many(bpd_earnings)
+        
         repo['hek_kquirk.bpd_employee_earnings'].metadata({'complete':True})
         print(repo['hek_kquirk.bpd_employee_earnings'].metadata())
 
