@@ -23,6 +23,6 @@ explain why or why not.
    c. 7Eleven stores in boston area through querying Google Places API <br>
    d. Streetlight Locations in boston area through querying Boston Data Portal (Analyze Boston) <br>
    e. Eviction Incidents in boston area from http://datamechanics.io/data/evictions_boston.csv <br>
-   f. Crime Incidents in boston area thorugh http://datamechanics.io/dadta/crime.csv <br>
+   f. Crime Incidents in boston area from http://datamechanics.io/dadta/crime.csv <br>
    
 <b>(4) Interesting Goals/Questions:</b>
