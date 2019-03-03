@@ -1,5 +1,23 @@
-# course-2019-spr-proj
-Joint repository for the collection of student course projects in the Spring 2019 iteration of the Data Mechanics course at Boston University.
+# Growing Voter Engagement in Communities of Color
+
+For this project, we are working with Amplify LatinX and BU Spark! to analyze Massachusetts voting and demographic data to suggest where they should focus their voter turnout efforts in order to get more people of color out to vote.
+
+We are starting with 5 data sets, provided by Amplify:
+1. Demographics by Town
+2. Massachusetts Early Voting Data
+3. Registered Voter Demographics
+    a) Senate District
+    b) Precinct
+4. Non-Registered Voter Demographics
+    a) Senate District
+    b) Precinct
+5. Voter Turnout Percentages (1948-2016)
+
+We are combining these data sets to analyze where people are voting, who is turning out to vote, and extrapolating where voter registration efforts are going to be effective. Ultimately, our goal is to identify which elections are such that more voters showing up would change the result. 
+
+To start, we are isolating race and ethnicity data from registered (3a) and non-registered (4a) voter demographics by senate district, and then aggregating those data sets. Additionally, we are using demographics by town (1) and early voting data (2) to compare voter registration percentages with percentages of people of color. We will use this data to suggest where to apply GOTV efforts. For example, if we can identify towns where there is a correlation between low voter registration and high percentage of people of color, we would suggest GOTV efforts there.
+
+## course-2019-spr-proj
 
 In this project, you will implement platform components that can obtain a some data sets from web services of your choice, and platform components that combine these data sets into at least two additional derived data sets. These components will interact with the backend repository by inserting and retrieving data sets as necessary. They will also satisfy a standard interface by supporting specified capabilities (such as generation of dependency information and provenance records).
 
