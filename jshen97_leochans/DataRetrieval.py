@@ -12,7 +12,8 @@ class DataRetrieval(dml.Algorithm):
     contributor = "jshen97_leochans"
     reads = []
     writes = ['jshen97_leochans.cvs', 'jshen97_leochans.walgreen',
-              'jshen97_leochans.7eleven', 'jshen97_leochans.crime']
+              'jshen97_leochans.7eleven', 'jshen97_leochans.crime',
+              'jshen97_leochans.light', 'jshen97_leochans.eviction']
 
     @staticmethod
     def execute(trail=False):
