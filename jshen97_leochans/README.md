@@ -1,6 +1,6 @@
 <b>The Analysis of Franchising brands in Boston Area</b>
 
-Team formation:
+Team formation: <br>
 JiajiaShen: jshen97@bu.edu <br>
 ShiweiChen: leochans@bu.edu
 
