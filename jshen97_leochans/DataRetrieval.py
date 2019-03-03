@@ -3,6 +3,7 @@ import datetime
 import json
 import prov.model
 import pandas as pd
+import pprint
 import uuid
 from urllib.request import urlopen
 
@@ -31,42 +32,52 @@ class DataRetrieval(dml.Algorithm):
 
         # required parameters to specify for place searching @see Places API documentation
         key = "key="+dml.auth['services']['googleAPI']['key']
-        input_cvs = "input=CVS%20Boston,%20MA&"
-        input_walgreen = "input=Walgreen%20Boston,%20MA&"
-        input_7eleven = "input=7-Eleven%20Boston,%20MA&"
-        inputtype = "inputtype=textquery&"
 
-        # fields that are interesting or might be useful
-        fields = "fields=place_id,formatted_address,geometry/location,types,atmosphere,user_rating_total&"
+        location = 'location=42.361145,-71.057083&'
+        radius = 'radius=8000&'
+        type = 'type=convenience_store&'
+
+        keyword_cvs = "keyword=CVS&"
+        keyword_walgreen = "input=Walgreen&"
+        keyword_7eleven = "input=7-Eleven&"
 
         # retrieve cvs
-        url_cvs = service+input_cvs+inputtype+fields+key
+        url_cvs = service+location+radius+type+keyword_cvs+key
         response_cvs = json.loads(urlopen(url_cvs).read().decode('utf-8'))
         res_dump_cvs = json.dumps(response_cvs, sort_keys=True, indent=2)
         repo.dropCollection('cvs')
         repo.createCollection('cvs')
         repo['jshen97_leochans.cvs'].insert_one(response_cvs)
         repo['jshen97_leochans.cvs'].metadata({'complete': True})
+        repo['jshen97_leochans.cvs'].delete_many({'status': 'INVALID_REQUEST'})
+        # debug
+        #pprint.pprint(repo['jshen97_leochans.cvs'].find_one())
         print(repo['jshen97_leochans.cvs'].metadata())
 
         # retrieve walgreen
-        url_walgreen = service+input_walgreen+inputtype+fields+key
+        url_walgreen = service+location+radius+type+keyword_walgreen+key
         response_walgreen = json.loads(urlopen(url_walgreen).read().decode('utf-8'))
         res_dump_walgreen = json.dumps(response_walgreen, sort_keys=True, indent=2)
         repo.dropCollection('walgreen')
         repo.createCollection('walgreen')
         repo['jshen97_leochans.walgreen'].insert_one(response_walgreen)
         repo['jshen97_leochans.walgreen'].metadata({'complete': True})
+        repo['jshen97_leochans.walgreen'].delete_many({'status': 'INVALID_REQUEST'})
+        # debug
+        #pprint.pprint(repo['jshen97_leochans.walgreen'].find_one())
         print(repo['jshen97_leochans.walgreen'].metadata())
 
         # retrieve 7-Eleven
-        url_7eleven = service+input_7eleven+inputtype+fields+key
+        url_7eleven = service+location+radius+type+keyword_7eleven+key
         response_7eleven = json.loads(urlopen(url_7eleven).read().decode('utf-8'))
         res_dump_7eleven = json.dumps(response_7eleven, sort_keys=True, indent=2)
         repo.dropCollection('7eleven')
         repo.createCollection('7eleven')
         repo['jshen97_leochans.7eleven'].insert_one(response_7eleven)
         repo['jshen97_leochans.7eleven'].metadata({'complete': True})
+        repo['jshen97_leochans.7eleven'].delete_many({'status': 'INVALID_REQUEST'})
+        # debug
+        #pprint.pprint(repo['jshen97_leochans.7eleven'].find_one())
         print(repo['jshen97_leochans.7eleven'].metadata())
 
         # retrieve street light location
@@ -77,6 +88,8 @@ class DataRetrieval(dml.Algorithm):
         repo.createCollection('light')
         repo['jshen97_leochans.light'].insert_one(json_light)
         repo['jshen97_leochans.light'].metadata({'complete': True})
+        #debug
+        #pprint.pprint(repo['jshen97_leochans.light'].find_one())
         print(repo['jshen97_leochans.light'].metadata())
 
         # retrieve eviction boston
@@ -88,6 +101,8 @@ class DataRetrieval(dml.Algorithm):
         repo.createCollection('eviction')
         repo['jshen97_leochans.eviction'].insert_many(json_eviction)
         repo['jshen97_leochans.eviction'].metadata({'complete': True})
+        # debug
+        #pprint.pprint(repo['jshen97_leochans.eviction'].find_one())
         print(repo['jshen97_leochans.eviction'].metadata())
 
         # retrieve crime.csv
@@ -100,7 +115,11 @@ class DataRetrieval(dml.Algorithm):
         repo.createCollection('crime')
         repo['jshen97_leochans.crime'].insert_many(json_crime)
         repo['jshen97_leochans.crime'].metadata({'complete': True})
+        # debug
+        #pprint.pprint(repo['jshen97_leochans.cime'].find_one())
         print(repo['jshen97_leochans.crime'].metadata())
+
+        #print(repo.list_collection_names())
 
         repo.logout()
 
@@ -123,7 +142,7 @@ class DataRetrieval(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('ggl', 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?')
+        doc.add_namespace('ggl', 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?')
         doc.add_namespace('dio', 'http://datamechanics.io/data/')
         doc.add_namespace('bdp', 'https://data.boston.gov/')
 
@@ -149,26 +168,20 @@ class DataRetrieval(dml.Algorithm):
 
         doc.usage(get_cvs, resource_ggl, start_time, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': 'input=CVS%20Boston,%20MA&inputtype=textquery& \
-                                 fields=place_id,formatted_address,geometry/ \
-                                 location,types,atmosphere,user_rating_total& \
-                                 key=API_KEY'
+                   'ont:Query': 'location=42.361145,-71.057083&radius=8000& \
+                                 type=convenience_store&keyword=CVS&key=API_KEY'
                    }
                   )
         doc.usage(get_walgreen, resource_ggl, start_time, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': 'input=Walgreen%20Boston,%20MA&inputtype=textquery& \
-                                 fields=place_id,formatted_address,geometry/ \
-                                 location,types,atmosphere,user_rating_total& \
-                                 key=API_KEY'
+                   'ont:Query': 'location=42.361145,-71.057083&radius=8000& \
+                                 type=convenience_store&keyword=Walgreen&key=API_KEY'
                    }
                   )
         doc.usage(get_7eleven, resource_ggl, start_time, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': 'input=7Eleven%20Boston,%20MA&inputtype=textquery& \
-                                 fields=place_id,formatted_address,geometry/ \
-                                 location,types,atmosphere,user_rating_total& \
-                                 key=API_KEY'
+                   'ont:Query': 'location=42.361145,-71.057083&radius=8000& \
+                                 type=convenience_store&keyword=7-Eleven&key=API_KEY'
                    }
                   )
         doc.usage(get_light, resource_bdp, start_time, None,
