@@ -17,12 +17,12 @@ Presume a relationship between the target dataset and guest datasets (i.e. numbe
 crime rate, is proportional to the square of resident income, etc.) then we experiment to see if the hypothesis holds and try to 
 explain why or why not.
  
-<b>(3) Obtained Datasets and Resources:</b>
-   a. cvs stores in boston area through querying Google Places API
-   b. Walgreen stores in boston area through querying Google Places API
-   c. 7Eleven stores in boston area through querying Google Places API
-   d. Streetlight Locations in boston area through querying Boston Data Portal (Analyze Boston)
-   e. Eviction Incidents in boston area from http://datamechanics.io/data/evictions_boston.csv
-   f. Crime Incidents in boston area thorugh http://datamechanics.io/dadta/crime.csv
+<b>(3) Obtained Datasets and Resources:</b><br>
+   a. cvs stores in boston area through querying Google Places API <br>
+   b. Walgreen stores in boston area through querying Google Places API <br>
+   c. 7Eleven stores in boston area through querying Google Places API <br>
+   d. Streetlight Locations in boston area through querying Boston Data Portal (Analyze Boston) <br>
+   e. Eviction Incidents in boston area from http://datamechanics.io/data/evictions_boston.csv <br>
+   f. Crime Incidents in boston area thorugh http://datamechanics.io/dadta/crime.csv <br>
    
 <b>(4) Interesting Goals/Questions:</b>
