@@ -8,9 +8,6 @@ import csv
 import io
 from urllib.request import urlopen
 
-'''
-Get Revere crash data from year 2000
-'''
 
 class Revere2001to2016(dml.Algorithm):
     contributor = 'darren68_gladding_ralcalde'
@@ -19,7 +16,7 @@ class Revere2001to2016(dml.Algorithm):
 
     @staticmethod
     def execute(trial = False):
-        '''Retrieve data set of crashes in Revere for the year 2000 and store it in Mongo'''
+        '''Retrieve data set of crashes in Revere for the year 2001 to 2016 and store it in Mongo'''
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -28,7 +25,7 @@ class Revere2001to2016(dml.Algorithm):
         repo.authenticate('darren68_gladding_ralcalde', 'darren68_gladding_ralcalde')
 
         #this is the url of the dataset
-        url = 'http://datamechanics.io/data/darren68_gladding_ralcalde/Revere%20Crash%20Data%202001-2016.csv'
+        url = 'http://datamechanics.io/data/darren68_gladding_ralcalde/REVERE2001to2016updated.csv'
 
         #load the url and read it
         response = urllib.request.urlopen(url)
@@ -44,38 +41,90 @@ class Revere2001to2016(dml.Algorithm):
         #iterate through each row in the file and assign each element to the corresponding field in the dictionary
         for row in file:
             dic = {}
-            dic['Town'] = row[0]
-            dic['1990'] = row[1]
-            dic['1991'] = row[2]
-            dic['1992'] = row[3]
-            dic['1993'] = row[4]
-            dic['1994'] = row[5]
-            dic['1995'] = row[6]
-            dic['1996'] = row[7]
-            dic['1997'] = row[8]
-            dic['1998'] = row[9]
-            dic['1999'] = row[10]
-            dic['2000'] = row[11]
-            dic['2001'] = row[12]
-            dic['2002'] = row[13]
-            dic['2003'] = row[14]
-            dic['2004'] = row[15]
-            dic['2005'] = row[16]
-            dic['2006'] = row[17]
-            dic['2007'] = row[18]
-            dic['2008'] = row[19]
-            dic['2009'] = row[20]
-            dic['2010'] = row[21]
-            dic['2011'] = row[22]
-            dic['2012'] = row[23]
-            dic['2013'] = row[24]
-            dic['2014'] = row[25]
-            dic['2015'] = row[26]
-            dic['2016'] = row[27]
-            dic['2007'] = row[28]
-            dic['total'] = row[29]
-            dic['last change'] = row[30]
+
+            dic['crashnumber'] = row[0]
+            dic['crashdate'] = row[1]
+            dic['crashtime'] = row[2]
+            dic['crashhour'] = row[3]
+            dic['citytown'] = row[4]
+            dic['locality'] = row[5]
+            dic['rpaabbreviation'] = row[6]
+            dic['masshighwaydistrict'] = row[7]
+            dic['crashseverity'] = row[8]
+            dic['maximuminjuryseverityreported'] = row[9]
+            dic['numberofnonfatalinjuries'] = row[10]
+            dic['numberoffatalinjuries'] = row[11]
+            dic['numberofvehicles'] = row[12]
+            dic['mannerofcollision'] = row[13]
+            dic['vehicleactionpriortocrash'] = row[14]
+            dic['vehicletraveldirections'] = row[15]
+            dic['firstharmfulevent'] = row[16]
+            dic['firstharmfuleventlocation'] = row[17]
+            dic['mostharmfulevents'] = row[18]
+            dic['vehiclesequenceofevents'] = row[19]
+            dic['vehicleconfiguration'] = row[20]
+            dic['fmscareportable'] = row[21]
+            dic['ageofdriveryoungestknown'] = row[22]
+            dic['ageofdriveroldestknown'] = row[23]
+            dic['drivercontributingcodes'] = row[24]
+            dic['nonmotoristtype'] = row[25]
+            dic['nonmotoristaction'] = row[26]
+            dic['nonmotoristlocation'] = row[27]
+            dic['hitrun'] = row[28]
+            dic['roadsurface'] = row[29]
+            dic['ambientlight'] = row[30]
+            dic['weathercondition'] = row[31]
+            dic['streetnumber'] = row[32]
+            dic['roadway'] = row[33]
+            dic['distanceanddirectionfromintersec'] = row[34]
+            dic['nearintersectionroadway'] = row[35]
+            dic['exitroute'] = row[36]
+            dic['distanceanddirectionfromexitnumb'] = row[37]
+            dic['exitnumber'] = row[38]
+            dic['milemarkerroute'] = row[39]
+            dic['distanceanddirectionfrommilemark'] = row[40]
+            dic['milemarker'] = row[41]
+            dic['landmark'] = row[42]
+            dic['distanceanddirectionfromlandmark'] = row[43]
+            dic['trafficway'] = row[44]
+            dic['speedlimit'] = row[45]
+            dic['roadwayintersectiontype'] = row[46]
+            dic['trafficcontroldevicetype'] = row[47]
+            dic['trafficdevicefunctioning'] = row[48]
+            dic['policeagency'] = row[49]
+            dic['linkedrifunctionalclassification'] = row[50]
+            dic['linkedriaccesscontrol'] = row[51]
+            dic['linkedritollroad'] = row[52]
+            dic['linkedrijurisdiction'] = row[53]
+            dic['linkedrinumberoftravellanes'] = row[54]
+            dic['linkedriopposingnumberoftravella'] = row[55]
+            dic['linkedristreetname'] = row[56]
+            dic['linkedristreetoperation'] = row[57]
+            dic['linkedrifacilitytype'] = row[58]
+            dic['linkedrispeedlimit'] = row[59] 
+            dic['linkedriurbantype'] = row[60]
+            dic['linkedriurbanizedarea'] = row[61]
+            dic['linkedriurbanlocationtype'] = row[62]
+            dic['linkedriaveragedailytraffic'] = row[63]
+            dic['linkedriyearofadt'] = row[64]
+            dic['linkedritruckroute'] = row[65]
+            dic['schoolbusrelated'] = row[66]
+            dic['isgeocoded'] = row[67]
+            dic['geocodingmethod'] = row[68]
+            dic['x'] = row[69]
+            dic['y'] = row[70]
+            dic['crashstatus'] = row[71]
+            dic['roadsegmentid'] = row[72]
+            dic['county'] = row[73]
+            dic['rmvdocument'] = row[74]
+            dic['driverdistractedby'] = row[75]
+            dic['ageofnonmotoristyoungestknown'] = row[76]
+            dic['ageofnonmotoristoldestknown'] = row[77]
+            dic['reportids'] = row[78]
+            dic['federalfunctionalclassification'] = row[79]
+            dic['roadwaycontributingcode'] = row[80]
             dictList.append(dic)
+
 
 
         repo.dropCollection("Revere2001to2016")
