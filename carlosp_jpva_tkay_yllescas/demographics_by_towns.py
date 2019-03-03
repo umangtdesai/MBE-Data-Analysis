@@ -40,9 +40,9 @@ class demographics_by_towns(dml.Algorithm):
         s = json.dumps(d_t_json , sort_keys=True, indent=2)
         repo.dropCollection("demographics_by_town")
         repo.createCollection("demographics_by_town")
-        repo['carlosp_jpva_tkay_yllescas.demographics_towns'].insert_many(d_t_json)
-        repo['carlosp_jpva_tkay_yllescas.demographics_towns'].metadata({'complete':True})
-        print(repo['carlosp_jpva_tkay_yllescas.demographics_towns'].metadata())
+        repo['carlosp_jpva_tkay_yllescas.demographics_by_towns'].insert_many(d_t_json)
+        repo['carlosp_jpva_tkay_yllescas.demographics_by_towns'].metadata({'complete':True})
+        print(repo['carlosp_jpva_tkay_yllescas.demographics_by_towns'].metadata())
 
 
         repo.logout()
