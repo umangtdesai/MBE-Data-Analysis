@@ -65,7 +65,7 @@ class ProvenanceModel(dml.Algorithm):
         responsetxt = '[' + response.text + ']'
         r = json.loads(responsetxt)
         repo.dropCollection("pub_schools")
-        repo.createCollection("neighborhoods")
+        repo.createCollection("pub_schools")
         repo['kgrewal_shin2.pub_schools'].insert_many(r)
         repo['kgrewal_shin2.pub_schools'].metadata({'complete': True})
         print(repo['kgrewal_shin2.pub_schools'].metadata())
