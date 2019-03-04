@@ -8,7 +8,7 @@ import datetime
 import uuid
 
 
-class street_names(dml.Algorithm):
+class ProvenanceModel(dml.Algorithm):
     contributor = 'kgrewal_shin2'
     reads = []
     writes = ['kgrewal_shin2.street_names', 'kgrewal_shin2.landmarks']
@@ -95,7 +95,7 @@ class street_names(dml.Algorithm):
         doc.wasGeneratedBy(streets, get_street_name, endTime)
         doc.wasDerivedFrom(streets, resource, get_street_name, get_street_name, get_street_name)
 
-        landmarks = doc.entity('dat:kgrewal_shin2#street_name',
+        landmarks = doc.entity('dat:kgrewal_shin2#landmarks',
                           {prov.model.PROV_LABEL: 'Boston Landmarks', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(landmarks, this_script)
         doc.wasGeneratedBy(landmarks, get_landmarks, endTime)
