@@ -134,7 +134,7 @@ class download_bluebikes(dml.Algorithm):
             })
         # the entity I am downloading
         resource = doc.entity(
-            'blb:???',
+            'blb:data2018',
             {
                 'prov:label':'Bluebikes Dataset', 
                 prov.model.PROV_TYPE:'ont:DataResource', 

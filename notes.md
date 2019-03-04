@@ -16,16 +16,66 @@
 * Noticed a "TEMPORARY WINTER LOCATION" string in bluebikes data
 * Don't forget to implement a "trial" flag for the algorithm
 
+# More TODO
+* provenance for mbta_stops script
+* download bluebike stations (and do prov)
+* download mbta alerts
+	* one for just boston trains
+	* one for all routes close to boston
+	* don't forget provenance
+	* I have notes for this one
+* weekday time frequency for bluebike trips (algo and prov)
+* bluebike stations within a mile (or half?) of universities
+* where are bluebikers coming to school from
+* bluebike correlation with temperature and precipitation data
+* mbta boston train "delay" alert correlation to weather and time
+* mbta "delay" alert correlation with traffic
+
+# Final TODO
+* Write up README for submission
+* look at other project 1 requirements before submitting
+
 # Ideas
 * See how many bike lanes and hubways are near each university
 * See average age of bikers near a university versus not near a university
 * See distance biked and speed as compared to age of rider
 * See where students live (people who bike to and from university of a certain age)
 * See how far university students bike as compared to other bikers
+* compare the speed of taking the train versus take a citibike to BU from elsewhere
 
 # Useful DB Queries
 * db.kgarber.university.find({"properties.NumStudent": {$gt: 200}}, {"properties.Name":1, "properties.NumStudent":1, "\_id":0}).sort({"properties.NumStudent":-1}).limit(15);
 * db.kgarber.university.aggregate([{$match: {}}, {$group: {\_id: null, total: {$sum: "$properties.NumStudents"}}}])
+
+# Used Datasets
+
+Satisfies 5 datasets from at least 3 sources.
+
+* BlueBike
+	* stations
+	* trips
+* data.boston.gov
+	* universities
+* MBTA
+	* stops
+	* trips
+	* routes
+	* alerts
+* NOAA
+	* boston daily weather 2018
+
+# Output Datasets
+
+Satisfies at least 3 non-trivial new datasets from transformations and combinations.
+
+Main:
+* bluebike usage correlation with weather
+* origins of university bluebike riders
+* mbta alerts correlation to weather
+
+Other:
+* bluebike number rides per date
+* bluebike stations near universities
 
 # Other (old)
 

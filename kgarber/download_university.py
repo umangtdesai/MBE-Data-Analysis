@@ -60,7 +60,7 @@ class download_university(dml.Algorithm):
             })
         # the entity I am downloading
         resource = doc.entity(
-            'bgd:???',
+            'bgd:universities',
             {
                 'prov:label':'University Dataset', 
                 prov.model.PROV_TYPE:'ont:DataResource', 
