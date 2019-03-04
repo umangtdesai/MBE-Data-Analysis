@@ -9,8 +9,8 @@ from io import StringIO
 
 class get_bos_neighborhoods(dml.Algorithm):
     contributor = 'mriver_osagga'
-    reads = []
-    writes = ['mriver_osagga.bos_neighborhoods']
+    reads = ['mriver_osagga.bos_neighborhoods']
+    writes = ['mriver_osagga.bos_neighborhoods_clean']
 
     @staticmethod
     def execute(trial = False):
@@ -22,16 +22,14 @@ class get_bos_neighborhoods(dml.Algorithm):
         repo = client.repo
         repo.authenticate('mriver_osagga', 'mriver_osagga')
 
-        url = 'http://opendata.arcgis.com/datasets/3525b0ee6e6b427f9aab5d0a1d0a1a28_0.csv'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = csv.reader(StringIO(response), delimiter=',')
-        r = [{"name" : val[1]} for val in list(r)[1:]]
+        data = list(repo['mriver_osagga.bos_neighborhoods'].find())
+        r = [{"Name" : val['Name']} for val in data]
         r = json.loads(json.dumps(r))
-        repo.dropCollection("bos_neighborhoods")
-        repo.createCollection("bos_neighborhoods")
-        repo['mriver_osagga.bos_neighborhoods'].insert_many(r)
-        repo['mriver_osagga.bos_neighborhoods'].metadata({'complete':True})
-        print(repo['mriver_osagga.bos_neighborhoods'].metadata())
+        repo.dropCollection("bos_neighborhoods_clean")
+        repo.createCollection("bos_neighborhoods_clean")
+        repo['mriver_osagga.bos_neighborhoods_clean'].insert_many(r)
+        repo['mriver_osagga.bos_neighborhoods_clean'].metadata({'complete':True})
+        print(repo['mriver_osagga.bos_neighborhoods_clean'].metadata())
         
         repo.logout()
 
@@ -67,10 +65,10 @@ class get_bos_neighborhoods(dml.Algorithm):
                   }
                   )
 
-        bos_neighborhoods = doc.entity('dat:mriver_osagga#bos_neighborhoods', {prov.model.PROV_LABEL:'Boston Neighborhoods', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(bos_neighborhoods, this_script)
-        doc.wasGeneratedBy(bos_neighborhoods, get_bos_neighborhoods, endTime)
-        doc.wasDerivedFrom(bos_neighborhoods, resource, get_bos_neighborhoods, get_bos_neighborhoods, get_bos_neighborhoods)
+        bos_neighborhoods_clean = doc.entity('dat:mriver_osagga#bos_neighborhoods_clean', {prov.model.PROV_LABEL:'Boston Neighborhoods (Clean)', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(bos_neighborhoods_clean, this_script)
+        doc.wasGeneratedBy(bos_neighborhoods_clean, get_bos_neighborhoods, endTime)
+        doc.wasDerivedFrom(bos_neighborhoods_clean, resource, get_bos_neighborhoods, get_bos_neighborhoods, get_bos_neighborhoods)
 
         repo.logout()
                   
@@ -79,9 +77,10 @@ class get_bos_neighborhoods(dml.Algorithm):
 
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
+'''
 get_bos_neighborhoods.execute()
 doc = get_bos_neighborhoods.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
-
+'''
 ## eof
