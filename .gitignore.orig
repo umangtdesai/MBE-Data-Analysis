@@ -1,0 +1,14 @@
+<<<<<<< HEAD
+# Untracked folders: 
+kgrewal_shin2/MassDOT_Roads_SHP/
+
+
+# Untracked files: 
+=======
+#ignored folders 
+kgrewal_shin2/MassDOT_Roads_SHP/
+
+#ignored files
+>>>>>>> c55b5a7fb7252225af0f60602595ad15119c6993
+*.json
+*.csv
