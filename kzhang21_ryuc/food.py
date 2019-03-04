@@ -24,7 +24,7 @@ class Food(dml.Algorithm):
 
         #analyze boston food businesses data set
         #read in csv file
-        url = 'http://datamechanics.io/data/boston_food.csv'
+        url = 'https://data.boston.gov/dataset/03693648-2c62-4a2c-a4ec-48de2ee14e18/resource/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c/download/tmper3diw4s.csv'
         data = pd.read_csv(url, header=0)
         #select relevant columns
         data_food = data[['businessname','descript', 'address', 'city', 'state', 'zip', 'location']].copy()
@@ -32,6 +32,8 @@ class Food(dml.Algorithm):
         data_food.columns = ['Name', 'Description', 'Street', 'City', 'State', 'Zip', 'Location']
         #eliminate records with no location
         data_food = data_food[data_food['Location'] != '(0.000000000, 0.000000000)']
+        #eliminate all null locations
+        data_food.dropna(inplace=True)
         #separate longtitude and latitude 
         food_temp = data_food['Location'].tolist()
         food_location = [make_tuple(x) for x in food_temp]
