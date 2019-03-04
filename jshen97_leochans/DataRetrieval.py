@@ -34,7 +34,7 @@ class DataRetrieval(dml.Algorithm):
         key = "key="+dml.auth['services']['googleAPI']['key']
 
         location = 'location=42.361145,-71.057083&'
-        radius = 'radius=8000&'
+        radius = 'radius=15000&'
         type = 'type=convenience_store&'
 
         keyword_cvs = "keyword=CVS&"
@@ -242,8 +242,9 @@ class DataRetrieval(dml.Algorithm):
         return doc
 
 # debug
-'''
+
 DataRetrieval.execute()
+'''
 doc = DataRetrieval.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -1,16 +1,20 @@
 import dml
 import datetime
 import json
+import math
 import prov.model
+import pprint
 import uuid
 from urllib.request import urlopen
 
 
-class CvsCrime(dml.Algorithm):
+class X(dml.Algorithm):
+    # TODO 把X改成你的想要的名字，filename需要和classname一致
 
     contributor = "jshen97_leochans"
-    reads = ['jshen97_leochans.cvs', 'jshen97_leochans.crime']
-    writes = ['jshen97.refinedCrime', 'jshen97_leochans.cvsCrime']
+    reads = []
+    writes = []
+    # TODO 这里面写读取的data set和会产生的data set
 
     @staticmethod
     def execute(trial=False):
@@ -23,7 +27,7 @@ class CvsCrime(dml.Algorithm):
         repo.authenticate('leochans_jshen97', 'leochans_jshen97')
 
 
-        # TODO refine crimeMerge cvs and crime
+        # TODO 我没理解错的话，简单的merge或combine都算？所以我前两个就都偷懒都是combine了
 
 
         repo.logout()
@@ -46,3 +50,11 @@ class CvsCrime(dml.Algorithm):
         repo.logout()
 
         return doc
+
+# debug
+'''
+X.execute()
+doc = X.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
+'''
