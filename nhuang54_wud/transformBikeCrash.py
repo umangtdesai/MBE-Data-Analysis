@@ -9,6 +9,10 @@ from math import radians, sqrt, sin, cos, atan2
 def product(R, S):
   return [(t,u) for t in R for u in S]
 
+def aggregate(R, f):
+  keys = {r[0] for r in R}
+  return [(key, f([v for (k,v) in R if k == key])) for key in keys]
+
 def geodistance(la1, lo1, la2, lo2):
   EARTH_R = 6378.0
   la1 = radians(la1)
@@ -47,17 +51,35 @@ class transformBikeCrash(dml.Algorithm):
         crashLocations = repo.nhuang54_wud.crashRecord.find()
         lightLocations = repo.nhuang54_wud.streetlightLocation.find()  
 
-        # Select to only get bike crashes
-        bikeCrashes = []
-        for row in crashLocations:
-          if row['"mode_type"'] == 'bike':
-            bikeCrashes += row
 
+        # Select to only get bike crashes
+        bikeCrashes = [t for t in crashLocations if t['"mode_type"'] == 'bike']
+        print(len(bikeCrashes))
+
+        lightLoc = [t for t in lightLocations if t['TYPE'] == 'LIGHT']
+        print(len(lightLoc))
         # Product between bike crashes and streetlight locations
-        crashLightProduct = product()
+        crashLightProduct = product(bikeCrashes, lightLoc)
+        print(len(crashLightProduct))
+
+        # for i in range(75000, 75040):
+        #   print(crashLightProduct[i])
+
+
+        # Project to add 'distance' column.
+        crashLightDistances = [(t[0]['\ufeff"dispatch_ts"'], geodistance(float(t[0]['"lat"']), float(t[0]['"long"\r']), float(t[1]['Lat']), float(t[1]['Long']))) for t in crashLightProduct]
+
+        # print(crashLightDistances)
+        # Aggregate
+        finalSet = aggregate(crashLightDistances, min)
+        # print(finalSet)
+        with open("./nhuang54_wud/new_datasets/crashesAndLights.json", 'w') as outfile:
+          json.dump(finalSet, outfile)
         
         repo.dropCollection("bikeCrashStreetlight")
         repo.createCollection("bikeCrashStreetlight")
+        for key,value in finalSet.items():
+          repo['nhuang54_wud.bikeCrashStreetlight'].insert({key:value})
         # repo['nhuang54_wud.bikeFatality'].insert_many(json_file)
         repo['nhuang54_wud.bikeCrashStreetlight'].metadata({'complete':True})
         print(repo['nhuang54_wud.bikeCrashStreetlight'].metadata())
