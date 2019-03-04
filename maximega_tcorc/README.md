@@ -13,6 +13,7 @@ Data Portals Used:
    https://datausa.io       
    
 Non-trivial Data Transformations:
+
   1: Merging economic with geographical census information, creating a new data set that has a census tract as a key and            (average income per tract, neighborhood that the tract belongs to, and multipolygon coordinates) as a value.
   
   2: Merging subway station information with neighborhood (NTA) information, creating a new data set that has an NTA code          as a key and (multipolygon coordinates, and (station name, subway line, and coordinates (lat, long) of the station) as a      value.
