@@ -1,6 +1,7 @@
 # http://datamechanics.io/data/boston_street_names.json
 
 import urllib.request
+import requests
 import json
 import dml
 import prov.model
@@ -36,12 +37,22 @@ class ProvenanceModel(dml.Algorithm):
         url = 'http://datamechanics.io/data/boston_landmarks.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("landmarks")
         repo.createCollection("landmarks")
         repo['kgrewal_shin2.landmarks'].insert_many(r)
         repo['kgrewal_shin2.landmarks'].metadata({'complete': True})
         print(repo['kgrewal_shin2.landmarks'].metadata())
+
+        url = "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/boston.geojson"
+        response = requests.get(url)
+
+        responsetxt = '[' + response.text + ']'
+        r = json.loads(responsetxt)
+        repo.dropCollection("neighborhoods")
+        repo.createCollection("neighborhoods")
+        repo['kgrewal_shin2.neighborhoods'].insert_many(r)
+        repo['kgrewal_shin2.neighborhoods'].metadata({'complete': True})
+        print(repo['kgrewal_shin2.neighborhoods'].metadata())
 
         repo.logout()
 
@@ -75,6 +86,7 @@ class ProvenanceModel(dml.Algorithm):
                                'ont:Extension': 'json'})
         get_street_name = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         get_landmarks = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        get_neighborhoods = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
         doc.wasAssociatedWith(get_street_name, this_script)
         doc.usage(get_street_name, resource, startTime, None,
@@ -89,6 +101,12 @@ class ProvenanceModel(dml.Algorithm):
                   }
                   )
 
+        doc.usage(get_neighborhoods, resource, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval',
+                  'ont:Query':'?type=Neighborhood+Location&$select=features'
+                  }
+                  )
+
         streets = doc.entity('dat:kgrewal_shin2#street_name',
                           {prov.model.PROV_LABEL: 'Boston Streets', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(streets, this_script)
@@ -100,6 +118,12 @@ class ProvenanceModel(dml.Algorithm):
         doc.wasAttributedTo(landmarks, this_script)
         doc.wasGeneratedBy(landmarks, get_landmarks, endTime)
         doc.wasDerivedFrom(landmarks, resource, get_landmarks, get_landmarks, get_landmarks)
+
+        neighborhoods = doc.entity('dat:kgrewal_shin2#landmarks',
+                          {prov.model.PROV_LABEL: 'Boston Landmarks', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(neighborhoods, this_script)
+        doc.wasGeneratedBy(neighborhoods, get_neighborhoods, endTime)
+        doc.wasDerivedFrom(neighborhoods, resource, get_neighborhoods, get_neighborhoods, get_neighborhoods)
 
         repo.logout()
 
