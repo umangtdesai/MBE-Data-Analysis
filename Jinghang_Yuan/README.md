@@ -6,7 +6,7 @@
 
 2.Cambridge Transportation 
 
-3.Cambridge Environmental 
+3.Cambridge recreation 
 
 4.Cambridge Traffic
 
@@ -14,4 +14,4 @@
 
 ### Narrative
 
-We have committed setup scripts for a MongoDB database that will set up the database and collection management functions that ensure users sharing the project data repository can read everyone's collections but can only write to their own collections. Once you have installed your MongoDB instance, you can prepare it by first starting `mongod` _without authentication_:
+All these five data sets are about Cambridge, we use them in order to find out the factor that influences the value of properties. We could combine the address of propertie, schools, bus stops, parking lot and receation spots together to answer how the value of properties could be affected. We may also find out how will the value of properties increase/decrease if there are more/less transportation, recreation and schools nearby.
