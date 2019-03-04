@@ -5,11 +5,14 @@ Data Sets Used:
   http://datamechanics.io/data/maximega_tcorc/NYC_subway_exit_entrance.csv
   
   https://data.cityofnewyork.us/resource/swpk-hqdp.json
+  
   https://data.cityofnewyork.us/resource/q2z5-ai38.json
   
 Data Portals Used:
    https://data.cityofnewyork.us/
+   
    https://data.ny.gov/
+   
    https://datausa.io
    
 Non-trivial Data Transformations:
