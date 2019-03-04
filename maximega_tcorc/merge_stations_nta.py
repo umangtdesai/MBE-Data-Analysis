@@ -27,8 +27,8 @@ def point_inside_polygon(x,y,poly):
 
 class merge_stations_nta(dml.Algorithm):
 	contributor = 'maximega_tcorc'
-	reads = ['repo.maximega_tcorc.stations', 'maximega_tcorc.neighborhoods']
-	writes = []
+	reads = ['maximega_tcorc.stations', 'maximega_tcorc.neighborhoods']
+	writes = ['maximega_tcorc.neighborhoods_with_stations']
 	
 	@staticmethod
 	def execute(trial = False):
@@ -38,9 +38,11 @@ class merge_stations_nta(dml.Algorithm):
 		client = dml.pymongo.MongoClient()
 		repo = client.repo
 		repo.authenticate('maximega_tcorc', 'maximega_tcorc')
+		repo_name = merge_stations_nta.writes[0]
 
 		stations = repo.maximega_tcorc.stations.find()
 		ntas = repo.maximega_tcorc.neighborhoods.find()
+
 
 		duplicates = []
 		filtered_stations = []
@@ -52,31 +54,39 @@ class merge_stations_nta(dml.Algorithm):
 				filtered_stations.append(station)
 
 		nta_objects = {}
-		used_stations = {}
 
-
+		nta_count = 0
+		station_count = 0
 
 		for nta in ntas:
 
-			nta_objects[nta['ntacode']] = {'ntaname': nta['ntaname'], 'the_geom': nta['the_geom'], 'stations': []}
-
-			# nta_objects[nta['ntacode']] = {'ntaname': nta['ntaname'], 'stations': []} # to view print better
+			nta_objects[nta['ntacode']] = {'ntacode': nta['ntacode'],'ntaname': nta['ntaname'], 'the_geom': nta['the_geom'], 'stations': []}
 
 			nta_multipolygon = nta['the_geom']['coordinates'][0][0]
 
 			for station in filtered_stations:
 
-				#if station['station_name'] not in used_stations.keys():
 				station_coordinates = station['entrance_location']['coordinates']
 				is_in_nta = point_inside_polygon(station_coordinates[0], station_coordinates[1], nta_multipolygon)
 
 				if is_in_nta:
 					nta_objects[nta['ntacode']]['stations'].append({
 						'station_name': station['station_name']
-						
 					})
 
-		# print("nta_objects", nta_objects)
+		insert_many_arr = []
+
+		for key in nta_objects.keys():
+			insert_many_arr.append(nta_objects[key])
+
+		print("insert_many_arr", len(insert_many_arr))
+
+		#----------------- Data insertion into Mongodb ------------------
+		repo.dropCollection('neighborhoods_with_stations')
+		repo.createCollection('neighborhoods_with_stations')
+		repo[repo_name].insert_many(insert_many_arr)
+		repo[repo_name].metadata({'complete':True})
+		print(repo[repo_name].metadata())
 
 		repo.logout()
 
