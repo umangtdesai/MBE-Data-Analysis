@@ -2,3 +2,4 @@ db_data/*
 auth.json
 *.pyc
 provenance.html
+.vscode/*
