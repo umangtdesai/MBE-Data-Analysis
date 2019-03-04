@@ -1,4 +1,3 @@
-# http://datamechanics.io/data/boston_street_names.json
 
 import urllib.request
 import requests
