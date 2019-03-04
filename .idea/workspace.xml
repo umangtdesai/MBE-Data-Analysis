@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3cc158e9-6c68-4ed1-a9d8-57a7d4645f31" name="Default" comment="add uber">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-    </list>
+    <list default="true" id="3cc158e9-6c68-4ed1-a9d8-57a7d4645f31" name="Default" comment="add uber" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,8 +94,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="4" />
-    <option name="y" value="88" />
+    <option name="x" value="23" />
+    <option name="y" value="25" />
     <option name="width" value="1657" />
     <option name="height" value="915" />
   </component>
@@ -258,7 +256,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="4" y="88" width="1657" height="915" extended-state="0" />
+    <frame x="-680" y="549" width="1657" height="915" extended-state="0" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21026894" />
       <window_info id="Structure" order="1" weight="0.24945612" />
