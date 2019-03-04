@@ -15,10 +15,6 @@ pat = r'\b(?:{})\b'.format('|'.join(remove_words))
 
 df['street_name'] = df['street-name'].str.replace(pat, '')
 
-if '-' in df['zipcodes']:
-    zip = df['zipcodes'].split('-')[0]
-    df['zipcodes'] = zip
-
 df = df.drop(df.columns[0], axis=1)
 df = df.drop(['street-name', 'gender2'], axis=1)
 print(df.head(5))
