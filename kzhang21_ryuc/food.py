@@ -75,7 +75,7 @@ class Food(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         #additional resource
-        doc.add_namespace('food', 'http://datamechanics.io/data/boston_food.csv')
+        doc.add_namespace('food', 'https://data.boston.gov/dataset/03693648-2c62-4a2c-a4ec-48de2ee14e18/resource/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c/download/tmper3diw4s.csv')
 
         this_script = doc.agent('alg:kelly_colleen#food', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('dat:food', {'prov:label':'Food, Food Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
