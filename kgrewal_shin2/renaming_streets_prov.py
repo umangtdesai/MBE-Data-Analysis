@@ -108,8 +108,8 @@ class ProvenanceModel(dml.Algorithm):
 
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
-street_names.execute()
-doc = street_names.provenance()
+ProvenanceModel.execute()
+doc = ProvenanceModel.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 
