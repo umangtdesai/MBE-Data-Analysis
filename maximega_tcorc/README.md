@@ -8,9 +8,9 @@ Data Sets Used:
   
 Data Portals Used:
 
-   https://data.cityofnewyork.us/ 
-   https://data.ny.gov/ 
-   https://datausa.io
+   https://data.cityofnewyork.us/       
+   https://data.ny.gov/       
+   https://datausa.io       
    
 Non-trivial Data Transformations:
   1: Merging economic with geographical census information, creating a new data set that has a census tract as a key and            (average income per tract, neighborhood that the tract belongs to, and multipolygon coordinates) as a value.
