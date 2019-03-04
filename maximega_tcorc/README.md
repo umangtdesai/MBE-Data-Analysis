@@ -8,10 +8,8 @@ Data Sets Used:
   
 Data Portals Used:
 
-   https://data.cityofnewyork.us/
-   
-   https://data.ny.gov/
-   
+   https://data.cityofnewyork.us/ 
+   https://data.ny.gov/ 
    https://datausa.io
    
 Non-trivial Data Transformations:
