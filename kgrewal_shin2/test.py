@@ -1,12 +1,10 @@
 import requests
 import json
+import urllib.request
 
-
-
-url = "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/boston.geojson"
+url = 'https://opendata.arcgis.com/datasets/7a7aca614ad740e99b060e0ee787a228_3.geojson'
 response = requests.get(url)
 
-responseTxt = '[' + response.text + ']'
-r = json.loads(responseTxt)
-
+responsetxt = '[' + response.text + ']'
+r = json.loads(responsetxt)
 print(r)

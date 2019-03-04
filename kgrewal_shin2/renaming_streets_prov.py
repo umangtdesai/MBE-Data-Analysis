@@ -12,7 +12,8 @@ import uuid
 class ProvenanceModel(dml.Algorithm):
     contributor = 'kgrewal_shin2'
     reads = []
-    writes = ['kgrewal_shin2.street_names', 'kgrewal_shin2.landmarks', 'kgrewal_shin2.ubers']
+    writes = ['kgrewal_shin2.street_names', 'kgrewal_shin2.landmarks', 'kgrewal_shin2.neighborhoods',
+              'kgrewal_shin2.ubers']
 
     @staticmethod
     def execute(trial=False):
@@ -35,15 +36,19 @@ class ProvenanceModel(dml.Algorithm):
         repo['kgrewal_shin2.street_names'].metadata({'complete': True})
         print(repo['kgrewal_shin2.street_names'].metadata())
 
-        #landmarks
-        url = 'http://datamechanics.io/data/boston_landmarks.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
+
+        #landmarks api
+        url = 'https://opendata.arcgis.com/datasets/7a7aca614ad740e99b060e0ee787a228_3.geojson'
+        response = requests.get(url)
+        responsetxt = '[' + response.text + ']'
+        r = json.loads(responsetxt)
         repo.dropCollection("landmarks")
         repo.createCollection("landmarks")
         repo['kgrewal_shin2.landmarks'].insert_many(r)
         repo['kgrewal_shin2.landmarks'].metadata({'complete': True})
         print(repo['kgrewal_shin2.landmarks'].metadata())
+
+
 
         url = "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/boston.geojson"
         response = requests.get(url)
@@ -111,7 +116,7 @@ class ProvenanceModel(dml.Algorithm):
 
         doc.usage(get_landmarks, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Landmark+Name&$select=Name of Property,Address,Neighborhood'
+                  'ont:Query':'?type=Landmark+Name&$select=WARD, Petition, Name_of_Pr, Address, Neighborho, ShapeSTArea, ShapeSTLength'
                   }
                   )
 
