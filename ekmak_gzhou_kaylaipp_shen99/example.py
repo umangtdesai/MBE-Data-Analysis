@@ -9,6 +9,7 @@ import requests
 import xmltodict
 import csv
 
+
 class example(dml.Algorithm):
 
     contributor = 'ekmak_gzhou_kaylaipp_shen99'
@@ -55,6 +56,19 @@ class example(dml.Algorithm):
         repo['ekmak_gzhou_kaylaipp_shen99.zillow_property_data'].metadata({'complete':True})
         print(repo['ekmak_gzhou_kaylaipp_shen99.zillow_property_data'].metadata())
 
+        #Retrieve Zillow Search Data
+        url = 'http://datamechanics.io/data/zillow_getsearchresults_data.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        s =json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("zillow_getsearchresults_data")
+        repo.createCollection("zillow_getsearchresults_data")
+        for k,v in r.items():
+            c = {'address':k, 'response':v}
+            repo['ekmak_gzhou_kaylaipp_shen99.zillow_getsearchresults_data'].insert_one(c)
+        repo['ekmak_gzhou_kaylaipp_shen99.zillow_getsearchresults_data'].metadata({'complete':True})
+        print(repo['ekmak_gzhou_kaylaipp_shen99.zillow_getsearchresults_data'].metadata())
+        
 
         #Retrive permit database data and add to mongo
         url = 'http://datamechanics.io/data/ekmak_gzhou_kaylaipp_shen99/boston_permits.json'
@@ -89,6 +103,7 @@ class example(dml.Algorithm):
             'expiration_date':expiration_date, 'status':status, 'owner':owner, 'occupancy_type':occupancy_type,
             'sq_feet':sq_feet, 'address':address, 'city':city, 'state':state, 'zipcode':zipcode, 'location':location}
             repo['ekmak_gzhou_kaylaipp_shen99.permit_data'].insert_one(c)
+
 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -211,6 +226,34 @@ def retrieve_zillow_property_data():
     with open('zillow_property_data.json', 'w') as outfile:
         print('outputing file')
         json.dump(result, outfile)
+
+
+
+key = 'X1-ZWz182me3104qz_6wmn8'
+api = zillow.ValuationApi()
+
+def retrieve_zillow_searchresults_data():
+    result = {}
+    CSV_URL = 'http://datamechanics.io/data/Live_Street_Address_Management_SAM_Addresses.csv'
+    with requests.get(CSV_URL, stream=True) as r:
+        lines = (line.decode('utf-8') for line in r.iter_lines())
+        index = 0
+        for row in csv.reader(lines):
+            print(index)
+            if (index % 5000 == 0):
+                print(index)
+            zipcode = row[20]
+            street = row[5]
+            if zipcode == '02127':
+                index += 1
+                address = street + ", Boston, MA"
+                data = apiGetSearchResults(key, address, zipcode)
+                result.update(data)
+    print(result)
+    with open('zillow_getsearchresults_data.json', 'w') as outfile:
+        print('outputting file')
+        json.dump(result, outfile)
+
 
 
 
