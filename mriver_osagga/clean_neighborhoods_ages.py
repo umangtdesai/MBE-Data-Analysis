@@ -77,7 +77,7 @@ class clean_neighborhoods_ages(dml.Algorithm):
                   )
 
         bos_neighborhoods_clean = doc.entity('dat:mriver_osagga#bos_neighborhoods_clean', {
-                                             prov.model.PROV_LABEL: 'Boston Neighborhoods (Clean)', prov.model.PROV_TYPE: 'ont:DataSet'})
+                                             prov.model.PROV_LABEL: 'Ages by Neighborhood (Clean)', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(bos_neighborhoods_clean, this_script)
         doc.wasGeneratedBy(bos_neighborhoods_clean,
                            clean_neighborhoods_ages, endTime)

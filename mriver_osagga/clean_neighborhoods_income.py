@@ -94,7 +94,7 @@ class clean_neighborhoods_income(dml.Algorithm):
                   )
 
         bos_neighborhoods_income_clean = doc.entity('dat:mriver_osagga#bos_neighborhoods_income_clean', {
-                                                    prov.model.PROV_LABEL: 'Boston Neighborhoods Income (Clean)', prov.model.PROV_TYPE: 'ont:DataSet'})
+                                                    prov.model.PROV_LABEL: 'Income by Neighborhood (Clean)', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(bos_neighborhoods_income_clean, this_script)
         doc.wasGeneratedBy(bos_neighborhoods_income_clean,
                            clean_neighborhoods_income, endTime)

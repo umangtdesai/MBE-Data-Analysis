@@ -8,7 +8,7 @@ import uuid
 from io import StringIO
 
 
-class get_bos_neighborhoods(dml.Algorithm):
+class clean_bos_neighborhoods(dml.Algorithm):
     contributor = 'mriver_osagga'
     reads = ['mriver_osagga.bos_neighborhoods']
     writes = ['mriver_osagga.bos_neighborhoods_clean']
@@ -63,14 +63,14 @@ class get_bos_neighborhoods(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:mriver_osagga#get_bos_neighborhoods', {
+        this_script = doc.agent('alg:mriver_osagga#clean_bos_neighborhoods', {
                                 prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('dat:boston_neighborhoods', {
                               'prov:label': 'Boston Neighborhoods', prov.model.PROV_TYPE: 'ont:DataSet'})
-        get_bos_neighborhoods = doc.activity(
+        clean_bos_neighborhoods = doc.activity(
             'log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_bos_neighborhoods, this_script)
-        doc.usage(get_bos_neighborhoods, resource, startTime, None,
+        doc.wasAssociatedWith(clean_bos_neighborhoods, this_script)
+        doc.usage(clean_bos_neighborhoods, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': '?type=Boston+Neighborhoods&$select=name'
                    }
@@ -80,20 +80,19 @@ class get_bos_neighborhoods(dml.Algorithm):
                                              prov.model.PROV_LABEL: 'Boston Neighborhoods (Clean)', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(bos_neighborhoods_clean, this_script)
         doc.wasGeneratedBy(bos_neighborhoods_clean,
-                           get_bos_neighborhoods, endTime)
+                           clean_bos_neighborhoods, endTime)
         doc.wasDerivedFrom(bos_neighborhoods_clean, resource,
-                           get_bos_neighborhoods, get_bos_neighborhoods, get_bos_neighborhoods)
+                           clean_bos_neighborhoods, clean_bos_neighborhoods, clean_bos_neighborhoods)
 
         repo.logout()
 
         return doc
 
-
+'''
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
-'''
-get_bos_neighborhoods.execute()
-doc = get_bos_neighborhoods.provenance()
+clean_bos_neighborhoods.execute()
+doc = clean_bos_neighborhoods.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
