@@ -18,11 +18,13 @@ crime rate, is proportional to the square of resident income, etc.) then we expe
 explain why or why not.
  
 <b>(3) Obtained Datasets and Resources:</b><br>
-   a. cvs stores in boston area through querying Google Places API <br>
-   b. Walgreen stores in boston area through querying Google Places API <br>
-   c. 7Eleven stores in boston area through querying Google Places API <br>
+   a. Cvs stores within 15 km boston area through querying Google Places API (Search Nearby) <br>
+   b. Walgreen stores within 15 km boston area through querying Google Places API (Search Nearby) <br>
+   c. 7Eleven stores within 15 km boston area through querying Google Places API (Search Nearby) <br>
    d. Streetlight Locations in boston area through querying Boston Data Portal (Analyze Boston) <br>
    e. Eviction Incidents in boston area from http://datamechanics.io/data/evictions_boston.csv <br>
    f. Crime Incidents in boston area from http://datamechanics.io/dadta/crime.csv <br>
    
-<b>(4) Interesting Goals/Questions:</b>
+<b>(4) Performed Transformations and Incentives:</b><br>
+   a. Combined cvs and walgreen into a collection named cvsWalgreen in cvsWalgreen.py This transformation provides us the insight of the geo-distribution of the two competing retailer: CVS and Walgreen. Questions like "How to quantify the competition between CVS and Walgreen?" can be well answered. <br>
+   b. Took those eviction incidences that are within 15 km of boston collection then combined them each with cvs collection and walgreen collection in CvsWalEviction.py. Lat/Lng Distance is calculated using Haversine Formula. This transformation can potentially provide us the underlying relationship between Personal Finanial Instability and Retailer Store Locations. Questions like "what is the subtle difference between CVS target customers and walgreen's target customers?" can be well answered. <br>
