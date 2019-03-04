@@ -56,43 +56,31 @@ class get_census_tracts(dml.Algorithm):
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         #resources:
-        doc.add_namespace('dng', 'https://data.ny.gov/resource/hvwh-qtfg.json')
-        doc.add_namespace('dcu', 'https://data.cityofnewyork.us/resource/q2z5-ai38.json')
+        doc.add_namespace('dmc', 'http://datamechanics.io/data/maximega_tcorc/')
         #agent
-        this_script = doc.agent('alg:maximega_tcorc#stations_with_neighborhoods', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        #defining neighborhoods entity
-        mt_neighborhoods = doc.entity('dat:maximega_tcorc#neighborhoods', {'prov:label':'NYC Neighborhoods', prov.model.PROV_TYPE:'ont:DataResource'})
-        #defining stations entity
-        mt_stations = doc.entity('dat:maximega_tcorc#stations', {'prov:label':'NYC Subway Stations', prov.model.PROV_TYPE:'ont:DataResource'})
+        this_script = doc.agent('alg:maximega_tcorc#get_census_tracts', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dmc:NYC_census_tracts.csv', {'prov:label':'NYC Census Tract Information', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         
-        get_neighborhood = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_station = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_census_tracts = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
-        doc.wasAssociatedWith(get_neighborhood, this_script)
-        doc.wasAssociatedWith(get_station, this_script)
-        doc.usage(get_neighborhood, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
-        doc.usage(get_station, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
+        doc.wasAssociatedWith(get_census_tracts, this_script)
+        doc.usage(get_census_tracts, resource, startTime, None,
+                    {prov.model.PROV_TYPE:'ont:Retrieval'
+                    }
+                    )
 
-        neighborhoods = doc.entity('dat:maximega_tcorc#neighborhoods', {prov.model.PROV_LABEL:'NYC Neighborhood Data', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(neighborhoods, this_script)
-        doc.wasGeneratedBy(neighborhoods, get_neighborhoods, endTime)
-        doc.wasDerivedFrom(neighborhoods, resource, get_neighborhoods, get_neighborhoods, get_neighborhoods)
-
-        stations = doc.entity('dat:maximega_tcorc#stations', {prov.model.PROV_LABEL:'NYC Subway Station Data', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(stations, this_script)
-        doc.wasGeneratedBy(stations, get_stations, endTime)
-        doc.wasDerivedFrom(stations, resource, get_stations, get_stations, get_stations)
+        census_tracts = doc.entity('dat:maximega_tcorc#census_tracts', {prov.model.PROV_LABEL:'NYC Census Tract Information', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(census_tracts, this_script)
+        doc.wasGeneratedBy(census_tracts, get_census_tracts, endTime)
+        doc.wasDerivedFrom(census_tracts, resource, get_census_tracts, get_census_tracts, get_census_tracts)
 
         repo.logout()
-                  
+                
         return doc
 
+
 get_census_tracts.execute()
+doc = get_census_tracts.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
+         

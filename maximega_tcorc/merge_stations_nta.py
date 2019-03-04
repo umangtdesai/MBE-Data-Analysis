@@ -32,11 +32,11 @@ class merge_stations_nta(dml.Algorithm):
 	def execute(trial = False):
 		startTime = datetime.datetime.now()
 
-		repo_name = merge_income.writes[0]
+		repo_name = merge_stations_nta.writes[0]
 		# ----------------- Set up the database connection -----------------
-        client = dml.pymongo.MongoClient()
-        repo = client.repo
-        repo.authenticate('maximega_tcorc', 'maximega_tcorc')
+		client = dml.pymongo.MongoClient()
+		repo = client.repo
+		repo.authenticate('maximega_tcorc', 'maximega_tcorc')
 
 		stations = repo.maximega_tcorc.stations.find()
 		ntas = repo.maximega_tcorc.neighborhoods.find()
@@ -45,7 +45,7 @@ class merge_stations_nta(dml.Algorithm):
 		filtered_stations = []
 		# ----------------- Create a list of unique stations (stations data contains many duplicates) -----------------
 		for station in stations:
-			name = station['station_name']
+			name = station['Station Name']
 			if name not in duplicates:
 				duplicates.append(name)
 				filtered_stations.append(station)
@@ -59,13 +59,27 @@ class merge_stations_nta(dml.Algorithm):
 			nta_multipolygon = nta['the_geom']['coordinates'][0][0]
 
 			for station in filtered_stations:
-				station_coordinates = station['entrance_location']['coordinates']
-				is_in_nta = point_inside_polygon(station_coordinates[0], station_coordinates[1], nta_multipolygon)
+				# ----------------- station coordinates come in form: (lat, long) as a string -----------------
+				# ----------------- retreive lat and long points, cast them to floats to be passed into point_inside_polygon function -----------------
+				station_coordinates = station['Entrance Location']
+				lat_coord = ''
+				long_coord = ''
+				i = 1
+				while(station_coordinates[i] != ','):
+					lat_coord += station_coordinates[i]
+					i += 1
+				i += 2
+				while(station_coordinates[i] != ')'):
+					long_coord += station_coordinates[i]
+					i += 1
+				lat_coord = float(lat_coord)
+				long_coord = float(long_coord)
+				#print(type(nta_multipolygon[0][0]))
+				is_in_nta = point_inside_polygon(long_coord, lat_coord, nta_multipolygon)
 				if is_in_nta:
 					nta_objects[nta['ntacode']]['stations'].append({
-						'station_name': station['station_name']
+						'station_name': station['Station Name']
 					})
-
 		# ----------------- Reformat data for mongodb insertion -----------------
 		insert_many_arr = []
 		for key in nta_objects.keys():
@@ -86,7 +100,51 @@ class merge_stations_nta(dml.Algorithm):
 
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-		print("")
+		'''
+			Create the provenance document describing everything happening
+			in this script. Each run of the script will generate a new
+			document describing that invocation event.
+		'''
 
-merge_stations_nta.execute()
+		# Set up the database connection.
+		client = dml.pymongo.MongoClient()
+		repo = client.repo
+		repo.authenticate('alice_bob', 'alice_bob')
+		doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+		doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+		doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+		doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+
+		this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+		resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+		get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+		get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+		doc.wasAssociatedWith(get_found, this_script)
+		doc.wasAssociatedWith(get_lost, this_script)
+		doc.usage(get_found, resource, startTime, None,
+					{prov.model.PROV_TYPE:'ont:Retrieval',
+					'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+					}
+					)
+		doc.usage(get_lost, resource, startTime, None,
+					{prov.model.PROV_TYPE:'ont:Retrieval',
+					'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
+					}
+					)
+
+		lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
+		doc.wasAttributedTo(lost, this_script)
+		doc.wasGeneratedBy(lost, get_lost, endTime)
+		doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
+
+		found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
+		doc.wasAttributedTo(found, this_script)
+		doc.wasGeneratedBy(found, get_found, endTime)
+		doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+
+		repo.logout()
+					
+		return doc
+
 

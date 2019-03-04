@@ -63,30 +63,25 @@ class get_population(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        
         #resources:
-        doc.add_namespace('dcu', 'https://data.cityofnewyork.us/resource/swpk-hqdp.json')
+        doc.add_namespace('nyu', 'https://data.cityofnewyork.us/resource/')
         #agent
         this_script = doc.agent('alg:maximega_tcorc#get_population', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        #defining population entity
-        population = doc.entity('dat:maximega_tcorc#population', {'prov:label':'NYC Population by NTA', prov.model.PROV_TYPE:'ont:DataResource'})
+        resource = doc.entity('nyu:swpk-hqdp.json', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         
         get_population = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
         doc.wasAssociatedWith(get_population, this_script)
         doc.usage(get_population, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
-
-        population = doc.entity('dat:maximega_tcorc#population', {prov.model.PROV_LABEL:'NYC Population by NTA', prov.model.PROV_TYPE:'ont:DataSet'})
+    
+        population = doc.entity('dat:maximega_tcorc#population', {prov.model.PROV_LABEL:'NYC Population in Neighborhoods', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(population, this_script)
         doc.wasGeneratedBy(population, get_population, endTime)
         doc.wasDerivedFrom(population, resource, get_population, get_population, get_population)
 
         repo.logout()
-                  
+                
         return doc
-
-get_population.execute()

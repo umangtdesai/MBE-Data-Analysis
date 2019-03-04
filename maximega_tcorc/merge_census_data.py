@@ -36,6 +36,7 @@ class merge_census_data(dml.Algorithm):
 
         # ----------------- Merge Census Tract info with AVG income per tract -----------------
         tract_with_income = {}
+        count = 0
         for tract in tracts.find():
             for income in incomes.find():
                 tract_num_income = income['geo']
@@ -50,8 +51,12 @@ class merge_census_data(dml.Algorithm):
                 tract_num_tract = tract['BoroCT2010']
                 # ----------------- If census tracts are equal, create new data object to load into DB -----------------
                 if int(tract_num_income) == tract_num_tract:
-                    tract_with_income[tract_num_income] = {'income': income['income'], 'nta': tract['NTACode'], 'nta_name': tract['NTAName'], 'multi_polygon': tract['the_geom']}
-
+                    # ----------------- Some tracts are missing income data so we ommit those from the merge -----------------
+                    if (income['income'] == 'None'):
+                        count +=1
+                    else:
+                        tract_with_income[tract_num_income] = {'income': income['income'], 'nta': tract['NTACode'], 'nta_name': tract['NTAName'], 'multi_polygon': tract['the_geom']}
+        print(count)
         # ----------------- Reformat data for mongodb insertion -----------------
         insert_many_arr = []
         for key in tract_with_income.keys():
@@ -81,49 +86,40 @@ class merge_census_data(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('maximega_tcorc', 'maximega_tcorc')
+        repo.authenticate('alice_bob', 'alice_bob')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        #resources:
-        doc.add_namespace('dng', 'https://data.ny.gov/resource/hvwh-qtfg.json')
-        doc.add_namespace('dcu', 'https://data.cityofnewyork.us/resource/q2z5-ai38.json')
-        #agent
-        this_script = doc.agent('alg:maximega_tcorc#stations_with_neighborhoods', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        #defining neighborhoods entity
-        mt_neighborhoods = doc.entity('dat:maximega_tcorc#neighborhoods', {'prov:label':'NYC Neighborhoods', prov.model.PROV_TYPE:'ont:DataResource'})
-        #defining stations entity
-        mt_stations = doc.entity('dat:maximega_tcorc#stations', {'prov:label':'NYC Subway Stations', prov.model.PROV_TYPE:'ont:DataResource'})
-        
-        get_neighborhood = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_station = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        doc.wasAssociatedWith(get_neighborhood, this_script)
-        doc.wasAssociatedWith(get_station, this_script)
-        doc.usage(get_neighborhood, resource, startTime, None,
+        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_found, this_script)
+        doc.wasAssociatedWith(get_lost, this_script)
+        doc.usage(get_found, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
                   }
                   )
-        doc.usage(get_station, resource, startTime, None,
+        doc.usage(get_lost, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
                   }
                   )
 
-        neighborhoods = doc.entity('dat:maximega_tcorc#neighborhoods', {prov.model.PROV_LABEL:'NYC Neighborhood Data', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(neighborhoods, this_script)
-        doc.wasGeneratedBy(neighborhoods, get_neighborhoods, endTime)
-        doc.wasDerivedFrom(neighborhoods, resource, get_neighborhoods, get_neighborhoods, get_neighborhoods)
+        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(lost, this_script)
+        doc.wasGeneratedBy(lost, get_lost, endTime)
+        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
 
-        stations = doc.entity('dat:maximega_tcorc#stations', {prov.model.PROV_LABEL:'NYC Subway Station Data', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(stations, this_script)
-        doc.wasGeneratedBy(stations, get_stations, endTime)
-        doc.wasDerivedFrom(stations, resource, get_stations, get_stations, get_stations)
+        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(found, this_script)
+        doc.wasGeneratedBy(found, get_found, endTime)
+        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
 
         repo.logout()
                   
         return doc
-
-merge_census_data.execute()

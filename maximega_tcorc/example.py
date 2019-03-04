@@ -18,8 +18,9 @@ class example(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
+        '''
         repo.authenticate('alice_bob', 'alice_bob')
-
+        
         url = 'http://cs-people.bu.edu/lapets/591/examples/lost.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
@@ -37,7 +38,7 @@ class example(dml.Algorithm):
         repo.dropCollection("found")
         repo.createCollection("found")
         repo['alice_bob.found'].insert_many(r)
-
+        '''
         repo.logout()
 
         endTime = datetime.datetime.now()
@@ -50,12 +51,12 @@ class example(dml.Algorithm):
             Create the provenance document describing everything happening
             in this script. Each run of the script will generate a new
             document describing that invocation event.
-            '''
+        '''
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
+        #repo.authenticate('alice_bob', 'alice_bob')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -93,13 +94,8 @@ class example(dml.Algorithm):
                   
         return doc
 
-'''
-# This is example code you might use for debugging this module.
-# Please remove all top-level function calls before submitting.
+
 example.execute()
 doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
-'''
-
-## eof
