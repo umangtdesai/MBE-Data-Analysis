@@ -11,7 +11,7 @@ df = df.drop('Petition Number', axis=1)
 print(df.head(5))
 
 
-out = df.to_json(orient='records')[1:-1].replace('},{', '} {')
+out = df.to_json(orient='records')
 
 with open('boston_landmarks.json', 'w') as f:
     f.write(out)
