@@ -12,7 +12,7 @@ import uuid
 class ProvenanceModel(dml.Algorithm):
     contributor = 'kgrewal_shin2'
     reads = []
-    writes = ['kgrewal_shin2.street_names', 'kgrewal_shin2.landmarks']
+    writes = ['kgrewal_shin2.street_names', 'kgrewal_shin2.landmarks', 'kgrewal_shin2.ubers']
 
     @staticmethod
     def execute(trial=False):
@@ -24,6 +24,7 @@ class ProvenanceModel(dml.Algorithm):
         repo = client.repo
         repo.authenticate('kgrewal_shin2', 'kgrewal_shin2')
 
+        # boston street names
         url = 'http://datamechanics.io/data/boston_street_names.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
@@ -34,6 +35,7 @@ class ProvenanceModel(dml.Algorithm):
         repo['kgrewal_shin2.street_names'].metadata({'complete': True})
         print(repo['kgrewal_shin2.street_names'].metadata())
 
+        #landmarks
         url = 'http://datamechanics.io/data/boston_landmarks.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
@@ -53,6 +55,17 @@ class ProvenanceModel(dml.Algorithm):
         repo['kgrewal_shin2.neighborhoods'].insert_many(r)
         repo['kgrewal_shin2.neighborhoods'].metadata({'complete': True})
         print(repo['kgrewal_shin2.neighborhoods'].metadata())
+
+        #uber data
+        url = 'http://datamechanics.io/data/boston_common_ubers.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("ubers")
+        repo.createCollection("ubers")
+        repo['kgrewal_shin2.ubers'].insert_many(r)
+        repo['kgrewal_shin2.ubers'].metadata({'complete': True})
+        print(repo['kgrewal_shin2.ubers'].metadata())
 
         repo.logout()
 
@@ -87,6 +100,7 @@ class ProvenanceModel(dml.Algorithm):
         get_street_name = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         get_landmarks = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         get_neighborhoods = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        get_ubers = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
         doc.wasAssociatedWith(get_street_name, this_script)
         doc.usage(get_street_name, resource, startTime, None,
@@ -103,7 +117,12 @@ class ProvenanceModel(dml.Algorithm):
 
         doc.usage(get_neighborhoods, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Neighborhood+Location&$select=features'
+                  'ont:Query':'?type=Neighborhood+Location&$select=features'}
+                  )
+
+        doc.usage(get_ubers, resource, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval',
+                  'ont:Query':'?type=Uber+Data&$select=Origin Display Name,Destination Display Name,Mean Travel Time (Seconds),Range - Lower Bound Travel Time (Seconds),Range - Upper Bound Travel Time (Seconds)'
                   }
                   )
 
@@ -119,11 +138,19 @@ class ProvenanceModel(dml.Algorithm):
         doc.wasGeneratedBy(landmarks, get_landmarks, endTime)
         doc.wasDerivedFrom(landmarks, resource, get_landmarks, get_landmarks, get_landmarks)
 
+
         neighborhoods = doc.entity('dat:kgrewal_shin2#landmarks',
                           {prov.model.PROV_LABEL: 'Boston Landmarks', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(neighborhoods, this_script)
         doc.wasGeneratedBy(neighborhoods, get_neighborhoods, endTime)
         doc.wasDerivedFrom(neighborhoods, resource, get_neighborhoods, get_neighborhoods, get_neighborhoods)
+
+        ubers = doc.entity('dat:kgrewal_shin2#ubers',
+                          {prov.model.PROV_LABEL: 'Boston Common Ubers', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(ubers, this_script)
+        doc.wasGeneratedBy(ubers, get_ubers, endTime)
+        doc.wasDerivedFrom(ubers, resource, get_ubers, get_ubers, get_ubers)
+
 
         repo.logout()
 
