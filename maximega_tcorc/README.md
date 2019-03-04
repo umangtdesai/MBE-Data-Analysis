@@ -14,13 +14,13 @@ Data Portals Used:
    
 Non-trivial Data Transformations:
 
-  1: Merging economic with geographical census information, creating a new data set that has a census tract as a key and            (average income per tract, neighborhood that the tract belongs to, and multipolygon coordinates) as a value.
+  1: Merging economic with geographical census information, creating a new data set that has a census tract as a key and (average income per tract, neighborhood that the tract belongs to, and multipolygon coordinates) as a value.
   
-  2: Merging subway station information with neighborhood (NTA) information, creating a new data set that has an NTA code          as a key and (multipolygon coordinates, and (station name, subway line, and coordinates (lat, long) of the station) as a      value.
+  2: Merging subway station information with neighborhood (NTA) information, creating a new data set that has an NTA code as a key and (multipolygon coordinates, and (station name, subway line, and coordinates (lat, long) of the station) as a      value.
   
-  3: Merging neighborhood population information with (2), creating a new data set that has an NTA code as a key, and (name,        multipolygon coordinates, station information, and population) as a value.
+  3: Merging neighborhood population information with (2), creating a new data set that has an NTA code as a key, and (name, multipolygon coordinates, station information, and population) as a value.
  
-  4: Mergin (1) with (3), creating a new data set that has an NTA code as a key, and a (name, station information, and              population, and census information) as a value.
+  4: Mergin (1) with (3), creating a new data set that has an NTA code as a key, and a (name, station information, and population, and census information) as a value.
   
 Problem to Solve:
   

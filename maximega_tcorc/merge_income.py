@@ -14,24 +14,21 @@ class merge_income(dml.Algorithm):
 	def execute(trial = False):
 		startTime = datetime.datetime.now()
 
-		# Set up the database connection.
-		client = dml.pymongo.MongoClient()
-		repo = client.repo
-		repo.authenticate('maximega_tcorc', 'maximega_tcorc')
-
 		repo_name = merge_income.writes[0]
+		# ----------------- Set up the database connection -----------------
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('maximega_tcorc', 'maximega_tcorc')
 
+        # ----------------- Retrieve data from Mongodb -----------------
 		incomes = repo.maximega_tcorc.income_with_tracts
 		neighborhoods = repo.maximega_tcorc.population_with_neighborhoods
 		
+		# ----------------- Merge Census Tract incomes with NTA info, aggregate and average incomes for NTA -----------------
 		insert_many_arr = []
-
 		for neighborhood in neighborhoods.find():
-			
 			for income in incomes.find():
-				
 				if neighborhood['ntacode'] == income['nta']:
-
 					insert_many_arr.append({
 						'ntacode': neighborhood['ntacode'], 
 						'ntaname': neighborhood['ntaname'],  
@@ -39,7 +36,6 @@ class merge_income(dml.Algorithm):
 						'population': neighborhood['population'],
 						'income': income['income']
 					})
-
 
 		#----------------- Data insertion into Mongodb ------------------
 		repo.dropCollection('income_with_neighborhoods')

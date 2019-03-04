@@ -30,12 +30,12 @@ class merge_census_data(dml.Algorithm):
         repo.createCollection('income_with_tracts')
 
         # ----------------- Remove entries from incomes DB that are not from the year 2016 -----------------
-        tract_with_income = {}
         for inc in incomes.find():
             if inc['year'] != 2016:
                 incomes.remove(inc)
 
         # ----------------- Merge Census Tract info with AVG income per tract -----------------
+        tract_with_income = {}
         for tract in tracts.find():
             for income in incomes.find():
                 tract_num_income = income['geo']
@@ -56,7 +56,7 @@ class merge_census_data(dml.Algorithm):
         insert_many_arr = []
         for key in tract_with_income.keys():
             insert_many_arr.append(tract_with_income[key])
-            
+
         # ----------------- Data insertion into Mongodb ------------------
         repo.dropCollection('income_with_tracts')
         repo.createCollection('income_with_tracts')

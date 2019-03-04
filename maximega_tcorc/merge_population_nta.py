@@ -14,24 +14,20 @@ class merge_population_nta(dml.Algorithm):
 	def execute(trial = False):
 		startTime = datetime.datetime.now()
 
-		# Set up the database connection.
-		client = dml.pymongo.MongoClient()
-		repo = client.repo
-		repo.authenticate('maximega_tcorc', 'maximega_tcorc')
-
-		repo_name = merge_population_nta.writes[0]
+		repo_name = merge_income.writes[0]
+		# ----------------- Set up the database connection -----------------
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('maximega_tcorc', 'maximega_tcorc')
 
 		populations = repo.maximega_tcorc.population
 		neighborhoods = repo.maximega_tcorc.neighborhoods_with_stations
 		
+		# ----------------- NTA info with NTA populations -----------------
 		insert_many_arr = []
-
 		for neighborhood in neighborhoods.find():
-			
 			for population in populations.find():
-				
 				if neighborhood['ntacode'] == population['nta_code']:
-
 					insert_many_arr.append({
 						'ntacode': neighborhood['ntacode'], 
 						'ntaname': neighborhood['ntaname'], 
@@ -39,7 +35,6 @@ class merge_population_nta(dml.Algorithm):
 						'stations': neighborhood['stations'], 
 						'population': population['population']
 					})
-
 
 		#----------------- Data insertion into Mongodb ------------------
 		repo.dropCollection('population_with_neighborhoods')

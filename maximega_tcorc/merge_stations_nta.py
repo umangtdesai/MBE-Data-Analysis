@@ -5,10 +5,8 @@ import prov.model
 import datetime
 import uuid
 
+# ----------------- function source: http://www.ariel.com.au/a/python-point-int-poly.html -----------------
 def point_inside_polygon(x,y,poly):
-	#function from:
-	#http://www.ariel.com.au/a/python-point-int-poly.html
-
 	n = len(poly)
 	inside =False
 
@@ -34,19 +32,18 @@ class merge_stations_nta(dml.Algorithm):
 	def execute(trial = False):
 		startTime = datetime.datetime.now()
 
-		# Set up the database connection.
-		client = dml.pymongo.MongoClient()
-		repo = client.repo
-		repo.authenticate('maximega_tcorc', 'maximega_tcorc')
-		repo_name = merge_stations_nta.writes[0]
+		repo_name = merge_income.writes[0]
+		# ----------------- Set up the database connection -----------------
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('maximega_tcorc', 'maximega_tcorc')
 
 		stations = repo.maximega_tcorc.stations.find()
 		ntas = repo.maximega_tcorc.neighborhoods.find()
 
-
 		duplicates = []
 		filtered_stations = []
-
+		# ----------------- Create a list of unique stations (stations data contains many duplicates) -----------------
 		for station in stations:
 			name = station['station_name']
 			if name not in duplicates:
@@ -54,32 +51,25 @@ class merge_stations_nta(dml.Algorithm):
 				filtered_stations.append(station)
 
 		nta_objects = {}
-
 		nta_count = 0
 		station_count = 0
-
+		# ----------------- Merge NTA info with station info if the subway station is inside of NTA multi polygon -----------------
 		for nta in ntas:
-
 			nta_objects[nta['ntacode']] = {'ntacode': nta['ntacode'],'ntaname': nta['ntaname'], 'the_geom': nta['the_geom'], 'stations': []}
-
 			nta_multipolygon = nta['the_geom']['coordinates'][0][0]
 
 			for station in filtered_stations:
-
 				station_coordinates = station['entrance_location']['coordinates']
 				is_in_nta = point_inside_polygon(station_coordinates[0], station_coordinates[1], nta_multipolygon)
-
 				if is_in_nta:
 					nta_objects[nta['ntacode']]['stations'].append({
 						'station_name': station['station_name']
 					})
 
+		# ----------------- Reformat data for mongodb insertion -----------------
 		insert_many_arr = []
-
 		for key in nta_objects.keys():
 			insert_many_arr.append(nta_objects[key])
-
-		print("insert_many_arr", len(insert_many_arr))
 
 		#----------------- Data insertion into Mongodb ------------------
 		repo.dropCollection('neighborhoods_with_stations')
