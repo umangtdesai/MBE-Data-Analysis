@@ -13,7 +13,7 @@ class ProvenanceModel(dml.Algorithm):
     contributor = 'kgrewal_shin2'
     reads = []
     writes = ['kgrewal_shin2.street_names', 'kgrewal_shin2.landmarks', 'kgrewal_shin2.neighborhoods',
-              'kgrewal_shin2.ubers']
+              'kgrewal_shin2.ubers', 'kgrewal_shin2.pub_schools']
 
     @staticmethod
     def execute(trial=False):
@@ -49,10 +49,9 @@ class ProvenanceModel(dml.Algorithm):
         print(repo['kgrewal_shin2.landmarks'].metadata())
 
 
-
+        # neighborhoods
         url = "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/boston.geojson"
         response = requests.get(url)
-
         responsetxt = '[' + response.text + ']'
         r = json.loads(responsetxt)
         repo.dropCollection("neighborhoods")
@@ -60,6 +59,17 @@ class ProvenanceModel(dml.Algorithm):
         repo['kgrewal_shin2.neighborhoods'].insert_many(r)
         repo['kgrewal_shin2.neighborhoods'].metadata({'complete': True})
         print(repo['kgrewal_shin2.neighborhoods'].metadata())
+
+        # Public Schools
+        url = "http://bostonopendata-boston.opendata.arcgis.com/datasets/1d9509a8b2fd485d9ad471ba2fdb1f90_0.geojson"
+        response = requests.get(url)
+        responsetxt = '[' + response.text + ']'
+        r = json.loads(responsetxt)
+        repo.dropCollection("pub_schools")
+        repo.createCollection("neighborhoods")
+        repo['kgrewal_shin2.pub_schools'].insert_many(r)
+        repo['kgrewal_shin2.pub_schools'].metadata({'complete': True})
+        print(repo['kgrewal_shin2.pub_schools'].metadata())
 
         #uber data
         url = 'http://datamechanics.io/data/boston_common_ubers.json'
@@ -106,6 +116,7 @@ class ProvenanceModel(dml.Algorithm):
         get_landmarks = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         get_neighborhoods = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         get_ubers = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        get_pub_schools = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
         doc.wasAssociatedWith(get_street_name, this_script)
         doc.usage(get_street_name, resource, startTime, None,
@@ -116,7 +127,8 @@ class ProvenanceModel(dml.Algorithm):
 
         doc.usage(get_landmarks, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Landmark+Name&$select=WARD, Petition, Name_of_Pr, Address, Neighborho, ShapeSTArea, ShapeSTLength'
+                  'ont:Query':'?type=Landmark+Name&$select=WARD, Petition, Name_of_Pr, Address, Neighborho, '
+                              'ShapeSTArea, ShapeSTLength'
                   }
                   )
 
@@ -127,8 +139,15 @@ class ProvenanceModel(dml.Algorithm):
 
         doc.usage(get_ubers, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Uber+Data&$select=Origin Display Name,Destination Display Name,Mean Travel Time (Seconds),Range - Lower Bound Travel Time (Seconds),Range - Upper Bound Travel Time (Seconds)'
+                  'ont:Query':'?type=Uber+Data&$select=Origin Display Name,Destination Display Name,Mean Travel Time '
+                              '(Seconds),Range - Lower Bound Travel Time (Seconds),Range - Upper Bound Travel Time (Seconds)'
                   }
+                  )
+
+        doc.usage(get_pub_schools, resource, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
+                   'ont:Query': '?type=Public+School&$select=X,Y,BLDG_NAME,ADDRESS'
+                   }
                   )
 
         streets = doc.entity('dat:kgrewal_shin2#street_name',
@@ -144,7 +163,7 @@ class ProvenanceModel(dml.Algorithm):
         doc.wasDerivedFrom(landmarks, resource, get_landmarks, get_landmarks, get_landmarks)
 
 
-        neighborhoods = doc.entity('dat:kgrewal_shin2#landmarks',
+        neighborhoods = doc.entity('dat:kgrewal_shin2#neighborhoods',
                           {prov.model.PROV_LABEL: 'Boston Landmarks', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(neighborhoods, this_script)
         doc.wasGeneratedBy(neighborhoods, get_neighborhoods, endTime)
@@ -156,6 +175,12 @@ class ProvenanceModel(dml.Algorithm):
         doc.wasGeneratedBy(ubers, get_ubers, endTime)
         doc.wasDerivedFrom(ubers, resource, get_ubers, get_ubers, get_ubers)
 
+
+        pub_schools = doc.entity('dat:kgrewal_shin2#pub_schools',
+                           {prov.model.PROV_LABEL: 'Public Schools', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(pub_schools, this_script)
+        doc.wasGeneratedBy(pub_schools, get_pub_schools, endTime)
+        doc.wasDerivedFrom(pub_schools, resource, get_pub_schools, get_pub_schools, get_pub_schools)
 
         repo.logout()
 
