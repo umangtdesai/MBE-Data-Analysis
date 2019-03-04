@@ -1,15 +1,18 @@
 import urllib.request
+import pandas as pd
 import json
 import dml
 import prov.model
 import datetime
 import uuid
+import io
+import csv
 
 
-class fire_alarm_boxes(dml.Algorithm):
+class weather(dml.Algorithm):
     contributor = 'liweixi_mogjzhu'
     reads = []
-    writes = ['liweixi_mogujzhu.fire_alarm_boxes']
+    writes = ['liweixi_mogujzhu.weather']
 
     @staticmethod
     def execute(trial=False):
@@ -21,16 +24,17 @@ class fire_alarm_boxes(dml.Algorithm):
         repo = client.repo
         repo.authenticate('liweixi_mogujzhu', 'liweixi_mogujzhu')
 
-        url = 'https://opendata.arcgis.com/datasets/3a0f4db1e63a4a98a456fdb71dc37a81_1.geojson'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("fire_alarm_boxes")
-        repo.createCollection("fire_alarm_boxes")
-        repo['liweixi_mogujzhu.fire_alarm_boxes'].insert_many(r["features"])
-        repo['liweixi_mogujzhu.fire_alarm_boxes'].metadata({'complete': True})
-        print(repo['liweixi_mogujzhu.fire_alarm_boxes'].metadata())
+        url = 'http://datamechanics.io/data/boston_weather.csv'
+        df = pd.read_csv(url)
+        boston_w = df.loc[df['NAME'] == "BOSTON, MA US"]
+        boston_w = json.loads(boston_w.to_json(orient='records'))
+        print(boston_w[0])
+        # s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("weather")
+        repo.createCollection("weather")
+        repo['liweixi_mogujzhu.weather'].insert_many(boston_w)
+        repo['liweixi_mogujzhu.weather'].metadata({'complete': True})
+        print(repo['liweixi_mogujzhu.weather'].metadata())
 
         repo.logout()
 
@@ -54,26 +58,27 @@ class fire_alarm_boxes(dml.Algorithm):
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/fire-alarm-boxes')
+        doc.add_namespace('bdp', 'https://www.ncdc.noaa.gov/cdo-web/')
 
-        this_script = doc.agent('alg:liweixi_mogujzhu#fire_alarm_boxes',
+        this_script = doc.agent('alg:liweixi_mogujzhu#fire_department',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:Boston Fire Alarm Boxes',
-                              {'prov:label': '123, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'geojson'})
-        get_fire_alarm_boxes = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_fire_alarm_boxes, this_script)
-        doc.usage(get_fire_alarm_boxes, resource, startTime, None,
+        resource = doc.entity('dat:Boston Weather',
+                              {'prov:label': '125, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+                               'ont:Extension': 'csv'})
+        get_weather = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_weather, this_script)
+        doc.usage(get_weather, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
                    }
                   )
 
-        fire_alarm_boxes = doc.entity('dat:liweixi_mogujzhu#fire_alarm_boxes',
-                          {prov.model.PROV_LABEL: 'Boston Fire Alarm Boxes', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(fire_alarm_boxes, this_script)
-        doc.wasGeneratedBy(fire_alarm_boxes, get_fire_alarm_boxes, endTime)
-        doc.wasDerivedFrom(fire_alarm_boxes, resource, get_fire_alarm_boxes, get_fire_alarm_boxes, get_fire_alarm_boxes)
+        weather = doc.entity('dat:liweixi_mogujzhu#weather',
+                          {prov.model.PROV_LABEL: 'Boston Weather', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(weather, this_script)
+        doc.wasGeneratedBy(weather, get_weather, endTime)
+        doc.wasDerivedFrom(weather, resource, get_weather, get_weather, get_weather)
+
         repo.logout()
 
         return doc
@@ -83,8 +88,8 @@ class fire_alarm_boxes(dml.Algorithm):
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
 '''
-fire_alarm_boxes.execute()
-doc = fire_alarm_boxes.provenance()
+weather.execute()
+doc = weather.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 
