@@ -49,7 +49,6 @@ class ProvenanceModel(dml.Algorithm):
         print(repo['kgrewal_shin2.landmarks'].metadata())
 
 
-
         url = "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/boston.geojson"
         response = requests.get(url)
 
