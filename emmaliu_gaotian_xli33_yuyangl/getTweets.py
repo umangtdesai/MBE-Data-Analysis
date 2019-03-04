@@ -79,9 +79,9 @@ class getTweets(dml.Algorithm):
         return doc
 
 
-getTweets.execute()
-doc = getTweets.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# getTweets.execute()
+# doc = getTweets.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof
