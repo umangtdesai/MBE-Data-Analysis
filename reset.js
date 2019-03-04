@@ -14,6 +14,7 @@
 */
 
 // Load the configuration file.
+// var config = JSON.parse(cat("config.json"));
 var config = JSON.parse(cat("config.json"));
 
 // Drop the repository database.
