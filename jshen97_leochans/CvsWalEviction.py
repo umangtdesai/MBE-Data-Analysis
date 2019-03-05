@@ -157,12 +157,14 @@ class CvsWalEviction(dml.Algorithm):
         cvsEvictoin = doc.entity('dat:jshen97_leochans#cvsEviction', {prov.model.PROV_LABEL: 'Combine CVS Eviction', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(cvsEvictoin, this_script)
         doc.wasGeneratedBy(cvsEvictoin, combine_cvs, end_time)
-        doc.wasDerivedFrom(cvsEvictoin, resource_cvs, resource_evi, combine_cvs, combine_cvs)
+        doc.wasDerivedFrom(cvsEvictoin, resource_cvs, combine_cvs, combine_cvs, combine_cvs)
+        doc.wasDerivedFrom(cvsEvictoin, resource_evi, combine_cvs, combine_cvs, combine_cvs)
 
         walEvictoin = doc.entity('dat:jshen97_leochans#walEviction', {prov.model.PROV_LABEL: 'Combine Walgreen Eviction', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(walEvictoin, this_script)
         doc.wasGeneratedBy(walEvictoin, combine_wal, end_time)
-        doc.wasDerivedFrom(walEvictoin, resource_wal, resource_evi, combine_cvs, combine_cvs)
+        doc.wasDerivedFrom(walEvictoin, resource_wal, combine_wal, combine_wal, combine_wal)
+        doc.wasDerivedFrom(walEvictoin, resource_evi, combine_wal, combine_wal, combine_wal)
         repo.logout()
 
         return doc

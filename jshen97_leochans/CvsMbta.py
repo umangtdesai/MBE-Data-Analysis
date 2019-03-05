@@ -6,7 +6,7 @@ import uuid
 from math import sin, cos, sqrt, atan2, radians
 
 
-class cvsMBTA(dml.Algorithm):
+class CvsMbta(dml.Algorithm):
 
     contributor = "jshen97_leochans"
     reads = ['jshen97_leochans.cvs',
@@ -136,8 +136,8 @@ class cvsMBTA(dml.Algorithm):
         cvsMBTA = doc.entity('dat:jshen97_leochans#cvsMBTA', {prov.model.PROV_LABEL: 'Combine CVS mbtaStops', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(cvsMBTA, this_script)
         doc.wasGeneratedBy(cvsMBTA, combine_cvs, end_time)
-        doc.wasDerivedFrom(cvsMBTA, resource_cvs, resource_mbta, combine_cvs, combine_cvs)
-
+        doc.wasDerivedFrom(cvsMBTA, resource_cvs, combine_cvs, combine_cvs, combine_cvs)
+        doc.wasDerivedFrom(cvsMBTA, resource_mbta, combine_cvs, combine_cvs, combine_cvs)
 
         return doc
 

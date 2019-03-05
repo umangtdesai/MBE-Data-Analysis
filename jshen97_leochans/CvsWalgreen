@@ -98,7 +98,8 @@ class CvsWalgreen(dml.Algorithm):
                          {prov.model.PROV_LABEL: 'Combine CVS Walgreen', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(cvsWalgreen, this_script)
         doc.wasGeneratedBy(cvsWalgreen, combine, end_time)
-        doc.wasDerivedFrom(cvsWalgreen, resource_cvs, resource_wal, combine, combine)
+        doc.wasDerivedFrom(cvsWalgreen, resource_cvs, combine, combine, combine)
+        doc.wasDerivedFrom(cvsWalgreen, resource_wal, combine, combine, combine)
 
         repo.logout()
 
