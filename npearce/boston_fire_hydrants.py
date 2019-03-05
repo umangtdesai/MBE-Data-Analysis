@@ -32,7 +32,7 @@ class boston_fire_hydrants(dml.Algorithm):
         pts = []
         for feature in features:
             coords = feature['geometry']['coordinates']
-            pt = (float(coords[0]), float(coords[1]))
+            pt = {'coordinates':coords}
             pts.append(pt)
         repo['npearce.boston_fire_hydrants'].insert_many(pts)
         

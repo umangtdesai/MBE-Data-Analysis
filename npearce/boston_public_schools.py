@@ -32,7 +32,7 @@ class boston_public_schools(dml.Algorithm):
         pts = []
         for feature in features:
             coords = feature['geometry']['coordinates']
-            pt = (float(coords[0]), float(coords[1]))
+            pt = {'coordinates':coords}
             pts.append(pt)
         repo['npearce.boston_public_schools'].insert_many(pts)
         
