@@ -30,6 +30,7 @@
 * bluebike correlation with temperature and precipitation data
 * mbta boston train "delay" alert correlation to weather and time
 * mbta "delay" alert correlation with traffic
+* "rides_per_day" algo, add average ride length per day (and fix provenance)
 
 # Final TODO
 * Write up README for submission

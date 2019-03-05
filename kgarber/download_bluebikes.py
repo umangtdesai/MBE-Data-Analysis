@@ -28,7 +28,7 @@ from zipfile import ZipFile
 class download_bluebikes(dml.Algorithm):
     contributor = 'kgarber'
     reads = []
-    writes = ['kgarber.bluebikes']
+    writes = ['kgarber.bluebikes', 'kgarber.bluebikes.stations']
     # fields to cast to int or float after downloading them
     fields_to_int = [
         "tripduration", 
@@ -54,6 +54,9 @@ class download_bluebikes(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('kgarber', 'kgarber')
+
+
+
         repo.dropCollection("bluebikes")
         repo.createCollection("bluebikes")
 
@@ -105,10 +108,53 @@ class download_bluebikes(dml.Algorithm):
                                 row[field] = None
                             else:
                                 row[field] = float(row[field])
+                        # one more thing - create a "startday" field which has just y/m/d
+                        row["startday"] = row["starttime"][0:10];
                         result_rows.append(row)
                     month_tqdm.set_description("month %s - inserting" % month)
                     repo['kgarber.bluebikes'].insert_many(result_rows)
                     repo['kgarber.bluebikes'].metadata({'complete':True})
+
+
+
+
+        # parse all of the bike stations from this data
+        print("Parsing bike stations")
+        repo.dropCollection("bluebikes.stations")
+        repo.createCollection("bluebikes.stations")
+
+        pipeline = [
+            {"$project": 
+                {
+                    "stationId": "$start station id",
+                    "name": "$start station name",
+                    "stationLocation": {
+                        "geometry": {
+                            "type": "Point",  # GeoJson type
+                            "coordinates": [  # GeoJson coordinates
+                                "$start station longitude",
+                                "$start station latitude"
+                            ]
+                        }
+                    }
+                }
+            },
+            {"$group": {
+                "_id": "$stationId", 
+                "stationId": {"$first": "$stationId"},
+                "name": {"$first": "$name"},
+                "location": {"$first": "$stationLocation"}
+            }},
+            {"$project": {"_id": 0}},
+            {"$out": "kgarber.bluebikes.stations"}
+        ]
+        repo['kgarber.bluebikes'].aggregate(pipeline)
+        # create index so we can do geojson search
+        repo['kgarber.bluebikes.stations'].ensure_index([
+            ("location.geometry", dml.pymongo.GEOSPHERE)
+        ])
+        repo['kgarber.bluebikes.stations'].metadata({'complete':True})
+
         repo.logout()
         endTime = datetime.datetime.now()
         print("Finished download_bluebikes algorithm.")
@@ -164,3 +210,5 @@ class download_bluebikes(dml.Algorithm):
         
         # return the generated provenance document
         return doc
+
+# download_bluebikes.execute()

@@ -5,88 +5,90 @@ import prov.model
 import datetime
 import uuid
 
-# my imports
-import bson.code
+# This algorithm creates 10 degree buckets from 0 to 100 and calculates the
+# average day stats for each of those temperatures (average duration and 
+# number of rides).
 
-# This algorithm calculates the number of bluebike rides per day in 2018.
-# It uses a mongodb MapReduce approach.
-# Every ride turns into a {date -> 1} pair, then we aggregate with a sum
-# for all rides.
-
-class rides_per_day(dml.Algorithm):
+class rides_and_weather(dml.Algorithm):
     contributor = 'kgarber'
-    reads = ['kgarber.bluebikes']
-    writes = ['kgarber.bluebikes.rides_per_day']
+    reads = ['kgarber.bluebikes.rides_per_day', 'kgarber.weather']
+    writes = [
+        'kgarber.bluebikes.rides_and_weather',
+        'kgarber.bluebikes.ride_weather_aggregate'
+    ]
     @staticmethod
     def execute(trial = False):
-        print("Starting rides_per_day algorithm.")
+        print("Starting rides_and_weather algorithm.")
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('kgarber', 'kgarber')
-        repo.dropCollection("bluebikes.rides_per_day")
-        repo.createCollection("bluebikes.rides_per_day")
+        repo.dropCollection("bluebikes.rides_and_weather")
+        repo.createCollection("bluebikes.rides_and_weather")
+        repo.dropCollection("kgarber.bluebikes.ride_weather_aggregate")
+        repo.createCollection("kgarber.bluebikes.ride_weather_aggregate")
 
-        # USING (AND FAILING) with map_reduce
-        # the issue is getting the average of a really really long list
-        # returns NaN because after a certain size int, it becomes an object
-
-        # # emit {date -> tripDuration}
-        # # date is in format "YYYY-MM-DD" (from starttime string)
-        # mapper = bson.code.Code("""
-        #     function() {
-        #         emit(this.startday, {numTrips: 1, avgDuration: this.tripduration});
-        #     }
-        # """)
-
-        # # functional javascript reduce code for summation
-        # reducer = bson.code.Code("""
-        #     function(key, vs) {
-        #         var trips = 0;
-        #         vs.forEach(v => trips += v.numTrips);
-        #         return {numTrips: trips, avgDuration: 1};
-        #     }
-        # """)
-
-        # repo['kgarber.bluebikes'].map_reduce(
-        #     mapper, 
-        #     reducer, 
-        #     "kgarber.bluebikes.rides_per_day"
-        # )
-
-        # describe the aggregation
-        # group by day, get the total trips and average trip duration per day
-        # remove _id field, create a date field, and truncate average trip duration
-        # sort by date
+        # describe the aggregation 
+        # (applied to kgarber.bluebikes.rides_per_day)
         pipeline = [
-            {"$group": 
+            {"$lookup": 
                 {
-                    "_id": "$startday", 
-                    "numTrips": {"$sum": 1},
-                    "avgDuration": {"$avg": "$tripduration"}
+                    "from": "kgarber.weather",
+                    "localField": "date",
+                    "foreignField": "date",
+                    "as": "weather"
                 }
             },
+            {"$project":
+                {
+                    "_id": 0, "date": 1, "numTrips": 1, "avgDuration": 1,
+                    "tempMin": "$weather.tmin",
+                    "tempMax": "$weather.tmax",
+                    "tempAvg": "$weather.tavg"
+                }
+            },
+            {"$unwind": "$tempMin"},
+            {"$unwind": "$tempMax"},
+            {"$unwind": "$tempAvg"},
             {"$project": 
                 {
-                "date": "$_id", 
-                "_id": 0,
-                "numTrips": 1,
-                "avgDuration": {"$trunc": "$avgDuration"}
+                    "date": 1, "numTrips": 1, "avgDuration": 1, "tempMin": 1, "tempMax": 1, "tempAvg": 1,
+                    "tempMinBucket": {"$multiply": [{"$trunc": {"$divide": ["$tempMin", 10]}}, 10]},
+                    "tempMaxBucket": {"$multiply": [{"$trunc": {"$divide": ["$tempMax", 10]}}, 10]},
+                    "tempAvgBucket": {"$multiply": [{"$trunc": {"$divide": ["$tempAvg", 10]}}, 10]},
                 }
             },
-            {"$sort": {"date": 1}},
-            {"$out": "kgarber.bluebikes.rides_per_day"}
+            {"$out": "kgarber.bluebikes.rides_and_weather"}
         ]
         # run the aggregation in mongodb
-        repo['kgarber.bluebikes'].aggregate(pipeline)
+        repo['kgarber.bluebikes.rides_per_day'].aggregate(pipeline)
+        # sort the rides into the buckets in a new collection
+        pipeline2 = [
+            {"$group": {
+                "_id": "$tempAvgBucket",
+                "avgTripsAtTemp": {"$avg": "$numTrips"},
+                "avgTripDurationAtTemp": {"$avg": "$avgDuration"},
+                "count": {"$sum": 1}
+            }},
+            {"$project": {
+                "tempAvgBucket": "$_id",
+                "_id": 0,
+                "avgTripsAtTemp": {"$trunc": "$avgTripsAtTemp"},
+                "avgTripDurationAtTemp": {"$trunc": "$avgTripDurationAtTemp"},
+                "count": 1
+            }},
+            {"$sort": {"tempAvgBucket": 1}},
+            {"$out": "kgarber.bluebikes.ride_weather_aggregate"}
+        ]
+        repo['kgarber.bluebikes.rides_and_weather'].aggregate(pipeline2)
         # indicate that the collection is complete
-        repo['kgarber.bluebikes.rides_per_day'].metadata({'complete':True})
+        repo['kgarber.bluebikes.rides_and_weather'].metadata({'complete':True})
         
         repo.logout()
         endTime = datetime.datetime.now()
-        print("Finished rides_per_day algorithm.")
+        print("Finished rides_and_weather algorithm.")
         return {"start":startTime, "end":endTime}
     
     @staticmethod
@@ -140,4 +142,4 @@ class rides_per_day(dml.Algorithm):
         # return the generated provenance document
         return doc
 
-# rides_per_day.execute()
+# rides_and_weather.execute()
