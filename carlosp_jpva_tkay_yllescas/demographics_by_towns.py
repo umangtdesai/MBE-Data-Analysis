@@ -15,8 +15,8 @@ class demographics_by_towns(dml.Algorithm):
     @staticmethod
     def get_data():
         with open('demographics_by_towns.json') as f:
-         data = json.load(f)
-        return data
+            data = json.load(f)
+            return data
         
 
 

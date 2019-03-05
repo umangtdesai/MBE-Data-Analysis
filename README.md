@@ -3,7 +3,7 @@
 For this project, we are working with Amplify LatinX and BU Spark! to analyze Massachusetts voting and demographic data to suggest where they should focus their voter turnout efforts in order to get more people of color out to vote.
 
 We are starting with 5 data sets, provided by Amplify:
-1. Demographics by Town
+1. Demographics by Town (found by Carlos, link in group chat)
 2. Massachusetts Early Voting Data
 3. Registered Voter Demographics
     a) Senate District

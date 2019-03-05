@@ -4,10 +4,10 @@ import csv
 import json
 
 # Open the CSV
-f = open(r'C:\Users\tallu\Documents\Programming\CS504\Project\data\registered_voters_xtabs_edited.csv')
+f = open('non_registered_Precinct_edited.csv')
 
 # Change each fieldname to the appropriate field name
-reader = csv.DictReader(f, fieldnames = ("SD",
+reader = csv.DictReader(f, fieldnames = ("Precinct",
                                          "C_18_24",
                                          "C_25_34",
                                          "C_35_49",
@@ -76,6 +76,6 @@ out = json.dumps([ row for row in reader ])
 print ("JSON parsed!")
 
 # Save the JSON
-f = open(r'C:\Users\tallu\Documents\Programming\CS504\Project\data\parsed.json', 'w')
+f = open('non_registered_Precinct.json', 'w')
 f.write(out)
 print ("JSON saved!")
