@@ -5,3 +5,13 @@ Members:
 
 
 There is general consensus among the scientific community that C02 Emissions from fossil fuel based power plants is one of the biggest factors (if not the biggest) that affects global climate. However, there is still disagreement among members of the United States government about whether this is the case, and whether or not global warming is actually real. We think that we can leverage the following datasets: carbon emissions from 1980, global surface temperature, ocean surface temperature, sea level changes, and the number of power plants in the world that use coal and/or oil and their commission dates to see the correlation between when the power plants were built, and the changes of carbon emissions, global surface/ocean temps, and seal level changes happening after. We can combine the datasets in a way that aggregates each year and looks at the respective statistics and keeps track of which power plants in the world were comissioned and what fuel they use. Combining the data sets in this way will allow us to see whether or not these the comission of certain power plants in the world affected the statistics used to track global warming today.
+
+
+Instructions:
+
+Some files depend on Datahub.io's datapackage package. Install it with:
+
+  python -m pip install datapackage
+
+
+  
