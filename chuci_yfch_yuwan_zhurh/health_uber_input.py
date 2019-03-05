@@ -18,7 +18,7 @@ class health_uber_input(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('chuci_yfch_yuwan_zhurh', 'chuci_yfch_yuwan_zhurh')
-        url = 'http://datamechanics.io/data/uber_newcity_cc.json'
+        url = 'https://raw.githubusercontent.com/yizheshexin/504_uber_json/master/uber_newcity_cc.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
