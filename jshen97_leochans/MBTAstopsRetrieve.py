@@ -9,12 +9,10 @@ from urllib.request import urlopen
 
 
 class MBTAstopsRetrieve(dml.Algorithm):
-    # TODO 把X改成你的想要的名字，filename需要和classname一致
 
     contributor = "jshen97_leochans"
     reads = []
     writes = ['jshen97_leochans.mbtaStops']
-    # TODO 这里面写读取的data set和会产生的data set
 
     @staticmethod
     def execute(trial=False):
@@ -26,8 +24,6 @@ class MBTAstopsRetrieve(dml.Algorithm):
         repo = client.repo
         repo.authenticate('leochans_jshen97', 'leochans_jshen97')
 
-
-        # TODO 我没理解错的话，简单的merge或combine都算？所以我前两个就都偷懒都是combine了
         # retrieve MBTA stops
         url_mbtaStops = "http://datamechanics.io/data/MBTA_Stops.json"
         response_mbtaStops = json.loads(urlopen(url_mbtaStops).read().decode('utf-8'))
@@ -77,13 +73,6 @@ class MBTAstopsRetrieve(dml.Algorithm):
         doc.wasAttributedTo(mbtaStops, this_script)
         doc.wasGeneratedBy(mbtaStops, get_mbtaStops, end_time)
         doc.wasDerivedFrom(mbtaStops, resource_dio, get_mbtaStops, get_mbtaStops, get_mbtaStops)
-
-    
-
-
-        # TODO complete prov
-        
-
 
         repo.logout()
 
