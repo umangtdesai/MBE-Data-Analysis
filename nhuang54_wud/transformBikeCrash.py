@@ -116,22 +116,30 @@ class transformBikeCrash(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('vzb', 'https://data.boston.gov/dataset/')
 
-        this_script = doc.agent('alg:nhuang54_wud#getBikeFatality', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:d326a4e3-75f2-42ac-9b32-e2920566d04c/resource/92f18923-d4ec-4c17-9405-4e0da63e1d6c', {'prov:label':'Vision Zero Fatality Records', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_bikeFatality = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_bikeFatality, this_script)
-        doc.usage(get_bikeFatality, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
+        this_script = doc.agent('alg:nhuang54_wud#transformBikeCrash', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource1 = doc.entity('dat:nhuang54_wud#streetlight-locations', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        resource2 = doc.entity('dat:nhuang54_wud#crash_open_data', {'prov:label':'311, Service Requests', prov.mode.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        
+        transform_bikeCrash = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(transform_bikeCrash, this_script)
+
+        doc.usage(transform_bikeCrash, resource1, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Calculation',
+                  'ont:Query':''
+                  }
+                  )
+        doc.usage(transform_bikeCrash, resource2, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Calculation',
                   'ont:Query':''
                   }
                   )
 
-        bikeFatality = doc.entity('dat:nhuang54_wud#getBikeFatality', {prov.model.PROV_LABEL:'Vision Zero Fatality Records', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(bikeFatality, this_script)
-        doc.wasGeneratedBy(bikeFatality, get_bikeFatality, endTime)
-        doc.wasDerivedFrom(bikeFatality, resource, get_bikeFatality, get_bikeFatality, get_bikeFatality)
+        bikeCrashStreetlight = doc.entity('dat:nhuang54_wud#bikeCrashStreetlight', {prov.model.PROV_LABEL:'Bike crashes proximity to street lights', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(bikeCrashStreetlight, this_script)
+        doc.wasGeneratedBy(bikeCrashStreetlight, transform_bikeCrash, endTime)
+        doc.wasDerivedFrom(bikeCrashStreetlight, resource1, transform_bikeCrash, transform_bikeCrash, transform_bikeCrash)
+        doc.wasDerivedFrom(bikeCrashStreetlight, resource2, transform_bikeCrash, transform_bikeCrash, transform_bikeCrash)
 
 
         repo.logout()
