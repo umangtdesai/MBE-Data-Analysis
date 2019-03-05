@@ -21,11 +21,9 @@ class unemploy_gov_sparkgov__output(dml.Algorithm):
     def execute(trial=False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
-        # Get the uber dataset
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('chuci_yfch_yuwan_zhurh', 'chuci_yfch_yuwan_zhurh')
-        # Aggreate cityname by max population
         def select(R, s):
             return [t for t in R if s(t)]
         def product(R, S):
@@ -44,15 +42,23 @@ class unemploy_gov_sparkgov__output(dml.Algorithm):
         yyy=project(x,lambda t:{'City':t[0]['City'],'unemploy_rate':t[0]['Rate % Dec-18'],'Baker_selection_rate':t[1]['votepct']})
         repo.dropCollection("city_unemploy_baker")
         repo.createCollection("city_unemploy_baker")
-        repo["city_unemploy_baker"].insert_many(yyy)
+        repo["chuci_yfch_yuwan_zhurh.city_unemploy_baker"].insert_many(yyy)
                                 
         #project sparkgov dataset
-        spark=repo['chuci_yfch_yuwan_zhurh.sparkgov']
-        xx=list(spark.find({"Year": 2018}))
+       # spark=repo['chuci_yfch_yuwan_zhurh.sparkgov']
+
+        pipline = [
+            {'$group': {'_id': "$Party ", 'number': {'$sum': 1}}}
+           ]
+        agg_result = repo['chuci_yfch_yuwan_zhurh.sparkgov'].aggregate(pipline)
+        agg_list = list(agg_result)
         repo.dropCollection("spark2018govdata")
         repo.createCollection("spark2018govdata")
-        repo["spark2018govdata"].insert_many(xx)
-
+        repo["chuci_yfch_yuwan_zhurh.spark2018govdata"].insert_many(agg_list)
+        # xx=list(spark.find({"Year": 2018}))
+        # repo.dropCollection("spark2018govdata")
+        # repo.createCollection("spark2018govdata")
+        
         repo.logout()
         endTime = datetime.datetime.now()
         return {"start": startTime, "end": endTime}
@@ -73,6 +79,7 @@ class unemploy_gov_sparkgov__output(dml.Algorithm):
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
+        
         agent = doc.agent('alg:chuci_yfch_yuwan_zhurh#unemploy_gov_sparkgov__output',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         entity_unemploy = doc.entity('dat:chuci_yfch_yuwan_zhurh#unemploy',
@@ -87,6 +94,7 @@ class unemploy_gov_sparkgov__output(dml.Algorithm):
                                    {prov.model.PROV_LABEL: 'city_unemploy_baker_result data', prov.model.PROV_TYPE: 'ont:DataSet'})
        
         activity = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+       
         doc.wasAssociatedWith(activity, agent)
         doc.usage(activity, entity_unemploy, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:product select and project'}
@@ -97,13 +105,13 @@ class unemploy_gov_sparkgov__output(dml.Algorithm):
         doc.usage(activity, entity_sparkgov, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:select and aggregate'}
                   )
-        doc.wasAttributedTo(entity_spark2018govdata_result, agent)
-        doc.wasAttributedTo(entity_spark2018govdata_result, agent)
-        doc.wasGeneratedBy(entity_city_unemploy_baker_result, activity, endTime)
         doc.wasDerivedFrom(entity_city_unemploy_baker_result, entity_unemploy, activity, activity, activity)
         doc.wasDerivedFrom(entity_city_unemploy_baker_result, entity_gov, activity, activity, activity)
         doc.wasDerivedFrom(entity_spark2018govdata_result, entity_sparkgov, activity, activity, activity)
-
+        doc.wasAttributedTo(entity_spark2018govdata_result, agent)
+        doc.wasAttributedTo(entity_city_unemploy_baker_result, agent)
+        doc.wasGeneratedBy(entity_city_unemploy_baker_result, activity, endTime)
+        doc.wasGeneratedBy(entity_spark2018govdata_result, activity, endTime)
         repo.logout()
 
         return doc
