@@ -3,13 +3,16 @@ CS504 : transformationHouseDistrictIdeology
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
 Description : transformation of state house election data to determine basic ideology of each house district
 
+Notes:
+
 March 01, 2019
 """
 
-import dml
-import prov.model
 import datetime
 import uuid
+
+import dml
+import prov.model
 
 from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_HOUSE_ELECTIONS_NAME, HOUSE_DISTRICT_IDEOLOGIES, HOUSE_DISTRICT_IDEOLOGIES_NAME
 

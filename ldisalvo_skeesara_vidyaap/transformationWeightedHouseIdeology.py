@@ -1,7 +1,19 @@
-import dml
-import prov.model
+"""
+CS504 : demographicData.py
+Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
+Description : Transformation of data to create weighted ideology scores for each house district
+
+Notes:
+
+February 28, 2019
+"""
+
 import datetime
 import uuid
+
+import dml
+import prov.model
+
 from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_HOUSE_ELECTIONS_NAME, STATE_HOUSE_ELECTIONS_RESULTS_NAME, WEIGHTED_HOUSE_IDEOLOGIES_NAME, WEIGHTED_HOUSE_IDEOLOGIES
 
 
@@ -70,7 +82,7 @@ class transformationWeightedHouseIdeology(dml.Algorithm):
                     try:
                         others_count += totalRow[o]
                     except KeyError:
-                        print("unable to find 'other' candidate -->", o)
+                        print("Note: Unable to find 'other' candidate: ", o)
 
             others_ratio = float(others_count/total_count)
             blanks_ratio = float(totalRow["Blanks"]/total_count)
@@ -79,14 +91,14 @@ class transformationWeightedHouseIdeology(dml.Algorithm):
                 try:
                     dem_ratio = float(totalRow[dem]/total_count)
                 except KeyError:
-                    print("unable to find dem = ", dem)
+                    print("NOTE: Democrat not located: ", dem)
 
 
             if rep != "":
                 try:
                     rep_ratio = float(totalRow[rep]/total_count)
                 except KeyError:
-                    print("unable to find rep = ", rep)
+                    print("NOTE: Republic not location: ", rep)
 
 
             if tup["district"] in finalAvgsByDistrict:

@@ -1,7 +1,7 @@
 """
 CS504 : stateSenateElectionsResults
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
-Description :
+Description : retrieval of state senate election voter results
 
 Notes :
 
@@ -104,14 +104,14 @@ class stateSenateElectionsResults(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('electionstats_stateSenateElections', ELECTION_DOWNLOAD_RESULTS_URL)
+        doc.add_namespace('electionstats', 'http://electionstats.state.ma.us/')
 
         this_script = doc.agent('alg:' + TEAM_NAME + '#stateSenateElectionsResults', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('electionstats_stateSenateElections:wc8w-nujj', {'prov:label': 'PD43+: Election Stats State Senate Elections', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'csv'})
+        resource = doc.entity('electionstats:elections/download/', {'prov:label': 'PD43+: Election Stats State Senate Elections', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'csv'})
         stateSenateElectionsEntity = doc.entity('dat:' + TEAM_NAME + '#stateSenateElections', {prov.model.PROV_LABEL: 'MA General State Senate Elections 2000-2018', prov.model.PROV_TYPE: 'ont:DataSet'})
         get_stateSenateElectionsResults = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_stateSenateElectionsResults, this_script)
-        doc.usage(get_stateSenateElectionsResults, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval', 'ont:Query': 'Election ID'})
+        doc.usage(get_stateSenateElectionsResults, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval', 'ont:Query': '{id}/precincts_include:1/'})
         doc.usage(get_stateSenateElectionsResults, stateSenateElectionsEntity, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval', 'ont:Query': 'Election ID'})
 
         stateSenateElectionsResultsEntity = doc.entity('dat:' + TEAM_NAME + '#stateSenateElectionsResults', {prov.model.PROV_LABEL: 'MA General State Senate Elections Results 2000-2018', prov.model.PROV_TYPE: 'ont:DataSet'})

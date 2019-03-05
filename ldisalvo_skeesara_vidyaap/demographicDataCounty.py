@@ -3,15 +3,16 @@ CS504 : demographicData.py
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
 Description : Retrieval of demographic data by county using census.gov
 
+Notes :
+
 February 28, 2019
 """
 
 import datetime
-import json
 import uuid
-import pandas as pd
 
 import dml
+import pandas as pd
 import prov.model
 import urllib.request
 
@@ -122,7 +123,7 @@ class demographicDataCounty(dml.Algorithm):
         this_script = doc.agent('alg:'+TEAM_NAME+'#demographicDataCounty',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'],
                                  'ont:Extension': 'py'})
-        resource = doc.entity('census:wc8w-nujj', {'prov:label': 'Census Data by County, Massachusetts',
+        resource = doc.entity('census:table/ma/', {'prov:label': 'Census Data by County, Massachusetts',
                                                 prov.model.PROV_TYPE: 'ont:DataResource',
                                                 'ont:Extension': 'csv'})
         get_demographicDataCounty = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)

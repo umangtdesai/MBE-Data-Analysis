@@ -3,13 +3,16 @@ CS504 : transformationSenateDistrictIdeology
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
 Description : transformation of state senate election data to determine basic ideology of each senate district
 
+Notes:
+
 March 01, 2019
 """
 
-import dml
-import prov.model
 import datetime
 import uuid
+
+import dml
+import prov.model
 
 from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, STATE_SENATE_ELECTIONS_NAME, SENATE_DISTRICT_IDEOLOGIES, SENATE_DISTRICT_IDEOLOGIES_NAME
 

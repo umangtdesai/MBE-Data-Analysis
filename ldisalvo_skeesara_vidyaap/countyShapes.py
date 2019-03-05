@@ -1,11 +1,23 @@
-import urllib.request
+"""
+CS504 : countyShapes
+Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
+Description : retrieval of county geoJSON data
+
+Notes :
+
+February 26, 2019
+"""
+
+import csv
+import datetime
+import io
 import json
+import uuid
+
 import dml
 import prov.model
-import datetime
-import uuid
-import csv
-import io
+import urllib.request
+
 from ldisalvo_skeesara_vidyaap.helper.constants import TEAM_NAME, FUSION_TABLE_URL, COUNTY_SHAPE, COUNTY_SHAPE_NAME
 
 
@@ -82,14 +94,14 @@ class countyShapes(dml.Algorithm):
 
         this_script = doc.agent('alg:ldisalvo_skeesara_vidyaap#countyShapes',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('shapes:wc8w-nujj',
+        resource = doc.entity('shapes:ldisalvo_skeesara_vidyaap/',
                               {'prov:label': 'County Shapes Points', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
         get_shape = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_shape, this_script)
         doc.usage(get_shape, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': 'ldisalvo_skeesara_vidyaap/massachusetts_counties.csv'
+                   'ont:Query': 'massachusetts_counties.csv'
                    }
                   )
 

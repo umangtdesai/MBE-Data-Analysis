@@ -3,12 +3,13 @@ CS504 : demographicData.py
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
 Description : Transformation of data to generate summary statistics on demographic information
 
+Notes:
+
 February 28, 2019
 """
 
 import datetime
 import uuid
-
 
 import dml
 import prov.model

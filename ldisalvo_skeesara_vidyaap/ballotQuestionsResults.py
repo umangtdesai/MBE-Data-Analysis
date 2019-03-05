@@ -1,7 +1,7 @@
 """
-CS504 : ballot_question
+CS504 : ballotQuestionsResults
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
-Description :
+Description : retrieval of ballot question voter results
 
 Notes :
 
@@ -13,6 +13,7 @@ import datetime
 import io
 import json
 import uuid
+
 import dml
 import prov.model
 import urllib.request
@@ -107,14 +108,14 @@ class ballotQuestionsResults(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('electionstats_ballotQuestions', BALLOT_QUESTION_DOWNLOAD_RESULTS_URL)
+        doc.add_namespace('electionstats', 'http://electionstats.state.ma.us/')
 
         this_script = doc.agent('alg:'+TEAM_NAME+'#ballotQuestionsResults', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('electionstats_ballotQuestions:wc8w-nujj', {'prov:label': 'PD43+: Election Stats Ballot Questions', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'csv'})
+        resource = doc.entity('electionstats:ballot_questions/download/', {'prov:label': 'PD43+: Election Stats Ballot Questions', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'csv'})
         ballotQuestionsEntity = doc.entity('dat:' + TEAM_NAME + '#ballotQuestions', {prov.model.PROV_LABEL: 'Ballot Questions', prov.model.PROV_TYPE: 'ont:DataSet'})
         get_ballotQuestionsResults = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_ballotQuestionsResults, this_script)
-        doc.usage(get_ballotQuestionsResults, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval', 'ont:Query': 'question ID'})
+        doc.usage(get_ballotQuestionsResults, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval', 'ont:Query': '{id}/precincts_include:1/'})
         doc.usage(get_ballotQuestionsResults, ballotQuestionsEntity, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval', 'ont:Query': 'question ID'})
 
         ballotQuestionsResultsEntity = doc.entity('dat:'+TEAM_NAME+'#ballotQuestionsResults', {prov.model.PROV_LABEL: 'MA Ballot Questions Results 2000-2018',prov.model.PROV_TYPE: 'ont:DataSet'})

@@ -9,6 +9,8 @@ The below datasets can be combined to score the ideologies of voting districts w
 ## Datasets
 ### ballotQuestions
 contains: data about each Massachusetts Ballot Question from 2000 to 2018
+
+source: http://electionstats.state.ma.us/ballot_questions/search/year_from:2000/year_to:2018
 ```
 {
     "_id" : "7322",
@@ -26,6 +28,8 @@ contains: data about each Massachusetts Ballot Question from 2000 to 2018
 
 ### ballotQuestionsResults
 contains: data about voting results for each Massachusetts Ballot Question from 2000 to 2018
+
+source: http://electionstats.state.ma.us/ballot_questions/download/7303/precincts_include:1/
 ```
 {
     "Locality" : "Bourne",
@@ -40,6 +44,8 @@ contains: data about voting results for each Massachusetts Ballot Question from 
 ```
 ### stateHouseElections
 contains: data about each Massachusetts General State House Election from 2000 to 2018
+
+source: http://electionstats.state.ma.us/elections/search/year_from:2000/year_to:2018/office_id:8/stage:General
 ```
 {
     "_id" : "131672",
@@ -60,6 +66,8 @@ contains: data about each Massachusetts General State House Election from 2000 t
 ```
 ### stateHouseElectionsResults
 contains: data about voting results for each Massachusetts General State House Election from 2000 to 2018
+
+source: http://electionstats.state.ma.us/elections/download/131581/precincts_include:1/
 ```
 {
     "City/Town" : "Barnstable",
@@ -75,6 +83,8 @@ contains: data about voting results for each Massachusetts General State House E
 ```
 ### stateSenateElections
 contains: data about each Massachusetts General State Senate Election from 2000 to 2018
+
+source: http://electionstats.state.ma.us/elections/search/year_from:2000/year_to:2018/office_id:9/stage:General
 ```
 {
     "_id" : "131666",
@@ -94,6 +104,9 @@ contains: data about each Massachusetts General State Senate Election from 2000 
 ```
 ### stateSenateElectionsResults
 contains: data about voting results for each Massachusetts General State Senate Election from 2000 to 2018
+
+source: http://electionstats.state.ma.us/elections/download/131526/precincts_include:1/
+
 ```
 {
     "City/Town" : "Egremont",
@@ -108,6 +121,8 @@ contains: data about voting results for each Massachusetts General State Senate 
 ```
 ### countyShapes
 contains: geoJSON data about each Massachusetts county (taken from Google Fusion Table and uploaded to datamechanics.io)
+
+source: http://datamechanics.io/data/massachusetts_counties.csv
 ```
 {
     "_id" : "7322",

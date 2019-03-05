@@ -1,16 +1,15 @@
 """
-CS504 : ballot_questions
+CS504 : ballotQuestions
 Team : Vidya Akavoor, Lauren DiSalvo, Sreeja Keesara
-Description :
+Description : retrieval of ballot question metadata
 
-Notes : 
+Notes :
 
 February 27, 2019
 """
 
 import datetime
 import uuid
-import json
 
 import dml
 import prov.model
@@ -101,10 +100,10 @@ class ballotQuestions(dml.Algorithm):
         doc.add_namespace('electionstats', 'http://electionstats.state.ma.us/')
 
         this_script = doc.agent('alg:'+TEAM_NAME+'#ballotQuestions', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('electionstats:wc8w-nujj', {'prov:label': 'PD43+: Election Stats', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'html'})
+        resource = doc.entity('electionstats:ballot_questions/search/', {'prov:label': 'PD43+: Election Stats', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'html'})
         get_ballotQuestions = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_ballotQuestions, this_script)
-        doc.usage(get_ballotQuestions, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval', 'ont:Query': 'ballot_questions/search/year_from:2000/year_to:2018'})
+        doc.usage(get_ballotQuestions, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval', 'ont:Query': 'year_from:2000/year_to:2018'})
 
         ballotQuestionsEntity = doc.entity('dat:'+TEAM_NAME+'#ballotQuestions', {prov.model.PROV_LABEL: 'MA Ballot Questions 2000-2018', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(ballotQuestionsEntity, this_script)
