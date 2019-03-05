@@ -4,24 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
-
-# ----------------- function source: http://www.ariel.com.au/a/python-point-int-poly.html -----------------
-def point_inside_polygon(x,y,poly):
-	n = len(poly)
-	inside =False
-
-	p1x,p1y = poly[0]
-	for i in range(n+1):
-	    p2x,p2y = poly[i % n]
-	    if y > min(p1y,p2y):
-	        if y <= max(p1y,p2y):
-	            if x <= max(p1x,p2x):
-	                if p1y != p2y:
-	                    xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
-	                if p1x == p2x or x <= xinters:
-	                    inside = not inside
-	    p1x,p1y = p2x,p2y
-	return inside
+from helper_functions.within_polygon import point_inside_polygon 
 
 class merge_stations_nta(dml.Algorithm):
 	contributor = 'maximega_tcorc'
@@ -60,7 +43,7 @@ class merge_stations_nta(dml.Algorithm):
 
 			for station in filtered_stations:
 				# ----------------- station coordinates come in form: (lat, long) as a string -----------------
-				# ----------------- retreive lat and long points, cast them to floats to be passed into point_inside_polygon function -----------------
+				# ----------------- retreive lat and long points, cast them to floats to be passed into point_inside_polygon function -----------------				
 				station_coordinates = station['Entrance Location']
 				lat_coord = ''
 				long_coord = ''
@@ -101,50 +84,47 @@ class merge_stations_nta(dml.Algorithm):
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
 		'''
-			Create the provenance document describing everything happening
-			in this script. Each run of the script will generate a new
-			document describing that invocation event.
-		'''
+            Create the provenance document describing everything happening
+            in this script. Each run of the script will generate a new
+            document describing that invocation event.
+        '''
 
-		# Set up the database connection.
-		client = dml.pymongo.MongoClient()
-		repo = client.repo
-		repo.authenticate('alice_bob', 'alice_bob')
-		doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-		doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-		doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-		doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('maximega_tcorc', 'maximega_tcorc')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-		this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-		resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-		get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-		get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-		doc.wasAssociatedWith(get_found, this_script)
-		doc.wasAssociatedWith(get_lost, this_script)
-		doc.usage(get_found, resource, startTime, None,
-					{prov.model.PROV_TYPE:'ont:Retrieval',
-					'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-					}
-					)
-		doc.usage(get_lost, resource, startTime, None,
-					{prov.model.PROV_TYPE:'ont:Retrieval',
-					'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-					}
-					)
+        #agent
+        this_script = doc.agent('alg:maximega_tcorc#merge_stations_nta', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        #resource
+        stations = doc.entity('dat:maximega_tcorc#stations', {prov.model.PROV_LABEL:'NYC Subway Stations Info', prov.model.PROV_TYPE:'ont:DataSet'})
+        neighborhoods = doc.entity('dat:maximega_tcorc#neighborhoods', {prov.model.PROV_LABEL:'NYC Neighborhoods Info', prov.model.PROV_TYPE:'ont:DataSet'})
+		#agent
+        merging_stations_neighborhoods = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
-		lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-		doc.wasAttributedTo(lost, this_script)
-		doc.wasGeneratedBy(lost, get_lost, endTime)
-		doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
+        doc.wasAssociatedWith(merging_stations_neighborhoods, this_script)
 
-		found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-		doc.wasAttributedTo(found, this_script)
-		doc.wasGeneratedBy(found, get_found, endTime)
-		doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        doc.usage(merging_stations_neighborhoods, stations, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
+        doc.usage(merging_stations_neighborhoods, neighborhoods, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
+		#reasource
+        neighborhoods_with_stations = doc.entity('dat:maximega_tcorc#neighborhoods_with_stations', {prov.model.PROV_LABEL:'NYC Neighborhood Info + Subway Station Info', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(neighborhoods_with_stations, this_script)
+        doc.wasGeneratedBy(neighborhoods_with_stations, merging_stations_neighborhoods, endTime)
+        doc.wasDerivedFrom(neighborhoods_with_stations, stations, merging_stations_neighborhoods, merging_stations_neighborhoods, merging_stations_neighborhoods)
+        doc.wasDerivedFrom(neighborhoods_with_stations, neighborhoods, merging_stations_neighborhoods, merging_stations_neighborhoods, merging_stations_neighborhoods)
 
-		repo.logout()
-					
-		return doc
+        repo.logout()
+                
+        return doc
 
 

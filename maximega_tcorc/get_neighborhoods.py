@@ -67,7 +67,7 @@ class get_neighborhoods(dml.Algorithm):
         doc.add_namespace('nyu', 'https://data.cityofnewyork.us/resource/')
         #agent
         this_script = doc.agent('alg:maximega_tcorc#get_neighborhoods', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('nyu:q2z5-ai38.json', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('nyu:q2z5-ai38.json', {'prov:label':'NYC Neighborhoods', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         
         get_neighborhoods = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 

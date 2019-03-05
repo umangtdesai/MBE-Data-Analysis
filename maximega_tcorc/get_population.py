@@ -67,7 +67,7 @@ class get_population(dml.Algorithm):
         doc.add_namespace('nyu', 'https://data.cityofnewyork.us/resource/')
         #agent
         this_script = doc.agent('alg:maximega_tcorc#get_population', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('nyu:swpk-hqdp.json', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('nyu:swpk-hqdp.json', {'prov:label':'NYC Neighborhoods population', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         
         get_population = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 

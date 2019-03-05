@@ -22,14 +22,26 @@ class get_census_income(dml.Algorithm):
         repo.authenticate('maximega_tcorc', 'maximega_tcorc')
         
         # ------------------ Data retrieval ---------------------
-        url = 'http://datamechanics.io/data/maximega_tcorc/Data_USA_census_income.csv'
-        data = pd.read_csv(url).to_json(orient = "records")
-        json_response = json.loads(data)
+        url = 'https://api.datausa.io/api/?sort=desc&show=geo&required=income&sumlevel=tract&year=2016&where=geo%3A16000US3651000'
+        request = urllib.request.Request(url)
+        request.add_header('User-Agent', 'Mozilla/5.0')
+        response = urllib.request.urlopen(request)
+        content = response.read()
+
+        json_response = json.loads(content)
+        json_string = json.dumps(json_response, sort_keys=True, indent=2)
+        
+        insert_many_arr = []
+        for key in json_response.keys():
+            insert_many_arr.append({
+                'key': key,
+                'val': json_response[key]
+            })
 
         # ----------------- Data insertion into Mongodb ------------------
         repo.dropCollection('census_income')
         repo.createCollection('census_income')
-        repo[repo_name].insert_many(json_response)
+        repo[repo_name].insert_many(insert_many_arr)
         repo[repo_name].metadata({'complete':True})
         print(repo[repo_name].metadata())
         
@@ -56,16 +68,17 @@ class get_census_income(dml.Algorithm):
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         #resources:
-        doc.add_namespace('dmc', 'http://datamechanics.io/data/maximega_tcorc/')
+        doc.add_namespace('dusa', 'https://api.datausa.io/')
         #agent
         this_script = doc.agent('alg:maximega_tcorc#get_census_income', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dmc:Data_USA_census_income.csv', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('dusa:api', {'prov:label':'Census Tract AVG Income', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         
         get_census_income = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
         doc.wasAssociatedWith(get_census_income, this_script)
         doc.usage(get_census_income, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  {prov.model.PROV_TYPE:'ont:Retrieval',
+                  'ont:Query': '?sort=desc&show=geo&required=income&sumlevel=tract&year=2016&where=geo%3A16000US3651000'
                   }
                   )
     

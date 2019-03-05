@@ -32,7 +32,7 @@ class merge_income(dml.Algorithm):
 			for income in incomes.find():
 				if neighborhood['ntacode'] == income['nta']:
 					count_tracts += 1
-					#total_income += float(income['income'])
+					total_income += float(income['income'])
 					if(income['income'] == 'None'):
 						print(income['nta'])
 			avg_income = total_income/count_tracts
@@ -59,52 +59,48 @@ class merge_income(dml.Algorithm):
 
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-
 		'''
-		Create the provenance document describing everything happening
-		in this script. Each run of the script will generate a new
-		document describing that invocation event.
-		'''
+            Create the provenance document describing everything happening
+            in this script. Each run of the script will generate a new
+            document describing that invocation event.
+        '''
 
-		# Set up the database connection.
-		client = dml.pymongo.MongoClient()
-		repo = client.repo
-		repo.authenticate('alice_bob', 'alice_bob')
-		doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-		doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-		doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-		doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('maximega_tcorc', 'maximega_tcorc')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-		this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-		resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-		get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-		get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-		doc.wasAssociatedWith(get_found, this_script)
-		doc.wasAssociatedWith(get_lost, this_script)
-		doc.usage(get_found, resource, startTime, None,
-					{prov.model.PROV_TYPE:'ont:Retrieval',
-					'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-					}
-					)
-		doc.usage(get_lost, resource, startTime, None,
-					{prov.model.PROV_TYPE:'ont:Retrieval',
-					'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-					}
-					)
+        #agent
+        this_script = doc.agent('alg:maximega_tcorc#merge_census_data', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        #resource
+        income_with_tracts = doc.entity('dat:maximega_tcorc#income_with_tracts', {prov.model.PROV_LABEL:'NYC Census Tracts + Income Info', prov.model.PROV_TYPE:'ont:DataSet'})
+        population_with_neighborhoods = doc.entity('dat:maximega_tcorc#population_with_neighborhoods', {prov.model.PROV_LABEL:'NYC Neighborhoods + Subway Stations', prov.model.PROV_TYPE:'ont:DataSet'})
+		#agent
+        merging_income_NTA = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
-		lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-		doc.wasAttributedTo(lost, this_script)
-		doc.wasGeneratedBy(lost, get_lost, endTime)
-		doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
+        doc.wasAssociatedWith(merging_income_NTA, this_script)
 
-		found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-		doc.wasAttributedTo(found, this_script)
-		doc.wasGeneratedBy(found, get_found, endTime)
-		doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        doc.usage(merging_income_NTA, income_with_tracts, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
+        doc.usage(merging_income_NTA, population_with_neighborhoods, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
+		#reasource
+        income_with_NTA = doc.entity('dat:maximega_tcorc#income_with_neighborhoods', {prov.model.PROV_LABEL:'NYC Census Info + AVG Income per Tract', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(income_with_NTA, this_script)
+        doc.wasGeneratedBy(income_with_NTA, merging_income_NTA, endTime)
+        doc.wasDerivedFrom(income_with_NTA, income_with_tracts, merging_income_NTA, merging_income_NTA, merging_income_NTA)
+        doc.wasDerivedFrom(income_with_NTA, population_with_neighborhoods, merging_income_NTA, merging_income_NTA, merging_income_NTA)
 
-		repo.logout()
-					
-		return doc
+        repo.logout()
+                
+        return doc
 
 

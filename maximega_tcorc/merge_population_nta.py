@@ -35,6 +35,7 @@ class merge_population_nta(dml.Algorithm):
 						'stations': neighborhood['stations'], 
 						'population': population['population']
 					})
+					break
 
 		#----------------- Data insertion into Mongodb ------------------
 		repo.dropCollection('population_with_neighborhoods')
@@ -52,48 +53,45 @@ class merge_population_nta(dml.Algorithm):
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
 		'''
-			Create the provenance document describing everything happening
-			in this script. Each run of the script will generate a new
-			document describing that invocation event.
-		'''
+            Create the provenance document describing everything happening
+            in this script. Each run of the script will generate a new
+            document describing that invocation event.
+        '''
 
-		# Set up the database connection.
-		client = dml.pymongo.MongoClient()
-		repo = client.repo
-		repo.authenticate('alice_bob', 'alice_bob')
-		doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-		doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-		doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-		doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('maximega_tcorc', 'maximega_tcorc')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-		this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-		resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-		get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-		get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-		doc.wasAssociatedWith(get_found, this_script)
-		doc.wasAssociatedWith(get_lost, this_script)
-		doc.usage(get_found, resource, startTime, None,
-					{prov.model.PROV_TYPE:'ont:Retrieval',
-					'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-					}
-					)
-		doc.usage(get_lost, resource, startTime, None,
-					{prov.model.PROV_TYPE:'ont:Retrieval',
-					'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-					}
-					)
+        #agent
+        this_script = doc.agent('alg:maximega_tcorc#merge_population_nta', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        #resource
+        population = doc.entity('dat:maximega_tcorc#population', {prov.model.PROV_LABEL:'NYC Neighborhood Population Info', prov.model.PROV_TYPE:'ont:DataSet'})
+        neighborhoods_with_stations = doc.entity('dat:maximega_tcorc#neighborhoods_with_stations', {prov.model.PROV_LABEL:'NYC Neighborhoods + Subway Station Info', prov.model.PROV_TYPE:'ont:DataSet'})
+		#agent
+        merging_populations_neighborhoods = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
-		lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-		doc.wasAttributedTo(lost, this_script)
-		doc.wasGeneratedBy(lost, get_lost, endTime)
-		doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
+        doc.wasAssociatedWith(merging_populations_neighborhoods, this_script)
 
-		found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-		doc.wasAttributedTo(found, this_script)
-		doc.wasGeneratedBy(found, get_found, endTime)
-		doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        doc.usage(merging_populations_neighborhoods, population, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
+        doc.usage(merging_populations_neighborhoods, neighborhoods_with_stations, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
+		#reasource
+        population_with_neighborhoods = doc.entity('dat:maximega_tcorc#population_with_neighborhoods', {prov.model.PROV_LABEL:'NYC Neighborhood Info + Population Info', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(population_with_neighborhoods, this_script)
+        doc.wasGeneratedBy(population_with_neighborhoods, merging_populations_neighborhoods, endTime)
+        doc.wasDerivedFrom(population_with_neighborhoods, population, merging_populations_neighborhoods, merging_populations_neighborhoods, merging_populations_neighborhoods)
+        doc.wasDerivedFrom(population_with_neighborhoods, neighborhoods_with_stations, merging_populations_neighborhoods, merging_populations_neighborhoods, merging_populations_neighborhoods)
 
-		repo.logout()
-					
-		return doc
+        repo.logout()
+                
+        return doc

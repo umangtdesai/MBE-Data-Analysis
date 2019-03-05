@@ -60,7 +60,7 @@ class get_stations(dml.Algorithm):
         doc.add_namespace('dmc', 'http://datamechanics.io/data/maximega_tcorc/')
         #agent
         this_script = doc.agent('alg:maximega_tcorc#get_subway_stations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dmc:NYC_subway_exit_entrance.csv', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('dmc:NYC_subway_exit_entrance.csv', {'prov:label':'NYC Census Tract Information', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         
         get_subway_stations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
