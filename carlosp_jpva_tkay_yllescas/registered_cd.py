@@ -6,10 +6,10 @@ import datetime
 import uuid
 
 
-class non_registered_precincts(dml.Algorithm):
+class registered_cd(dml.Algorithm):
     contributor = 'carlosp_jpva_tkay_yllescas'
     reads = []
-    writes = ['carlosp_jpva_tkay_yllescas.non_registered_precincts']
+    writes = ['carlosp_jpva_tkay_yllescas.registered_cd']
 
     @staticmethod
     def execute(trial=False):
@@ -21,16 +21,16 @@ class non_registered_precincts(dml.Algorithm):
         repo = client.repo
         repo.authenticate('carlosp_jpva_tkay_yllescas', 'carlosp_jpva_tkay_yllescas')
 
-        file = 'data/non_registered_Precinct.json'
+        file = 'data/registered_voters_CD.json'
         with open(file, "r", encoding="utf8") as datafile:
             json_string = datafile.read()
         r = json.loads(json_string)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("non_registered_precincts")
-        repo.createCollection("non_registered_precincts")
-        repo['carlosp_jpva_tkay_yllescas.non_registered_precincts'].insert_many(r)
-        repo['carlosp_jpva_tkay_yllescas.non_registered_precincts'].metadata({'complete': True})
-        print(repo['carlosp_jpva_tkay_yllescas.non_registered_precincts'].metadata())
+        repo.dropCollection("registered_cd")
+        repo.createCollection("registered_cd")
+        repo['carlosp_jpva_tkay_yllescas.registered_cd'].insert_many(r)
+        repo['carlosp_jpva_tkay_yllescas.registered_cd'].metadata({'complete': True})
+        print(repo['carlosp_jpva_tkay_yllescas.registered_cd'].metadata())
 
         repo.logout()
 
@@ -57,24 +57,24 @@ class non_registered_precincts(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:carlosp_jpva_tkay_yllescas#non_registered_precincts',
+        this_script = doc.agent('alg:carlosp_jpva_tkay_yllescas#registered_cd',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bdp:wc8w-nujj',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
-        get_non_registered_precincts = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_non_registered_precincts, this_script)
-        doc.usage(get_non_registered_precincts, resource, startTime, None,
+        get_registered_cd = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_registered_cd, this_script)
+        doc.usage(get_registered_cd, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=non_registered_precincts&$select=type,latitude,longitude,OPEN_DT'
+                   'ont:Query': '?type=registered_cd&$select=type,latitude,longitude,OPEN_DT'
                    }
                   )
 
-        nonRegisteredPrecincts = doc.entity('dat:carlosp_jpva_tkay_yllescas#non_registered_precincts',
-                                {prov.model.PROV_LABEL: 'Registered Voters by Precinct', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(nonRegisteredPrecincts, this_script)
-        doc.wasGeneratedBy(nonRegisteredPrecincts, get_non_registered_precincts, endTime)
-        doc.wasDerivedFrom(nonRegisteredPrecincts, resource, get_non_registered_precincts, get_non_registered_precincts, get_non_registered_precincts)
+        registeredCD = doc.entity('dat:carlosp_jpva_tkay_yllescas#registered_cd',
+                                {prov.model.PROV_LABEL: 'Registered Voters by CD', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(registeredCD, this_script)
+        doc.wasGeneratedBy(registeredCD, get_registered_cd, endTime)
+        doc.wasDerivedFrom(registeredCD, resource, get_registered_cd, get_registered_cd, get_registered_cd)
 
         repo.logout()
 
