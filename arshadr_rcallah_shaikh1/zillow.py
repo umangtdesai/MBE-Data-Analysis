@@ -72,39 +72,49 @@ class example(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('zlo', 'https://www.zillow.com/')
+        doc.add_namespace('chl', 'https://www.chelseama.gov/assessor/pages/')
 
         this_script = doc.agent('alg:arshadr_rcallah_shaikh1#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_permits = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_assessor18 = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_permits, this_script)
-        doc.wasAssociatedWith(get_assessor18, this_script)
-        doc.usage(get_permits, resource, startTime, None,
+        resource = doc.entity('zlo:research/data/', { prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('zlo:research/data/', { prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('chl:chelsea-property-data', { prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_rent = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_buying = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_property = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_rent, this_script)
+        doc.wasAssociatedWith(get_buying, this_script)
+        doc.wasAssociatedWith(get_property, this_script)
+        doc.usage(get_rent, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                   'ont:Query':'?type=Animal+permits&$select=type,latitude,longitude,OPEN_DT'
+                   'ont:Retrieval':''
                    }
                   )
-        doc.usage(get_assessor18, resource, startTime, None,
+        doc.usage(get_buying, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                   'ont:Query':'?type=Animal+assessor18&$select=type,latitude,longitude,OPEN_DT'
+                   'ont:Retrieval':''
+                   }
+                  )
+        doc.usage(get_property, resource, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval',
+                   'ont:Retrieval':''
                    }
                   )
 
-        assessor18 = doc.entity('dat:arshadr_rcallah_shaikh1#assessor18', {prov.model.PROV_LABEL:'Animals assessor18', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(assessor18, this_script)
-        doc.wasGeneratedBy(assessor18, get_assessor18, endTime)
-        doc.wasDerivedFrom(assessor18, resource, get_assessor18, get_assessor18, get_assessor18)
+        rent = doc.entity('zlo:research/data/', {prov.model.PROV_LABEL:'Rent Prices', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(rent, this_script)
+        doc.wasGeneratedBy(rent, get_rent, endTime)
+        doc.wasDerivedFrom(rent, resource, get_rent, get_rent, get_rent)
 
-        permits = doc.entity('dat:arshadr_rcallah_shaikh1#permits', {prov.model.PROV_LABEL:'Animals permits', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(permits, this_script)
-        doc.wasGeneratedBy(permits, get_permits, endTime)
-        doc.wasDerivedFrom(permits, resource, get_permits, get_permits, get_permits)
+        buying = doc.entity('zlo:research/data/', {prov.model.PROV_LABEL:'Buying Prices', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(buying, this_script)
+        doc.wasGeneratedBy(buying, get_buying, endTime)
+        doc.wasDerivedFrom(buying, resource, get_buying, get_buying, get_buying)
 
-        incomes = doc.entity('dat:arshadr_rcallah_shaikh1#incomes', {prov.model.PROV_LABEL:'Animals incomes', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(incomes, this_script)
-        doc.wasGeneratedBy(incomes, get_incomes, endTime)
-        doc.wasDerivedFrom(incomes, resource, get_incomes, get_incomes, get_incomes)
+        property = doc.entity('chl:chelsea-property-data', {prov.model.PROV_LABEL:'Property Data', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(property, this_script)
+        doc.wasGeneratedBy(property, get_property, endTime)
+        doc.wasDerivedFrom(property, resource, get_property, get_property, get_property)
 
 
         repo.logout()

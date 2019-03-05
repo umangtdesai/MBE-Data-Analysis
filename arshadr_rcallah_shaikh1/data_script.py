@@ -70,36 +70,46 @@ class example(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('drv', 'https://drive.google.com/')
+        doc.add_namespace('chl', 'https://chelseama.ogopendata.com/dataset/')
+        doc.add_namespace('chl', 'https://chelseama.ogopendata.com/dataset/')
 
         this_script = doc.agent('alg:arshadr_rcallah_shaikh1#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_permits = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        resource = doc.entity('drv:file/d/1kiukuGI3Kl5qBzsKHOtCW17DdhaCLiMY/view', { prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('chl:building-permits-2016-onwards/resource/24a90fa2-d3b1-4857-acc1-fbcae3e2cc91', { prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('chl:chelsea-residents-incomes-in-the-past-12-months/resource/659c4348-6b39-4b79-8483-1f3ced5389c9', { prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_assessor18 = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_permits, this_script)
+        get_permits = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_incomes = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_assessor18, this_script)
-        doc.usage(get_permits, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+permits&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
+        doc.wasAssociatedWith(get_permits, this_script)
+        doc.wasAssociatedWith(get_incomes, this_script)
         doc.usage(get_assessor18, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+assessor18&$select=type,latitude,longitude,OPEN_DT'
-                  }
+                 {prov.model.PROV_TYPE:'ont:Retrieval',
+                   'ont:Retrieval':''
+                   }
                   )
-
-        assessor18 = doc.entity('dat:arshadr_rcallah_shaikh1#assessor18', {prov.model.PROV_LABEL:'Animals assessor18', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.usage(get_permits, resource, startTime, None,
+                   {prov.model.PROV_TYPE:'ont:Retrieval',
+                   'ont:Retrieval':''
+                   }
+                  )
+        doc.usage(get_incomes, resource, startTime, None,
+                   {prov.model.PROV_TYPE:'ont:Retrieval',
+                   'ont:Retrieval':''
+                   }
+                  )
+        assessor18 = doc.entity('dat:arshadr_rcallah_shaikh1#assessor18', {prov.model.PROV_LABEL:'Assessors Office', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(assessor18, this_script)
         doc.wasGeneratedBy(assessor18, get_assessor18, endTime)
         doc.wasDerivedFrom(assessor18, resource, get_assessor18, get_assessor18, get_assessor18)
 
-        permits = doc.entity('dat:arshadr_rcallah_shaikh1#permits', {prov.model.PROV_LABEL:'Animals permits', prov.model.PROV_TYPE:'ont:DataSet'})
+        permits = doc.entity('dat:arshadr_rcallah_shaikh1#permits', {prov.model.PROV_LABEL:'Building Permits', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(permits, this_script)
         doc.wasGeneratedBy(permits, get_permits, endTime)
         doc.wasDerivedFrom(permits, resource, get_permits, get_permits, get_permits)
 
-        incomes = doc.entity('dat:arshadr_rcallah_shaikh1#incomes', {prov.model.PROV_LABEL:'Animals incomes', prov.model.PROV_TYPE:'ont:DataSet'})
+        incomes = doc.entity('dat:arshadr_rcallah_shaikh1#incomes', {prov.model.PROV_LABEL:'Resident Incomes', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(incomes, this_script)
         doc.wasGeneratedBy(incomes, get_incomes, endTime)
         doc.wasDerivedFrom(incomes, resource, get_incomes, get_incomes, get_incomes)
