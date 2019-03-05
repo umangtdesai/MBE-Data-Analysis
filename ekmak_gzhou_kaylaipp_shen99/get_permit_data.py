@@ -27,10 +27,10 @@ class get_permit_data(dml.Algorithm):
         repo.authenticate('ekmak_gzhou_kaylaipp_shen99','ekmak_gzhou_kaylaipp_shen99')
 
         # #Retrive permit database data and add to mongo - source: Analyze Boston
-        url = 'https://data.boston.gov/datastore/odata3.0/6ddcd912-32a0-43df-9908-63574f8c7e77?&$format=json'
+        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=6ddcd912-32a0-43df-9908-63574f8c7e77&limit=105750&q=02127'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
-        r = r['value']
+        r = r['result']['records']
         repo.dropCollection("permit_data")
         repo.createCollection("permit_data")
         for info in r: 

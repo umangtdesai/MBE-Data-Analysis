@@ -26,10 +26,10 @@ class get_boston_addresses(dml.Algorithm):
         repo.authenticate('ekmak_gzhou_kaylaipp_shen99','ekmak_gzhou_kaylaipp_shen99')
         
         # #Retrieve all boston addresses and add to monogo - source: Analyze Boston
-        url = 'https://data.boston.gov/datastore/odata3.0/26933f1b-bcaa-4241-b0f2-7933570fd52d?&$format=json'
+        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=26933f1b-bcaa-4241-b0f2-7933570fd52d&limit=40000&q=02127'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
-        r = r['value']
+        r = r['result']['records']
         repo.dropCollection("address_data")
         repo.createCollection("address_data")
         for info in r: 
