@@ -8,7 +8,7 @@ import uuid
 class transformation1():
 
     contributor = 'kgrewal_shin2'
-    reads = []
+    reads = ['kgrewal_shin2.landmarks', 'kgrewal_shin2.street_names']
     writes = ['kgrewal_shin2.streets_without_landmarks']
 
 

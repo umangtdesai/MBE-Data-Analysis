@@ -8,9 +8,8 @@ sheet = 'street_book'
 df = pd.read_csv(file_name)
 print(df.head(5))
 
-remove_words = ['Street',',', 'Road','Place','Square',';',
-                          'Boulevard','Highway','Avenue','Alley', 'North', 'South', 'Mt.', 'Court',
-                      'Terrace', 'Path', 'Circle', 'Park', 'Way', 'Drive']
+remove_words = ['Street', 'Road','Place','Square', 'Boulevard','Highway','Avenue', 'Alley', 'North', 'South', 'Mt.',
+                'Court', 'Terrace', 'Path', 'Circle', 'Park', 'Way', 'Drive']
 
 pat = r'\b(?:{})\b'.format('|'.join(remove_words))
 
