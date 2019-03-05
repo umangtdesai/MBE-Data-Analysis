@@ -83,31 +83,28 @@ class transformTweets(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/emmaliu_gaotian_xli33_yuyangl')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets')
-
-        this_script = doc.agent('alg:emmaliu_gaotian_xli33_yuyangl#getTweets',
+        doc.add_namespace('bdp', '')
+        this_script = doc.agent('alg:emmaliu_gaotian_xli33_yuyangl#transformTweets',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('bdp:wc8w-nujj',
+        resource = doc.entity('dat:emmaliu_gaotian_xli33_yuyangl#tweets',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
-        get_tweets = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_tweets, this_script)
-        doc.usage(get_tweets, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+        transform_tweets = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(transform_tweets, this_script)
+        doc.usage(transform_tweets, resource, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:calculation',
+                   'ont:Query': ''
                    }
                   )
-
-        tweets = doc.entity('dat:emmaliu_gaotian_xli33_yuyangl#get_tweets',
-                          {prov.model.PROV_LABEL: 'tweets from Amman', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(tweets, this_script)
-        doc.wasGeneratedBy(tweets, get_tweets, endTime)
-        doc.wasDerivedFrom(tweets, resource, get_tweets, get_tweets, get_tweets)
+        userLocation = doc.entity('dat:emmaliu_gaotian_xli33_yuyangl#get_tweets',
+                                  {prov.model.PROV_LABEL: 'tweets from Amman', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(userLocation, this_script)
+        doc.wasGeneratedBy(userLocation, transform_tweets, endTime)
+        doc.wasDerivedFrom(userLocation, resource, transform_tweets, transform_tweets, transform_tweets)
 
         repo.logout()
 
         return doc
-
 
 transformTweets.execute()
 # doc = getTweets.provenance()
