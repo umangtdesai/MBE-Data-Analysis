@@ -22,6 +22,7 @@ class example(dml.Algorithm):
 
         url = 'http://cs-people.bu.edu/lapets/591/examples/lost.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
+
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("lost")
