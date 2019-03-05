@@ -116,3 +116,5 @@ dmypy.json
 .pyre/
 
 .idea
+
+zui_sarms/senpai/mongo_pkey
