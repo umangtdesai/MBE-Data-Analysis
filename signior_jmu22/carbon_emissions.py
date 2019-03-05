@@ -5,6 +5,7 @@ import prov.model
 import datetime
 import uuid
 import urllib.request
+import pandas as pd
 
 class carbon_emissions(dml.Algorithm):
   contributor = 'signior_jmu22'
@@ -20,13 +21,17 @@ class carbon_emissions(dml.Algorithm):
     repo = client.repo
     repo.authenticate('signior_jmu22', 'signior_jmu22')
 
-    url = 'http://datamechanics.io/data/signior_jmu22/co2ppm.json' # grab dataset from datamechanics.io
-    response = urllib.request.urlopen(url).read().decode("utf-8") # open with python request library
-    r = json.loads(response) 
-    s = json.dumps(r, sort_keys=True, indent=2)
+    url = 'http://datamechanics.io/data/signior_jmu22/carbon_emissions.csv' # grab dataset from datamechanics.io
+    df = pd.read_csv(url, sep='\t')
+    filter_values = ['Country Name']
+    for i in range(1960, 2015):
+      filter_values.append(str(i))
+    new_df = df.filter(filter_values)
+    carbon_emissions_dict = new_df.to_dict(orient='records')
+
     repo.dropCollection("carbon_emissions")
     repo.createCollection("carbon_emissions")
-    repo['signior_jmu22.carbon_emissions'].insert_many(r)
+    repo['signior_jmu22.carbon_emissions'].insert_many(carbon_emissions_dict)
     repo['signior_jmu22.carbon_emissions'].metadata({'complete': True})
 
     print(repo['signior_jmu22.carbon_emissions'].metadata())
@@ -49,12 +54,12 @@ class carbon_emissions(dml.Algorithm):
     doc.add_namespace('log', 'http://datamechanics.io/log/')
 
     this_script = doc.agent('alg:signior_jmu22#carbon_emissions', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-    resource = doc.entity('dat:carbon_emissions', {'prov:label': 'Global CO2 emissions data 1980 - 2017', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'csv'})
+    resource = doc.entity('dat:carbon_emissions', {'prov:label': 'Carbon Emissions by Country 1960 - 2014', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'csv'})
     get_carbon_emissions = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
     doc.wasAssociatedWith(get_carbon_emissions, this_script)
     doc.usage(get_carbon_emissions, resource, startTime, None, {prov.model.PROV_TYPE:'ont:Retreival'})
     
-    carbon_emissions = doc.entity('dat:signior_jmu22#carbon_emissions', {prov.model.PROV_LABEL: 'Global Carbon Emissions', prov.model.PROV_TYPE: 'ont:DataSet'})
+    carbon_emissions = doc.entity('dat:signior_jmu22#carbon_emissions', {prov.model.PROV_LABEL: 'Carbon Emissions by Country', prov.model.PROV_TYPE: 'ont:DataSet'})
     doc.wasAttributedTo(carbon_emissions, this_script)
     doc.wasGeneratedBy(carbon_emissions, get_carbon_emissions, endTime)
     doc.wasDerivedFrom(carbon_emissions, resource, get_carbon_emissions, get_carbon_emissions, get_carbon_emissions)
