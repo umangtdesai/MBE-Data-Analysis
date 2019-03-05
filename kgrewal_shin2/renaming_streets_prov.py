@@ -35,8 +35,7 @@ class ProvenanceModel(dml.Algorithm):
         repo['kgrewal_shin2.street_names'].metadata({'complete': True})
         print(repo['kgrewal_shin2.street_names'].metadata())
 
-
-        #landmarks api
+        # landmarks api
         url = 'https://opendata.arcgis.com/datasets/7a7aca614ad740e99b060e0ee787a228_3.geojson'
         response = requests.get(url)
         responsetxt = '[' + response.text + ']'
@@ -46,7 +45,6 @@ class ProvenanceModel(dml.Algorithm):
         repo['kgrewal_shin2.landmarks'].insert_many(r)
         repo['kgrewal_shin2.landmarks'].metadata({'complete': True})
         print(repo['kgrewal_shin2.landmarks'].metadata())
-
 
         # neighborhoods
         url = "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/boston.geojson"
@@ -90,7 +88,6 @@ class ProvenanceModel(dml.Algorithm):
         repo['kgrewal_shin2.major_roads'].insert_many(r)
         repo['kgrewal_shin2.major_roads'].metadata({'complete': True})
         print(repo['kgrewal_shin2.major_roads'].metadata())
-
 
         repo.logout()
 
