@@ -19,10 +19,10 @@ def csv_to_json(url):
         dict_values.append(dictionary)
     return dict_values
 
-class getTrafficSignal(dml.Algorithm):
+class getHubwayStation(dml.Algorithm):
     contributor = 'nhuang54_wud'
     reads = []
-    writes = ['nhuang54_wud.trafficSignal']
+    writes = ['nhuang54_wud.hubwayStation']
 
     @staticmethod
     def execute(trial = False):
@@ -35,15 +35,15 @@ class getTrafficSignal(dml.Algorithm):
         repo.authenticate('nhuang54_wud', 'nhuang54_wud')
 
         # Get Traffic Signals csv data in area of Boston
-        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/eee77dc4ab3d479f83b2100542285727_12.csv'
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/ee7474e2a0aa45cbbdfe0b747a5eb032_0.csv'
         json_file = csv_to_json(url)
 
         # Store in DB
-        repo.dropCollection("trafficSignal")
-        repo.createCollection("trafficSignal")
-        repo['nhuang54_wud.trafficSignal'].insert_many(json_file)
-        repo['nhuang54_wud.trafficSignal'].metadata({'complete':True})
-        print(repo['nhuang54_wud.trafficSignal'].metadata())
+        repo.dropCollection("hubwayStation")
+        repo.createCollection("hubwayStation")
+        repo['nhuang54_wud.hubwayStation'].insert_many(json_file)
+        repo['nhuang54_wud.hubwayStation'].metadata({'complete':True})
+        print(repo['nhuang54_wud.hubwayStation'].metadata())
 
         repo.logout()
 
@@ -71,10 +71,10 @@ class getTrafficSignal(dml.Algorithm):
         # Resource:
         doc.add_namespace('bod', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
-        this_script = doc.agent('alg:nhuang54_wud#getTrafficSignal', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bod:eee77dc4ab3d479f83b2100542285727_12', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
-        get_trafficSignal = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_trafficSignal, this_script)
+        this_script = doc.agent('alg:nhuang54_wud#hubwayStation', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('bod:ee7474e2a0aa45cbbdfe0b747a5eb032_0', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        get_hubwayStation = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_hubwayStation, this_script)
 
         doc.usage(get_trafficSignal, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
@@ -82,10 +82,10 @@ class getTrafficSignal(dml.Algorithm):
                   }
                   )
 
-        trafficSignal = doc.entity('dat:nhuang54_wud#trafficSignal', {prov.model.PROV_LABEL:'Traffic Signal', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(trafficSignal, this_script)
-        doc.wasGeneratedBy(trafficSignal, get_trafficSignal, endTime)
-        doc.wasDerivedFrom(trafficSignal, resource, get_trafficSignal, get_trafficSignal, get_trafficSignal)
+        hubwayStation = doc.entity('dat:nhuang54_wud#hubwayStation', {prov.model.PROV_LABEL:'Hubway Stations', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(hubwayStation, this_script)
+        doc.wasGeneratedBy(hubwayStation, get_hubwayStation, endTime)
+        doc.wasDerivedFrom(hubwayStation, resource, get_hubwayStation, get_hubwayStation, get_hubwayStation)
 
         repo.logout()
 
@@ -96,6 +96,6 @@ class getTrafficSignal(dml.Algorithm):
 ##print(doc.get_provn())
 ##print(json.dumps(json.loads(doc.serialize()), indent=4))
 if __name__ == '__main__':
-    getBikeFatality.execute()
+    getHubwayStation.execute()
 
 ## eof
