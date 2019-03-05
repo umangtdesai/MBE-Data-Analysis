@@ -12,7 +12,7 @@ class ProvenanceModel(dml.Algorithm):
     contributor = 'kgrewal_shin2'
     reads = []
     writes = ['kgrewal_shin2.street_names', 'kgrewal_shin2.landmarks', 'kgrewal_shin2.neighborhoods',
-              'kgrewal_shin2.ubers', 'kgrewal_shin2.pub_schools', 'kgrewal_shin2.major_roads']
+              'kgrewal_shin2.ubers', 'kgrewal_shin2.pub_schools']
 
     @staticmethod
     def execute(trial=False):
@@ -35,7 +35,8 @@ class ProvenanceModel(dml.Algorithm):
         repo['kgrewal_shin2.street_names'].metadata({'complete': True})
         print(repo['kgrewal_shin2.street_names'].metadata())
 
-        # landmarks api
+
+        #landmarks api
         url = 'https://opendata.arcgis.com/datasets/7a7aca614ad740e99b060e0ee787a228_3.geojson'
         response = requests.get(url)
         responsetxt = '[' + response.text + ']'
@@ -45,6 +46,7 @@ class ProvenanceModel(dml.Algorithm):
         repo['kgrewal_shin2.landmarks'].insert_many(r)
         repo['kgrewal_shin2.landmarks'].metadata({'complete': True})
         print(repo['kgrewal_shin2.landmarks'].metadata())
+
 
         # neighborhoods
         url = "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/boston.geojson"
@@ -79,15 +81,15 @@ class ProvenanceModel(dml.Algorithm):
         repo['kgrewal_shin2.ubers'].metadata({'complete': True})
         print(repo['kgrewal_shin2.ubers'].metadata())
 
-        # major roads
-        url = 'https://drive.google.com/file/d/10a3ZoJjx2kgCRWEwjjCoTHADFV-uYV3e/view?usp=sharing'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        repo.dropCollection("major_roads")
-        repo.createCollection("major_roads")
-        repo['kgrewal_shin2.major_roads'].insert_many(r)
-        repo['kgrewal_shin2.major_roads'].metadata({'complete': True})
-        print(repo['kgrewal_shin2.major_roads'].metadata())
+        # # major roads
+        # url = 'https://drive.google.com/file/d/10a3ZoJjx2kgCRWEwjjCoTHADFV-uYV3e/view?usp=sharing'
+        # response = urllib.request.urlopen(url).read().decode("utf-8")
+        # r = json.loads(response)
+        # repo.dropCollection("major_roads")
+        # repo.createCollection("major_roads")
+        # repo['kgrewal_shin2.major_roads'].insert_many(r)
+        # repo['kgrewal_shin2.major_roads'].metadata({'complete': True})
+        # print(repo['kgrewal_shin2.major_roads'].metadata())
 
         repo.logout()
 
@@ -124,7 +126,6 @@ class ProvenanceModel(dml.Algorithm):
         get_neighborhoods = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         get_ubers = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         get_pub_schools = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        get_major_roads = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
         doc.wasAssociatedWith(get_street_name, this_script)
         doc.usage(get_street_name, resource, startTime, None,
@@ -158,11 +159,6 @@ class ProvenanceModel(dml.Algorithm):
                    }
                   )
 
-        doc.usage(get_major_roads, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Major+Road&$select=STREET_NAME, CLASS, ADMIN_TYPE, RDTYPE, MGIS_TOWN, LENGTH_MI'
-                   }
-                  )
 
         streets = doc.entity('dat:kgrewal_shin2#street_name',
                           {prov.model.PROV_LABEL: 'Boston Streets', prov.model.PROV_TYPE: 'ont:DataSet'})
@@ -195,12 +191,6 @@ class ProvenanceModel(dml.Algorithm):
         doc.wasAttributedTo(pub_schools, this_script)
         doc.wasGeneratedBy(pub_schools, get_pub_schools, endTime)
         doc.wasDerivedFrom(pub_schools, resource, get_pub_schools, get_pub_schools, get_pub_schools)
-
-        major_roads = doc.entity('dat:kgrewal_shin2#major_roads',
-                                 {prov.model.PROV_LABEL: 'Major Roads', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(major_roads, this_script)
-        doc.wasGeneratedBy(major_roads, get_pub_schools, endTime)
-        doc.wasDerivedFrom(major_roads, resource, get_major_roads, get_major_roads, get_major_roads)
 
 
         repo.logout()
