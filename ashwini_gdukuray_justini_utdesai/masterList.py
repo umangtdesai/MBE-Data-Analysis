@@ -1,3 +1,4 @@
+import urllib.request
 import json
 import dml
 import prov.model
@@ -6,10 +7,10 @@ import uuid
 import pandas as pd
 
 
-class secretaryCommonwealth(dml.Algorithm):
+class masterList(dml.Algorithm):
     contributor = 'ashwini_gdukuray_justini_utdesai'
-    reads = []
-    writes = ['ashwini_gdukuray_justini_utdesai.secretary']
+    reads = ['ashwini_gdukuray_justini_utdesai.massHousing', 'ashwini_gdukuray_justini_utdesai.secretary'] # is going to have to read in the master list from mongodb
+    writes = ['ashwini_gdukuray_justini_utdesai.masterList'] # will write a dataset that is companies in top 25 that are also certified MBE
 
     @staticmethod
     def execute(trial=False):
@@ -21,23 +22,35 @@ class secretaryCommonwealth(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
 
-        url = 'https://cs-people.bu.edu/dharmesh/spark/businesses.csv'
+        # Need to standardize the columns and field structure of massHousing and secretary and union the two
+        # in order to create a master MBE list, and then store it in the DB
 
-        data = pd.read_csv(url)
+        massHousing = repo['ashwini_gdukuray_justini_utdesai.massHousing']
+        secretary = repo['ashwini_gdukuray_justini_utdesai.secretary']
 
-        # Standardize dataset
-        data = data.rename(index=str, columns={"SDO Cert. Date": "SDO Cert Date"})
+        massHousingDF = pd.DataFrame(list(massHousing.find()))
+        secretaryDF = pd.DataFrame(list(secretary.find()))
 
-        records = json.loads(data.T.to_json()).values()
-        #print(records)
+        print(massHousingDF)
+        print(secretaryDF['MBE - Y/N'])
 
-        # read from Mongo, project in the zeros in zip code column
+        # convert zip codes to strings and 5 digits long
+        secretaryDF['Zip'] = secretaryDF['Zip'].astype('str')
+        secretaryDF['Zip'] = secretaryDF['Zip'].apply(lambda zipCode: ((5 - len(zipCode))*'0' + zipCode \
+                                                        if len(zipCode) < 5 else zipCode)[:5])
+        secretaryDF = secretaryDF.loc[secretaryDF['MBE - Y/N'] == 'Y']
+        secretaryDF = secretaryDF[['Business Name', 'Address', 'City', 'Zip', 'State', 'Description of Services', 'MBE - Y/N']]
 
-        repo.dropCollection("secretary")
-        repo.createCollection("secretary")
-        repo['ashwini_gdukuray_justini_utdesai.secretary'].insert(records)
-        repo['ashwini_gdukuray_justini_utdesai.secretary'].metadata({'complete': True})
-        print(repo['ashwini_gdukuray_justini_utdesai.secretary'].metadata())
+        print(secretaryDF)
+        # list of column names underneath
+        #print(list(massHousingDF))
+        #print(list(secretaryDF))
+
+        repo.dropCollection("masterList")
+        repo.createCollection("masterList")
+        #repo['ashwini_gdukuray_justini_utdesai.masterList'].insert_many(records)
+        #repo['ashwini_gdukuray_justini_utdesai.masterList'].metadata({'complete': True})
+        #print(repo['ashwini_gdukuray_justini_utdesai.masterList'].metadata())
 
         repo.logout()
 
@@ -52,8 +65,8 @@ class secretaryCommonwealth(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
-        pass
 
+        pass
         """
         # Set up the database connection.
         client = dml.pymongo.MongoClient()

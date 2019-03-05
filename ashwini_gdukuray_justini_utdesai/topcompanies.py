@@ -23,13 +23,10 @@ class topcompanies(dml.Algorithm):
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
 
         url = 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/Top25Companies.csv'
-        response = urllib.request.urlopen(url).read().decode("utf-8", "ignore")
-        print(type(response))
-        print(response)
 
-        data = pd.read_csv(response, sep=',')
+        data = pd.read_csv(url)
 
-        print(data)
+        #print(data)
 
         records = json.loads(data.T.to_json()).values()
 
@@ -37,7 +34,7 @@ class topcompanies(dml.Algorithm):
         repo.createCollection("topCompanies")
         repo['ashwini_gdukuray_justini_utdesai.topCompanies'].insert_many(records)
         repo['ashwini_gdukuray_justini_utdesai.topCompanies'].metadata({'complete': True})
-        print(repo['alice_bob.lost'].metadata())
+        print(repo['ashwini_gdukuray_justini_utdesai.topCompanies'].metadata())
 
         repo.logout()
 
