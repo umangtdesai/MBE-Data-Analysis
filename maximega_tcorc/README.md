@@ -1,6 +1,6 @@
 Data Sets Used:
 
-  http://datamechanics.io/data/maximega_tcorc/Data_USA_census_income.csv
+  https://api.datausa.io/api/?sort=desc&show=geo&required=income&sumlevel=tract&year=all&where=geo%3A16000US3651000
   http://datamechanics.io/data/maximega_tcorc/NYC_census_tracts.csv
   http://datamechanics.io/data/maximega_tcorc/NYC_subway_exit_entrance.csv
   https://data.cityofnewyork.us/resource/swpk-hqdp.json     
@@ -9,7 +9,7 @@ Data Sets Used:
 Data Portals Used:
 
    https://data.cityofnewyork.us/       
-   https://data.ny.gov/       
+   https://datamechanics.io/       
    https://datausa.io       
    
 Non-trivial Data Transformations:
