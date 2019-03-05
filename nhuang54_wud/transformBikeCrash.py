@@ -56,10 +56,13 @@ class transformBikeCrash(dml.Algorithm):
         bikeCrashes = [t for t in crashLocations if t['"mode_type"'] == 'bike']
         print(len(bikeCrashes))
 
+        bikeCrashesShort = bikeCrashes[0:20]
+        # print(bikeCrashesShort)
+
         lightLoc = [t for t in lightLocations if t['TYPE'] == 'LIGHT']
         print(len(lightLoc))
         # Product between bike crashes and streetlight locations
-        crashLightProduct = product(bikeCrashes, lightLoc)
+        crashLightProduct = product(bikeCrashesShort, lightLoc)
         print(len(crashLightProduct))
 
         # for i in range(75000, 75040):
@@ -69,18 +72,25 @@ class transformBikeCrash(dml.Algorithm):
         # Project to add 'distance' column.
         crashLightDistances = [(t[0]['\ufeff"dispatch_ts"'], geodistance(float(t[0]['"lat"']), float(t[0]['"long"\r']), float(t[1]['Lat']), float(t[1]['Long']))) for t in crashLightProduct]
 
-        # print(crashLightDistances)
         # Aggregate
         finalSet = aggregate(crashLightDistances, min)
-        # print(finalSet)
-        with open("./nhuang54_wud/new_datasets/crashesAndLights.json", 'w') as outfile:
+
+        # Put into dictionary
+        finalDict = {}
+        for tup in finalSet:
+          finalDict[tup[0]] = str(tup[1])
+        
+        # print(finalDict)
+        print(finalDict.items())
+
+        with open("new_datasets/crashesAndLights.json", 'w') as outfile:
           json.dump(finalSet, outfile)
         
         repo.dropCollection("bikeCrashStreetlight")
         repo.createCollection("bikeCrashStreetlight")
-        for key,value in finalSet.items():
-          repo['nhuang54_wud.bikeCrashStreetlight'].insert({key:value})
-        # repo['nhuang54_wud.bikeFatality'].insert_many(json_file)
+        for key,value in finalDict.items():
+          repo['nhuang54_wud.bikeCrashStreetlight'].insert_one({key:value})
+        # repo['nhuang54_wud.bikeCrashStreetlight'].insertMany()
         repo['nhuang54_wud.bikeCrashStreetlight'].metadata({'complete':True})
         print(repo['nhuang54_wud.bikeCrashStreetlight'].metadata())
 
