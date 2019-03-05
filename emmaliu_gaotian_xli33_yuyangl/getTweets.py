@@ -57,7 +57,7 @@ class getTweets(dml.Algorithm):
 
         this_script = doc.agent('alg:emmaliu_gaotian_xli33_yuyangl#getTweets',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('twitter API',
+        resource = doc.entity('bdp:twitter API',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
         get_tweets = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
