@@ -36,16 +36,29 @@ class transformHubwayCrash(dml.Algorithm):
         # project hubway station locations in form (name, (lat, long))
         hubwayLocations = []
         for row in hubwayData:
-            hubwayLocations += [[row['"name"'], [float(row['"lat"']), float(row['"long"'])]]]
+            # print(row)
+            # print(row['name'])
+            # print(row['\ufeffX'])
+            # print(row['Y'])
+            hubwayLocations += [[row['name'], [float(row['\ufeffX']), float(row['Y'])]]]
 
         # project crash location in form (crash location id, (lat, long))
         crashLocations = []
         for row in crashData:
             if row['"mode_type"'] == 'bike':
-                crashLocations += [["crash location" + row['"_id"'], [float(row['"lat"']), float(row['"long"'])]]]
+                crashLocations += [[row['_id'], [float(row['"lat"']), float(row['"long"\r'])]]]
 
         #JOIN
         hubway_crash_prod = product(hubwayLocations, crashLocations)
+        for t in hubway_crash_prod:
+            print(t)
+            print(t[0][0])
+            print(t[0][1])
+            print(t[0][1][0])
+            print(t[0][1][1])
+            print(t[1][0])
+            print(t[1][1])
+            break;
         hubway_safety_list = [(t[0][0], t[0][1], t[0][2], t[1][0], t[1][1], t[1][2], safety_zone(t[0][1], t[0][2], t[1][1], t[1][2])) for t in hubway_crash_prod]
 
         # put into dictionary
@@ -57,11 +70,11 @@ class transformHubwayCrash(dml.Algorithm):
         print(hubway_safety_dict.items())
 
         with open("new_datasets/hubwaySafetyZone.json", 'w') as outfile:
-          json.dump(finalSet, outfile)
+          json.dump(hubway_safety_dict, outfile)
 
         repo.dropCollection("hubwayStationSafety")
         repo.createCollection("hubwayStationSafety")
-        for key,value in finalDict.items():
+        for key,value in hubway_safety_dict.items():
           repo['nhuang54_wud.hubwayStationSafety'].insert_one({key:value})
         # repo['nhuang54_wud.bikeCrashStreetlight'].insertMany()
         repo['nhuang54_wud.hubwayStationSafety'].metadata({'complete':True})
@@ -91,11 +104,11 @@ class transformHubwayCrash(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         this_script = doc.agent('alg:nhuang54_wud#transformHubwayCrash', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource1 = doc.entity('dat:nhuang54_wud#hubway_station_location', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        resource1 = doc.entity('dat:nhuang54_wud#Hubway_Stations', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         resource2 = doc.entity('dat:nhuang54_wud#crash_open_data', {'prov:label':'311, Service Requests', prov.mode.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
 
-        transform_bikeCrash = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(transform_bikeCrash, this_script)
+        transform_hubwayCrash = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(transform_hubwayCrash, this_script)
 
         doc.usage(transform_hubwayCrash, resource1, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Calculation',

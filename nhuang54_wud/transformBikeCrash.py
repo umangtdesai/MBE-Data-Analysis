@@ -84,7 +84,7 @@ class transformBikeCrash(dml.Algorithm):
         print(finalDict.items())
 
         with open("new_datasets/crashesAndLights.json", 'w') as outfile:
-          json.dump(finalSet, outfile)
+          json.dump(finalDict, outfile)
         
         repo.dropCollection("bikeCrashStreetlight")
         repo.createCollection("bikeCrashStreetlight")
