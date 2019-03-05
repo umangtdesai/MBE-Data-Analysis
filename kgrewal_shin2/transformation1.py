@@ -40,7 +40,7 @@ class transformation1():
                     else:
                         street = address
                 else:
-                    street = address.split("Bounded by")[1]
+                    street = address.split("Bounded by ")[1]
 
                 print(street)
                 landmark_streets.append(street)
