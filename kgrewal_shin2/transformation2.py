@@ -5,11 +5,11 @@ import prov.model
 import datetime
 import uuid
 
-class transformation1():
+class transformation2():
 
     contributor = 'kgrewal_shin2'
-    reads = ['kgrewal_shin2.landmarks', 'kgrewal_shin2.street_names']
-    writes = ['kgrewal_shin2.streets_without_landmarks']
+    reads = ['kgrewal_shin2.pub_schools', 'kgrewal_shin2.street_names']
+    writes = ['kgrewal_shin2.streets_without_schools']
 
 
     @staticmethod
@@ -21,31 +21,27 @@ class transformation1():
         repo = client.repo
         repo.authenticate('kgrewal_shin2', 'kgrewal_shin2')
 
-        landmarks = repo.kgrewal_shin2.landmarks.find()
+        schools = repo.kgrewal_shin2.pub_schools.find()
         street_names = repo.kgrewal_shin2.street_names.find()
 
-        landmark_streets = []
-        for l in landmarks:
-            length = len(l['features'])
+        school_streets = []
+        for s in schools:
+            length = len(s['features'])
             for i in range(length):
-                data = l['features'][i]['properties']
-                address = data['Address']
+                data = s['features'][i]['properties']
+                address = data['ADDRESS']
 
-                if "Bounded by" not in address:
-                    street = address.split(" ", 1)
-                    if street[0].isdigit() or len(street[0].split("-")) > 1:
-                        street = street[1]
-                    else:
-                        street = address
+                street = address.split(" ", 1)
+                if street[0].isdigit():
+                    street = street[1]
                 else:
-                    street = address.split("Bounded by ")[1]
+                    street = address
 
                 # print(street)
-                landmark_streets.append(street)
-        print(len(landmark_streets))
+                school_streets.append(street)
+        print(len(school_streets))
 
-        streets_without_landmarks = []
-
+        streets_without_schools = []
         for x in street_names:
             full_name = x['full_name']
             #to correct for a comma at the end of full_name
@@ -54,24 +50,23 @@ class transformation1():
             zipcode = x['zipcodes']
             street_name = x['street_name']
 
-            # find difference of streetnames and landmarks
-            if (full_name not in landmark_streets) and (gender != "female"):
-                streets_without_landmarks.append({"full_name": full_name, "gender": gender,
+            # find difference of streetnames and schools
+            if full_name not in school_streets and gender != "female":
+                streets_without_schools.append({"full_name": full_name, "gender": gender,
                                                   "zipcode": zipcode, "street_name": street_name})
 
-        print(streets_without_landmarks)
-        repo.dropCollection("streets_without_landmarks")
-        repo.createCollection("streets_without_landmarks")
-        repo['kgrewal_shin2.streets_without_landmarks'].insert_many(streets_without_landmarks)
-        repo['kgrewal_shin2.streets_without_landmarks'].metadata({'complete': True})
-        print(repo['kgrewal_shin2.streets_without_landmarks'].metadata())
+        print(streets_without_schools)
+        repo.dropCollection("streets_without_schools")
+        repo.createCollection("streets_without_schools")
+        repo['kgrewal_shin2.streets_without_schools'].insert_many(streets_without_schools)
+        repo['kgrewal_shin2.streets_without_schools'].metadata({'complete': True})
+        print(repo['kgrewal_shin2.streets_without_schools'].metadata())
 
         repo.logout()
 
         endTime = datetime.datetime.now()
 
         return {"start": startTime, "end": endTime}
-
 
 
     @staticmethod
@@ -97,12 +92,12 @@ class transformation1():
         doc.wasAssociatedWith(get_streets, this_script)
         doc.usage(get_streets, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Streets+Without+Landmarks&$select=full_name,gender,zipcode,street_name'
+                   'ont:Query': '?type=Streets+Without+Schools&$select=full_name,gender,zipcode,street_name'
                    }
                   )
 
         streets = doc.entity('dat:kgrewal_shin2#streets',
-                          {prov.model.PROV_LABEL: 'Streets Without Landmarks', prov.model.PROV_TYPE: 'ont:DataSet'})
+                          {prov.model.PROV_LABEL: 'Streets Without Schools', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(streets, this_script)
         doc.wasGeneratedBy(streets, get_streets, endTime)
         doc.wasDerivedFrom(streets, resource, get_streets, get_streets, get_streets)
@@ -112,8 +107,8 @@ class transformation1():
         return doc
 
 
-transformation1.execute()
-doc = transformation1.provenance()
+transformation2.execute()
+doc = transformation2.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 
