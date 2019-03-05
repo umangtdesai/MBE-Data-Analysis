@@ -8,9 +8,9 @@ import uuid
 import pandas as pd 
 
 class Airbnb(dml.Algorithm):
-    contributor = 'kelly_colleen'
+    contributor = 'kzhang21_ryuc'
     reads = []
-    writes = ['kelly_colleen.airbnb']
+    writes = ['kzhang21_ryuc.airbnb']
 
     @staticmethod
     def execute(trial = False):
@@ -20,7 +20,7 @@ class Airbnb(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('kelly_colleen', 'kelly_colleen')
+        repo.authenticate('kzhang21_ryuc', 'kzhang21_ryuc')
 
         #read in csv file
         url = 'http://datamechanics.io/data/airbnb_listing.csv'
@@ -40,9 +40,9 @@ class Airbnb(dml.Algorithm):
 
         repo.dropCollection("airbnb")
         repo.createCollection("airbnb")
-        repo['kelly_colleen.airbnb'].insert_many(r)
-        repo['kelly_colleen.airbnb'].metadata({'complete':True})
-        print(repo['kelly_colleen.airbnb'].metadata())
+        repo['kzhang21_ryuc.airbnb'].insert_many(r)
+        repo['kzhang21_ryuc.airbnb'].metadata({'complete':True})
+        print(repo['kelly_ryuc.airbnb'].metadata())
         repo.logout()
 
         endTime = datetime.datetime.now()
@@ -60,7 +60,7 @@ class Airbnb(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('kelly_colleen', 'kelly_colleen')
+        repo.authenticate('kzhang21_ryuc', 'kzhang21_ryuc')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -69,17 +69,16 @@ class Airbnb(dml.Algorithm):
         #additional resource
         doc.add_namespace('airbnb', 'http://datamechanics.io/data/airbnb_listing.csv')
 
-        this_script = doc.agent('alg:kelly_colleen#airbnb', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:kzhang21_ryuc#airbnb', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('dat:airbnb', {'prov:label':'Airbnb, Location Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_place = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_place, this_script)
         doc.usage(get_place, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
-        airbnb = doc.entity('dat:kelly_colleen#airbnb', {prov.model.PROV_LABEL:'Place Found', prov.model.PROV_TYPE:'ont:DataSet'})
+        airbnb = doc.entity('dat:kzhang21_ryuc#airbnb', {prov.model.PROV_LABEL:'Place Found', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(airbnb, this_script)
         doc.wasGeneratedBy(airbnb, get_place, endTime)
         doc.wasDerivedFrom(airbnb, resource, get_place, get_place, get_place)

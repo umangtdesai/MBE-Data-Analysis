@@ -15,9 +15,9 @@ def product(R, S):
     return [(t,u) for t in R for u in S]
 
 class EatNPlay(dml.Algorithm):
-    contributor = 'kelly_colleen'
-    reads = ['kelly_colleen.eat', 'kelly_colleen.play']
-    writes = ['kelly_colleen.eatNplay']
+    contributor = 'kzhang21_ryuc'
+    reads = ['kzhang21_ryuc.eat', 'kzhang21_ryuc.play']
+    writes = ['kzhang21_ryuc.eatNplay']
 
     @staticmethod
     def execute(trial = False):
@@ -27,17 +27,16 @@ class EatNPlay(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('kelly_colleen', 'kelly_colleen')
+        repo.authenticate('kzhang21_ryuc', 'kzhang21_ryuc')
 
         #retrieve data sets
-        foodData = pd.DataFrame(repo.kelly_colleen.food.find())
-        entData = pd.DataFrame(repo.kelly_colleen.play.find())
+        foodData = pd.DataFrame(repo.kzhang21_ryuc.food.find())
+        entData = pd.DataFrame(repo.kzhang21_ryuc.play.find())
 
         #map neighborhood to zipcode 
         nZip = {}
         for index,row in entData.iterrows():
             key = row['Zip']
-            print(key)
             if key not in nZip:
                 nZip[key] = row['Neighborhood']
 
@@ -60,9 +59,9 @@ class EatNPlay(dml.Algorithm):
         
         repo.dropCollection("eatNplay")
         repo.createCollection("eatNplay")
-        repo['kelly_colleen.eatNplay'].insert_many(r)
-        repo['kelly_colleen.eatNplay'].metadata({'complete':True})
-        print(repo['kelly_colleen.eatNplay'].metadata())
+        repo['kzhang21_ryuc.eatNplay'].insert_many(r)
+        repo['kzhang21_ryuc.eatNplay'].metadata({'complete':True})
+        print(repo['kzhang21_ryuc.eatNplay'].metadata())
 
         repo.logout()
 
@@ -81,7 +80,7 @@ class EatNPlay(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('kelly_colleen', 'kelly_colleen')
+        repo.authenticate('kzhang21_ryuc', 'kzhang21_ryuc')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -91,7 +90,7 @@ class EatNPlay(dml.Algorithm):
         doc.add_namespace('food', 'http://datamechanics.io/data/boston_food.csv')
         doc.add_namespace('ent', 'http://datamechanics.io/data/boston_entertainment.csv')
 
-        this_script = doc.agent('alg:kelly_colleen#eatNplay', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:kzhang21_ryuc#eatNplay', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('dat:eatNplay', {'prov:label':'Food and Entertainment Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_lit = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_lit, this_script)
@@ -100,7 +99,7 @@ class EatNPlay(dml.Algorithm):
                   }
                   )
 
-        eatNplay = doc.entity('dat:kelly_colleen#eatNplay', {prov.model.PROV_LABEL:'Play Found', prov.model.PROV_TYPE:'ont:DataSet'})
+        eatNplay = doc.entity('dat:kzhang21_ryuc#eatNplay', {prov.model.PROV_LABEL:'Play Found', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(eatNplay, this_script)
         doc.wasGeneratedBy(eatNplay, get_lit, endTime)
         doc.wasDerivedFrom(eatNplay, resource, get_lit, get_lit, get_lit)

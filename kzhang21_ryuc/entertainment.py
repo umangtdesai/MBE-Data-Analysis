@@ -9,9 +9,9 @@ import pandas as pd
 from ast import literal_eval as make_tuple 
 
 class Entertainment(dml.Algorithm):
-    contributor = 'kelly_colleen'
+    contributor = 'kzhang21_ryuc'
     reads = []
-    writes = ['kelly_colleen.play']
+    writes = ['kzhang21_ryuc.play']
 
     @staticmethod
     def execute(trial = False):
@@ -21,7 +21,7 @@ class Entertainment(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('kelly_colleen', 'kelly_colleen')
+        repo.authenticate('kzhang21_ryuc', 'kzhang21_ryuc')
 
         #analyze boston enterrainment data set
         #read in csv file
@@ -49,9 +49,9 @@ class Entertainment(dml.Algorithm):
         
         repo.dropCollection("play")
         repo.createCollection("play")
-        repo['kelly_colleen.play'].insert_many(r)
-        repo['kelly_colleen.play'].metadata({'complete':True})
-        print(repo['kelly_colleen.play'].metadata())
+        repo['kzhang21_ryuc.play'].insert_many(r)
+        repo['kzhang21_ryuc.play'].metadata({'complete':True})
+        print(repo['kzhang21_ryuc.play'].metadata())
 
         repo.logout()
 
@@ -70,7 +70,7 @@ class Entertainment(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('kelly_colleen', 'kelly_colleen')
+        repo.authenticate('kzhang21_ryuc', 'kzhang21_ryuc')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -79,7 +79,7 @@ class Entertainment(dml.Algorithm):
         #additional resource
         doc.add_namespace('ent', 'http://datamechanics.io/data/boston_entertainment.csv')
 
-        this_script = doc.agent('alg:kelly_colleen#play', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:kzhang21_ryuc#play', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('dat:play', {'prov:label':'Entertainment, Entertainment Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_place = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_place, this_script)
@@ -88,7 +88,7 @@ class Entertainment(dml.Algorithm):
                   }
                   )
 
-        play = doc.entity('dat:kelly_colleen#play', {prov.model.PROV_LABEL:'Play Found', prov.model.PROV_TYPE:'ont:DataSet'})
+        play = doc.entity('dat:kzhang21_ryuc#play', {prov.model.PROV_LABEL:'Play Found', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(play, this_script)
         doc.wasGeneratedBy(play, get_place, endTime)
         doc.wasDerivedFrom(play, resource, get_place, get_place, get_place)
