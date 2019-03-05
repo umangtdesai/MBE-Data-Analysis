@@ -5,11 +5,12 @@ import dml
 import prov.model
 import datetime
 import uuid
+import bson.code
 
-class race_and_ethnicity(dml.Algorithm):
+class districts_race(dml.Algorithm):
     contributor = 'hek_kquirk'
-    reads = []
-    writes = ['hek_kquirk.race_and_ethnicity', 'hek_kquirk.neighborhood_district']
+    reads = ['hek_kquirk.race_and_ethnicity', 'hek_kquirk.neighborhood_district']
+    writes = ['hek_kquirk.district_race']
 
     @staticmethod
     def execute(trial = False):
@@ -21,25 +22,52 @@ class race_and_ethnicity(dml.Algorithm):
         repo = client.repo
         repo.authenticate('hek_kquirk', 'hek_kquirk')
 
-        url = 'http://datamechanics.io/data/hek_kquirk/race_and_ethnicity.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("race_and_ethnicity")
-        repo.createCollection("race_and_ethnicity")
-        repo['hek_kquirk.race_and_ethnicity'].insert_many(r)
-        repo['hek_kquirk.race_and_ethnicity'].metadata({'complete':True})
-        print(repo['hek_kquirk.race_and_ethnicity'].metadata())
-        
-        url = 'http://datamechanics.io/data/hek_kquirk/neighborhood_district.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("neighborhood_district")
-        repo.createCollection("neighborhood_district")
-        repo['hek_kquirk.neighborhood_district'].insert_many(r)
-        repo['hek_kquirk.neighborhood_district'].metadata({'complete':True})
-        print(repo['hek_kquirk.neighborhood_district'].metadata())
+        repo.dropCollection("hek_kquirk.district_race")
+        repo.createCollection("hek_kquirk.district_race")
+        repo.dropCollection("hek_kquirk.tmp_collection")
+        repo.createCollection("hek_kquirk.tmp_collection")
+
+        pipeline = [
+            {"$lookup": {"from":"hek_kquirk.neighborhood_district", "localField": "Neighborhood", "foreignField": "_id", "as": "tmp"}},
+            {"$project":{"District":"$tmp.district", "_id":"$Neighborhood", "Total_Population":"$Total Population", "Non_Hispanic_White":"$Non-Hispanic White", "Non_Hispanic_Black_African_American":"$Non-Hispanic Black/African-American", "Hispanic_or_Latino":"$Hispanic or Latino", "Non_Hispanic_Asian": "$Non-Hispanic Asian", "Other_Races_or_multiple_races": "$Other Races or multiple races"}},
+            {"$out":"hek_kquirk.tmp_collection"}
+        ]
+
+        repo['hek_kquirk.race_and_ethnicity'].aggregate(pipeline)
+
+        '''
+        repo['hek_kquirk.race_and_ethnicity'].aggregate([{$lookup: {from:"hek_kquirk.neighborhood_district", localField: "Neighborhood", foreignField: "_id", as: "tmp"}}, {$project:{"District":"$tmp.district", "_id":"Neighborhood", "Total_Population":"$Total Population", "Non-Hispanic_White":"$Non-Hispanic White", "Non-Hispanic_Black/African-American":"$Non-Hispanic Black/African-American", "Hispanic_or_Latino":"$Hispanic or Latino", "Non-Hispanic_Asian": "$Non-Hispanic Asian", "Other_Races_or_multiple_races": "$Other Races or multiple races"}}])
+        '''
+
+        mapper = bson.code.Code("""
+            function() {
+                var stats = {'Total_Population': this.Total_Population, 'Non_Hispanic_White': this.Non_Hispanic_White, 'Non_Hispanic_Black_African_American': this.Non_Hispanic_Black_African_American, 'Hispanic_or_Latino': this.Hispanic_or_Latino, 'Other_Races_or_multiple_races': this.Other_Races_or_multiple_races};
+                emit(this.District[0], stats);
+            }
+        """)         
+
+        reducer = bson.code.Code("""
+            function(k, vs) {
+                var tot_p = 0;
+                var tot_nhw = 0;
+                var tot_nhb = 0;
+                var tot_hol = 0;
+                var tot_othr = 0;
+
+                vs.forEach(function(v,i) {
+                    tot_p += parseFloat(String(v.Total_Population).replace(/[$,\(\)]+/g,""));
+                    tot_nhw += parseFloat(String(v.Non_Hispanic_White).replace(/[$,\(\)]+/g,""));
+                    tot_nhb += parseFloat(String(v.Non_Hispanic_Black_African_American).replace(/[$,\(\)]+/g,""));
+                    tot_hol += parseFloat(String(v.Hispanic_or_Latino).replace(/[$,\(\)]+/g,""));
+                    tot_othr += parseFloat(String(v.Other_Races_or_multiple_races).replace(/[$,\(\)]+/g,""));
+                });
+                return {'Total_Population':tot_p, 'Non_Hispanic_White': tot_nhw, 'Non_Hispanic_Black_African_American': tot_nhb, 'Hispanic_or_Latino': tot_hol, 'Other_Races_or_multiple_races':tot_othr};
+            }
+        """)
+
+        repo['hek_kquirk.tmp_collection'].map_reduce(mapper, reducer, "hek_kquirk.district_race")
+        repo['hek_kquirk.district_race'].metadata({'complete':True})
+        print(repo['hek_kquirk.district_race'].metadata())
 
         repo.logout()
 
