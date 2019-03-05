@@ -43,7 +43,7 @@ class unemploy_gov_sparkgov_input(dml.Algorithm):
         #print(repo['chuci_yfch_yuwan_zhurh.unemploy'].metadata())
         #get the mass gov selecction rate data
 
-        url2 = 'http://datamechanics.io/data/ZHU_2018MassGovernor.json'
+        url2 =  'https://s3.amazonaws.com/media.wbur/embeds/2018/election/general-maps/data/map-ge-gov.json'
         response2 = urllib.request.urlopen(url2).read().decode("utf-8")
         r2 = json.loads(response2)
         s2 = json.dumps(r2, sort_keys=True, indent=2)
