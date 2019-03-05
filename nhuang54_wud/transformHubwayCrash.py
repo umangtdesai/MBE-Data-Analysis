@@ -59,7 +59,7 @@ class transformHubwayCrash(dml.Algorithm):
             print(t[1][0])
             print(t[1][1])
             break;
-        hubway_safety_list = [(t[0][0], t[0][1], t[0][2], t[1][0], t[1][1], t[1][2], safety_zone(t[0][1], t[0][2], t[1][1], t[1][2])) for t in hubway_crash_prod]
+        hubway_safety_list = [(t[0][0], t[0][1][0], t[0][1][1], t[1][0], t[1][1][0], t[1][1][1], safety_zone(t[0][1][0], t[0][1][1], t[1][1][0], t[1][1][1])) for t in hubway_crash_prod]
 
         # put into dictionary
         hubway_safety_dict = {}
