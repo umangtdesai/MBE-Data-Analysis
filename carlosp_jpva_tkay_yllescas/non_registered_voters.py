@@ -9,7 +9,7 @@ import uuid
 class non_registered_voters(dml.Algorithm):
     contributor = 'carlosp_jpva_tkay_yllescas'
     reads = []
-    writes = ['carlosp_jpva_tkay_yllescas.non_registered']
+    writes = ['carlosp_jpva_tkay_yllescas.non_registered_voters']
 
     @staticmethod
     def execute(trial=False):

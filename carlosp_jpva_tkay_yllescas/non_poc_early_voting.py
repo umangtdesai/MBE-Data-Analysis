@@ -8,7 +8,7 @@ import uuid
 
 class non_poc_early_voting(dml.Algorithm):
     contributor = 'carlosp_jpva_tkay_yllescas'
-    reads = ['carlosp_jpva_tkay_yllescas.early_voting', 'carlosp_jpva_tkay_yllescas.demographics_by_town']
+    reads = ['carlosp_jpva_tkay_yllescas.early_voting', 'carlosp_jpva_tkay_yllescas.demographics_towns']
     writes = ['carlosp_jpva_tkay_yllescas.non_poc_early_voting']
 
     @staticmethod
@@ -21,19 +21,22 @@ class non_poc_early_voting(dml.Algorithm):
         repo = client.repo
         repo.authenticate('carlosp_jpva_tkay_yllescas', 'carlosp_jpva_tkay_yllescas')
 
-        early_voting = (repo['carlosp_jpva_tkay_yllescas.early_voting']).find_one()
-        town_dem = (repo['carlosp_jpva_tkay_yllescas.demographics_by_town']).find_one()
-
-        non_poc_early_voting = {}
-        for voting in early_voting:
-            for demo in town_dem:
-                if voting["City/Town"] == demo["Community"].upper():
-                    voting["White"] = demo["White"]/demo["Population 2010"]
-            non_poc_early_voting[voting["City/Town"]] = (voting["Percentage of Early Voters"], voting["White"])
-
         repo.dropCollection("non_poc_early_voting")
         repo.createCollection("non_poc_early_voting")
-        repo['carlosp_jpva_tkay_yllescas.non_poc_early_voting'].insert_many(non_poc_early_voting)
+
+        early_voting = (repo['carlosp_jpva_tkay_yllescas.early_voting']).find()
+        town_dem = repo['carlosp_jpva_tkay_yllescas.demographics_towns']
+        non_poc_early_voting = {}
+        for voting in early_voting:
+            for demo in town_dem.find():
+                if (voting["City/Town"] != "Grand Total") and (demo["Community"].upper() in voting["City/Town"]) :
+                    voting["White"] = float(demo["White"].replace(',',''))/float(demo["Population 2010"].replace(',', ''))
+            if (voting["City/Town"] != "Grand Total"):
+                non_poc_early_voting[voting["City/Town"]] = (voting["Percentage of Early Voters"], voting["White"])
+
+
+        final_data = [{x:{"Percentage of Early Voters": non_poc_early_voting[x][0], "Non-POC Voters": round((non_poc_early_voting[x][1]*100), 2)}} for x in non_poc_early_voting]
+        repo['carlosp_jpva_tkay_yllescas.non_poc_early_voting'].insert_many(final_data)
         repo['carlosp_jpva_tkay_yllescas.non_poc_early_voting'].metadata({'complete': True})
         print(repo['carlosp_jpva_tkay_yllescas.non_poc_early_voting'].metadata())
 
