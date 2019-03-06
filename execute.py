@@ -1,5 +1,5 @@
 ###############################################################################
-## 
+##
 ## execute.py
 ##
 ## Script for running a single project's data and provenance workflows.
@@ -50,7 +50,7 @@ for algorithm in ordered:
     algorithm.execute(trial=args.trial)
     provenance = algorithm.provenance(provenance)
 
-"""
+
 # Display a provenance record of the overall execution process.
 print(provenance.get_provn())
 
@@ -66,5 +66,5 @@ wasDerivedFrom = [(v['prov:usedEntity'], v['prov:generatedEntity'], 'wasDerivedF
 wasGeneratedBy = [(v['prov:entity'], v['prov:activity'], 'wasGeneratedBy') for v in prov_json['wasGeneratedBy'].values()]
 used = [(v['prov:activity'], v['prov:entity'], 'used') for v in prov_json['used'].values()]
 open('provenance.html', 'w').write(protoql.html("graph(" + str(entities + agents + activities) + ", " + str(wasAssociatedWith + wasAttributedTo + wasDerivedFrom + wasGeneratedBy + used) + ")"))
-"""
+
 ## eof
