@@ -21,7 +21,7 @@ class non_registered_voters(dml.Algorithm):
         repo = client.repo
         repo.authenticate('carlosp_jpva_tkay_yllescas', 'carlosp_jpva_tkay_yllescas')
 
-        file = r'.\data\non_registered_xtabs.json'
+        file = 'data/non_registered_xtabs.json'
         with open(file, "r", encoding = "utf8") as datafile:
             json_string = datafile.read()
         r = json.loads(json_string)
