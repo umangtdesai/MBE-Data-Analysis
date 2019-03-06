@@ -32,10 +32,11 @@ class get_census_income(dml.Algorithm):
         json_string = json.dumps(json_response, sort_keys=True, indent=2)
         
         insert_many_arr = []
-        for key in json_response.keys():
+        for arr in json_response['data']:
             insert_many_arr.append({
-                'key': key,
-                'val': json_response[key]
+                'year': arr[0],
+                'tract': arr[1],
+                'income': arr[2]
             })
 
         # ----------------- Data insertion into Mongodb ------------------
@@ -90,3 +91,6 @@ class get_census_income(dml.Algorithm):
         repo.logout()
           
         return doc
+
+
+

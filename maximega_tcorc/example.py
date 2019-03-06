@@ -64,12 +64,9 @@ class example(dml.Algorithm):
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
         this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-
         get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        
         doc.wasAssociatedWith(get_found, this_script)
         doc.wasAssociatedWith(get_lost, this_script)
         doc.usage(get_found, resource, startTime, None,
@@ -96,9 +93,9 @@ class example(dml.Algorithm):
         repo.logout()
                   
         return doc
-
-
+'''
 example.execute()
 doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
+'''

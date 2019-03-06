@@ -77,10 +77,4 @@ class get_census_tracts(dml.Algorithm):
         repo.logout()
                 
         return doc
-
-
-get_census_tracts.execute()
-doc = get_census_tracts.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
-         
+  

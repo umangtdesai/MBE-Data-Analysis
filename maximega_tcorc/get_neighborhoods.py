@@ -20,15 +20,10 @@ class get_neighborhoods(dml.Algorithm):
         repo = client.repo
         repo.authenticate('maximega_tcorc', 'maximega_tcorc')
 
-        # ----------------- API ACCESS KEYS & INFO ----------------
-        auth = json.load(open('../auth.json', 'r+'))['services']['data.cityofnewyork.us']
-        token_key = auth['key']
-        token_value = auth['token']
         
         #------------------ Data retrieval ---------------------
         url = 'https://data.cityofnewyork.us/resource/q2z5-ai38.json'
         request = urllib.request.Request(url)
-        request.add_header(token_key, token_value)
         response = urllib.request.urlopen(request)
         content = response.read()
         json_response = json.loads(content)
@@ -85,3 +80,5 @@ class get_neighborhoods(dml.Algorithm):
         repo.logout()
                 
         return doc
+
+ 

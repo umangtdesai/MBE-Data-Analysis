@@ -33,7 +33,7 @@ class merge_census_data(dml.Algorithm):
         tract_with_income = {}
         for tract in tracts.find():
             for income in incomes.find():
-                tract_num_income = income['geo']
+                tract_num_income = income['tract']
                 tract_num_income = tract_num_income[10:]
                 # ----------------- Normalizing naming conventions for census tracts according to link below (bullets 4c & 4d in document) -----------------
                 # ----------------- http://www.geo.hunter.cuny.edu/~amyjeu/gtech201/spring10/lab8_census.pdf -----------------
@@ -46,7 +46,7 @@ class merge_census_data(dml.Algorithm):
                 # ----------------- If census tracts are equal, create new data object to load into DB -----------------
                 if int(tract_num_income) == tract_num_tract:
                     # ----------------- Some tracts are missing income data so we ommit those from the merge -----------------
-                    if (income['income'] != 'None'):
+                    if income['income'] != None:
                         tract_with_income[tract_num_income] = {'income': income['income'], 'nta': tract['NTACode'], 'nta_name': tract['NTAName'], 'multi_polygon': tract['the_geom']}
         # ----------------- Reformat data for mongodb insertion -----------------
         insert_many_arr = []
@@ -94,13 +94,13 @@ class merge_census_data(dml.Algorithm):
         doc.wasAssociatedWith(merging_census_info, this_script)
 
         doc.usage(merging_census_info, tracts, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Computation'
-                  }
-                  )
+                    {prov.model.PROV_TYPE:'ont:Computation'
+                    }
+                    )
         doc.usage(merging_census_info, income, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Computation'
-                  }
-                  )
+                    {prov.model.PROV_TYPE:'ont:Computation'
+                    }
+                    )
         #resource
         income_with_tracts = doc.entity('dat:maximega_tcorc#income_with_tracts', {prov.model.PROV_LABEL:'NYC Census Info + AVG Income per Tract', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(income_with_tracts, this_script)

@@ -19,16 +19,10 @@ class get_population(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('maximega_tcorc', 'maximega_tcorc')
-
-        # ----------------- API ACCESS KEYS & INFO ----------------
-        auth = json.load(open('../auth.json', 'r+'))['services']['data.cityofnewyork.us']
-        token_key = auth['key']
-        token_value = auth['token']
         
         #------------------ Data retrieval ---------------------
         url = 'https://data.cityofnewyork.us/resource/swpk-hqdp.json'
         request = urllib.request.Request(url)
-        request.add_header(token_key, token_value)
         response = urllib.request.urlopen(request)
         content = response.read()
         json_response = json.loads(content)
@@ -85,3 +79,4 @@ class get_population(dml.Algorithm):
         repo.logout()
                 
         return doc
+
