@@ -164,19 +164,12 @@ class sd_non_registered_coefficient(dml.Algorithm):
         dictionary_of_coefficients = []
         i = 0
         for s_d1, total_caucasian in total_caucasian_registered:
-<<<<<<< HEAD
-            print("loop number " )
-            print (str(i))
-            name = s_d1   # boston
-            caucasian =  percent_of_non_registered_caucasians[s_d1]   #0.123
-            aa = percent_of_non_registered_aa[s_d1]  #0.2
-            hispanic =  percent_of_non_registered_hispanics[s_d1] # 0.12
-=======
+
             name = s_d1
             caucasian =  percent_of_non_registered_caucasians[s_d1]
             aa = percent_of_non_registered_aa[s_d1]
             hispanic =  percent_of_non_registered_hispanics[s_d1]
->>>>>>> 43a5b73b6170c26745fffc87a181a4898c57bb79
+
             dictionary_of_coefficients.append( {name : {'caucasian': caucasian, 'african american': aa , 'hispanic': hispanic } })
 
         #cool so now we should have ['001 Berkshire, Hampshire, Franklin & Hampden': ]
