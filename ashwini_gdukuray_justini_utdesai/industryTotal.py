@@ -7,10 +7,10 @@ import uuid
 import pandas as pd
 
 
-class topcompanies(dml.Algorithm):
+class industryTotal(dml.Algorithm):
     contributor = 'ashwini_gdukuray_justini_utdesai'
-    reads = [] # is going to have to read in the master list from mongodb
-    writes = ['ashwini_gdukuray_justini_utdesai.topCompanies'] # will write a dataset that is companies in top 25 that are also certified MBE
+    reads = ['ashwini_gdukuray_justini_utdesai.masterList']
+    writes = ['ashwini_gdukuray_justini_utdesai.industryTotal']
 
     @staticmethod
     def execute(trial=False):
@@ -22,19 +22,37 @@ class topcompanies(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
 
-        url = 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/Top25Companies.csv'
+        masterList = repo['ashwini_gdukuray_justini_utdesai.masterList']
 
-        data = pd.read_csv(url)
+        masterListDF = pd.DataFrame(list(masterList.find()))
 
-        #print(data)
+        # build sum of each industry
+        data = {}
+        for index, row in masterListDF.iterrows():
+            industry = row['Description of Services']
+            if (industry in data):
+                data[industry] += 1
+            else:
+                data[industry] = 1
 
-        records = json.loads(data.T.to_json()).values()
+        listOfIndustries = list(data)
+        listOfTuples = []
+        for ind in listOfIndustries:
+            listOfTuples.append((ind, data[ind]))
 
-        repo.dropCollection("topCompanies")
-        repo.createCollection("topCompanies")
-        repo['ashwini_gdukuray_justini_utdesai.topCompanies'].insert_many(records)
-        repo['ashwini_gdukuray_justini_utdesai.topCompanies'].metadata({'complete': True})
-        print(repo['ashwini_gdukuray_justini_utdesai.topCompanies'].metadata())
+        industryDF = pd.DataFrame(listOfTuples, columns = ['Industry', 'Number of Businesses'])
+
+        industryDF = industryDF.sort_values(by=['Number of Businesses'], ascending=False)
+
+        #print(industryDF)
+
+        records = json.loads(industryDF.T.to_json()).values()
+
+        repo.dropCollection("industryTotal")
+        repo.createCollection("industryTotal")
+        repo['ashwini_gdukuray_justini_utdesai.industryTotal'].insert_many(records)
+        repo['ashwini_gdukuray_justini_utdesai.industryTotal'].metadata({'complete': True})
+        print(repo['ashwini_gdukuray_justini_utdesai.industryTotal'].metadata())
 
         repo.logout()
 
@@ -49,9 +67,9 @@ class topcompanies(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
-
         pass
 
+        """
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -88,6 +106,7 @@ class topcompanies(dml.Algorithm):
         repo.logout()
 
         return doc
+        """
 
 
 '''

@@ -44,37 +44,55 @@ class masterList(dml.Algorithm):
         secretaryDF = secretaryDF.loc[secretaryDF['MBE - Y/N'] == 'Y']
         secretaryDF = secretaryDF[['Business Name', 'Address', 'City', 'Zip', 'State', 'Description of Services']]
 
+        # create a more uniform ID
+        businessIDs = []
+        for index, row in secretaryDF.iterrows():
+            busName = row['Business Name']
+            cleanedText = busName.upper().strip().replace(' ','').replace('.','').replace(',','').replace('-','')
+            businessIDs.append(cleanedText)
+
+        secretaryDF['B_ID'] = pd.Series(businessIDs, index=secretaryDF.index)
+
 
         # clean up massHousing dataset
         massHousingDF['Zip'] = massHousingDF['Zip'].apply(lambda zipCode: zipCode[:5])
         massHousingDF = massHousingDF[['Business Name', 'Address', 'City', 'Zip', 'State', 'Primary Trade', 'Primary Other/Consulting Description']]
 
+        businessIDs = []
         for index, row in massHousingDF.iterrows():
+            busName = row['Business Name']
+            cleanedText = busName.upper().strip().replace(' ','').replace('.','').replace(',','').replace('-','')
+            businessIDs.append(cleanedText)
+
             if (row['Primary Trade'] == 'Other: Specify'):
                 row['Primary Trade'] = row['Primary Other/Consulting Description']
+
+        massHousingDF['B_ID'] = pd.Series(businessIDs, index=massHousingDF.index)
 
         massHousingDF = massHousingDF.rename(index=str, columns={'Primary Trade': 'Description of Services'})
         massHousingDF = massHousingDF.drop(columns=['Primary Other/Consulting Description'])
 
 
         # merge and create masterList
-        preMasterList = pd.merge(massHousingDF, secretaryDF, how='outer', on=['Business Name', 'City', 'Zip'])
+        preMasterList = pd.merge(massHousingDF, secretaryDF, how='outer', on=['B_ID', 'City', 'Zip'])
 
-        preDict = {'Business Name': [], 'Address': [], 'City': [], 'Zip': [], 'State': [], 'Description of Services': []}
+        preDict = {'B_ID': [], 'Business Name': [], 'Address': [], 'City': [], 'Zip': [], 'State': [], 'Description of Services': []}
 
         for index, row in preMasterList.iterrows():
 
             desc = row['Description of Services_x']
 
-            preDict['Business Name'].append(row['Business Name'])
+            preDict['B_ID'].append(row['B_ID'])
             preDict['City'].append(row['City'])
             preDict['Zip'].append(row['Zip'])
 
             if pd.isnull(desc):
+                preDict['Business Name'].append(row['Business Name_y'])
                 preDict['State'].append(row['State_y'])
                 preDict['Address'].append(row['Address_y'])
                 preDict['Description of Services'].append(row['Description of Services_y'])
             else:
+                preDict['Business Name'].append(row['Business Name_x'])
                 preDict['State'].append(row['State_x'])
                 preDict['Address'].append(row['Address_x'])
                 preDict['Description of Services'].append(row['Description of Services_x'])
@@ -92,7 +110,7 @@ class masterList(dml.Algorithm):
 
         records = json.loads(masterList.T.to_json()).values()
 
-        print(masterList)
+        #print(masterList)
 
         repo.dropCollection('masterList')
         repo.createCollection('masterList')
