@@ -16,7 +16,7 @@ def product(R, S):
 
 class EatNPlay(dml.Algorithm):
     contributor = 'kzhang21_ryuc'
-    reads = ['kzhang21_ryuc.eat', 'kzhang21_ryuc.play']
+    reads = ['kzhang21_ryuc.food', 'kzhang21_ryuc.play']
     writes = ['kzhang21_ryuc.eatNplay']
 
     @staticmethod

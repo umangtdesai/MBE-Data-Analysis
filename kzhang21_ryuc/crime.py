@@ -7,7 +7,7 @@ import uuid
 import pandas as pd
 from ast import literal_eval as make_tuple
 
-class Crime(dml.Algorithm):
+class crime(dml.Algorithm):
     contributor = 'kzhang21_ryuc'
     reads = []
     writes = ['kzhang21_ryuc.crime']
@@ -101,8 +101,8 @@ doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
-Crime.execute()
-doc = Crime.provenance()
+crime.execute()
+doc = crime.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 
