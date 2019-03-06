@@ -87,8 +87,8 @@ class transformation3():
         return doc
 
 
-transformation1.execute()
-doc = transformation1.provenance()
+transformation3.execute()
+doc = transformation3.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

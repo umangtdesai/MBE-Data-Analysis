@@ -29,6 +29,7 @@ for r,d,f in os.walk(path):
         if r.find(os.sep) == -1 and file.split(".")[-1] == "py":
             name_module = ".".join(file.split(".")[0:-1])
             module = importlib.import_module(path + "." + name_module)
+            print(module)
             algorithms.append(module.__dict__[name_module])
 
 # Create an ordering of the algorithms based on the data
