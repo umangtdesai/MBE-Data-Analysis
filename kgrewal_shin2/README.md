@@ -1,5 +1,8 @@
 Kerin Grewal and Stephanie Shin 
 
+
+Instructions: 
+Run execute.py to run all data collection, transformations, and provenances
 Datasets used: 
 
 1. Boston Street Names 
@@ -22,6 +25,19 @@ It includes the locations of public schools in Boston.
 This data was collected from Uber including all the information of Uber rides originating at the Boston Common. 
 It includes where they ended their uber rides and the mean time to get there. 
 
+
+
+Files: 
+
+cleaning files: 
+street_name_cleaning.py - ran once in order to create json
+uber_data_cleaning.py - ran once in order to create json 
+
+
+Transformations: 
+transformation1.py - finding the difference between street names, and streets with landmarks on them, selecting only those that are not female street names
+transformation2.py - 
+transformation3.py - 
 
 
 

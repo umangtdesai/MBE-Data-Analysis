@@ -11,7 +11,6 @@ class transformation1():
     reads = ['kgrewal_shin2.landmarks', 'kgrewal_shin2.street_names']
     writes = ['kgrewal_shin2.streets_without_landmarks']
 
-
     @staticmethod
     def execute(trial=False):
         startTime = datetime.datetime.now()
@@ -40,12 +39,9 @@ class transformation1():
                 else:
                     street = address.split("Bounded by ")[1]
 
-                # print(street)
                 landmark_streets.append(street)
-        print(len(landmark_streets))
 
         streets_without_landmarks = []
-
         for x in street_names:
             full_name = x['full_name']
             #to correct for a comma at the end of full_name
@@ -54,12 +50,12 @@ class transformation1():
             zipcode = x['zipcodes']
             street_name = x['street_name']
 
-            # find difference of streetnames and landmarks
+            # find difference of streetnames and landmarks, while selecting only those that aren't female
             if (full_name not in landmark_streets) and (gender != "female"):
                 streets_without_landmarks.append({"full_name": full_name, "gender": gender,
                                                   "zipcode": zipcode, "street_name": street_name})
 
-        print(streets_without_landmarks)
+
         repo.dropCollection("streets_without_landmarks")
         repo.createCollection("streets_without_landmarks")
         repo['kgrewal_shin2.streets_without_landmarks'].insert_many(streets_without_landmarks)

@@ -1,12 +1,10 @@
-
-import urllib.request
-import requests
 import json
 import dml
 import prov.model
 import datetime
 import uuid
 from kgrewal_shin2 import transformations
+
 
 class transformation1():
     contributor = 'kgrewal_shin2'

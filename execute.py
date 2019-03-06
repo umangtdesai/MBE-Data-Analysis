@@ -1,6 +1,5 @@
 ###############################################################################
-## 
-## execute.py
+##
 ##
 ## Script for running a single project's data and provenance workflows.
 ##
@@ -55,7 +54,11 @@ print(provenance.get_provn())
 
 # Render the provenance document as an interactive graph.
 prov_json = json.loads(provenance.serialize())
+
 import protoql
+
+print(prov_json)
+
 agents = [[a] for a in prov_json['agent']]
 entities = [[e] for e in prov_json['entity']]
 activities = [[v] for v in prov_json['activity']]
