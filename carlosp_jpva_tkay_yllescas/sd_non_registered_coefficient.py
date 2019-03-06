@@ -132,8 +132,12 @@ class sd_non_registered_coefficient(dml.Algorithm):
 
         #now we can make the % of unregistered voters  -> (senatedistrict,ethnicity, % unregistered)
         percent_of_non_registered_caucasians = {}
+        #{'boston': 2000}
         percent_of_non_registered_aa = {}
+        #{'boston': 2000}
         percent_of_non_registered_hispanics = {}
+        #{'boston': 2000}
+
         for s_d1 , total_registered in total_caucasian_registered:
             for s_d2 , total_non_registered in total_caucasian_non_registered:
                 
@@ -160,10 +164,19 @@ class sd_non_registered_coefficient(dml.Algorithm):
         dictionary_of_coefficients = []
         i = 0
         for s_d1, total_caucasian in total_caucasian_registered:
+<<<<<<< HEAD
+            print("loop number " )
+            print (str(i))
+            name = s_d1   # boston
+            caucasian =  percent_of_non_registered_caucasians[s_d1]   #0.123
+            aa = percent_of_non_registered_aa[s_d1]  #0.2
+            hispanic =  percent_of_non_registered_hispanics[s_d1] # 0.12
+=======
             name = s_d1
             caucasian =  percent_of_non_registered_caucasians[s_d1]
             aa = percent_of_non_registered_aa[s_d1]
             hispanic =  percent_of_non_registered_hispanics[s_d1]
+>>>>>>> 43a5b73b6170c26745fffc87a181a4898c57bb79
             dictionary_of_coefficients.append( {name : {'caucasian': caucasian, 'african american': aa , 'hispanic': hispanic } })
 
         #cool so now we should have ['001 Berkshire, Hampshire, Franklin & Hampden': ]
@@ -214,34 +227,26 @@ class sd_non_registered_coefficient(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        #doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('spk', 'https://amplifylatinx.co/')
 
-        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:carlosp_jpva_tkay_yllescas#sd_non_registered_coefficient', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
+        get_sd_non_registered_coefficient = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        registered_input = doc.entity('dat:carlosp_jpva_tkay_yllescas.registered',{prov.model.PROV_LABEL:'Registered',prov.model.PROV_TYPE:'ont:DataSet', 'ont:Query': '.find()'})
+        non_registered_input = doc.entity('dat:carlosp_jpva_tkay_yllescas.non_registered_voters',{prov.model.PROV_LABEL:'Non-Registered',prov.model.PROV_TYPE:'ont:DataSet', 'ont:Query': '.find()'})
+        output = doc.entity('dat:carlosp_jpva_tkay_yllescas.sd_non_registered_coefficient',
+            {prov.model.PROV_LABEL:'Non-Registered voters / Total Voter by Ethnicity byt Senate District', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAssociatedWith(get_sd_non_registered_coefficient, this_script)
+        doc.usage(get_sd_non_registered_coefficient, registered_input, startTime, None,
+            {prov.model.PROV_TYPE:'ont:Computation'})
+        doc.usage(get_sd_non_registered_coefficient, non_registered_input, startTime, None,
+            {prov.model.PROV_TYPE:'ont:Computation'})
 
-        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
 
-        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        doc.wasAttributedTo(output, this_script)
+        doc.wasGeneratedBy(output, get_sd_non_registered_coefficient, endTime)
+        doc.wasDerivedFrom(output, registered_input, non_registered_input)
+
 
         repo.logout()
                   
