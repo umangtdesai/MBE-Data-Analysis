@@ -26,17 +26,17 @@ http://datamechanics.io/data/hxjia_jiahaozh/US_Holidays.csv
 ## Data Transformation
 ### Price_and_Comments
 Generated from Boston Airbnb Listings and Boston Airbnb Reviews
-Boston Airbnb Listings: Project to get data in a form of (listing_id, price, review_score)
-Boston Airbnb Reviews: Project to get data in a form of (listing_id, comments)
-                       Aggregate to get a combination of comments for each listing_id
-Combination: product + Project to get the comments and review score for each listing_id, in the form of (listing_id, price, comments, review_score)
+<br />Boston Airbnb Listings: Project to get data in a form of (listing_id, price, review_score)
+<br />Boston Airbnb Reviews: Project to get data in a form of (listing_id, comments);
+                             Aggregate to get a combination of comments for each listing_id
+<br />Combination: product + Project to get the comments and review score for each listing_id, in the form of (listing_id, price, comments, review_score)
 ### Price_on_Holidays
-Generated from Boston Airbnb Calendar and US_Holidays
-Boston Airbnb Calendar: Select the data with valid price
-                        Project to get data in a form of (date, price)
-                        Aggregate to get the mean price for each date
-US_Holidays: Select holidays in the range of Boston Airbnb Calendar's dates
-Combination: Product + Project to get the mean price for each date and whether the date is a holiday, in the form of (date, avg_price, holiday)
+<br />Generated from Boston Airbnb Calendar and US_Holidays
+<br />Boston Airbnb Calendar: Select the data with valid price;
+                        Project to get data in a form of (date, price);
+                        Aggregate to get the mean price for each date;
+<br />US_Holidays: Select holidays in the range of Boston Airbnb Calendar's dates
+<br />Combination: Product + Project to get the mean price for each date and whether the date is a holiday, in the form of (date, avg_price, holiday)
 ### Prices_Landmarks_Listings
 ## Tools
 Pandas
