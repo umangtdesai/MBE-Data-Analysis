@@ -3,9 +3,9 @@ I gathered data from Massachusetts local and regional school districts to summar
 In order to run the program, you will need to get an API key for Google Maps geocoding and put it into auth.json in the following format:
 {"services": {"googlemaps": {"key": <API key>}}}
 
-Data sources:
-Class sizes: http://profiles.doe.mass.edu/statereport/classsizebyraceethnicity.aspx
-Grade levels: http://profiles.doe.mass.edu/state_report/gradesbydistrict.aspx
-Public libraries: https://publiclibraries.com/state/massachusetts/
+Data sources:  
+Class sizes: http://profiles.doe.mass.edu/statereport/classsizebyraceethnicity.aspx  
+Grade levels: http://profiles.doe.mass.edu/state_report/gradesbydistrict.aspx  
+Public libraries: https://publiclibraries.com/state/massachusetts/  
 
 Note: due to issues with the retrieved data sets that I have not yet fixed or found solutions for, the count data in the resulting collections is not always completely accurate (for instance, the libraries per school district count says 0 for some districts that definitely contain libraries).
