@@ -23,6 +23,7 @@ class demographics_by_towns(dml.Algorithm):
 
     @staticmethod
     def execute(trial = False):
+        print("demographics_by_towns")
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
         d_t = demographics_by_towns

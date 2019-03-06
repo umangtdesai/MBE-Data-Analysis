@@ -13,6 +13,7 @@ class non_poc_early_voting(dml.Algorithm):
 
     @staticmethod
     def execute(trial=False):
+        print("non_poc_early_voting")
         '''Retrieve some data sets (without API).'''
         startTime = datetime.datetime.now()
 

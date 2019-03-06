@@ -40,6 +40,7 @@ class sd_non_registered_coefficient(dml.Algorithm):
 
     @staticmethod
     def execute(trial = False):
+        print("sd_non_registered_coefficient")
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
        
