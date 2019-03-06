@@ -93,39 +93,37 @@ class num_per_street_1(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
+        repo.authenticate('ekmak_gzhou_kaylaipp_shen99','ekmak_gzhou_kaylaipp_shen99')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
+        this_agent = doc.agent('alg:ekmak_gzhou_kaylaipp_shen99#num_per_street_1',
+		                      	{prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
+        this_entity = doc.entity('dat:ekmak_gzhou_kaylaipp_shen99#num_per_street_1',
+                            {prov.model.PROV_LABEL: 'Number of Houses Per Street', prov.model.PROV_TYPE: 'ont:DataSet'})
 
-        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        address_resource = doc.entity('dat:ekmak_gzhou_kaylaipp_shen99#address_data',
+		                  {prov.model.PROV_LABEL: 'Addresses Data', prov.model.PROV_TYPE: 'ont:DataSet'})
+
+        accessing_resource = doc.entity('dat:ekmak_gzhou_kaylaipp_shen99#accessing_data',
+		                  {prov.model.PROV_LABEL: 'Accessing Data', prov.model.PROV_TYPE: 'ont:DataSet'})
+
+        get_num_houses_per_street = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+
+        doc.usage(get_num_houses_per_street, address_resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+        doc.usage(get_num_houses_per_street, accessing_resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+
+        doc.wasAssociatedWith(get_num_houses_per_street, this_agent)
+
+        doc.wasAttributedTo(this_entity, this_agent)
+
+        doc.wasGeneratedBy(this_entity, get_num_houses_per_street, endTime)
+
+        doc.wasDerivedFrom(this_entity, address_resource, accessing_resource, get_num_houses_per_street, get_num_houses_per_street, get_num_houses_per_street)
 
         repo.logout()
                   
@@ -150,5 +148,8 @@ print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
 
-num_per_street_1.execute()
+# num_per_street_1.execute()
+doc = num_per_street_1.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
 ## eof
