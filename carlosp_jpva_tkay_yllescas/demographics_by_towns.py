@@ -10,7 +10,7 @@ from pprint import pprint
 class demographics_by_towns(dml.Algorithm):
     contributor = 'carlosp_jpva_tkay_yllescas'
     reads = []
-    writes = ['carlosp_jpva_tkay_yllescas.demographics_towns']
+    writes = ['carlosp_jpva_tkay_yllescas.demographics_by_towns']
 
     @staticmethod
     def get_data():

@@ -8,7 +8,7 @@ import uuid
 
 class non_poc_early_voting(dml.Algorithm):
     contributor = 'carlosp_jpva_tkay_yllescas'
-    reads = ['carlosp_jpva_tkay_yllescas.early_voting', 'carlosp_jpva_tkay_yllescas.demographics_towns']
+    reads = ['carlosp_jpva_tkay_yllescas.early_voting', 'carlosp_jpva_tkay_yllescas.demographics_by_towns']
     writes = ['carlosp_jpva_tkay_yllescas.non_poc_early_voting']
 
     @staticmethod
@@ -25,7 +25,7 @@ class non_poc_early_voting(dml.Algorithm):
         repo.createCollection("non_poc_early_voting")
 
         early_voting = (repo['carlosp_jpva_tkay_yllescas.early_voting']).find()
-        town_dem = repo['carlosp_jpva_tkay_yllescas.demographics_towns']
+        town_dem = repo['carlosp_jpva_tkay_yllescas.demographics_by_towns']
         non_poc_early_voting = {}
         for voting in early_voting:
             for demo in town_dem.find():
