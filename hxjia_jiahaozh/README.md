@@ -43,7 +43,7 @@ Generated from Boston Airbnb Listings and Boston Airbnb Reviews
 <br />Boston Landmarks: select, project and aggregate to get (neighbourhood, the number of landmarks in that neighbourhood)
 <br />Combiantion: project to get  (neighbourhood, the number of landmarks,  the number of houses, the mean prices of houses in that neighbourhood )
 ## Tools
-<br />Pandas
+Pandas
 <br />dml
 <br />prov
 <br />protoql
