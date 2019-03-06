@@ -34,7 +34,7 @@ class nearest_departments(dml.Algorithm):
         for ps in pss:
             coords = ps['coordinates']
             query = {'coordinates': {'$near': coords}}
-            nearest = repo['npearce.boston_fire_departments'].find_one(query)
+            nearest = repo['npearce.boston_fire_departments'].find(query).limit(1)
             
             x1, y1 = coords
             x2, y2 = nearest['coordinates']
@@ -53,7 +53,7 @@ class nearest_departments(dml.Algorithm):
         for nps in npss:
             coords = nps['coordinates']
             query = {'coordinates': {'$near': coords}}
-            nearest = repo['npearce.boston_fire_departments'].find_one(query)
+            nearest = repo['npearce.boston_fire_departments'].find(query).limit(1)
             
             x1, y1 = coords
             x2, y2 = nearest['coordinates']
