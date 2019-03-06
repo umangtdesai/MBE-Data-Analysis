@@ -14,7 +14,9 @@ class famous_people(dml.Algorithm):
     @staticmethod
     def execute(trial = False):
         startTime = datetime.datetime.now()
-
+        contributor = 'mmao95_Dongyihe_weijiang_zhukk'
+        writes = [contributor + '.famous_people']
+        
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -52,6 +54,7 @@ class famous_people(dml.Algorithm):
             document describing that invocation event.
             '''
 
+        contributor = 'mmao95_Dongyihe_weijiang_zhukk'
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate(contributor, contributor)
