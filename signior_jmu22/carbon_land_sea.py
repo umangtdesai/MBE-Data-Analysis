@@ -39,14 +39,37 @@ class carbon_land_sea(dml.Algorithm):
      
       
       #project the years column first
-      years = [*range(1960,2019)]
+      years = [*range(1960,2020)]
+
       
-      yearvar = 1960
+      #this does aggregation
+      
+
       templist = []
       tempmax = 0
-      for i in carbon_emissions:
+
+      for x in years:
+
+      
+   
+          for i in carbon_emissions:
+
+              if i.get(str(x)) == None:
+                  continue
+              else:
+                  tempmax += (i.get(str(x)))
+   
+             
+          tempmean = (tempmax/len(carbon_emissions))
+          tempmax= 0
+          print(tempmean)
+
+  
+      
+     
           
-          print(i.get(str(yearvar)))
+      
+        
           
           #d = dict((k, i[k]) for k in years if k in i)
           #print(type(i[1970]))
