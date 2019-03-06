@@ -6,6 +6,11 @@ Haoxuan Jia(hxjia@bu.edu)
 Jiahao Zhang(jiahaozh@bu.edu)
 
 ## Purpose
+With the datasets above, we can combine them to answer 3 interesting questions:
+<br />1.	What is the impact of holidays on the prices of Boston Airbnb houses? Is there any pattern that the average price is highest or lowest on some holiday?
+<br />2.	What is the impact of Boston landmarks on the number of houses and on the average prices of houses?
+<br />3.	What is the relationship between the prices of houses and traveler's reviews.
+
 
 ## Datasets
 ### Boston Airbnb Calendar
@@ -31,14 +36,14 @@ Generated from Boston Airbnb Listings and Boston Airbnb Reviews
                              Aggregate to get a combination of comments for each listing_id
 <br />Combination: product + Project to get the comments and review score for each listing_id, in the form of (listing_id, price, comments, review_score)
 ### Price_on_Holidays
-<br />Generated from Boston Airbnb Calendar and US_Holidays
+Generated from Boston Airbnb Calendar and US_Holidays
 <br />Boston Airbnb Calendar: Select the data with valid price;
                         Project to get data in a form of (date, price);
                         Aggregate to get the mean price for each date
 <br />US_Holidays: Select holidays in the range of Boston Airbnb Calendar's dates
 <br />Combination: Product + Project to get the mean price for each date and whether the date is a holiday, in the form of (date, avg_price, holiday)
 ### Prices_Landmarks_Listings
-<br />Generated from Boston Airbnb Listings and Boston Landmarks
+Generated from Boston Airbnb Listings and Boston Landmarks
 <br />Boston Airbnb Listing: select, project  aggregate to get (neighbourhood, the number of houses in that neighbourhood ), select, project and aggregate to get (neighbourhood, the mean price of houses in that neighbourhood).
 <br />Boston Landmarks: select, project and aggregate to get (neighbourhood, the number of landmarks in that neighbourhood)
 <br />Combiantion: project to get  (neighbourhood, the number of landmarks,  the number of houses, the mean prices of houses in that neighbourhood )
