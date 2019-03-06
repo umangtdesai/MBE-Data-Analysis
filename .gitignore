@@ -1,2 +1,3 @@
 data/
 auth.json
+__pycache__/
