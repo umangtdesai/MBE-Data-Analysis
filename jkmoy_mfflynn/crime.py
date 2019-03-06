@@ -27,8 +27,18 @@ class example(dml.Algorithm):
         repo.dropCollection("jkmoy_mfflynn.crime")
         repo.createCollection("jkmoy_mfflynn.crime")
         repo['jkmoy_mfflynn.crime'].insert_many(r)
+
+        '''
+        #2nd data set that goes with this
+        url = 'https://data.boston.gov/datastore/odata3.0/ba5ed0e2-e901-438c-b2e0-4acfc3c452b9?$format=json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo['jkmoy_mfflynn.crime'].insert_many(r)
+        '''
+        
         repo['jkmoy_mfflynn.crime'].metadata({'complete':True})
-        print(repo['alice_bob.lost'].metadata())
+        print(repo['jkmoy_mfflynn.crime'].metadata())
 
         repo.logout()
 
@@ -47,11 +57,12 @@ class example(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
+        repo.authenticate('jkmoy_mfflynn', 'jkmoy_mfflynn')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('crime', 'https://data.boston.gov/datastore/odata3.0/12cb3883-56f5-47de-afa5-3b1cf61b257b?$format=json') 
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
         this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
