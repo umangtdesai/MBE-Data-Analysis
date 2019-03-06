@@ -8,7 +8,7 @@ import datetime
 import uuid
 
 
-class ProvenanceModel(dml.Algorithm):
+class DatasetInsertion(dml.Algorithm):
     contributor = 'kgrewal_shin2'
     reads = []
     writes = ['kgrewal_shin2.street_names', 'kgrewal_shin2.landmarks', 'kgrewal_shin2.neighborhoods',
@@ -200,8 +200,8 @@ class ProvenanceModel(dml.Algorithm):
 
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
-ProvenanceModel.execute()
-doc = ProvenanceModel.provenance()
+DatasetInsertion.execute()
+doc = DatasetInsertion.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

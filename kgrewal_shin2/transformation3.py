@@ -6,7 +6,7 @@ import uuid
 from kgrewal_shin2 import transformations
 
 
-class transformation1():
+class transformation3():
     contributor = 'kgrewal_shin2'
     reads = ['kgrewal_shin2.ubers']
     writes = ['kgrewal_shin2.uber_street_sum']
@@ -66,20 +66,21 @@ class transformation1():
         resource = doc.entity('bdp:wc8w-nujj',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
-        get_streets = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        get_ubers = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
-        doc.wasAssociatedWith(get_streets, this_script)
-        doc.usage(get_streets, resource, startTime, None,
+        doc.wasAssociatedWith(get_ubers, this_script)
+        doc.usage(get_ubers, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Streets+Without+Landmarks&$select=full_name,gender,zipcode,street_name'
+                   'ont:Query': '?type=Uber+Data&$select=Origin Display Name,Destination Display Name,Mean Travel Time '
+                                '(Seconds),Range - Lower Bound Travel Time (Seconds),Range - Upper Bound Travel Time (Seconds)'
                    }
                   )
 
-        streets = doc.entity('dat:kgrewal_shin2#streets',
-                          {prov.model.PROV_LABEL: 'Streets Without Landmarks', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(streets, this_script)
-        doc.wasGeneratedBy(streets, get_streets, endTime)
-        doc.wasDerivedFrom(streets, resource, get_streets, get_streets, get_streets)
+        ubers = doc.entity('dat:kgrewal_shin2#ubers',
+                           {prov.model.PROV_LABEL: 'Boston Common Ubers', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(ubers, this_script)
+        doc.wasGeneratedBy(ubers, get_ubers, endTime)
+        doc.wasDerivedFrom(ubers, resource, get_ubers, get_ubers, get_ubers)
 
         repo.logout()
 
