@@ -6,11 +6,6 @@ import uuid
 import pandas as pd
 
 
-## when retrieving from datamechanics.io, need to replace "S", "e", and "b" characters with 0, or null in:
-## Columns: RCPALL, RCPPDEMP, EMP, PAYANN, RCPNOPD, RCPALL_S, RCPPDEMP_S, EMP_S, PAYANN_S, and RCPNOPD_S
-##
-
-
 class massValidZipCodes(dml.Algorithm):
     contributor = 'ashwini_gdukuray_justini_utdesai'
     reads = []
@@ -30,13 +25,7 @@ class massValidZipCodes(dml.Algorithm):
 
         data = pd.read_csv(url)
 
-        # Standardize dataset
-        # data = data.rename(index=str, columns={"SDO Cert. Date": "SDO Cert Date"})
-
         records = json.loads(data.T.to_json()).values()
-        # print(records)
-
-        # read from Mongo, project in the zeros in zip code column
 
         repo.dropCollection("validZipCodes")
         repo.createCollection("validZipCodes")

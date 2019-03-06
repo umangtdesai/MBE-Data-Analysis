@@ -28,14 +28,11 @@ class secretaryCommonwealth(dml.Algorithm):
         # Standardize dataset
         data = data.rename(index=str, columns={"SDO Cert. Date": "SDO Cert Date"})
 
-        records = json.loads(data.T.to_json()).values()
-        #print(records)
-
-        # read from Mongo, project in the zeros in zip code column
+        #records = json.loads(data.T.to_json()).values()
 
         repo.dropCollection("secretary")
         repo.createCollection("secretary")
-        repo['ashwini_gdukuray_justini_utdesai.secretary'].insert(records)
+        repo['ashwini_gdukuray_justini_utdesai.secretary'].insert(data.to_dict('records'))
         repo['ashwini_gdukuray_justini_utdesai.secretary'].metadata({'complete': True})
         print(repo['ashwini_gdukuray_justini_utdesai.secretary'].metadata())
 

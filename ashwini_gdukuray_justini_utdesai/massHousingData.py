@@ -1,12 +1,8 @@
-import urllib.request
-import requests
 import json
-import csv
 import pandas as pd
 import dml
 import prov.model
 import datetime
-import uuid
 import pandas as pd
 
 class massHousingData(dml.Algorithm):
@@ -30,13 +26,11 @@ class massHousingData(dml.Algorithm):
 
         data = pd.read_csv(url)
 
-        #print(data)
-
-        records = json.loads(data.T.to_json()).values()
+        #records = json.loads(data.T.to_json()).values()
 
         repo.dropCollection("massHousing")
         repo.createCollection("massHousing")
-        repo['ashwini_gdukuray_justini_utdesai.massHousing'].insert_many(records)
+        repo['ashwini_gdukuray_justini_utdesai.massHousing'].insert_many(data.to_dict('records'))
         repo['ashwini_gdukuray_justini_utdesai.massHousing'].metadata({'complete': True})
         print(repo['ashwini_gdukuray_justini_utdesai.massHousing'].metadata())
 

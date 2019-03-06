@@ -1,4 +1,3 @@
-import urllib.request
 import json
 import dml
 import prov.model
@@ -28,11 +27,11 @@ class topCompanies(dml.Algorithm):
 
         #print(data)
 
-        records = json.loads(data.T.to_json()).values()
+        #records = json.loads(data.T.to_json()).values()
 
         repo.dropCollection("topCompanies")
         repo.createCollection("topCompanies")
-        repo['ashwini_gdukuray_justini_utdesai.topCompanies'].insert_many(records)
+        repo['ashwini_gdukuray_justini_utdesai.topCompanies'].insert_many(data.to_dict('records'))
         repo['ashwini_gdukuray_justini_utdesai.topCompanies'].metadata({'complete': True})
         print(repo['ashwini_gdukuray_justini_utdesai.topCompanies'].metadata())
 

@@ -1,9 +1,7 @@
-import urllib.request
 import json
 import dml
 import prov.model
 import datetime
-import uuid
 import pandas as pd
 
 
@@ -32,9 +30,6 @@ class masterList(dml.Algorithm):
         massHousingDF = pd.DataFrame(list(massHousing.find()))
         secretaryDF = pd.DataFrame(list(secretary.find()))
         validZipsDF = pd.DataFrame(list(validZips.find()))
-
-        #print(list(secretaryDF))
-        #print(list(massHousingDF))
 
         # clean up secretary dataset
         # convert zip codes to strings and 5 digits long
@@ -108,13 +103,13 @@ class masterList(dml.Algorithm):
 
         masterList = masterList[masterList['Zip'].isin(listOfGoodZips)]
 
-        records = json.loads(masterList.T.to_json()).values()
+        #records = json.loads(masterList.T.to_json()).values()
 
         #print(masterList)
 
         repo.dropCollection('masterList')
         repo.createCollection('masterList')
-        repo['ashwini_gdukuray_justini_utdesai.masterList'].insert_many(records)
+        repo['ashwini_gdukuray_justini_utdesai.masterList'].insert_many(masterList.to_dict('records'))
         repo['ashwini_gdukuray_justini_utdesai.masterList'].metadata({'complete': True})
         print(repo['ashwini_gdukuray_justini_utdesai.masterList'].metadata())
 

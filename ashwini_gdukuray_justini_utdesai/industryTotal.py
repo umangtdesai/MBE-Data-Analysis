@@ -1,9 +1,7 @@
-import urllib.request
 import json
 import dml
 import prov.model
 import datetime
-import uuid
 import pandas as pd
 
 
@@ -46,11 +44,11 @@ class industryTotal(dml.Algorithm):
 
         #print(industryDF)
 
-        records = json.loads(industryDF.T.to_json()).values()
+        #records = json.loads(industryDF.T.to_json()).values()
 
         repo.dropCollection("industryTotal")
         repo.createCollection("industryTotal")
-        repo['ashwini_gdukuray_justini_utdesai.industryTotal'].insert_many(records)
+        repo['ashwini_gdukuray_justini_utdesai.industryTotal'].insert_many(industryDF.to_dict('records'))
         repo['ashwini_gdukuray_justini_utdesai.industryTotal'].metadata({'complete': True})
         print(repo['ashwini_gdukuray_justini_utdesai.industryTotal'].metadata())
 
