@@ -87,6 +87,7 @@ class non_registered_voters(dml.Algorithm):
 
         return doc
 
+#non_registered_voters.execute()
 
 '''
 # This is example code you might use for debugging this module.

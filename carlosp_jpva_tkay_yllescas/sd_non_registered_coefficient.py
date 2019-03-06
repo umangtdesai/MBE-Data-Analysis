@@ -260,7 +260,7 @@ class sd_non_registered_coefficient(dml.Algorithm):
         return doc
 #sd_non_registered_coefficient.execute()
 #d_t = demographics_by_towns
-
+#
 #d_t.execute()
 
 '''

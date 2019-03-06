@@ -73,6 +73,8 @@ class registered(dml.Algorithm):
         repo.logout()
                   
         return doc
+    
+#registered.execute()
 
 '''
 # This is example code you might use for debugging this module.

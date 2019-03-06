@@ -88,7 +88,7 @@ class non_poc_early_voting(dml.Algorithm):
 
         return doc
 
-
+#non_poc_early_voting.execute()
 '''
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
