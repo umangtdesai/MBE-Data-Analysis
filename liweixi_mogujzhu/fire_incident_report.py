@@ -11,7 +11,7 @@ import csv
 import fire_incident_urlList
 
 
-class FireIncidentReport(dml.Algorithm):
+class fire_incident_report(dml.Algorithm):
     contributor = 'liweixi_mogjzhu'
     reads = []
     writes = ['liweixi_mogujzhu.fire_incident_report']
@@ -89,8 +89,8 @@ class FireIncidentReport(dml.Algorithm):
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
 '''
-FireIncidentReport.execute()
-doc = FireIncidentReport.provenance()
+fire_incident_report.execute()
+doc = fire_incident_report.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

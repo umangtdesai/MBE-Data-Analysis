@@ -9,7 +9,7 @@ import io
 import csv
 
 
-class BuildingAndPropertyViolations(dml.Algorithm):
+class building_and_property_violations(dml.Algorithm):
     contributor = 'liweixi_mogjzhu'
     reads = []
     writes = ['liweixi_mogujzhu.building_and_property_violations']
@@ -86,8 +86,8 @@ class BuildingAndPropertyViolations(dml.Algorithm):
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
 '''
-BuildingAndPropertyViolations.execute()
-doc = BuildingAndPropertyViolations.provenance()
+building_and_property_violations.execute()
+doc = building_and_property_violations.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 
