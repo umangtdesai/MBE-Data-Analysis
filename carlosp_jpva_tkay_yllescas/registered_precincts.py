@@ -81,6 +81,7 @@ class registered_precincts(dml.Algorithm):
 
         return doc
 
+#registered_precincts.execute()
 
 '''
 # This is example code you might use for debugging this module.
