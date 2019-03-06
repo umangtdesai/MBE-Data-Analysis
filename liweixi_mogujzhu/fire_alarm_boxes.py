@@ -25,6 +25,7 @@ class fire_alarm_boxes(dml.Algorithm):
         response = urllib.request.urlopen(url).read().decode("utf-8")
 
         r = json.loads(response)
+        print(r["features"][0])
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("fire_alarm_boxes")
         repo.createCollection("fire_alarm_boxes")
@@ -63,11 +64,7 @@ class fire_alarm_boxes(dml.Algorithm):
                                'ont:Extension': 'geojson'})
         get_fire_alarm_boxes = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_fire_alarm_boxes, this_script)
-        doc.usage(get_fire_alarm_boxes, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                   }
-                  )
+
 
         fire_alarm_boxes = doc.entity('dat:liweixi_mogujzhu#fire_alarm_boxes',
                           {prov.model.PROV_LABEL: 'Boston Fire Alarm Boxes', prov.model.PROV_TYPE: 'ont:DataSet'})

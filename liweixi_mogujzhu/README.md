@@ -12,3 +12,14 @@ http://bostonopendata-boston.opendata.arcgis.com/datasets/fire-hydrants
 * Boston Weather
 https://www.ncdc.noaa.gov/cdo-web/
 
+# Package Dependency
+* Geopy: Provide functions to get geography information about certain location.
+ Install the package by: 
+  ```
+    pip install geopy
+  ```
+
+* Pandas: Provide interface to calculate on the data.
+  ```
+    pip install pandas
+  ```

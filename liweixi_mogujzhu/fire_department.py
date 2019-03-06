@@ -25,6 +25,7 @@ class fire_department(dml.Algorithm):
         response = urllib.request.urlopen(url).read().decode("utf-8")
 
         r = json.loads(response)
+        print(r["features"][0])
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("fire_department")
         repo.createCollection("fire_department")
@@ -63,11 +64,6 @@ class fire_department(dml.Algorithm):
                                'ont:Extension': 'geojson'})
         get_fire_department = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_fire_department, this_script)
-        doc.usage(get_fire_department, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                   }
-                  )
 
         fire_department = doc.entity('dat:liweixi_mogujzhu#fire_department',
                           {prov.model.PROV_LABEL: 'Boston Fire Department', prov.model.PROV_TYPE: 'ont:DataSet'})

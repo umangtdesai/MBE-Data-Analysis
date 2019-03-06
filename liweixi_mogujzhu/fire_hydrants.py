@@ -25,6 +25,7 @@ class fire_hydrants(dml.Algorithm):
         response = urllib.request.urlopen(url).read().decode("utf-8")
 
         r = json.loads(response)
+        print(r["features"][0])
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("fire_hydrants")
         repo.createCollection("fire_hydrants")
@@ -63,11 +64,7 @@ class fire_hydrants(dml.Algorithm):
                                'ont:Extension': 'geojson'})
         get_fire_hydrants = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_fire_hydrants, this_script)
-        doc.usage(get_fire_hydrants, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                   }
-                  )
+
 
         fire_hydrants = doc.entity('dat:liweixi_mogujzhu#fire_hydrants',
                           {prov.model.PROV_LABEL: 'Boston Fire Hydrants', prov.model.PROV_TYPE: 'ont:DataSet'})
