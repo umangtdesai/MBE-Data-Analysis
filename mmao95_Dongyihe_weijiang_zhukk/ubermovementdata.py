@@ -19,16 +19,21 @@ class uber_data(dml.Algorithm):
         start_time = datetime.datetime.now()
         contributor = 'mmao95_Dongyihe_weijiang_zhukk'
         writes = [contributor + '.famous_people']
-
+        def aggregate(R, f):
+            keys = {r[0] for r in R}
+            return [(key, f([v for (k,v) in R if k == key])) for key in keys]
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate(contributor, contributor)
-        csv1 = pd.read_csv("/Users/zjallenjiang/Desktop/boston-censustracts-2018-4-All-MonthlyAggregate.csv")
-        data = json.loads(csv1.to_json(orient="records"))
-
+        csv1 = pd.read_csv("/Users/zjallenjiang/Desktop/boston-censustracts-2018-4-All-MonthlyAggregate.csv").values.tolist()
+        l1 = [(s,1) for (s,a,b,c,d,e,f) in csv1]
+        l2 = aggregate(l1,sum)
+        columnName = ['Street ID','Count']
+        df = pd.DataFrame(columns=columnName, data=l2)
         repo.dropCollection('uber_data')
         repo.createCollection('uber_data')
+        data = json.loads(df.to_json(orient="records"))
         repo[writes[0]].insert_many(data)
         repo[writes[0]].metadata({'complete': True})
         repo.logout()
@@ -63,7 +68,7 @@ class uber_data(dml.Algorithm):
                    }
                   )
 
-        fp = doc.entity('dat:' + contributor + '#uber_people',
+        fp = doc.entity('dat:' + contributor + '#uber_data',
                         {prov.model.PROV_LABEL: 'Uber Data', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(fp, this_script)
         doc.wasGeneratedBy(fp, get_names, endTime)
