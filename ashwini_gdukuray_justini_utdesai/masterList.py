@@ -9,7 +9,7 @@ import pandas as pd
 
 class masterList(dml.Algorithm):
     contributor = 'ashwini_gdukuray_justini_utdesai'
-    reads = ['ashwini_gdukuray_justini_utdesai.massHousing', 'ashwini_gdukuray_justini_utdesai.secretary'] # is going to have to read in the master list from mongodb
+    reads = ['ashwini_gdukuray_justini_utdesai.massHousing', 'ashwini_gdukuray_justini_utdesai.secretary', 'ashwini_gdukuray_justini_utdesai.validZipCodes'] # is going to have to read in the master list from mongodb
     writes = ['ashwini_gdukuray_justini_utdesai.masterList'] # will write a dataset that is companies in top 25 that are also certified MBE
 
     @staticmethod
@@ -27,13 +27,15 @@ class masterList(dml.Algorithm):
 
         massHousing = repo['ashwini_gdukuray_justini_utdesai.massHousing']
         secretary = repo['ashwini_gdukuray_justini_utdesai.secretary']
+        validZips = repo['ashwini_gdukuray_justini_utdesai.validZipCodes']
 
         massHousingDF = pd.DataFrame(list(massHousing.find()))
         secretaryDF = pd.DataFrame(list(secretary.find()))
+        validZipsDF = pd.DataFrame(list(validZips.find()))
 
-        #print(massHousingDF)
-        print(list(massHousingDF))
-        print(list(secretaryDF))
+        #print(list(secretaryDF))
+        #print(list(massHousingDF))
+
         # clean up secretary dataset
         # convert zip codes to strings and 5 digits long
         secretaryDF['Zip'] = secretaryDF['Zip'].astype('str')
@@ -42,15 +44,61 @@ class masterList(dml.Algorithm):
         secretaryDF = secretaryDF.loc[secretaryDF['MBE - Y/N'] == 'Y']
         secretaryDF = secretaryDF[['Business Name', 'Address', 'City', 'Zip', 'State', 'Description of Services']]
 
-        #print(secretaryDF)
-        # list of column names underneath
+
+        # clean up massHousing dataset
+        massHousingDF['Zip'] = massHousingDF['Zip'].apply(lambda zipCode: zipCode[:5])
+        massHousingDF = massHousingDF[['Business Name', 'Address', 'City', 'Zip', 'State', 'Primary Trade', 'Primary Other/Consulting Description']]
+
+        for index, row in massHousingDF.iterrows():
+            if (row['Primary Trade'] == 'Other: Specify'):
+                row['Primary Trade'] = row['Primary Other/Consulting Description']
+
+        massHousingDF = massHousingDF.rename(index=str, columns={'Primary Trade': 'Description of Services'})
+        massHousingDF = massHousingDF.drop(columns=['Primary Other/Consulting Description'])
 
 
-        repo.dropCollection("masterList")
-        repo.createCollection("masterList")
-        #repo['ashwini_gdukuray_justini_utdesai.masterList'].insert_many(records)
-        #repo['ashwini_gdukuray_justini_utdesai.masterList'].metadata({'complete': True})
-        #print(repo['ashwini_gdukuray_justini_utdesai.masterList'].metadata())
+        # merge and create masterList
+        preMasterList = pd.merge(massHousingDF, secretaryDF, how='outer', on=['Business Name', 'City', 'Zip'])
+
+        preDict = {'Business Name': [], 'Address': [], 'City': [], 'Zip': [], 'State': [], 'Description of Services': []}
+
+        for index, row in preMasterList.iterrows():
+
+            desc = row['Description of Services_x']
+
+            preDict['Business Name'].append(row['Business Name'])
+            preDict['City'].append(row['City'])
+            preDict['Zip'].append(row['Zip'])
+
+            if pd.isnull(desc):
+                preDict['State'].append(row['State_y'])
+                preDict['Address'].append(row['Address_y'])
+                preDict['Description of Services'].append(row['Description of Services_y'])
+            else:
+                preDict['State'].append(row['State_x'])
+                preDict['Address'].append(row['Address_x'])
+                preDict['Description of Services'].append(row['Description of Services_x'])
+
+
+        masterList = pd.DataFrame(preDict)
+
+        # filter out invalid zips
+        validZipsDF['Zip'] = validZipsDF['Zip'].astype('str')
+        validZipsDF['Zip'] = validZipsDF['Zip'].apply(lambda zipCode: ((5 - len(zipCode))*'0' + zipCode \
+                                                        if len(zipCode) < 5 else zipCode)[:5])
+        listOfGoodZips = validZipsDF['Zip'].tolist()
+
+        masterList = masterList[masterList['Zip'].isin(listOfGoodZips)]
+
+        records = json.loads(masterList.T.to_json()).values()
+
+        print(masterList)
+
+        repo.dropCollection('masterList')
+        repo.createCollection('masterList')
+        repo['ashwini_gdukuray_justini_utdesai.masterList'].insert_many(records)
+        repo['ashwini_gdukuray_justini_utdesai.masterList'].metadata({'complete': True})
+        print(repo['ashwini_gdukuray_justini_utdesai.masterList'].metadata())
 
         repo.logout()
 
