@@ -27,8 +27,7 @@ class power_plants(dml.Algorithm):
 
     url = 'http://datamechanics.io/data/signior_jmu22/global_power_plant_database.csv'
     df = pd.read_csv(url)
-    new_df = df.filter(['country_long', 'name', 'fuel1', 'fuel2', 'fuel3', 'fuel4', 'comissioning_year'], axis=1)
-    # print(new_df.head(5))
+    new_df = df.filter(['country_long', 'fuel1', 'fuel2', 'fuel3', 'fuel4', 'commissioning_year'], axis=1)
     power_plants_dict = new_df.to_dict(orient='records')
     
     repo.dropCollection("power_plants")
@@ -56,7 +55,7 @@ class power_plants(dml.Algorithm):
     doc.add_namespace('log', 'http://datamechanics.io/log/')
 
     this_script = doc.agent('alg:signior_jmu22#power_plants', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-    resource = doc.entity('dat:power_plants', {'prov:label': 'global_power_plants_database', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+    resource = doc.entity('dat:signior_jmu22#power_plants', {'prov:label': 'global_power_plants_database', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
     get_power_plants_info = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
     doc.wasAssociatedWith(get_power_plants_info, this_script)
     doc.usage(get_power_plants_info, resource, startTime, None, {prov.model.PROV_TYPE:'ont:Retreival'})

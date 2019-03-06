@@ -25,7 +25,7 @@ class sea_level(dml.Algorithm):
     
     
     sea_level_dict = df.to_dict(orient='records')
-    print(sea_level_dict)
+    # print(sea_level_dict)
     
     repo.dropCollection("sea_level")
     repo.createCollection("sea_level")

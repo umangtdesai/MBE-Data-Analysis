@@ -3,15 +3,18 @@ Members:
   Kevin Xia (signior@bu.edu, kevinxia787)
   Jeffrey Mu (jmu22@bu.edu, jmu22)
 
+The question we are trying to answer is how big of a factor (if any) does establishing a power plant at a specific year that burns either waste, oil, coal, gas has any effect on the current and subsequent years' statistics of CO2 emissions, Earth surface temperatures, Ocean surface temperatures, and Sea level changes. Depending on how many power plants that burn fossil fuels, we should be able to see drastic changes as more and more power plants get initialized. The reasoning behind this intuition is that since power plants that burn fossil fuels release waste into the air, if they have an effect on the CO2 emissions then we'll see gradual increases in CO2 as the years go by, and this value could be scaled based on how many power plants get comissioned. 
 
-There is general consensus among the scientific community that C02 Emissions from fossil fuel based power plants is one of the biggest factors (if not the biggest) that affects global climate. However, there is still disagreement among members of the United States government about whether this is the case, and whether or not global warming is actually real. We think that we can leverage the following datasets: carbon emissions from 1980, global surface temperature, ocean surface temperature, sea level changes, and the number of power plants in the world that use coal and/or oil and their commission dates to see the correlation between when the power plants were built, and the changes of carbon emissions, global surface/ocean temps, and seal level changes happening after. We can combine the datasets in a way that aggregates each year and looks at the respective statistics and keeps track of which power plants in the world were comissioned and what fuel they use. Combining the data sets in this way will allow us to see whether or not these the comission of certain power plants in the world affected the statistics used to track global warming today.
+There is general consensus that fossil fuel based power plants negative impact the Earth's climate; however there are still members of the government and general community that think climate change is fake and/or power plants have no effect on it. By analyzing the data in this project (for a future time) we should be able to determine whether or not power plants have an effect on different factors used to measure Earth's climate.
+
+
 
 
 Instructions:
 
 Some files depend on Datahub.io's datapackage package. Install it with:
 
-  python -m pip install datapackage
+  pip install datapackage
 
 
   

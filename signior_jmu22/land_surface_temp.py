@@ -31,6 +31,7 @@ class land_surface_temp(dml.Algorithm):
     new_df = df.filter(['Year', 'Land'], axis=1) # filters out year and land (only values we care about because we already have ocean temp)
     
     land_temp_dict = new_df.to_dict(orient='records')
+    print(land_temp_dict)
 
     # print(land_temp_dict) # uncomment this too see the structure of the dataset
     
