@@ -11,7 +11,7 @@
 
 ### Datasets Used
 
-1. BOSTON NEIGHBORHOODS (get_neighborhoods.py)  
+1. Boston Neighborhoods (get_neighborhoods.py)  
 https://data.boston.gov/dataset/boston-neighborhoods
 2. Crime rate (get_crimeDta.py)  
 https://data.boston.gov/dataset/crime-incident-reports-august-2015-to-date-source-new-system
