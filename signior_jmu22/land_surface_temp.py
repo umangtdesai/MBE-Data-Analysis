@@ -30,11 +30,7 @@ class land_surface_temp(dml.Algorithm):
     df = pd.DataFrame(raw_data) # adds raw data to a pandas dataframe
     new_df = df.filter(['Year', 'Land'], axis=1) # filters out year and land (only values we care about because we already have ocean temp)
     
-    # print(new_df.head(5)) #uncomment this to see structure
-    #ocean_temp_dict = new_df.to_dict(orient='records')
     land_temp_dict = new_df.to_dict(orient='records')
-
-    # print(land_temp_dict) # uncomment this too see the structure of the dataset
     
     # below block adds the dataset to the repo collection
     repo.dropCollection("land_surface_temp")

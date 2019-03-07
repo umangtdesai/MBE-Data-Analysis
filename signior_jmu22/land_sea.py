@@ -36,14 +36,10 @@ class land_sea(dml.Algorithm):
       #print(land_surface_temp)
       ocean_surface_temp = list(repo.signior_jmu22.ocean_surface_temp.find())
       
-      #print(land_surface_temp[0])
-      #print(ocean_surface_temp[0])
-      
       #formats the year in land_surface_Temp
       for i in land_surface_temp:
           i["Year"] = i["Year"][0:4]
-        
-          #print(type(i))
+          
       #formats the year in ocean_surface_Temp
       for i in ocean_surface_temp:
           i["Year"] = str(i["Year"])[0:4]
