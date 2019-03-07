@@ -8,9 +8,9 @@
 Our goal is to determine best travel experiences for incoming tourists within Greater Boston Area. Having such an immense area, people may not have their best experiences in their limited time of travel and we wanted to suggest specific areas based on various datasets for the best possible experience.
 
 ### Data sources Used:
-- Analyze Boston (data.boston.gov)
-- Boston Maps Open Data (bostonopendata-boston.opendata.arcgis.com)
-- Massachusetts Department of Transportation (geo-massdot.opendata.arcgis.com)
+- Analyze Boston (*data.boston.gov*)
+- Boston Maps Open Data (*bostonopendata-boston.opendata.arcgis.com*)
+- Massachusetts Department of Transportation (*geo-massdot.opendata.arcgis.com*)
 
 ### Datasets Used:
 1. Boston Neighborhoods (*get_neighborhoods.py*)  
