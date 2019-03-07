@@ -72,7 +72,7 @@ class ocean_surface_temp(dml.Algorithm):
 
 
 # comment this when submitting, this is purely for testing purposes
-# ocean_surface_temp.execute()
+ocean_surface_temp.execute()
 # doc = ocean_surface_temp.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

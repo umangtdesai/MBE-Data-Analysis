@@ -37,9 +37,9 @@ class carbon_land_sea(dml.Algorithm):
       carbon_emissions = df.to_dict(orient = "records")
       #print(carbon_emissions)
      
-      land_sea = list(repo.signior_jmu22.land_sea.find())
+      
       #project the years column first
-      years = [*range(1960,2015)]
+      years = [*range(1960,2020)]
 
       
       #this does aggregation
@@ -47,7 +47,11 @@ class carbon_land_sea(dml.Algorithm):
 
       templist = []
       tempmax = 0
+
       for x in years:
+
+      
+   
           for i in carbon_emissions:
 
               if i.get(str(x)) == None:
@@ -55,18 +59,11 @@ class carbon_land_sea(dml.Algorithm):
               else:
                   tempmax += (i.get(str(x)))
    
+             
           tempmean = (tempmax/len(carbon_emissions))
           tempmax= 0
-          templist.append({'Year': x, 'C02': tempmean})
-      #print(templist)
-      
-      
-      
-      land_sea_carbon = carbon_land_sea.product(templist, land_sea)
-#      print(land_sea_carbon[0][1].get("Year"))
-#      print(land_sea_carbon[0][0].get("Year"))
-      #land_sea_carbon_select = carbon_land_sea.select(land_sea_carbon, lambda t: t[0][0].get("Year") == t[0][1].get("Year"))
-      print(land_sea_carbon[0][0].get("Year"))
+          print(tempmean)
+
   
       
      

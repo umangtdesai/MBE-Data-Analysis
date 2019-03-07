@@ -81,7 +81,7 @@ class land_sea(dml.Algorithm):
           keys = ["Year", "Ocean", "Land"]
           filtered = dict(zip(keys, [i[k] for k in keys]))
           finalList.append(filtered)
-      #print(finalList)
+      print(finalList)
       
        # below block adds the dataset to the repo collection
       repo.dropCollection("land_sea")
