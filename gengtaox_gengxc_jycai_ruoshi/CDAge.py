@@ -91,27 +91,48 @@ class CDAge(dml.Algorithm):
             '''
 
         doc.add_namespace('ont', 'https://www.census.gov/mycd/') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('ucb', 'https://www.census.gov/')
+        doc.add_namespace('ucb', 'https://www.census.gov/mycd/')
+        doc.add_namespace('xtab', 'http://datamechanics.io/voter/')
         
-        doc.add_namespace('alg', 'https://www.census.gov/mycd/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'https://www.census.gov/mycd/') # The data sets are in <user>#<collection> format.
-        doc.add_namespace('log', 'https://www.census.gov/mycd/') # The event log.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         this_script = doc.agent('alg:gengtaox_gengxc_jycai_ruoshi#CDAge', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('ucb:wc8w-nujj', {'prov:label':'My Congressional District', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_CDAge = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_CDAge, this_script)
-        doc.usage(get_CDAge, resource, startTime, None,
+        resource_web = doc.entity('ucb:mycd', {'prov:label':'My Congressional District', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_csv_non = doc.entity('xtab:non', {'prov:label':'non registered CD', prov.model.PROV_TYPE:'ont:DataSet', 'ont:Extension':'csv'})
+        resource_csv_reg = doc.entity('xtab:reg', {'prov:label':'registered voters CD', prov.model.PROV_TYPE:'ont:DataSet', 'ont:Extension':'csv'})
+
+        get_web = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_csv_non = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_csv_reg = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+
+        doc.wasAssociatedWith(get_web, this_script)
+        doc.wasAssociatedWith(get_csv_non, this_script)
+        doc.wasAssociatedWith(get_csv_reg, this_script)
+
+        doc.usage(get_web, resource_web, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':'?st=25&cd=01'
-                  }
-                  )
+                  })
+        doc.usage(get_csv_non, resource_csv_non, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:DataSet'
+                  })
+        doc.usage(get_csv_reg, resource_csv_reg, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:DataSet'
+                  })
 
-        CDAge = doc.entity('dat:gengtaox_gengxc_jycai_ruoshi#CDAge', {prov.model.PROV_LABEL:'Age By Congress District', prov.model.PROV_TYPE:'ont:DataSet'})
+        CDAge = doc.entity('dat:gengtaox_gengxc_jycai_ruoshi#CDAge', {prov.model.PROV_LABEL:'Age and Sex By Congress District', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(CDAge, this_script)
-        doc.wasGeneratedBy(CDAge, get_CDAge, endTime)
-        doc.wasDerivedFrom(CDAge, resource, get_CDAge, get_CDAge, get_CDAge)
-                  
+
+        doc.wasGeneratedBy(CDAge, get_web, endTime)
+        doc.wasGeneratedBy(CDAge, get_csv_non, endTime)
+        doc.wasGeneratedBy(CDAge, get_csv_reg, endTime)
+
+        doc.wasDerivedFrom(CDAge, resource_web, get_web, get_web, get_web)
+        doc.wasDerivedFrom(CDAge, resource_csv_non, get_csv_non, get_csv_non, get_csv_non)
+        doc.wasDerivedFrom(CDAge, resource_csv_reg, get_csv_reg, get_csv_reg, get_csv_reg)
+
         return doc
 
 
