@@ -26,10 +26,10 @@ class crime(dml.Algorithm):
         response = pd.read_csv(url, header=0)
 
         # select relevant columnns
-        data_crime = response[['district', 'offense_code']].copy()
+        data_crime = response[['district', 'offense_code', 'year', 'month']].copy()
 
         # rename to appropriate names
-        data_crime.columns = ['District', 'Offense']
+        data_crime.columns = ['District', 'Offense', 'Year', 'Month']
 
         #eliminate null districts
         data_crime.dropna(inplace=True)
