@@ -25,7 +25,6 @@ class fire_alarm_boxes(dml.Algorithm):
         response = urllib.request.urlopen(url).read().decode("utf-8")
 
         r = json.loads(response)
-        print(r["features"][0])
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("fire_alarm_boxes")
         repo.createCollection("fire_alarm_boxes")
@@ -59,8 +58,8 @@ class fire_alarm_boxes(dml.Algorithm):
 
         this_script = doc.agent('alg:liweixi_mogujzhu#fire_alarm_boxes',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:Boston Fire Alarm Boxes',
-                              {'prov:label': '123, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+        resource = doc.entity('dat:liweixi_mogujzhu#fire_alarm_boxes',
+                              {'prov:label': 'Boston Fire Alarm Boxes', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'geojson'})
         get_fire_alarm_boxes = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_fire_alarm_boxes, this_script)

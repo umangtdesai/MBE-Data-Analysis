@@ -59,8 +59,8 @@ class fire_department(dml.Algorithm):
 
         this_script = doc.agent('alg:liweixi_mogujzhu#fire_department',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:Boston Fire Department',
-                              {'prov:label': '124, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+        resource = doc.entity('dat:liweixi_mogujzhu#fire_department',
+                              {'prov:label': 'Boston Fire Department', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'geojson'})
         get_fire_department = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_fire_department, this_script)

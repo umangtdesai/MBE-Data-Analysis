@@ -59,8 +59,8 @@ class fire_hydrants(dml.Algorithm):
 
         this_script = doc.agent('alg:liweixi_mogujzhu#fire_hydrants',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:Boston Fire Hydrants',
-                              {'prov:label': '123, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+        resource = doc.entity('dat:liweixi_mogujzhu#fire_hydrants',
+                              {'prov:label': 'Boston Fire Hydrants', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'geojson'})
         get_fire_hydrants = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_fire_hydrants, this_script)

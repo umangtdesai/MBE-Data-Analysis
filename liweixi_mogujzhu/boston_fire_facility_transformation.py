@@ -4,9 +4,8 @@ import dml
 import prov.model
 import datetime
 import uuid
-# from geopy.geocoders import Nominatim
 
-class boston_fire_facility(dml.Algorithm):
+class boston_fire_facility_transormation(dml.Algorithm):
     contributor = 'liweixi_mogjzhu'
     reads = ['liweixi_mogujzhu.fire_hydrants','liweixi_mogujzhu.fire_department','liweixi_mogujzhu.fire_alarm_boxes']
     writes = ['liweixi_mogujzhu.boston_fire_facility']
@@ -44,7 +43,7 @@ class boston_fire_facility(dml.Algorithm):
         repo.dropCollection("boston_fire_facility")
         repo.createCollection("boston_fire_facility")
         data_list = ["liweixi_mogujzhu.fire_hydrants","liweixi_mogujzhu.fire_department","liweixi_mogujzhu.fire_alarm_boxes"]
-        data = boston_fire_facility.merge_data(data_list, repo)
+        data = boston_fire_facility_transormation.merge_data(data_list, repo)
         repo['liweixi_mogujzhu.boston_fire_facility'].insert_many(data)
         repo['liweixi_mogujzhu.boston_fire_facility'].metadata({'complete': True})
         print(repo['liweixi_mogujzhu.boston_fire_facility'].metadata())
@@ -73,7 +72,7 @@ class boston_fire_facility(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
 
 
-        this_script = doc.agent('alg:liweixi_mogujzhu#boston_fire_facility',
+        this_script = doc.agent('alg:liweixi_mogujzhu#boston_fire_facility_transformation',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource_fire_alarm_boxes = doc.entity('dat:Boston Fire Alarm Boxes',
                               {'prov:label': '123, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
@@ -106,8 +105,8 @@ class boston_fire_facility(dml.Algorithm):
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
 '''
-boston_fire_facility.execute()
-doc = boston_fire_facility.provenance()
+boston_fire_facility_transormation.execute()
+doc = boston_fire_facility_transormation.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

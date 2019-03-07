@@ -28,7 +28,6 @@ class weather(dml.Algorithm):
         df = pd.read_csv(url)
         boston_w = df.loc[df['NAME'] == "BOSTON, MA US"]
         boston_w = json.loads(boston_w.to_json(orient='records'))
-        print(boston_w[0])
         # s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("weather")
         repo.createCollection("weather")
@@ -60,18 +59,13 @@ class weather(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://www.ncdc.noaa.gov/cdo-web/')
 
-        this_script = doc.agent('alg:liweixi_mogujzhu#fire_department',
+        this_script = doc.agent('alg:liweixi_mogujzhu#weather',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:Boston Weather',
-                              {'prov:label': '125, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+        resource = doc.entity('dat:liweixi_mogujzhu#weather',
+                              {'prov:label': 'Boston Weather', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
         get_weather = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_weather, this_script)
-        doc.usage(get_weather, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                   }
-                  )
 
         weather = doc.entity('dat:liweixi_mogujzhu#weather',
                           {prov.model.PROV_LABEL: 'Boston Weather', prov.model.PROV_TYPE: 'ont:DataSet'})
