@@ -9,7 +9,7 @@ import pandas as pd
 
 class Airbnb(dml.Algorithm):
     contributor = 'kzhang21_ryuc'
-    reads = []
+    reads = ['kzhang21_ryuc.play']
     writes = ['kzhang21_ryuc.airbnb']
 
     @staticmethod
@@ -35,6 +35,34 @@ class Airbnb(dml.Algorithm):
         #sort by neighborhood
         data_airbnb.sort_values(by=['Neighborhood'], inplace = True)
 
+        #add zip column to airbnb
+        entData = pd.DataFrame(repo.kzhang21_ryuc.play.find())
+        entData.sort_values(by=['Neighborhood'], inplace = True)
+
+        #map zipcode to neighborhood 
+        nZip = {}
+        for index,row in entData.iterrows():
+            key = row['Neighborhood']
+            if key not in nZip:
+                nZip[key] = row['Zip']
+
+        
+        #make common neighbohood name
+        airbnb_n = data_airbnb[['Neighborhood']].copy()
+        airbnb_n.drop_duplicates(inplace=False)
+        neighbor = {}
+        for index,row in airbnb_n.iterrows():
+            if row['Neighborhood'] not in neighbor:
+                for key in nZip:
+                    if row['Neighborhood'] in key:
+                        neighbor[row['Neighborhood']] = key
+        
+        
+
+        #add zip column to airbnb
+        data_airbnb['Neighborhood'] =  data_airbnb['Neighborhood'].map(neighbor)
+        data_airbnb['Zip'] = data_airbnb['Neighborhood'].map(nZip)
+
         r = json.loads(data_airbnb.to_json(orient='records'))
         s = json.dumps(r, sort_keys=True, indent=2)
 
@@ -42,7 +70,7 @@ class Airbnb(dml.Algorithm):
         repo.createCollection("airbnb")
         repo['kzhang21_ryuc.airbnb'].insert_many(r)
         repo['kzhang21_ryuc.airbnb'].metadata({'complete':True})
-        print(repo['kelly_ryuc.airbnb'].metadata())
+        print(repo['kzhang21_ryuc.airbnb'].metadata())
         repo.logout()
 
         endTime = datetime.datetime.now()
