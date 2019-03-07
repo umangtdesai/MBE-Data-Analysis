@@ -87,6 +87,38 @@ class getData(dml.Algorithm):
         repo["asadeg02_gxy9598.active_food_stablishment"].metadata({'complete':True})
         print(repo["asadeg02_gxy9598.active_food_stablishment"].metadata())
         print('Load active food stablishment')
+        ###############################GET Street Names###################
+        url = "https://data.boston.gov/api/3/action/datastore_search?resource_id=a07cc1c6-aa78-4eb3-a005-dcf7a949249f&limit=18992"
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        r = (r['result']['records'])
+        record_addrs = []
+        for record in r:
+            addr = str(record['ST_NAME']).replace(" ","+") + "+" + str(record['ST_TYPE'])
+            if addr not in record_addrs and str(record['MUN_L']) == "Boston" and str(record['ST_TYPE']) != "None":
+                record_addrs.append(addr)
+            record_addrs.sort()
+        #print(record_addrs)
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("Get_Boston_Streets")
+        repo.createCollection("Get_Boston_Streets")
+        repo["asadeg02_gxy9598.Get_Boston_Streets"].insert_many(r)
+        repo["asadeg02_gxy9598.Get_Boston_Streets"].metadata({'complete':True})
+        print(repo["asadeg02_gxy9598.Get_Boston_Streets"].metadata())
+       ################################################### get housing per Street #########################
+        repo.dropCollection("Get_Zillow_Search")
+        repo.createCollection("Get_Zillow_Search")
+        for addr in record_addrs:
+            print(addr)
+            url = "https://www.zillow.com/webservice/GetSearchResults.htm?zws-id=X1-ZWz1gxzd99e39n_97i73&address=" + addr + "&citystatezip=Boston%2C+MA"
+            print(url)
+            response = urllib.request.urlopen(url).read().decode("utf-8")
+            my_dict = xmltodict.parse(response)
+            repo["asadeg02_gxy9598.Get_Zillow_Search"].insert_one(my_dict)
+
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo["asadeg02_gxy9598.Get_Zillow_Search"].metadata({'complete':True})
+        print(repo["asadeg02_gxy9598.Get_Zillow_Search"].metadata())
 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -136,6 +168,27 @@ class getData(dml.Algorithm):
         doc.wasAttributedTo(active_food_stablishment, this_script)
         doc.wasGeneratedBy(active_food_stablishment, get_active_food_stablishment, endTime)
         doc.wasDerivedFrom(active_food_stablishment, resource_active_food_stablishment, get_active_food_stablishment, get_active_food_stablishment, get_active_food_stablishment)
+        
+        
+        resource_Get_Boston_Streets = doc.entity('cob:ufcx-3fdn', {'prov:label':'Boston Street Name', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_Get_Boston_Streets = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, {'prov:label':'Get_Boston_Streets', prov.model.PROV_TYPE:'ont:Retrieval'})
+        doc.wasAssociatedWith(get_Get_Boston_Streets, this_script)
+        doc.usage(get_Get_Boston_Streets, resource_Get_Boston_Streets, startTime)
+        Get_Boston_Streets = doc.entity('dat:asadeg02_gxy9598#Get_Boston_Streets', {prov.model.PROV_LABEL:'Boston Street Segments', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(Get_Boston_Streets, this_script)
+        doc.wasGeneratedBy(Get_Boston_Streets, get_Get_Boston_Streets, endTime)
+        doc.wasDerivedFrom(Get_Boston_Streets, resource_Get_Boston_Streets, get_Get_Boston_Streets ,get_Get_Boston_Streets ,get_Get_Boston_Streets)
+
+
+
+        resource_Get_Zillow_Search = doc.entity('cob:ufcx-3fdn', {'prov:label':'Zillow housing Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_Get_Zillow_Search = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, {'prov:label':'Get Zillow Search', prov.model.PROV_TYPE:'ont:Retrieval'})
+        doc.wasAssociatedWith(get_Get_Zillow_Search, this_script)
+        doc.usage(get_Get_Zillow_Search, resource_Get_Zillow_Search, startTime)
+        Get_Zillow_Search = doc.entity('dat:asadeg02_gxy9598#Get_Zillow_Search', {prov.model.PROV_LABEL:'Housing Data', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(Get_Zillow_Search, this_script)
+        doc.wasGeneratedBy(Get_Zillow_Search, get_Get_Zillow_Search, endTime)
+        doc.wasDerivedFrom(Get_Zillow_Search, resource_Get_Zillow_Search, get_Get_Zillow_Search,get_Get_Zillow_Search,get_Get_Zillow_Search)
 
         repo.logout()
         return doc
