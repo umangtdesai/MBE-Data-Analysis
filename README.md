@@ -54,7 +54,7 @@ Ideally, we would have hoped to not have mapped neighborhoods to district, but r
 was contained in one of our neighborhoods. Moving forward we would rather have this as our demographics data is in terms 
 of these neighborhoods and not districts. This dataset is stored in mongo as Percent_OS.
 
-##### combineNeighborhoodHealth
+##### combineNeighborhoodHealth.py
 This is the third and last transformation. The goal of this algorithm is to take the cdc health survey data, where each row is of the form
 (health question, answer value, coordinates, ...), and match each question's coordinate value to a neighborhood. This way we can get an understanding
 of the neighborhood's health through the survey data. To match coordinates to a neighborhood, we had to use the
