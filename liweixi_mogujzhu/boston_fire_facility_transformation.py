@@ -43,7 +43,7 @@ class boston_fire_facility_transformation(dml.Algorithm):
         repo.dropCollection("boston_fire_facility")
         repo.createCollection("boston_fire_facility")
         data_list = ["liweixi_mogujzhu.fire_hydrants","liweixi_mogujzhu.fire_department","liweixi_mogujzhu.fire_alarm_boxes"]
-        data = boston_fire_facility_transormation.merge_data(data_list, repo)
+        data = boston_fire_facility_transformation.merge_data(data_list, repo)
         repo['liweixi_mogujzhu.boston_fire_facility'].insert_many(data)
         repo['liweixi_mogujzhu.boston_fire_facility'].metadata({'complete': True})
         print(repo['liweixi_mogujzhu.boston_fire_facility'].metadata())

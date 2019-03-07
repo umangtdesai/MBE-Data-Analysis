@@ -60,9 +60,9 @@ class building_and_property_violations(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.boston.gov/dataset/code-enforcement-building-and-property-violations')
 
-        this_script = doc.agent('alg:liweixi_mogujzhu#building_and',
+        this_script = doc.agent('alg:liweixi_mogujzhu#building_and_property_violations',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:liweixi_mogujzhu#building_property',
+        resource = doc.entity('dat:liweixi_mogujzhu#building_and_property_violations',
                               {'prov:label': 'Boston Building And Property Violations', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
         get_building = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
@@ -72,7 +72,7 @@ class building_and_property_violations(dml.Algorithm):
                    }
                   )
 
-        building_property = doc.entity('dat:liweixi_mogujzhu#building_property',
+        building_property = doc.entity('dat:liweixi_mogujzhu#building_and_property_violations',
                           {prov.model.PROV_LABEL: 'Boston Building And Property Violations', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(building_property, this_script)
         doc.wasGeneratedBy(building_property, get_building, endTime)

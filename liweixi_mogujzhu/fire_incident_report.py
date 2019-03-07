@@ -72,7 +72,7 @@ class fire_incident_report(dml.Algorithm):
         this_script = doc.agent('alg:liweixi_mogujzhu#fire_incident_report',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('dat:liweixi_mogujzhu#fire_incident_report',
-                              {'prov:label': 'Boston Fire Incident Reporting', prov.model.PROV_TYPE: 'ont:DataResource',
+                              {'prov:label': 'Boston Fire Incident', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
         get_fire_incident_report = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_fire_incident_report, this_script)
@@ -82,7 +82,7 @@ class fire_incident_report(dml.Algorithm):
                   )
 
         fire_incident_report = doc.entity('dat:liweixi_mogujzhu#fire_incident_report',
-                          {prov.model.PROV_LABEL: 'Boston Fire Incident Report', prov.model.PROV_TYPE: 'ont:DataSet'})
+                          {prov.model.PROV_LABEL: 'Boston Fire Incident', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(fire_incident_report, this_script)
         doc.wasGeneratedBy(fire_incident_report, get_fire_incident_report, endTime)
         doc.wasDerivedFrom(fire_incident_report, resource, get_fire_incident_report, get_fire_incident_report, get_fire_incident_report)

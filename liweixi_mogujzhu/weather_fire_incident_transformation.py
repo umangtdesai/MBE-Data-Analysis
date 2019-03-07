@@ -5,7 +5,7 @@ import prov.model
 import datetime
 import uuid
 
-class weather_fire_incident_transormation(dml.Algorithm):
+class weather_fire_incident_transformation(dml.Algorithm):
     contributor = 'liweixi_mogjzhu'
     reads = ['liweixi_mogujzhu.weather','liweixi_mogujzhu.fire_incident_report']
     writes = ['liweixi_mogujzhu.weather_fire_incident_transformation']
@@ -74,7 +74,7 @@ class weather_fire_incident_transormation(dml.Algorithm):
         repo.dropCollection("weather_fire_incident_transformation")
         repo.createCollection("weather_fire_incident_transformation")
         data_list = ['liweixi_mogujzhu.weather', 'liweixi_mogujzhu.fire_incident_report']
-        data = weather_fire_incident_transormation.merge_data(data_list, repo)
+        data = weather_fire_incident_transformation.merge_data(data_list, repo)
         repo['weather_fire_incident_transformation'].insert_many(data)
         repo['weather_fire_incident_transformation'].metadata({'complete': True})
         print(repo['weather_fire_incident_transformation'].metadata())
@@ -105,10 +105,10 @@ class weather_fire_incident_transormation(dml.Algorithm):
 
         this_script = doc.agent('alg:liweixi_mogujzhu#weather_fire_incident_transormation',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource_weather = doc.entity('dat:Boston Weather',
+        resource_weather = doc.entity('dat:liweixi_mogujzhu#weather',
                               {'prov:label': 'Boston Weather', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
-        resource_fire_incident = doc.entity('dat:Boston Fire Incident',
+        resource_fire_incident = doc.entity('dat:liweixi_mogujzhu#fire_incident_report',
                               {'prov:label': 'Boston Fire Incident', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
 

@@ -5,7 +5,7 @@ import prov.model
 import datetime
 import uuid
 
-class fire_building_transormation(dml.Algorithm):
+class fire_building_transformation(dml.Algorithm):
     contributor = 'liweixi_mogjzhu'
     reads = ['liweixi_mogujzhu.fire_incident_report','liweixi_mogujzhu.building_and_property_violations']
     writes = ['liweixi_mogujzhu.fire_building_transformation']
@@ -91,10 +91,10 @@ class fire_building_transormation(dml.Algorithm):
 
         this_script = doc.agent('alg:liweixi_mogujzhu#fire_building_transformation',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource_weather = doc.entity('dat:Boston Building And Property Violations',
+        resource_weather = doc.entity('dat:liweixi_mogujzhu#building_and_property_violations',
                               {'prov:label': 'Boston Building And Property Violations', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
-        resource_fire_incident = doc.entity('dat:Boston Fire Incident',
+        resource_fire_incident = doc.entity('dat:liweixi_mogujzhu#fire_incident_report',
                               {'prov:label': 'Boston Fire Incident', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
 
