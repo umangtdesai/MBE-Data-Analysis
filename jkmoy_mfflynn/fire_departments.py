@@ -5,7 +5,7 @@ import prov.model
 import datetime
 import uuid
 
-class example(dml.Algorithm):
+class fire_departments(dml.Algorithm):
     contributor = 'jkmoy_mfflynn'
     reads = []
     writes = ['jkmoy_mfflynn.fire_departments']
@@ -23,6 +23,7 @@ class example(dml.Algorithm):
         url = 'http://gis.cityofboston.gov/arcgis/rest/services/PublicSafety/OpenData/MapServer/2/query?where=1%3D1&outFields=*&outSR=4326&f=json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
+        r = r['features']#[0]['attributes'] # this needed?
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("jkmoy_mfflynn.fire_departments")
         repo.createCollection("jkmoy_mfflynn.fire_departments")
@@ -55,32 +56,17 @@ class example(dml.Algorithm):
         doc.add_namespace('fire', 'https://data.boston.gov/datastore/odata3.0/220a4ce5-a991-4336-a19b-159881d7c2e7?$format=json')
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/') # remove?
 
-        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
+        this_script = doc.agent('alg:jkmoy_mfflynn#fire_departments', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dat:fire_department', {'prov:label':'Different Fire Departments', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_fire_departments = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_fire_departments, this_script)
+        doc.usage(get_fire_departments, resource, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'})
 
-        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-
-        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        fire_departments = doc.entity('dat:jkmoy_mfflynn#fire_departments', {prov.model.PROV_LABEL:'Boston Fire Departments', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(fire_departments, this_script)
+        doc.wasGeneratedBy(fire_departments, get_fire_departments, endTime)
+        doc.wasDerivedFrom(fire_departments, resource, get_fire_departments, get_fire_departments, get_fire_departments)
 
         repo.logout()
                   

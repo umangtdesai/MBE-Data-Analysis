@@ -5,7 +5,7 @@ import prov.model
 import datetime
 import uuid
 
-class example(dml.Algorithm):
+class accidents(dml.Algorithm):
     contributor = 'jkmoy_mfflynn'
     reads = []
     writes = ['jkmoy_mfflynn.fatal_accident', 'jkmoy_mfflynn.accident' ]
@@ -24,18 +24,22 @@ class example(dml.Algorithm):
         url = 'https://data.boston.gov/datastore/odata3.0/92f18923-d4ec-4c17-9405-4e0da63e1d6c?$format=json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
+        r = r['value']
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("jkmoy_mfflynn.fatal_accident")
         repo.createCollection("jkmoy_mfflynn.fatal_accident")
         repo['jkmoy_mfflynn.fatal_accident'].insert_many(r)
         repo['jkmoy_mfflynn.fatal_accident'].metadata({'complete':True})
 
-        print(repo['jkmoy_mfflynn.fatal_accident'].metadata())
+        print(repo['fatal_accident'].metadata())
 
         #All car crashes from data mechanics
-        url = 'http://datamechanics.io/data/boston_car_accidents.json'
+        # https://data.boston.gov/datastore/odata3.0/e4bfe397-6bfc-49c5-9367-c879fac7401d?$format=json
+        #url = 'http://datamechanics.io/data/boston_car_accidents.json'
+        url = 'http://datamechanics.io/data/carAccidents.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
+        r = r['value']
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("jkmoy_mfflynn.accident")
         repo.createCollection("jkmoy_mfflynn.accident")
@@ -61,39 +65,32 @@ class example(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
+        repo.authenticate('jkmoy_mfflynn', 'jkmoy_mfflynn')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
+        this_script = doc.agent('alg:jkmoy_mfflynn#accidents', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dat:accidents', {'prov:label':'Car Accidents', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_fatal_accidents = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_accidents = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_fatal_accidents, this_script)
+        doc.wasAssociatedWith(get_accidents, this_script)
+        doc.usage(get_fatal_accidents, resource, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'})
+        doc.usage(get_accidents, resource, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'})
 
-        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
+        fatal_accidents = doc.entity('dat:jkmoy_mfflynn#fatal_accidents', {prov.model.PROV_LABEL:'Deadly Accidents', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(fatal_accidents, this_script)
+        doc.wasGeneratedBy(fatal_accidents, get_fatal_accidents, endTime)
+        doc.wasDerivedFrom(fatal_accidents, resource, get_fatal_accidents, get_fatal_accidents, get_fatal_accidents)
 
-        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        accidents = doc.entity('dat:jkmoy_mfflynn#accidents', {prov.model.PROV_LABEL:'Non-deadly Accidents', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(accidents, this_script)
+        doc.wasGeneratedBy(accidents, get_accidents, endTime)
+        doc.wasDerivedFrom(accidents, resource, get_accidents, get_accidents, get_accidents)
 
         repo.logout()
                   
