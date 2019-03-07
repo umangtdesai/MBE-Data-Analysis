@@ -49,27 +49,24 @@ class secretaryCommonwealth(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
-        pass
 
-'''
+
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'https://cs-people.bu.edu/dharmesh/spark/businesses.csv')  # The data sets are in <user>#<collection> format.
-        doc.add_namespace('dat2', 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/secretary.json')
-        doc.add_namespace('ont',
-                          'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('bdp', 'https://cs-people.bu.edu/dharmesh/spark/')
 
-        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#secretary',
+        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#secretaryCommonwealth',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:ashwini_gdukuray_justini_utdesai#secretary',
+        resource = doc.entity('bdp:#businesses.csv',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
-        resource2 = doc.entity('dat2:ashwini_gdukuray_justini_utdesai#secretary',
+        resource2 = doc.entity('dat:ashwini_gdukuray_justini_utdesai#secretary',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
         act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
@@ -88,7 +85,6 @@ class secretaryCommonwealth(dml.Algorithm):
         repo.logout()
 
         return doc
-'''
 
 '''
 # This is example code you might use for debugging this module.
