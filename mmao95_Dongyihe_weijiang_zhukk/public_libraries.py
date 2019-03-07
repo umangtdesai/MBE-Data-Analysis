@@ -14,27 +14,6 @@ import math
 
 class public_libraries(dml.Algorithm):
     # define relational models
-    def union(R, S):
-        return R + S
-
-    def difference(R, S):
-        return [t for t in R if t not in S]
-
-    def intersect(R, S):
-        return [t for t in R if t in S]
-
-    def project(R, p):
-        return [p(t) for t in R]
-
-    def select(R, s):
-        return [t for t in R if s(t)]
-
-    def product(R, S):
-        return [(t, u) for t in R for u in S]
-
-    def aggregate(R, f):
-        keys = {r[0] for r in R}
-        return [(key, f([v for (k, v) in R if k == key])) for key in keys]
 
     contributor = 'mmao95_Dongyihe_weijiang_zhukk'
     reads = []
@@ -60,6 +39,28 @@ class public_libraries(dml.Algorithm):
             Public_Libraries_list += [row]
 
         del Public_Libraries_list[0]
+
+        def union(R, S):
+            return R + S
+
+        def difference(R, S):
+            return [t for t in R if t not in S]
+
+        def intersect(R, S):
+            return [t for t in R if t in S]
+
+        def project(R, p):
+            return [p(t) for t in R]
+
+        def select(R, s):
+            return [t for t in R if s(t)]
+
+        def product(R, S):
+            return [(t, u) for t in R for u in S]
+
+        def aggregate(R, f):
+            keys = {r[0] for r in R}
+            return [(key, f([v for (k, v) in R if k == key])) for key in keys]
 
         BSDZXYL = [(BRANCH, ST_ADDRESS, DISTRICT, ZIPCODE, X, Y, LIBRARIES) for [
             X, Y, OBJECTID_1, OBJECTID, LIBRARIES, DISTRICT, ST_ADDRESS, BRANCH, ZIPCODE] in Public_Libraries_list]
