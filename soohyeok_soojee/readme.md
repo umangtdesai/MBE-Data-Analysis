@@ -1,6 +1,6 @@
-#CS504 Project#1
+# CS504 Project#1
 
-###Contributors
+## Contributors
 - Soo Hyeok Lee
 - Soojee Lee
 
