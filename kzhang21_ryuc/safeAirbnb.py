@@ -111,10 +111,10 @@ class SafeAirbnb(dml.Algorithm):
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
 
-SafeAirbnb.execute()
-doc = SafeAirbnb.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# SafeAirbnb.execute()
+# doc = SafeAirbnb.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 
 ## eof

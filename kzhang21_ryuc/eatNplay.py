@@ -111,10 +111,10 @@ class EatNPlay(dml.Algorithm):
 
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
-EatNPlay.execute()
-doc = EatNPlay.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# EatNPlay.execute()
+# doc = EatNPlay.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 
 ## eof
