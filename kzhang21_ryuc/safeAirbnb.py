@@ -44,7 +44,7 @@ class SafeAirbnb(dml.Algorithm):
 
         #fill total crime column for airbnb data
         airbnbData['Total_Crime'] = airbnbData['Neighborhood'].map(totalCrime)
-        airbnbData.fillna(0)
+
 
         #drop id column that was created by mongodb
         airbnbData.drop(['_id'], axis = 1, inplace = True)
