@@ -49,8 +49,6 @@ class topCompanies(dml.Algorithm):
             document describing that invocation event.
             '''
 
-        pass
-
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -58,20 +56,18 @@ class topCompanies(dml.Algorithm):
         doc.add_namespace('alg', 'ashwini_gdukuray_justini_utdesai#topcompanies')  # The scripts are in <folder>#<filename> format.
 
         #input DataSet
-        doc.add_namespace('dat', 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/Top25Companies.csv')  # The data sets are in <user>#<collection> format.
-        #output DataSet
-        doc.add_namespace('dat2', 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/Top25Companies.json')
-        doc.add_namespace('ont',
-                          'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        #doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('bdp', 'http://datamechanics.io/?prefix=ashwini_gdukuray_justini_utdesai/')
 
-        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#topcompanies',
+        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#topCompanies',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        topCompaniesPre = doc.entity('dat:ashwini_gdukuray_justini_utdesai#topcompanies',
+        topCompaniesPre = doc.entity('bdp:Top25Companies.csv',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
-        topCompaniesPost = doc.entity('dat2:ashwini_gdukuray_justini_utdesai#topcompanies',
+        topCompaniesPost = doc.entity('dat:ashwini_gdukuray_justini_utdesai#topCompanies',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
         act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
