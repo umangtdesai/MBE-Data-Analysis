@@ -59,6 +59,17 @@ prov_json = json.loads(provenance.serialize())
 
 print(prov_json)
 
+print("******")
+# print(prov_json['wasAttributedTo'].values())
+# print(type(prov_json['wasAttributedTo'].values()))
+
+for v in prov_json['wasAssociatedWith'].values():
+    print(v)
+
+print("******")
+for v in prov_json['wasAttributedTo'].values():
+    print(v)
+
 agents = [[a] for a in prov_json['agent']]
 entities = [[e] for e in prov_json['entity']]
 activities = [[v] for v in prov_json['activity']]

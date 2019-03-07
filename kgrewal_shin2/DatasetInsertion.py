@@ -185,7 +185,6 @@ class DatasetInsertion(dml.Algorithm):
         doc.wasGeneratedBy(ubers, get_ubers, endTime)
         doc.wasDerivedFrom(ubers, resource, get_ubers, get_ubers, get_ubers)
 
-
         pub_schools = doc.entity('dat:kgrewal_shin2#pub_schools',
                            {prov.model.PROV_LABEL: 'Public Schools', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(pub_schools, this_script)

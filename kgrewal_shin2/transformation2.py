@@ -39,7 +39,7 @@ class transformation2():
 
                 # print(street)
                 school_streets.append(street)
-        print(len(school_streets))
+        # print(len(school_streets))
 
         streets_without_schools = []
         for x in street_names:
@@ -55,7 +55,7 @@ class transformation2():
                 streets_without_schools.append({"full_name": full_name, "gender": gender,
                                                   "zipcode": zipcode, "street_name": street_name})
 
-        print(streets_without_schools)
+        # print(streets_without_schools)
         repo.dropCollection("streets_without_schools")
         repo.createCollection("streets_without_schools")
         repo['kgrewal_shin2.streets_without_schools'].insert_many(streets_without_schools)
