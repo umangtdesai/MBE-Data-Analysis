@@ -24,7 +24,7 @@ https://geo-massdot.opendata.arcgis.com/datasets/2c00111621954fa08ff44283364bba7
 5. MBTA Station stops (*get_trainStations.py*)  
 https://geo-massdot.opendata.arcgis.com/datasets/train-stations?geometry=-73.51%2C41.878%2C-69.555%2C42.59
 
-### Currently Overlooked Transformations:
+### Project Description:
 We currently put together a few datasets and transformed them to see which neighborhoods within the Greater Boston Area  
 - has greater number of landmarks to see
 - has better system of public transportation
@@ -35,8 +35,13 @@ Although we have different datasets of polygons and points, our current project 
 
 
 
-### Execution Script for Provenance.html
+### Execution Script for Provenance.html:
 To execute all the algorithms for the project in an order that respects their explicitly specified data flow dependencies, run the following from the root directory:
 ```
 python execute.py soohyeok_soojee
 ```
+
+### Note:
+If you have any suggestions to improve tourist experience or possible dataset to incorporate onto our project please leave a comment on github or send us an e-mail
+- soohyeok@bu.edu
+- soojee@bu.edu
