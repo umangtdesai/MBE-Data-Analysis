@@ -5,7 +5,7 @@
 .metadata/
 classes/
 logs/
-
+*__pycache__*
 # OS generated files #
 ######################
 .DS_Store
