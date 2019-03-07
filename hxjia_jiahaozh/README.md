@@ -5,13 +5,6 @@
 Haoxuan Jia(hxjia@bu.edu)
 Jiahao Zhang(jiahaozh@bu.edu)
 
-## Purpose
-With the datasets above, we can combine them to answer 3 interesting questions:
-<br />1.	What is the impact of holidays on the prices of Boston Airbnb houses? Is there any pattern that the average price is highest or lowest on some holiday?
-<br />2.	What is the impact of Boston landmarks on the number of houses and on the average prices of houses?
-<br />3.	What is the relationship between the prices of houses and traveler's reviews.
-
-
 ## Datasets
 ### Boston Airbnb Calendar
 A csv file containing the price on a cetain day between year 2016 and 2017
@@ -28,6 +21,13 @@ A csv file containing landmarks in different neighborhoods of Boston
 ### US Holidays
 A csv file containing date and holidays from 1966 to 2011
 <br />http://datamechanics.io/data/hxjia_jiahaozh/US_Holidays.csv
+
+## Purpose
+With the datasets above, we can combine them to answer 3 interesting questions:
+<br />1.	What is the impact of holidays on the prices of Boston Airbnb houses? Is there any pattern that the average price is highest or lowest on some holiday?
+<br />2.	What is the impact of Boston landmarks on the number of houses and on the average prices of houses?
+<br />3.	What is the relationship between the prices of houses and traveler's reviews.
+
 ## Data Transformation
 ### Price_and_Comments
 Generated from Boston Airbnb Listings and Boston Airbnb Reviews
