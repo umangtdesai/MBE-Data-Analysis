@@ -1,5 +1,5 @@
-# CS504 Project#1
-# Proper Boston Tour
+# CS504 Project#1: Proper Boston Tour
+
 ## Contributors
 - Soo Hyeok Lee
 - Soojee Lee
