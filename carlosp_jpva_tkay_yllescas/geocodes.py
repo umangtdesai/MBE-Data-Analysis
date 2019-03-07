@@ -72,14 +72,14 @@ class geocodes(dml.Algorithm):
         doc.wasAssociatedWith(get_geocodes, this_script)
         doc.usage(get_geocodes, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?address=Town&$select=type,latitude,longitude,OPEN_DT'
+                  'ont:Query':'?type=Town&$select=type,latitude,longitude,OPEN_DT'
                   }
                   )
 
-        lost = doc.entity('dat:carlosp_jpva_tkay_yllescas#geocodes', {prov.model.PROV_LABEL:'Town', prov.model.PROV_TYPE:'ont:DataSet'})
+        geocodes = doc.entity('dat:carlosp_jpva_tkay_yllescas#geocodes', {prov.model.PROV_LABEL:'Town', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(geocodes, this_script)
         doc.wasGeneratedBy(geocodes, get_geocodes, endTime)
-        doc.wasDerivedFrom(demographics_by_towns, resource, get_geocodes, get_geocodes, get_geocodes)
+        doc.wasDerivedFrom(geocodes, resource, get_geocodes, get_geocodes, get_geocodes)
 
         repo.logout()
                   
