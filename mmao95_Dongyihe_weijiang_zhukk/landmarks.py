@@ -117,7 +117,7 @@ class landmarks(dml.Algorithm):
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
         # The event log.
         doc.add_namespace('log', 'http://datamechanics.io/log/')
-        doc.add_namespace('bdp', 'https://www.50states.com/bio/mass.htm')
+        doc.add_namespace('bdp', 'https://data.boston.gov/dataset/boston-landmarks-commission-blc-landmarks')
         this_script = doc.agent('alg:' + contributor + '#landmarks', {
                                 prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label': '311, Service Requests',
