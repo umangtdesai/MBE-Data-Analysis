@@ -8,7 +8,7 @@ import uuid
 class yelp_business(dml.Algorithm):
     contributor = 'zui_sarms'
     reads = []
-    writes = ['zui_sarms.lost', 'zui_sarms.found']
+    writes = ['zui_sarms.yelp_business']
 
     @staticmethod
     def execute(trial = False):
@@ -66,3 +66,5 @@ class yelp_business(dml.Algorithm):
         repo.logout()
                   
         return doc
+
+## eof
