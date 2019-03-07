@@ -5,22 +5,15 @@ import datetime
 import uuid
 import pandas as pd
 
-## when retrieving from datamechanics.io, need to replace "S", "e", and "b" characters with 0, or null in:
-    ## Columns: RCPALL, RCPPDEMP, EMP, PAYANN, RCPNOPD, RCPALL_S, RCPPDEMP_S, EMP_S, PAYANN_S, and RCPNOPD_S
-##
-    
 
-class FactFinder(dml.Algorithm):
+class mbdaData(dml.Algorithm):
     contributor = 'ashwini_gdukuray_justini_utdesai'
     reads = []
-    writes = ['ashwini_gdukuray_justini_utdesai.factFinder']
+    writes = ['ashwini_gdukuray_justini_utdesai.mbdaData']
 
     @staticmethod
     def execute(trial=False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
-        pass
-
-        """
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -28,28 +21,32 @@ class FactFinder(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
 
-        url = 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/FactFinder.csv'
+        urlNumFirms = 'https://www.mbda.gov/csv_data_export?year=2012&industry=All%20Sectors%20%280%29&minority_group=Total%20Minority&metrics=Actual%20Value&concept=Number%20of%20Firms&firms=All%20Firms'
+        urlNumEmployees = 'https://www.mbda.gov/csv_data_export?year=2012&industry=All%20Sectors%20%280%29&minority_group=Total%20Minority&metrics=Actual%20Value&concept=Number%20of%20Paid%20Employees&firms=All%20Firms'
 
-        data = pd.read_csv(url)
+        numFirmsDF = pd.read_csv(urlNumFirms, skiprows=[0,1,2])
+        numEmployeesDF = pd.read_csv(urlNumEmployees, skiprows=[0,1,2])
 
-        # Standardize dataset
+        numFirmsDF = numFirmsDF.rename(index=str, columns={'Value': 'Number of Firms'})
+        numEmployeesDF = numEmployeesDF.rename(index=str, columns={'Value': 'Number of Employees'})
 
-        records = json.loads(data.T.to_json()).values()
+        mbdaDF = pd.merge(numFirmsDF, numEmployeesDF, how='inner', on=['State/US'])
 
-        # read from Mongo, project in the zeros in zip code column
+        #print(mbdaDF)
 
-        repo.dropCollection("factFinder")
-        repo.createCollection("factFinder")
-        repo['ashwini_gdukuray_justini_utdesai.factFinder'].insert(records)
-        repo['ashwini_gdukuray_justini_utdesai.factFinder'].metadata({'complete': True})
-        print(repo['ashwini_gdukuray_justini_utdesai.factFinder'].metadata())
+        #records = json.loads(mbdaDF.T.to_json()).values()
+
+        repo.dropCollection("mbdaData")
+        repo.createCollection("mbdaData")
+        repo['ashwini_gdukuray_justini_utdesai.mbdaData'].insert_many(mbdaDF.to_dict('records'))
+        repo['ashwini_gdukuray_justini_utdesai.mbdaData'].metadata({'complete': True})
+        print(repo['ashwini_gdukuray_justini_utdesai.mbdaData'].metadata())
 
         repo.logout()
 
         endTime = datetime.datetime.now()
 
         return {"start": startTime, "end": endTime}
-        """
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
@@ -58,6 +55,7 @@ class FactFinder(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
+
         pass
 
         # Set up the database connection.
@@ -65,19 +63,19 @@ class FactFinder(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/FactFinder.csv')  # The data sets are in <user>#<collection> format.
-        doc.add_namespace('dat2', 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/FactFinder.json')
+        doc.add_namespace('dat', 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/Top25Companies.csv')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('dat2', 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/Top25Companies.json')
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#FactFinder',
+        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#topCompanies',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:ashwini_gdukuray_justini_utdesai#FactFinder',
+        resource = doc.entity('dat:ashwini_gdukuray_justini_utdesai#topCompanies',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
-        resource2 = doc.entity('dat2:ashwini_gdukuray_justini_utdesai#FactFinder',
+        resource2 = doc.entity('dat2:ashwini_gdukuray_justini_utdesai#topCompanies',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
         act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
@@ -96,6 +94,7 @@ class FactFinder(dml.Algorithm):
         repo.logout()
 
         return doc
+
 
 '''
 # This is example code you might use for debugging this module.
