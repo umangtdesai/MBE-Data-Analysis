@@ -73,7 +73,7 @@ class crimeLoc(dml.Algorithm):
 
         # back to pandas
         result = pd.DataFrame(data=tempC)
-        result.columns = ['District', 'Year', 'Month', 'Crime']
+        result.columns = ['District', 'Month', 'Year', 'Crime']
 
         result['Zip'] = result['District'].map(zip,na_action='ignore')
         result['Neighborhood'] = result['District'].map(neigh,na_action='ignore')
@@ -83,6 +83,8 @@ class crimeLoc(dml.Algorithm):
 
         # sort by neighborhood
         result.sort_values(by=['Neighborhood'], inplace = True)
+
+        print(result[0:10])
 
         # print(result[0:10])
         r = json.loads(result.to_json(orient='records'))
