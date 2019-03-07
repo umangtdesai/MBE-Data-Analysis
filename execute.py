@@ -56,28 +56,24 @@ print(provenance.get_provn())
 # Render the provenance document as an interactive graph.
 prov_json = json.loads(provenance.serialize())
 
-
-print(prov_json)
-
-print("******")
-# print(prov_json['wasAttributedTo'].values())
-# print(type(prov_json['wasAttributedTo'].values()))
-
-for v in prov_json['wasAssociatedWith'].values():
-    print(v)
-
-print("******")
-for v in prov_json['wasAttributedTo'].values():
-    print(v)
-
 agents = [[a] for a in prov_json['agent']]
 entities = [[e] for e in prov_json['entity']]
 activities = [[v] for v in prov_json['activity']]
-wasAssociatedWith = [(v['prov:activity'], v['prov:agent'], 'wasAssociatedWith') for v in prov_json['wasAssociatedWith'].values()]
-wasAttributedTo = [(v['prov:entity'], v['prov:agent'], 'wasAttributedTo') for v in prov_json['wasAttributedTo'].values()]
-wasDerivedFrom = [(v['prov:usedEntity'], v['prov:generatedEntity'], 'wasDerivedFrom') for v in prov_json['wasDerivedFrom'].values()]
-wasGeneratedBy = [(v['prov:entity'], v['prov:activity'], 'wasGeneratedBy') for v in prov_json['wasGeneratedBy'].values()]
+wasAssociatedWith = [(v['prov:activity'], v['prov:agent'], 'wasAssociatedWith') for v in
+                     prov_json['wasAssociatedWith'].values()]
+
+wasAttributedTo = [(v['prov:entity'], v['prov:agent'], 'wasAttributedTo') for v in
+                   prov_json['wasAttributedTo'].values()]
+
+wasDerivedFrom = [(v['prov:usedEntity'], v['prov:generatedEntity'], 'wasDerivedFrom') for v in
+                  prov_json['wasDerivedFrom'].values()]
+
+wasGeneratedBy = [(v['prov:entity'], v['prov:activity'], 'wasGeneratedBy') for v in
+                  prov_json['wasGeneratedBy'].values()]
+
 used = [(v['prov:activity'], v['prov:entity'], 'used') for v in prov_json['used'].values()]
-open('provenance.html', 'w').write(protoql.html("graph(" + str(entities + agents + activities) + ", " + str(wasAssociatedWith + wasAttributedTo + wasDerivedFrom + wasGeneratedBy + used) + ")"))
+open('provenance.html', 'w').write(protoql.html("graph(" + str(entities + agents + activities) + ", " +
+                                                str(wasAssociatedWith + wasAttributedTo + wasDerivedFrom +
+                                                    wasGeneratedBy + used) + ")"))
 
 ## eof

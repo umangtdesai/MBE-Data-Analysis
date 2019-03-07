@@ -55,7 +55,6 @@ class transformation2():
                 streets_without_schools.append({"full_name": full_name, "gender": gender,
                                                   "zipcode": zipcode, "street_name": street_name})
 
-        # print(streets_without_schools)
         repo.dropCollection("streets_without_schools")
         repo.createCollection("streets_without_schools")
         repo['kgrewal_shin2.streets_without_schools'].insert_many(streets_without_schools)
@@ -82,7 +81,7 @@ class transformation2():
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:kgrewal_shin2#street_name_prov',
+        this_script = doc.agent('alg:kgrewal_shin2#transformation2',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bdp:wc8w-nujj',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
@@ -96,7 +95,7 @@ class transformation2():
                    }
                   )
 
-        streets = doc.entity('dat:kgrewal_shin2#streets',
+        streets = doc.entity('dat:kgrewal_shin2#streets_without_schools',
                           {prov.model.PROV_LABEL: 'Streets Without Schools', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(streets, this_script)
         doc.wasGeneratedBy(streets, get_streets, endTime)

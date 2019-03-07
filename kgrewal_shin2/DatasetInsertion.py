@@ -28,7 +28,6 @@ class DatasetInsertion(dml.Algorithm):
         url = 'http://datamechanics.io/data/boston_street_names.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("street_names")
         repo.createCollection("street_names")
         repo['kgrewal_shin2.street_names'].insert_many(r)
@@ -74,7 +73,6 @@ class DatasetInsertion(dml.Algorithm):
         url = 'http://datamechanics.io/data/boston_common_ubers.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("ubers")
         repo.createCollection("ubers")
         repo['kgrewal_shin2.ubers'].insert_many(r)
@@ -116,7 +114,7 @@ class DatasetInsertion(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:kgrewal_shin2#street_name_prov',
+        this_script = doc.agent('alg:kgrewal_shin2#DatasetInsertion',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bdp:wc8w-nujj',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
