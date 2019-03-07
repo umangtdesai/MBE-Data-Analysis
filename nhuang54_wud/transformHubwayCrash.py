@@ -4,15 +4,32 @@ import dml
 import prov.model
 import datetime
 import uuid
+from math import radians, sqrt, sin, cos, atan2
 
 def product(R, S):
     return [(t,u) for t in R for u in S]
 
-def safety_zone(lat1, lon1, lat2, lon2):
-    if (abs(lat1-lat2) < 1) and (abs(lon1-lon2) < 1):
-        return True
-    else:
-        return False
+def safety_zone(la1, lo1, la2, lo2):
+  EARTH_R = 6378.0
+  la1 = radians(la1)
+  lo1 = radians(lo1)
+  la2 = radians(la2)
+  lo2 = radians(lo2)
+
+  long_dif = lo1 - lo2
+  y = sqrt(
+      (cos(la2) * sin(long_dif)) ** 2
+      + (cos(la1) * sin(la2) - sin(la1) * cos(la2) * cos(long_dif)) ** 2
+      )
+  x = sin(la1) * sin(la2) + cos(la1) * cos(la2) * cos(long_dif)
+  c = atan2(y, x)
+  
+  final_dist = EARTH_R * c
+#   print(final_dist)
+  if final_dist > 1:
+      return True
+  else:
+      return False
 
 class transformHubwayCrash(dml.Algorithm):
     contributor = 'nhuang54_wud'
@@ -40,7 +57,7 @@ class transformHubwayCrash(dml.Algorithm):
             # print(row['name'])
             # print(row['\ufeffX'])
             # print(row['Y'])
-            hubwayLocations += [[row['name'], [float(row['\ufeffX']), float(row['Y'])]]]
+            hubwayLocations += [[row['id'], [float(row['Y']), float(row['\ufeffX'])]]]
 
         # project crash location in form (crash location id, (lat, long))
         crashLocations = []
@@ -52,22 +69,16 @@ class transformHubwayCrash(dml.Algorithm):
         hubway_crash_prod = product(hubwayLocations, crashLocations)
         for t in hubway_crash_prod:
             print(t)
-            print(t[0][0])
-            print(t[0][1])
-            print(t[0][1][0])
-            print(t[0][1][1])
-            print(t[1][0])
-            print(t[1][1])
             break;
         hubway_safety_list = [(t[0][0], t[0][1][0], t[0][1][1], t[1][0], t[1][1][0], t[1][1][1], safety_zone(t[0][1][0], t[0][1][1], t[1][1][0], t[1][1][1])) for t in hubway_crash_prod]
 
         # put into dictionary
         hubway_safety_dict = {}
         for row in hubway_safety_list:
-            hubway_safety_dict[row[0]] = {'latitude': row[1], 'longitude': row[2], 'safe zone': row[6]}
+            hubway_safety_dict[row[0]] = {'latitude': row[1], 'longitude': row[2], 'safe_zone': row[6]}
 
         # print(finalDict)
-        print(hubway_safety_dict.items())
+        # print(hubway_safety_dict.items())
 
         with open("new_datasets/hubwaySafetyZone.json", 'w') as outfile:
           json.dump(hubway_safety_dict, outfile)
@@ -102,6 +113,8 @@ class transformHubwayCrash(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('bod', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')
+
 
         this_script = doc.agent('alg:nhuang54_wud#transformHubwayCrash', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource1 = doc.entity('dat:nhuang54_wud#Hubway_Stations', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
