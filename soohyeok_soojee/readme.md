@@ -25,7 +25,7 @@ https://geo-massdot.opendata.arcgis.com/datasets/2c00111621954fa08ff44283364bba7
 https://geo-massdot.opendata.arcgis.com/datasets/train-stations?geometry=-73.51%2C41.878%2C-69.555%2C42.59
 
 ### Project Description:
-We currently put together a few datasets and transformed them to see which neighborhoods within the Greater Boston Area  
+We currently put together the few datasets listed above and transformed the acquired datasets to see which neighborhoods within the Greater Boston Area  
 - has greater number of landmarks to see
 - has better system of public transportation
 - has low crime rates.
