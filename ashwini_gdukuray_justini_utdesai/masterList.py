@@ -27,6 +27,7 @@ class masterList(dml.Algorithm):
         secretary = repo['ashwini_gdukuray_justini_utdesai.secretary']
         validZips = repo['ashwini_gdukuray_justini_utdesai.validZipCodes']
 
+
         massHousingDF = pd.DataFrame(list(massHousing.find()))
         secretaryDF = pd.DataFrame(list(secretary.find()))
         validZipsDF = pd.DataFrame(list(validZips.find()))
@@ -127,55 +128,91 @@ class masterList(dml.Algorithm):
             document describing that invocation event.
             '''
 
-        pass
-        """
+# 'ashwini_gdukuray_justini_utdesai.massHousing', 'ashwini_gdukuray_justini_utdesai.secretary', 'ashwini_gdukuray_justini_utdesai.validZipCodes'
+
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
-        doc.add_namespace('alg', 'ashwini_gdukuray_justini_utdesai#masterList')  # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
-        doc.add_namespace('ont',
-                          'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        #doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:alice_bob#example',
-                                {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('bdp:wc8w-nujj',
-                              {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+        selectProject = doc.agent('alg:ashwini_gdukuray_justini_utdesai#Selection&Projection',
+                                {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Query'})
+        join = doc.agent('alg:ashwini_gdukuray_justini_utdesai#Join',
+                                {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Query'})
+
+        massHousingDataPre = doc.entity('dat:ashwini_gdukuray_justini_utdesai#massHousingDataPre',
+                              {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
                                'ont:Extension': 'json'})
-        get_found = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                   }
-                  )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-                   }
-                  )
+        secretaryCommonwealthDataPre = doc.entity('dat:ashwini_gdukuray_justini_utdesai#secretaryCommonwealthDataPre',
+                              {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
+                               'ont:Extension': 'json'})
+        validZipCodesData = doc.entity('dat:ashwini_gdukuray_justini_utdesai#validZipCodes',
+                              {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
+                               'ont:Extension': 'json'})
+        massHousingDataPost = doc.entity('dat:ashwini_gdukuray_justini_utdesai#MassHousingPost',
+                                      {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
+                                       'ont:Extension': 'json'})
+        secretaryCommonwealthDataPost = doc.entity('dat:ashwini_gdukuray_justini_utdesai#secretaryCommonwealthPost',
+                                      {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
+                                       'ont:Extension': 'json'})
+        massAndSecretary = doc.entity('dat:ashwini_gdukuray_justini_utdesai#preMasterList',
+                                      {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
+                                       'ont:Extension': 'json'})
+        MasterList =  doc.entity('dat:ashwini_gdukuray_justini_utdesai#MasterList',
+                                      {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
+                                       'ont:Extension': 'json'})
 
-        lost = doc.entity('dat:alice_bob#lost',
-                          {prov.model.PROV_LABEL: 'Animals Lost', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
+        massHouse_act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        sec_act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        merge_act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        master_act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
-        found = doc.entity('dat:alice_bob#found',
-                           {prov.model.PROV_LABEL: 'Animals Found', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        doc.wasAssociatedWith(massHouse_act, selectProject)
+        doc.wasAssociatedWith(merge_act, join)
+        doc.wasAssociatedWith(master_act, selectProject)
+
+        doc.usage(massHouse_act, massHousingPre, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Query'})
+        doc.usage(sec_act, secretaryCommonwealthDataPre, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Query'})
+        doc.usage(merge_act, massHousingPost, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Query'})
+        doc.usage(merge_act, secretaryCommonwealthPost, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Query'})
+        doc.usage(master_act, preMasterList, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Query'})
+        doc.usage(master_act, validZipCodesData, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Query'})
+
+        doc.wasAttributedTo(massHousingDataPre, selectProject)
+        doc.wasAttributedTo(secretaryCommonwealthDataPre, selectProject)
+        doc.wasAttributedTo(massHousingDataPost, join)
+        doc.wasAttributedTo(secretaryCommonwealthDataPost, join)
+        doc.wasAttributedTo(preMasterList, selectProject)
+        doc.wasAttributedTo(validZipCodesData, selectProject)
+
+        doc.wasGeneratedBy(massHousingDataPost, massHouse_act, endTime)
+        doc.wasGeneratedBy(secretaryCommonwealthDataPost, sec_act, endTime)
+        doc.wasGeneratedBy(preMasterList, merge_act, endTime)
+        doc.wasGeneratedBy(MasterList, master_act, endTime)
+
+        doc.wasDerivedFrom(massHousingDataPost, massHousingDataPre, massHouse_act, massHouse_act, massHouse_act)
+        doc.wasDerivedFrom(secretaryCommonwealthDataPost, secretaryCommonwealthDataPre, sec_act, sec_act, sec_act)
+        doc.wasDerivedFrom(preMasterList, massHousingDataPost, merge_act, merge_act, merge_act)
+        doc.wasDerivedFrom(preMasterList, secretaryCommonwealthDataPost, merge_act, merge_act, merge_act)
+        doc.wasDerivedFrom(masterList, preMasterList, master_act, master_act, master_act)
+        doc.wasDerivedFrom(masterList, validZipCodesData, master_act, master_act, master_act)
+
 
         repo.logout()
 
         return doc
-        """
+
 
 
 '''
