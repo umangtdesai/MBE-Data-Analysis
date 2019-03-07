@@ -18,7 +18,7 @@ The city of Boston has made data available showing where flooding will take plac
 * API: sea level rise (1) [Link](http://bostonopendata-boston.opendata.arcgis.com/datasets/9inch-sea-level-rise-1pct-annual-flood?geometry=-71.151%2C42.334%2C-70.931%2C42.379&selectedAttribute=Shape__Area)
 * API: sea level rise (2) [link](http://bostonopendata-boston.opendata.arcgis.com/datasets/9inch-sea-level-rise-high-tide)
 * Zoning Data [link](http://bostonopendata-boston.opendata.arcgis.com/datasets/zoning-subdistricts/data?geometry=-71.188%2C42.322%2C-70.968%2C42.367)
-* API: Zillow (https://www.zillow.com/webservice/GetRegionChildren.htm?zws-id=[ZWS-ID]&state=ma&city=boston&childtype=neighborhood)
+* API: Zillow (https://www.zillow.com/webservice/GetRegionChildren.htm?zws-id=[ZWS-ID]&state=ma&city=boston&childtype=neighborhood). Zillow ID can be obtained by creating an account on the Zillow website [website](https://www.zillow.com/howto/api/APIOverview.htm)
 * Mass DOT Transportation Data Management System: CSV was created from [Mass DOT Website](http://mass.gov/traffic-volume-and-classification), by using Interactive Map application. In application, TCDS quick search was performed setting Community to Boston. After search, data was generated using "Report Center". In this module, under "Reports" tab Volume --> Peak Voume By Year selected. Under "Options", selected for Last 3 Years. After picking paramaters, generated data was downloaded as a CSV, and uploaded to [datamechanics.io](http://datamechanics.io) in folder ghonigsb_dezhouw.
 
 ---
