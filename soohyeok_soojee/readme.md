@@ -6,7 +6,11 @@
 
 ## On-going Project Goal:
 Our goal is to determine best travel experiences for incoming tourists within Greater Boston Area.  
-Having such an immense area, people may not have their best experiences in their limited time of travel and we wanted to suggest specific areas based on various datasets for the best possible experience. We currently put together a few datasets and transformed them to see which neighborhoods within the Greater Boston Area has greater number of landmarks to see and have better system of public transportation, and have low crime rates.
+Having such an immense area, people may not have their best experiences in their limited time of travel and we wanted to suggest specific areas based on various datasets for the best possible experience.  
+We currently put together a few datasets and transformed them to see which neighborhoods within the Greater Boston Area  
+-has greater number of landmarks to see
+-has better system of public transportation
+-has low crime rates.
 
 ### Data sources Used:
 - Analyze Boston (data.boston.gov)
