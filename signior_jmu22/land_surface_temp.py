@@ -7,7 +7,7 @@ import prov.model
 import datetime
 import uuid
 import pandas as pd
-#from datapackage import Package, Resource
+from datapackage import Package, Resource
 
 class land_surface_temp(dml.Algorithm):
   contributor = 'signior_jmu22'
@@ -23,17 +23,13 @@ class land_surface_temp(dml.Algorithm):
     repo = client.repo
     repo.authenticate('signior_jmu22', 'signior_jmu22')
 
-#    package = Package('https://datahub.io/core/global-temp-anomalies/datapackage.json') # grabs data package object from datahub.io
-#
-#    raw_data = package.get_resource('global-temp-annual_csv').read(keyed=True, cast=False) # grabs specific dataset (global temp annual)
-#
-#    df = pd.DataFrame(raw_data) # adds raw data to a pandas dataframe
-#    new_df = df.filter(['Year', 'Land'], axis=1) # filters out year and land (only values we care about because we already have ocean temp)
+    package = Package('https://datahub.io/core/global-temp-anomalies/datapackage.json') # grabs data package object from datahub.io
+
+    raw_data = package.get_resource('global-temp-annual_csv').read(keyed=True, cast=False) # grabs specific dataset (global temp annual)
+
+    df = pd.DataFrame(raw_data) # adds raw data to a pandas dataframe
+    new_df = df.filter(['Year', 'Land'], axis=1) # filters out year and land (only values we care about because we already have ocean temp)
     
-    
-    url = 'http://datamechanics.io/data/signior_jmu22/global-temp-annual_csv.csv'
-    df = pd.read_csv(url)
-    new_df = df.filter(['Year', 'Land'], axis=1)
     # print(new_df.head(5)) #uncomment this to see structure
     #ocean_temp_dict = new_df.to_dict(orient='records')
     land_temp_dict = new_df.to_dict(orient='records')
