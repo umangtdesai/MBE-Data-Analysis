@@ -12,13 +12,15 @@ import sys
 import traceback
 import csv
 import xmltodict
+import io
 
 class flood(dml.Algorithm):
 	contributor = "dezhouw_ghonigsb"
 	reads       = []
 	writes      = ["nine_inch_sea_level_rise_1pct_annual_flood",
 				   "nine_inch_sea_level_rise_high_tide",
-				   "zoning_subdistricts"]
+				   "zoning_subdistricts",
+				   "zillow_boston_neighborhood"]
 
 	@staticmethod
 	def execute(trial = False):
@@ -42,8 +44,7 @@ class flood(dml.Algorithm):
 		r = json.loads(response)
 		repo.createCollection(collection_name)
 		repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
-		repo["dezhouw_ghonigsb."+collection_name].metadata({'complete':True})
-		print(repo["dezhouw_ghonigsb."+collection_name].metadata())
+		print("Success: [{}]".format(collection_name))
 
 		# nine_inch_sea_level_rise_high_tide
 		collection_name = "nine_inch_sea_level_rise_high_tide"
@@ -53,8 +54,7 @@ class flood(dml.Algorithm):
 		r = json.loads(response)
 		repo.createCollection(collection_name)
 		repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
-		repo["dezhouw_ghonigsb."+collection_name].metadata({'complete':True})
-		print(repo["dezhouw_ghonigsb."+collection_name].metadata())
+		print("Success: [{}]".format(collection_name))
 
 		# zoning_subdistricts
 		collection_name = "zoning_subdistricts"
@@ -64,8 +64,7 @@ class flood(dml.Algorithm):
 		r = json.loads(response)
 		repo.createCollection(collection_name)
 		repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
-		repo["dezhouw_ghonigsb."+collection_name].metadata({'complete':True})
-		print(repo["dezhouw_ghonigsb."+collection_name].metadata())
+		print("Success: [{}]".format(collection_name))
 
 		# census
 		collection_name = "zillow_boston_neighborhood"
@@ -82,32 +81,19 @@ class flood(dml.Algorithm):
 		r = xmltodict.parse(response)
 		repo.createCollection(collection_name)
 		repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
-		repo["dezhouw_ghonigsb."+collection_name].metadata({'complete':True})
-		print(repo["dezhouw_ghonigsb."+collection_name].metadata())
-		
+		print("Success: [{}]".format(collection_name))
 
-		# uber info
-		# collection_name = "uber_info"
-		# url = "https://movement.uber.com/travel-times/6_taz"
-		# gcontext = ssl.SSLContext()
-		# response = urllib.request.urlopen(url, context=gcontext).read().decode("utf-8")
-		# r = json.loads(response)
-		# repo.createCollection(collection_name)
-		# repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
-		# repo["dezhouw_ghonigsb."+collection_name].metadata({'complete':True})
-		# print(repo["dezhouw_ghonigsb."+collection_name].metadata())
-
-		# uber transportation
-		# collection_name = "uber_travel_times_by_month"
-		# url = "https://d3sc9lyn9f6mdg.cloudfront.net/6/taz/2018/4/boston-taz-2018-4-All-MonthlyAggregate.csv?Expires=1551910879&Signature=K4Is-Hu1eJqbcxFgqMjxQ9ERdzewRSv8X~EY8mZrSOygqbWbP~3HCdb3hgQ1zmoBl3WuveK7dEoayci2f7iuz2cHu3AJMvMoxW0RWuW7G39s1QhL5CAVY0G1N9zOAPXlxNz9QWuBsRnWv~vNiSAoC-e4lpASrBtihtcsXXKOvOdk~x64Umr-DOB0IzOuyMyzwN9PPVFmdmnzAdZAHTwDw0QVxXpTyCou8HchT7-ERmFDrVwsA34YFsaXvprFVKBJbgQgHPYup4~sRT4enMw8d1hsXbYjwsr~VzyM55DMR06rQ4r41NHyNV8od7CLZhfAtQDwkSy7Jzyu1XxsCHd0mQ__&Key-Pair-Id=APKAJW2WGL2ZAXG7WKYQ"
-		# gcontext = ssl.SSLContext()
-		# response = urllib.request.urlopen(url, context=gcontext).read().decode("utf-8")
-		# for row in response:
-		# 	print(row)
-		# 	break
-
-
-
+		# MassGov
+		collection_name = "massgov_most_recent_peak_hr"
+		url = "http://datamechanics.io/data/ghonigsb_dezhouw/MostRecentPeakHrByYearVolume.csv"
+		response = urllib.request.urlopen(url).read().decode("utf-8")
+		fieldnames = ['local_id','dir','seven_to_eight','seven_to_nine','eleven_to_two','three_to_six','five_to_six','offpeak','daily','latitude','longitude','start_date','hpms_loc','daily1','aadt','on_road','approach','at_road']
+		reader = csv.DictReader(io.StringIO(response), fieldnames)
+		next(reader, None) # skip header
+		repo.createCollection(collection_name)
+		for row in reader:
+			repo["dezhouw_ghonigsb."+collection_name].insert_one(row)
+		print("Success: [{}]".format(collection_name))
 
         # Disconnect database for data safety
 		repo.logout()
@@ -119,26 +105,8 @@ class flood(dml.Algorithm):
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
 		pass
 
-	@staticmethod
-	def convertCSVtoJSON():
-		csvfile = open("travel_times.csv", 'r')
-		jsonfile = open("travel_times.json", 'w')
-
-		fieldnames = ['sourceid', 'dstid', 'month', 'mean_travel_time', 'standard_deviation_travel_time', 'geometric_mean_travel_time', 'geometric_standard_deviation_travel_time']
-		reader = csv.DictReader(csvfile, fieldnames)
-		next(reader, None) # Skip header
-
-		for row in reader:
-			json.dump(row, jsonfile)
-			jsonfile.write('\n')
-
-		csvfile.close()
-		jsonfile.close()
-
-
 try:
 	print(flood.execute())
-	# flood.convertCSVtoJSON()
 except Exception as e:
 	traceback.print_exc(file = sys.stdout)
 finally:
