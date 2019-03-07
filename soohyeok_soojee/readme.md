@@ -13,15 +13,15 @@ Our goal is to determine best travel experiences for incoming tourists within Gr
 - Massachusetts Department of Transportation (geo-massdot.opendata.arcgis.com)
 
 ### Datasets Used:
-1. Boston Neighborhoods (get_neighborhoods.py)  
+1. Boston Neighborhoods (*get_neighborhoods.py*)  
 https://data.boston.gov/dataset/boston-neighborhoods
-2. Crime rate (get_crimeDta.py)  
+2. Crime rate (*get_crimeData.py*)  
 https://data.boston.gov/dataset/crime-incident-reports-august-2015-to-date-source-new-system
-3. Boston Landmarks Commission (BLC) Historic Districts (get_landmarks.py)   
+3. Boston Landmarks Commission (BLC) Historic Districts (*get_landmarks.py*)   
 http://bostonopendata-boston.opendata.arcgis.com/datasets/547a3ccb7ab443ceaaba62eef6694e74_4
-4. MBTA Bus Stops (get_busStops.py)  
+4. MBTA Bus Stops (*get_busStops.py*)  
 https://geo-massdot.opendata.arcgis.com/datasets/2c00111621954fa08ff44283364bba70_0
-5. MBTA Station stops (get_trainStations.py)  
+5. MBTA Station stops (*get_trainStations.py*)  
 https://geo-massdot.opendata.arcgis.com/datasets/train-stations?geometry=-73.51%2C41.878%2C-69.555%2C42.59
 
 ### Currently Overlooked Transformations:
@@ -30,7 +30,8 @@ We currently put together a few datasets and transformed them to see which neigh
 - has better system of public transportation
 - has low crime rates.
 
-### Problems to Solve
+Although we have different datasets of polygons and points, our current project model is heavily dependant on geolocation datsets. We are currently researching on possible datasets to incorporate into our project to further develop user experience.
+
 
 
 
