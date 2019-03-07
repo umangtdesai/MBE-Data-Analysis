@@ -80,7 +80,7 @@ class boston_fire_facility_transformation(dml.Algorithm):
         resource_fire_department = doc.entity('dat:liweixi_mogujzhu#fire_department',
                               {'prov:label': 'Boston Fire Department', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'geojson'})
-        resource_fire_hydrants = doc.entity('dat:dat:liweixi_mogujzhu#fire_hydrants',
+        resource_fire_hydrants = doc.entity('dat:liweixi_mogujzhu#fire_hydrants',
                               {'prov:label': 'Boston Fire Hydrants', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'geojson'})
         get_boston_fire_facility = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
