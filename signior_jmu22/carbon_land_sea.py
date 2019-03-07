@@ -63,15 +63,33 @@ class carbon_land_sea(dml.Algorithm):
       
       
       land_sea_carbon = carbon_land_sea.product(templist, land_sea)
-#      print(land_sea_carbon[0][1].get("Year"))
-#      print(land_sea_carbon[0][0].get("Year"))
-      #land_sea_carbon_select = carbon_land_sea.select(land_sea_carbon, lambda t: t[0][0].get("Year") == t[0][1].get("Year"))
-      print(land_sea_carbon[0][0].get("Year"))
-  
+      land_sea_carbon_select= []
+    
+      #land_sea_carbon_select = carbon_land_sea.select(land_sea_carbon, lambda t: t[0][0].get("Year") == int(t[0][1].get("Year")))
       
-     
-          
       
+      #way to implement sselect & projection
+      count = 0
+      for i in land_sea_carbon:
+         
+          if land_sea_carbon[count][0].get("Year") == int(land_sea_carbon[count][1].get("Year")):
+             land_sea_carbon_select.append({'Year': land_sea_carbon[count][0].get("Year"), 
+                                            'C02': "{0:.2f}".format(land_sea_carbon[count][0].get("C02")),
+                                            'Land': land_sea_carbon[count][1].get("Land"),
+                                            'Ocean': land_sea_carbon[count][1].get("Ocean")})
+          count+=1
+      #print (land_sea_carbon_select)
+      
+      repo.dropCollection("carbon_land_sea")
+      repo.createCollection("carbon_land_sea")
+      repo['signior_jmu22.carbon_land_sea'].insert_many(land_sea_carbon_select)
+      repo['signior_jmu22.carbon_land_sea'].metadata({'complete': True})
+      print(repo['signior_jmu22.land_sea'].metadata())
+      repo.logout()
+      endTime = datetime.datetime.now()
+      return {"start": startTime, "end": endTime}
+
+    
         
           
           #d = dict((k, i[k]) for k in years if k in i)
