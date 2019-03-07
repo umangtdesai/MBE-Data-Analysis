@@ -16,20 +16,40 @@ The city of Boston has made data available showing where flooding will take plac
 ### Resources
 (To modify)
 * API: sea level rise (1) [Link](http://bostonopendata-boston.opendata.arcgis.com/datasets/9inch-sea-level-rise-1pct-annual-flood?geometry=-71.151%2C42.334%2C-70.931%2C42.379&selectedAttribute=Shape__Area)
-* API: sea level rise (2)
-* Zoning Data
-* API: Zillow
+* API: sea level rise (2) [link](http://bostonopendata-boston.opendata.arcgis.com/datasets/9inch-sea-level-rise-high-tide)
+* Zoning Data [link](http://bostonopendata-boston.opendata.arcgis.com/datasets/zoning-subdistricts/data?geometry=-71.188%2C42.322%2C-70.968%2C42.367)
+* API: Zillow (https://www.zillow.com/webservice/GetRegionChildren.htm?zws-id=[ZWS-ID]&state=ma&city=boston&childtype=neighborhood)
 * Mass DOT Transportation Data Management System: CSV was created from [Mass DOT Website](http://mass.gov/traffic-volume-and-classification), by using Interactive Map application. In application, TCDS quick search was performed setting Community to Boston. After search, data was generated using "Report Center". In this module, under "Reports" tab Volume --> Peak Voume By Year selected. Under "Options", selected for Last 3 Years. After picking paramaters, generated data was downloaded as a CSV, and uploaded to [datamechanics.io](http://datamechanics.io) in folder ghonigsb_dezhouw.
 
 ---
 
 ### Idiosyncratic Details
 (To add) Specific things in auth.json
+Need to add Zillow API in "auth.json".
+The format should be like the following:
+```json
+{
+	"census": {
+		"Zillow API": {
+			"zws-id": [YOUR-ZWS-ID]
+		}
+	}
+}
+```
 
 ---
 
 ### Algorithms
 (To add) How obtain data? How combine data? Any tranformation?
+There are five original datasets:
+1. seaAnnual
+2. seaTide
+3. zoning
+4. zillow
+5. massGov
+[1, 2, 3] are from OpenData Website.
+[4] is from Zillow API.
+[5] is obtains through massGov website. (see details in "Resources" part)
 
 ---
 
@@ -39,3 +59,4 @@ The city of Boston has made data available showing where flooding will take plac
 * prov==1.5.3
 * dml==0.0.16.0
 * protoql==0.0.3.0
+* xmltodict==0.12.0
