@@ -98,8 +98,8 @@ class health_uber_output(dml.Algorithm):
                   )
         doc.wasAttributedTo(entity_result, agent)
         doc.wasGeneratedBy(entity_result, activity, endTime)
-        doc.wasDerivedFrom(entity_result, entity_health, activity, activity, activity)
-        doc.wasDerivedFrom(entity_result, entity_uber, activity, activity, activity)
+        doc.wasDerivedFrom(entity_health, entity_result, activity, activity, activity)
+        doc.wasDerivedFrom(entity_uber, entity_result, activity, activity, activity)
 
         repo.logout()
 

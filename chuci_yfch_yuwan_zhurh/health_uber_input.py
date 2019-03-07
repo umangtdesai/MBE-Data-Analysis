@@ -82,12 +82,12 @@ class health_uber_input(dml.Algorithm):
         uber = doc.entity('dat:chuci_yfch_yuwan_zhurh#uber', {prov.model.PROV_LABEL:'uber data', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(uber, this_script)
         doc.wasGeneratedBy(uber, get_uber, endTime)
-        doc.wasDerivedFrom(uber, resource, get_uber, get_uber, get_uber)
+        doc.wasDerivedFrom(resource, uber, get_uber, get_uber, get_uber)
 
         health = doc.entity('dat:chuci_yfch_yuwan_zhurh#health', {prov.model.PROV_LABEL:'health data', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(health, this_script)
         doc.wasGeneratedBy(health, get_health, endTime)
-        doc.wasDerivedFrom(health, resource, get_health, get_health, get_health)
+        doc.wasDerivedFrom(resource, health, get_health, get_health, get_health)
 
         repo.logout()
                   
