@@ -3,6 +3,7 @@ import dml
 import prov.model
 import datetime
 import pandas as pd
+import uuid
 
 
 class masterList(dml.Algorithm):
@@ -141,9 +142,9 @@ class masterList(dml.Algorithm):
         #doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
         selectProject = doc.agent('alg:ashwini_gdukuray_justini_utdesai#Selection&Projection',
-                                {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Query'})
+                                {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         join = doc.agent('alg:ashwini_gdukuray_justini_utdesai#Join',
-                                {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Query'})
+                                {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
         massHousingDataPre = doc.entity('dat:ashwini_gdukuray_justini_utdesai#massHousingDataPre',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
@@ -160,7 +161,7 @@ class masterList(dml.Algorithm):
         secretaryCommonwealthDataPost = doc.entity('dat:ashwini_gdukuray_justini_utdesai#secretaryCommonwealthPost',
                                       {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
                                        'ont:Extension': 'json'})
-        massAndSecretary = doc.entity('dat:ashwini_gdukuray_justini_utdesai#preMasterList',
+        preMasterList = doc.entity('dat:ashwini_gdukuray_justini_utdesai#preMasterList',
                                       {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
                                        'ont:Extension': 'json'})
         MasterList =  doc.entity('dat:ashwini_gdukuray_justini_utdesai#MasterList',
@@ -176,13 +177,13 @@ class masterList(dml.Algorithm):
         doc.wasAssociatedWith(merge_act, join)
         doc.wasAssociatedWith(master_act, selectProject)
 
-        doc.usage(massHouse_act, massHousingPre, startTime, None,
+        doc.usage(massHouse_act, massHousingDataPre, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Query'})
         doc.usage(sec_act, secretaryCommonwealthDataPre, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Query'})
-        doc.usage(merge_act, massHousingPost, startTime, None,
+        doc.usage(merge_act, massHousingDataPost, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Query'})
-        doc.usage(merge_act, secretaryCommonwealthPost, startTime, None,
+        doc.usage(merge_act, secretaryCommonwealthDataPost, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Query'})
         doc.usage(master_act, preMasterList, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Query'})
@@ -205,8 +206,8 @@ class masterList(dml.Algorithm):
         doc.wasDerivedFrom(secretaryCommonwealthDataPost, secretaryCommonwealthDataPre, sec_act, sec_act, sec_act)
         doc.wasDerivedFrom(preMasterList, massHousingDataPost, merge_act, merge_act, merge_act)
         doc.wasDerivedFrom(preMasterList, secretaryCommonwealthDataPost, merge_act, merge_act, merge_act)
-        doc.wasDerivedFrom(masterList, preMasterList, master_act, master_act, master_act)
-        doc.wasDerivedFrom(masterList, validZipCodesData, master_act, master_act, master_act)
+        doc.wasDerivedFrom(MasterList, preMasterList, master_act, master_act, master_act)
+        doc.wasDerivedFrom(MasterList, validZipCodesData, master_act, master_act, master_act)
 
 
         repo.logout()

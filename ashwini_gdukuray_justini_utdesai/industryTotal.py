@@ -3,6 +3,7 @@ import dml
 import prov.model
 import datetime
 import pandas as pd
+import uuid
 
 
 class industryTotal(dml.Algorithm):
