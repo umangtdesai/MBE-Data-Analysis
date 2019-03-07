@@ -44,10 +44,10 @@ Generated from Boston Airbnb Calendar and US_Holidays
 <br />Combination: Product + Project to get the mean price for each date and whether the date is a holiday, in the form of (date, avg_price, holiday)
 ### Prices_Landmarks_Listings
 Generated from Boston Airbnb Listings and Boston Landmarks
-<br />Boston Airbnb Listing: select, project  aggregate to get (neighbourhood, the number of houses in that neighbourhood ), select, project and aggregate to get (neighbourhood, the mean price of houses in that neighbourhood).
-<br />Boston Landmarks: select, project and aggregate to get (neighbourhood, the number of landmarks in that neighbourhood)
+<br />Boston Airbnb Listing: Select, Project  Aggregate to get (neighbourhood, the number of houses in that neighbourhood ), Select, Project and Aggregate to get (neighbourhood, the mean price of houses in that neighbourhood).
+<br />Boston Landmarks: Select, Project and Aggregate to get (neighbourhood, the number of landmarks in that neighbourhood)
 <br />Combiantion: project to get  (neighbourhood, the number of landmarks,  the number of houses, the mean prices of houses in that neighbourhood )
-## Tools
+## Tools and Libraries
 Pandas
 <br />dml
 <br />prov
