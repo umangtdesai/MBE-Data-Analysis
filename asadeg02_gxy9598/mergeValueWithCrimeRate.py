@@ -69,21 +69,21 @@ class mergeValueWithCrimeRate(dml.Algorithm):
 
         address_crime_rate =  repo.asadeg02_gxy9598.address_crime_rate.find()
 
+        print(address_crime_rate)
         #sort crime rates in assending order
         rates = []
-        for doc in address_crime_rate:
+        for doc in address_crime_rate:            
             rates.append(int(doc['value']))            
         rates = list(set(rates))
         rates.sort(reverse=True)
           
 
         
-        rates = rates[:2]        
-        #merge by initial address_crime_rate dataset
-        
+        rates = rates[:1]        
+        #merge by initial address_crime_rate dataset        
         address_crime_rate =  repo.asadeg02_gxy9598.address_crime_rate.find()
         sorted_crime_rates = []
-        for doc in address_crime_rate:
+        for doc in address_crime_rate:            
             if int(doc['value']) in rates:
                 sorted_crime_rates.append(doc)        
         
