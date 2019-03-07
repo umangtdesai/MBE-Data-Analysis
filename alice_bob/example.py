@@ -6,9 +6,9 @@ import datetime
 import uuid
 
 class example(dml.Algorithm):
-    contributor = 'alice_bob'
+    contributor = 'Jinghang_Yuan'
     reads = []
-    writes = ['alice_bob.lost', 'alice_bob.found']
+    writes = ['Jinghang_Yuan.lost', 'Jinghang_Yuan.found']
 
     @staticmethod
     def execute(trial = False):
@@ -18,7 +18,7 @@ class example(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
+        repo.authenticate('Jinghang_Yuan', 'Jinghang_Yuan')
 
         url = 'http://cs-people.bu.edu/lapets/591/examples/lost.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -26,9 +26,9 @@ class example(dml.Algorithm):
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("lost")
         repo.createCollection("lost")
-        repo['alice_bob.lost'].insert_many(r)
-        repo['alice_bob.lost'].metadata({'complete':True})
-        print(repo['alice_bob.lost'].metadata())
+        repo['Jinghang_Yuan.lost'].insert_many(r)
+        repo['Jinghang_Yuan.lost'].metadata({'complete':True})
+        print(repo['Jinghang_Yuan.lost'].metadata())
 
         url = 'http://cs-people.bu.edu/lapets/591/examples/found.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -36,7 +36,7 @@ class example(dml.Algorithm):
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("found")
         repo.createCollection("found")
-        repo['alice_bob.found'].insert_many(r)
+        repo['Jinghang_Yuan.found'].insert_many(r)
 
         repo.logout()
 
@@ -55,14 +55,14 @@ class example(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
+        repo.authenticate('Jinghang_Yuan', 'Jinghang_Yuan')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:Jinghang_Yuan#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
@@ -79,12 +79,12 @@ class example(dml.Algorithm):
                   }
                   )
 
-        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
+        lost = doc.entity('dat:Jinghang_Yuan#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(lost, this_script)
         doc.wasGeneratedBy(lost, get_lost, endTime)
         doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
 
-        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
+        found = doc.entity('dat:Jinghang_Yuan#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(found, this_script)
         doc.wasGeneratedBy(found, get_found, endTime)
         doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
@@ -93,9 +93,10 @@ class example(dml.Algorithm):
                   
         return doc
 
+# '''
+# # This is example code you might use for debugging this module.
+# # Please remove all top-level function calls before submitting.
 '''
-# This is example code you might use for debugging this module.
-# Please remove all top-level function calls before submitting.
 example.execute()
 doc = example.provenance()
 print(doc.get_provn())
