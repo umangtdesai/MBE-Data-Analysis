@@ -24,12 +24,6 @@ https://geo-massdot.opendata.arcgis.com/datasets/2c00111621954fa08ff44283364bba7
 5. MBTA Station stops (get_trainStations.py)  
 https://geo-massdot.opendata.arcgis.com/datasets/train-stations?geometry=-73.51%2C41.878%2C-69.555%2C42.59
 
-### Running the Execution Script for the Project
-To execute all the algorithms for the project in an order that respects their explicitly specified data flow dependencies, run the following from the root directory:
-```
-python execute.py soohyeok_soojee
-```
-
 ### Currently Overlooked Transformations:
 We currently put together a few datasets and transformed them to see which neighborhoods within the Greater Boston Area  
 - has greater number of landmarks to see
@@ -37,3 +31,11 @@ We currently put together a few datasets and transformed them to see which neigh
 - has low crime rates.
 
 ### Problems to Solve
+
+
+
+### Execution Script for Provenance.html
+To execute all the algorithms for the project in an order that respects their explicitly specified data flow dependencies, run the following from the root directory:
+```
+python execute.py soohyeok_soojee
+```
