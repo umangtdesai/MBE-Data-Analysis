@@ -1,21 +1,24 @@
 # Growing Voter Engagement in Communities of Color
 
-For this project, we are working with Amplify LatinX and BU Spark! to analyze Massachusetts voting and demographic data to suggest where they should focus their voter turnout efforts in order to get more people of color out to vote.
+For this project, we are working with Amplify Latinx and BU Spark! to analyze Massachusetts voting and demographic data to suggest where they should focus their voter turnout efforts in order to get more people of color out to vote.
 
-We are starting with 5 data sets, provided by Amplify:
-1. Demographics by Town (found by Carlos, link in group chat)
+We are starting with 5 data sets, one of which is public that we found through our own research, and four private data sets which were provided by Amplify Latinx:
+
+1. Demographics by Towns (public)
 2. Massachusetts Early Voting Data
 3. Registered Voter Demographics
     a) Senate District
     b) Precinct
+    c) Congressional District
 4. Non-Registered Voter Demographics
     a) Senate District
     b) Precinct
+    c) Congressional District
 5. Voter Turnout Percentages (1948-2016)
 
-We are combining these data sets to analyze where people are voting, who is turning out to vote, and extrapolating where voter registration efforts are going to be effective. Ultimately, our goal is to identify which elections are such that more voters showing up would change the result. 
+We are combining these data sets to analyze where people are voting, who is turning out to vote, and extrapolating where voter registration efforts are going to be effective. Ultimately, our goal is to identify which elections are such that more voters showing up would change the result and provide Amplify Latinx with an interactive, embeddable heat map of Massachusetts.
 
-To start, we are isolating race and ethnicity data from registered (3a) and non-registered (4a) voter demographics by senate district, and then aggregating those data sets. Additionally, we are using demographics by town (1) and early voting data (2) to compare voter registration percentages with percentages of people of color. We will use this data to suggest where to apply GOTV efforts. For example, if we can identify towns where there is a correlation between low voter registration and high percentage of people of color, we would suggest GOTV efforts there.
+To start, we isolated race and ethnicity data from Registered (3a) and Non-Registered (4a)Voter Demographics by Senate District, and then aggregating those data sets. From this, we produced a coefficient that we plan to further develop for Amplify Latinx to use to strategize. Additionally, we used Demographics by Town (1) and early voting data (2) to compare voter registration percentages with percentages of people of color. This transformation will also be used to suggest where to apply GOTV efforts. For example, if we can identify towns where there is a correlation between low voter registration and high percentage of people of color, we would suggest GOTV efforts there. Finally, we used the Google Geocoding API to transform Demographics by Towns (1) into the geocoding information necessary to use in the map.
 
 ## course-2019-spr-proj
 

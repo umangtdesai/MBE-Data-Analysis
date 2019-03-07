@@ -69,8 +69,8 @@ class demographics_by_towns(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        #doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
-        doc.add_namespace('dbt', 'http://datamechanics.io/data/carlosp_jpva_tkay_yllescas/demographics_by_towns.json')
+#        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('bdp', 'http://datamechanics.io/data/carlosp_jpva_tkay_yllescas/demographics_by_towns.json')
 
         this_script = doc.agent('alg:carlosp_jpva_tkay_yllescas#demographics_by_town', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})

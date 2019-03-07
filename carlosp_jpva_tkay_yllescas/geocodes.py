@@ -14,7 +14,7 @@ class geocodes(dml.Algorithm):
         
     @staticmethod
     def execute(trial = False):
-
+        print("geocodes")
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
@@ -33,8 +33,8 @@ class geocodes(dml.Algorithm):
                 sys.stdout.write(str(count) + " lines parsed\r")   
                 sys.stdout.flush()
             count+=1
-            q = urllib.parse.urlencode({"address": town["Community"], "key": dml.auth["services"]["googlegeocoding"]["key"]})     
-            url = "https://maps.googleapis.com/maps/api/geocode/json?" + q
+            query = urllib.parse.urlencode({"address": town["Community"], "key": dml.auth["services"]["googlegeocoding"]["key"]})     
+            url = "https://maps.googleapis.com/maps/api/geocode/json?" + query
             response = urllib.request.urlopen(url).read().decode("utf-8")
             r = json.loads(response)
             repo['carlosp_jpva_tkay_yllescas.geocodes'].insert_one(r)
@@ -59,45 +59,33 @@ class geocodes(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
+        repo.authenticate('carlosp_jpva_tkay_yllescas', 'carlosp_jpva_tkay_yllescas')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('bdp', 'https://amplifylatinx.co/')
 
-        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:carlosp_jpva_tkay_yllescas#geocodes', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
+        get_geocodes = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_geocodes, this_script)
+        doc.usage(get_geocodes, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
+                  'ont:Query':'?address=Town&$select=type,latitude,longitude,OPEN_DT'
                   }
                   )
 
-        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-
-        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        lost = doc.entity('dat:carlosp_jpva_tkay_yllescas#geocodes', {prov.model.PROV_LABEL:'Town', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(geocodes, this_script)
+        doc.wasGeneratedBy(geocodes, get_geocodes, endTime)
+        doc.wasDerivedFrom(demographics_by_towns, resource, get_geocodes, get_geocodes, get_geocodes)
 
         repo.logout()
                   
         return doc
 
-geocodes.execute()
+#geocodes.execute()
 '''
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
