@@ -53,7 +53,6 @@ class massValidZipCodes(dml.Algorithm):
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
-        doc.add_namespace('dat2', 'http://datamechanics.io/data/')
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'http://datamechanics.io/?prefix=ashwini_gdukuray_justini_utdesai/')
@@ -62,12 +61,12 @@ class massValidZipCodes(dml.Algorithm):
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         preValidZip = doc.entity('bdp:massSelectedZips.csv',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'xlsx'})
+                               'ont:Extension': 'csv'})
         postValidZip = doc.entity('dat2:ashwini_gdukuray_justini_utdesai#validZipCodes',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
         act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(postValidZip, this_script)
+        doc.wasAssociatedWith(act, this_script)
         doc.usage(act, preValidZip, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval'})
 

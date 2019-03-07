@@ -21,7 +21,7 @@ class mbdaData(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
 
-        urlNumFirms = 'https://www.mbda.gov/csv_data_export?year=2012&industry=All%20Sectors%20%280%29&minority_group=Total%20Minority&metrics=Actual%20Value&concept=Number%20of%20Firms&firms=All%20Firms'
+        urlNumFirms =     'https://www.mbda.gov/csv_data_export?year=2012&industry=All%20Sectors%20%280%29&minority_group=Total%20Minority&metrics=Actual%20Value&concept=Number%20of%20Firms&firms=All%20Firms'
         urlNumEmployees = 'https://www.mbda.gov/csv_data_export?year=2012&industry=All%20Sectors%20%280%29&minority_group=Total%20Minority&metrics=Actual%20Value&concept=Number%20of%20Paid%20Employees&firms=All%20Firms'
 
         numFirmsDF = pd.read_csv(urlNumFirms, skiprows=[0,1,2])
@@ -63,33 +63,39 @@ class mbdaData(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/Top25Companies.csv')  # The data sets are in <user>#<collection> format.
-        doc.add_namespace('dat2', 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/Top25Companies.json')
-        doc.add_namespace('ont',
-                          'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('bdp', 'https://www.mbda.gov/')
 
-        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#topCompanies',
+        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#mbdaData',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:ashwini_gdukuray_justini_utdesai#topCompanies',
+        numFirms = doc.entity('bdp:ashwini_gdukuray_justini_utdesai#numFirmsDF',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
-        resource2 = doc.entity('dat2:ashwini_gdukuray_justini_utdesai#topCompanies',
+        numEmployees = doc.entity('bdp:ashwini_gdukuray_justini_utdesai#numEmployeesDF',
+                              {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+                               'ont:Extension': 'csv'})
+        mbda = doc.entity('dat:ashwini_gdukuray_justini_utdesai#mbdaData',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
         act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(resource2, this_script)
-        doc.usage(act, resource, startTime, None,
+        doc.wasAssociatedWith(act, this_script)
+        doc.usage(act, numFirms, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
+                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+                   }
+                  )
+        doc.usage(act, numEmployees, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
                    }
                   )
 
-        doc.wasAttributedTo(resource, this_script)
-        doc.wasGeneratedBy(resource2, act, endTime)
-        doc.wasDerivedFrom(resource2, resource, act, act, act)
-
+        doc.wasAttributedTo(mbda, this_script)
+        doc.wasGeneratedBy(mbda, act, endTime)
+        doc.wasDerivedFrom(mbda, numFirms, act, act, act)
+        doc.wasDerivedFrom(mbda, numEmployees, act, act, act)
 
         repo.logout()
 

@@ -64,46 +64,49 @@ class topCertifiedCompanies(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
-        pass
 
-        """
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/Top25Companies.csv')  # The data sets are in <user>#<collection> format.
-        doc.add_namespace('dat2', 'http://datamechanics.io/data/ashwini_gdukuray_justini_utdesai/Top25Companies.json')
-        doc.add_namespace('ont',
-                          'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#topCompanies',
+        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#topCertifiedCompanies',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:ashwini_gdukuray_justini_utdesai#topCompanies',
-                              {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'csv'})
-        resource2 = doc.entity('dat2:ashwini_gdukuray_justini_utdesai#topCompanies',
+        topCompanies = doc.entity('dat:ashwini_gdukuray_justini_utdesai#topCompanies',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
+        masterList = doc.entity('dat:ashwini_gdukuray_justini_utdesai#masterList',
+                                  {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+                                   'ont:Extension': 'json'})
+        topCertCompanies = doc.entity('dat:ashwini_gdukuray_justini_utdesai#topCertCompanies',
+                          {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+                           'ont:Extension': 'json'})
         act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(resource2, this_script)
-        doc.usage(act, resource, startTime, None,
+        doc.wasAssociatedWith(act, this_script)
+        doc.usage(act, topCompanies, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
+                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+                   }
+                  )
+        doc.usage(act, masterList, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
                    }
                   )
 
-        doc.wasAttributedTo(resource, this_script)
-        doc.wasGeneratedBy(resource2, act, endTime)
-        doc.wasDerivedFrom(resource2, resource, act, act, act)
+        doc.wasAttributedTo(topCertCompanies, this_script)
+        doc.wasGeneratedBy(topCertCompanies, act, endTime)
+        doc.wasDerivedFrom(topCertCompanies, topCompanies, act, act, act)
+        doc.wasDerivedFrom(topCertCompanies, masterList, act, act, act)
 
 
         repo.logout()
 
         return doc
-        """
 
 
 '''
