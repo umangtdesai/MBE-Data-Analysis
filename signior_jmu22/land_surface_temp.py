@@ -37,7 +37,6 @@ class land_surface_temp(dml.Algorithm):
     # print(new_df.head(5)) #uncomment this to see structure
     #ocean_temp_dict = new_df.to_dict(orient='records')
     land_temp_dict = new_df.to_dict(orient='records')
-    print(land_temp_dict)
 
     # print(land_temp_dict) # uncomment this too see the structure of the dataset
     
@@ -87,7 +86,7 @@ class land_surface_temp(dml.Algorithm):
 
 
 #comment this out before submitting, just for testing purposes
-land_surface_temp.execute()
+# land_surface_temp.execute()
 # doc = land_surface_temp.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
