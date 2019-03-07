@@ -5,10 +5,10 @@ import prov.model
 import datetime
 import uuid
 
-class boston_fire_facility_transormation(dml.Algorithm):
+class boston_fire_facility_transformation(dml.Algorithm):
     contributor = 'liweixi_mogjzhu'
     reads = ['liweixi_mogujzhu.fire_hydrants','liweixi_mogujzhu.fire_department','liweixi_mogujzhu.fire_alarm_boxes']
-    writes = ['liweixi_mogujzhu.boston_fire_facility']
+    writes = ['liweixi_mogujzhu.boston_fire_facility_transformation']
 
     @staticmethod
     def merge_data(data_list, repo):
@@ -74,14 +74,14 @@ class boston_fire_facility_transormation(dml.Algorithm):
 
         this_script = doc.agent('alg:liweixi_mogujzhu#boston_fire_facility_transformation',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource_fire_alarm_boxes = doc.entity('dat:Boston Fire Alarm Boxes',
-                              {'prov:label': '123, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+        resource_fire_alarm_boxes = doc.entity('dat:liweixi_mogujzhu#fire_alarm_boxes',
+                              {'prov:label': 'Boston Fire Alarm Boxes', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'geojson'})
-        resource_fire_department = doc.entity('dat:Boston Fire Department',
-                              {'prov:label': '123, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+        resource_fire_department = doc.entity('dat:liweixi_mogujzhu#fire_department',
+                              {'prov:label': 'Boston Fire Department', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'geojson'})
-        resource_fire_hydrants = doc.entity('dat:Boston Fire Hydrants',
-                              {'prov:label': '123, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+        resource_fire_hydrants = doc.entity('dat:dat:liweixi_mogujzhu#fire_hydrants',
+                              {'prov:label': 'Boston Fire Hydrants', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'geojson'})
         get_boston_fire_facility = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_boston_fire_facility, this_script)
@@ -101,13 +101,13 @@ class boston_fire_facility_transormation(dml.Algorithm):
         return doc
 
 
-'''
-# This is example code you might use for debugging this module.
-# Please remove all top-level function calls before submitting.
-'''
-boston_fire_facility_transormation.execute()
-doc = boston_fire_facility_transormation.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
-
-## eof
+# '''
+# # This is example code you might use for debugging this module.
+# # Please remove all top-level function calls before submitting.
+# '''
+# boston_fire_facility_transormation.execute()
+# doc = boston_fire_facility_transormation.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
+#
+# ## eof

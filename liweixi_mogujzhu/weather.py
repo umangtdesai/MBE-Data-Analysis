@@ -79,13 +79,13 @@ class weather(dml.Algorithm):
         return doc
 
 
-'''
-# This is example code you might use for debugging this module.
-# Please remove all top-level function calls before submitting.
-'''
-weather.execute()
-doc = weather.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
-
-## eof
+# '''
+# # This is example code you might use for debugging this module.
+# # Please remove all top-level function calls before submitting.
+# '''
+# weather.execute()
+# doc = weather.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
+#
+# ## eof

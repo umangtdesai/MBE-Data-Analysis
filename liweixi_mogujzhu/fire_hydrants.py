@@ -77,13 +77,13 @@ class fire_hydrants(dml.Algorithm):
         return doc
 
 
-'''
-# This is example code you might use for debugging this module.
-# Please remove all top-level function calls before submitting.
-'''
-fire_hydrants.execute()
-doc = fire_hydrants.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
-
-## eof
+# '''
+# # This is example code you might use for debugging this module.
+# # Please remove all top-level function calls before submitting.
+# '''
+# fire_hydrants.execute()
+# doc = fire_hydrants.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
+#
+# ## eof

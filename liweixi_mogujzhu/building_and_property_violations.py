@@ -83,13 +83,13 @@ class building_and_property_violations(dml.Algorithm):
         return doc
 
 
-'''
-# This is example code you might use for debugging this module.
-# Please remove all top-level function calls before submitting.
-'''
-building_and_property_violations.execute()
-doc = building_and_property_violations.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
-
-## eof
+# '''
+# # This is example code you might use for debugging this module.
+# # Please remove all top-level function calls before submitting.
+# '''
+# building_and_property_violations.execute()
+# doc = building_and_property_violations.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
+#
+# ## eof
