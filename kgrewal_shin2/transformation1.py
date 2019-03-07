@@ -97,7 +97,7 @@ class transformation1():
                    }
                   )
 
-        streets = doc.entity('dat:kgrewal_shin2#streets',
+        streets = doc.entity('dat:kgrewal_shin2#streets_without_landmarks',
                           {prov.model.PROV_LABEL: 'Streets Without Landmarks', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(streets, this_script)
         doc.wasGeneratedBy(streets, get_streets, endTime)

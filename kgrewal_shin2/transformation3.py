@@ -76,11 +76,13 @@ class transformation3():
                    }
                   )
 
-        ubers = doc.entity('dat:kgrewal_shin2#ubers',
+        orig_ubers = doc.entity('dat:kgrewal_shin2#ubers',
+                          {prov.model.PROV_LABEL: 'Boston Common Ubers', prov.model.PROV_TYPE: 'ont:DataSet'})
+        ubers = doc.entity('dat:kgrewal_shin2#uber_destinations',
                            {prov.model.PROV_LABEL: 'Boston Common Ubers', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(ubers, this_script)
         doc.wasGeneratedBy(ubers, get_ubers, endTime)
-        doc.wasDerivedFrom(ubers, resource, get_ubers, get_ubers, get_ubers)
+        doc.wasDerivedFrom(orig_ubers, resource, get_ubers, get_ubers, get_ubers)
 
         repo.logout()
 
