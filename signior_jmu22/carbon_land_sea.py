@@ -165,8 +165,29 @@ class carbon_land_sea(dml.Algorithm):
       
     
   def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-      return None
-
+    client = dml.pymongo.MongoClient()
+    repo = client.repo
+    repo.authenticate('signior_jmu22', 'signior_jmu22')
+    doc.add_namespace('alg', 'http://datamechanics.io/algorithm/signior_jmu22') # The scripts are in <folder>#<filename> format
+    doc.add_namespace('dat', 'http://datamechanics.io/data/signior_jmu22' ) # The datasets are in <user>#<collection> format
+    doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retreival', 'Query', or 'Computation'
+    doc.add_namespace('log', 'http://datamechanics.io/log/')
+    
+    this_script = doc.agent('alg:signior_jmu22#carbon_land_sea', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+    resource= doc.entity('dat:land_sea', {'prov:label': 'Sea level and Land Temperature Changes by Year', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'csv'})
+    get_land_sea = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+    doc.wasAssociatedWith(get_land_sea, this_script)
+    doc.usage(get_land_sea, resource, startTime, None, {prov.model.PROV_TYPE:'ont:Retreival'})
+    
+    carbon_emissions = doc.entity('dat:signior_jmu22#carbon_emissions', {prov.model.PROV_LABEL: 'Carbon Emissions', prov.model.PROV_TYPE: 'ont:DataSet'})
+    doc.wasAttributedTo(carbon_emissions, this_script)
+    doc.wasGeneratedBy(get_land_sea, carbon_emissions, endTime)
+    doc.wasDerivedFrom(carbon_emissions, resource, get_land_sea, get_land_sea, get_land_sea)
+    
+    repo.logout()
+    
+    
+    return doc
   def union(R, S):
       return R + S
 

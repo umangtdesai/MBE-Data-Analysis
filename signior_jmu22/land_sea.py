@@ -110,16 +110,16 @@ class land_sea(dml.Algorithm):
     doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retreival', 'Query', or 'Computation'
     doc.add_namespace('log', 'http://datamechanics.io/log/')
     
-    this_script = doc.agent('alg:signior_jmu22#carbon_emissions', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-    resource = doc.entity('dat:carbon_emissions', {'prov:label': 'Carbon Emissions by Country 1960 - 2014', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'csv'})
-    get_carbon_emissions = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-    doc.wasAssociatedWith(get_carbon_emissions, this_script)
-    doc.usage(get_carbon_emissions, resource, startTime, None, {prov.model.PROV_TYPE:'ont:Retreival'})
+    this_script = doc.agent('alg:signior_jmu22#land_sea', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+    resource= doc.entity('dat:ocean_surface_temp', {'prov:label': 'Sea level Changes by Year', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'csv'})
+    get_sea = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+    doc.wasAssociatedWith(get_sea, this_script)
+    doc.usage(get_sea, resource, startTime, None, {prov.model.PROV_TYPE:'ont:Retreival'})
     
-    carbon_emissions = doc.entity('dat:signior_jmu22#carbon_emissions', {prov.model.PROV_LABEL: 'Carbon Emissions by Country', prov.model.PROV_TYPE: 'ont:DataSet'})
-    doc.wasAttributedTo(carbon_emissions, this_script)
-    doc.wasGeneratedBy(carbon_emissions, get_carbon_emissions, endTime)
-    doc.wasDerivedFrom(carbon_emissions, resource, get_carbon_emissions, get_carbon_emissions, get_carbon_emissions)
+    land_surface_temps = doc.entity('dat:signior_jmu22#land_surface_temp', {prov.model.PROV_LABEL: 'Land Surface Temperatures by Year', prov.model.PROV_TYPE: 'ont:DataSet'})
+    doc.wasAttributedTo(land_surface_temps, this_script)
+    doc.wasGeneratedBy(get_sea, land_surface_temps, endTime)
+    doc.wasDerivedFrom(land_surface_temps, resource, get_sea, get_sea, get_sea)
     
     repo.logout()
     
