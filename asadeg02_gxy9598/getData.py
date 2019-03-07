@@ -2,8 +2,10 @@ import urllib.request
 import json
 import dml
 import prov.model
+import xmltodict
 import datetime
 import uuid
+import sys
 #from .scrapeBostonGov import getData as getDataByScaping
 
 class getData(dml.Algorithm):
