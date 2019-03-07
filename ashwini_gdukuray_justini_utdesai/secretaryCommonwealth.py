@@ -51,7 +51,7 @@ class secretaryCommonwealth(dml.Algorithm):
             '''
         pass
 
-
+'''
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -88,6 +88,7 @@ class secretaryCommonwealth(dml.Algorithm):
         repo.logout()
 
         return doc
+'''
 
 '''
 # This is example code you might use for debugging this module.

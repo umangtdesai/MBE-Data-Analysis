@@ -44,7 +44,7 @@ class example(dml.Algorithm):
         endTime = datetime.datetime.now()
 
         return {"start":startTime, "end":endTime}
-    
+
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
@@ -52,7 +52,7 @@ class example(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
-
+'''
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -91,9 +91,9 @@ class example(dml.Algorithm):
         doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
 
         repo.logout()
-                  
-        return doc
 
+        return doc
+'''
 '''
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
