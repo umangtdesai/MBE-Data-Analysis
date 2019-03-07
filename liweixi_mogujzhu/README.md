@@ -53,3 +53,8 @@ Shape: [latitude, longitude]
 * SNWD: Snow depth
 * NINCIDENT: Number of fire incident happened
 * NLOSS: Number of fire incident which causes money loss
+
+## fire_building_transformation.py
+* Street Name: The name of the street which happens fire incident or building violation
+* Fire Incident Number: The number of fire incidents that happen on a street
+* Building Violation Number: The number of building violations that happen on a street
