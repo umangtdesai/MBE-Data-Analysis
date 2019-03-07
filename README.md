@@ -22,8 +22,8 @@ pip install Shapely
 On Windows you need to download and install the wheel file which can be found here:  
 [Shapely.whl](http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)
 
-###Algorithms
-#####getData.py
+### Algorithms
+##### getData.py
 This algorithm goes to each of the three data portals listed above
 and retrieves the five datasets. The open space and neighborhood datasets are geojson files, the cdc health 
 survey data is a json file, and the race demographics and age demographics data comes as a csv file. The algorithm
@@ -31,14 +31,14 @@ does a little extra work with the csv file, turning them into json files so that
 MongoDB. This algorithm doesn't modify any of the data, and each dataset is stored into its own mongo database with the 
 prefix "Raw_".
 
-#####combineDemographics.py
+##### combineDemographics.py
 This is the first transformation. The goal of this algorithm is to take the raw data collected on race demographics
 and age demographics and combine them into one dataset. To do this first for each dataset I did a select on the data 
 choosing data collected most recently from the year 2010. Then, since each data value in the dataset was of the form (id, demographic type, neighborhood, ...)
 I combined each demographic type(i.e Black, White, Asian for race and 0-9, 10-19, etc. for age) with the same neighbor hood under one row whose id was neighborhood
 and columns was each type. Then with the two changed race and age datasets I merely did a join of the two sets by neighborhood(now the id) and stored this
 joined data set in mongo as Age_Race 
-#####percentOpenSpace.py
+##### percentOpenSpace.py
 This is the second transformation. The goal of this algorithm was to take each neighborhood in Boston and compute the 
 percentage of the area of the neighborhood that is covered by different types of open spaces suchs as "Parks, Playgrounds & Athletic Fields"
 or "Urban Wilds & Natural Areas". However, there was some discrepency between the district that each open space was listed under 
@@ -54,7 +54,7 @@ Ideally, we would have hoped to not have mapped neighborhoods to district, but r
 was contained in one of our neighborhoods. Moving forward we would rather have this as our demographics data is in terms 
 of these neighborhoods and not districts. This dataset is stored in mongo as Percent_OS.
 
-#####combineNeighborhoodHealth
+##### combineNeighborhoodHealth
 This is the third and last transformation. The goal of this algorithm is to take the cdc health survey data, where each row is of the form
 (health question, answer value, coordinates, ...), and match each question's coordinate value to a neighborhood. This way we can get an understanding
 of the neighborhood's health through the survey data. To match coordinates to a neighborhood, we had to use the
@@ -65,7 +65,7 @@ neighborhood to find if the point is within the polygon and thus the neighborhoo
 to only the few values of interest (i.e question and answer value) that we wanted as well adding the neighborhood
 that this survey took place in. We then store this data in mongo as Neighborhood_Health.
 
-###Justification
+### Justification
 These three transformations were motivated in trying to find the how open spaces effect health in Boston.
 More specifically, in the future we look to regress the relative health scores collected by the CDC on amount of access people in these neighborhoods have to open spaces. That is why we first 
 aggregated age and race demographics for each neighborhood. The reason for collecting demographic data as another explanatory variable
@@ -81,7 +81,7 @@ do a regression on a few of the important health questions. Also we would need t
 the districts listed for open spaces, but we could do this with the neighborhood to district mapping that we produced or by using 
 Shapely to ignore district and find exactly in which neighborhood the open spaces lie in.
 
-###Run
+### Run
 To run simply enter:
 ```
 python execute.py tlux
