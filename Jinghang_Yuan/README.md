@@ -2,16 +2,16 @@
 
 ## Datasets 
 
-1.Cambridge Property
+1.Property
 
-2.Cambridge Transportation 
+2.Center
 
-3.Cambridge recreation 
+3.PoliceStation
 
-4.Cambridge Traffic
+4.School
 
-5.Non_Public_Schools
+5.CenterPool
 
 ### Narrative
 
-All these five data sets are about Cambridge, we use them in order to find out the factor that influences the value of properties. We could combine the address of propertie, schools, bus stops, parking lot and receation spots together to answer how the value of properties could be affected. We may also find out how will the value of properties increase/decrease if there are more/less transportation, recreation and schools nearby.
+Boston is a beatiful city, many people live here. We find that the properties in different area have totally different value. So finding out the factor that influences the value of properties is an interesting topic. We could combine the location of propertie, schools, community centers, police stations and community center pools together to figure out how the value of properties could be affected. We may also find out how will the value of properties increase/decrease if there are more/less schools, community centers, police stations and community center pools nearby.
