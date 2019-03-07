@@ -17,6 +17,7 @@ class weather(dml.Algorithm):
     @staticmethod
     def execute(trial=False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        print("Getting boston weather...")
         startTime = datetime.datetime.now()
 
         # Set up the database connection.

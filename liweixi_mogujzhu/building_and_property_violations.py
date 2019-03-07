@@ -17,6 +17,7 @@ class building_and_property_violations(dml.Algorithm):
     @staticmethod
     def execute(trial=False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        print("Getting building and property violations...")
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -61,8 +62,8 @@ class building_and_property_violations(dml.Algorithm):
 
         this_script = doc.agent('alg:liweixi_mogujzhu#building_and',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:Boston Building And Property Violations',
-                              {'prov:label': '122, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+        resource = doc.entity('dat:liweixi_mogujzhu#building_property',
+                              {'prov:label': 'Boston Building And Property Violations', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
         get_building = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_building, this_script)

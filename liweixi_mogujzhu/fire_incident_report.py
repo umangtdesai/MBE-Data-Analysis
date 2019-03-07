@@ -19,6 +19,7 @@ class fire_incident_report(dml.Algorithm):
     @staticmethod
     def execute(trial=False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        print('getting fire incident report...')
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -64,8 +65,8 @@ class fire_incident_report(dml.Algorithm):
 
         this_script = doc.agent('alg:liweixi_mogujzhu#fire_incident_report',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:Boston Fire Incident Reporting',
-                              {'prov:label': '121, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+        resource = doc.entity('dat:liweixi_mogujzhu#fire_incident_report',
+                              {'prov:label': 'Boston Fire Incident Reporting', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
         get_fire_incident_report = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_fire_incident_report, this_script)

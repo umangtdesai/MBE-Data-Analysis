@@ -14,6 +14,7 @@ class fire_alarm_boxes(dml.Algorithm):
     @staticmethod
     def execute(trial=False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        print("Getting Boston fire alarm boxes...")
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
