@@ -4,16 +4,17 @@ import dml
 import prov.model
 import datetime
 import uuid
+import pandas as pd
 
 ############################################
-# grab_stations.py
-# Script for collecting CTA L station location
+# grab_income.py
+# Script for collecting Chicago Census Socioeconomic Indicators
 ############################################
 
-class grab_stations(dml.Algorithm):
+class grab_income(dml.Algorithm):
     contributor = 'smithnj'
     reads = []
-    writes = ['smithnj.stations']
+    writes = ['smithnj.income']
 
     @staticmethod
     def execute(trial=False):
@@ -24,20 +25,17 @@ class grab_stations(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('smithnj', 'smithnj')
-        repo_name = stations.writes[0]
+        repo_name = income.writes[0]
 
         # ---[ Grab Data ]-------------------------------------------
-        url = 'http://datamechanics.io/data/smithnj/CTA_RailStations.json'
-        request = urllib.request.Request(url)
-        response = urllib.request.urlopen(request)
-        content = response.read()
-        json_response = json.loads(content)
-        json_string = json.dumps(json_response, sort_keys=True, indent=2)
+        url = 'https://api.datausa.io/api/?sort=desc&show=geo&required=income&sumlevel=tract&year=all&where=geo%3A16000US1714000'
+        db = pd.read.csv(url).to_json()
+        json_response = json.loads(db)
 
 
         # ---[ MongoDB Insertion ]-------------------------------------------
-        repo.dropCollection('stations')
-        repo.createCollection('stations')
+        repo.dropCollection('income')
+        repo.createCollection('income')
         repo[repo_name].insert_many(json_response)
         repo[repo_name].metadata({'complete': True})
 
@@ -46,14 +44,6 @@ class grab_stations(dml.Algorithm):
         repo.logout()
         endTime = datetime.datetime.now()
         return {"start": startTime, "end": endTime}
-
-
-
-
-
-
-
-
 
         #@staticmethod
         #def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):

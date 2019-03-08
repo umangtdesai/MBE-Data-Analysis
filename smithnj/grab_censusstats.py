@@ -6,14 +6,14 @@ import datetime
 import uuid
 
 ############################################
-# grab_stations.py
-# Script for collecting CTA L station location
+# grab_censusstats.py
+# Script for collecting Chicago Census Socioeconomic Indicators
 ############################################
 
-class grab_stations(dml.Algorithm):
+class grab_censusstats(dml.Algorithm):
     contributor = 'smithnj'
     reads = []
-    writes = ['smithnj.stations']
+    writes = ['smithnj.census']
 
     @staticmethod
     def execute(trial=False):
@@ -24,10 +24,10 @@ class grab_stations(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('smithnj', 'smithnj')
-        repo_name = stations.writes[0]
+        repo_name = census.writes[0]
 
         # ---[ Grab Data ]-------------------------------------------
-        url = 'http://datamechanics.io/data/smithnj/CTA_RailStations.json'
+        url = 'https://data.cityofchicago.org/resource/kn9c-c2s2.json'
         request = urllib.request.Request(url)
         response = urllib.request.urlopen(request)
         content = response.read()
@@ -36,8 +36,8 @@ class grab_stations(dml.Algorithm):
 
 
         # ---[ MongoDB Insertion ]-------------------------------------------
-        repo.dropCollection('stations')
-        repo.createCollection('stations')
+        repo.dropCollection('census')
+        repo.createCollection('census')
         repo[repo_name].insert_many(json_response)
         repo[repo_name].metadata({'complete': True})
 
