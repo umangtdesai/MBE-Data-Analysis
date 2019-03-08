@@ -54,20 +54,13 @@ class transformBikeCrash(dml.Algorithm):
 
         # Select to only get bike crashes
         bikeCrashes = [t for t in crashLocations if t['"mode_type"'] == 'bike']
-        print(len(bikeCrashes))
 
         bikeCrashesShort = bikeCrashes[0:20]
         # print(bikeCrashesShort)
 
         lightLoc = [t for t in lightLocations if t['TYPE'] == 'LIGHT']
-        print(len(lightLoc))
         # Product between bike crashes and streetlight locations
         crashLightProduct = product(bikeCrashesShort, lightLoc)
-        print(len(crashLightProduct))
-
-        # for i in range(75000, 75040):
-        #   print(crashLightProduct[i])
-
 
         # Project to add 'distance' column.
         crashLightDistances = [(t[0]['\ufeff"dispatch_ts"'], geodistance(float(t[0]['"lat"']), float(t[0]['"long"\r']), float(t[1]['Lat']), float(t[1]['Long']))) for t in crashLightProduct]
@@ -79,11 +72,8 @@ class transformBikeCrash(dml.Algorithm):
         finalDict = {}
         for tup in finalSet:
           finalDict[tup[0]] = str(tup[1])
-        
-        # print(finalDict)
-        print(finalDict.items())
 
-        with open("new_datasets/crashesAndLights.json", 'w') as outfile:
+        with open("nhuang54_wud/new_datasets/crashesAndLights.json", 'w') as outfile:
           json.dump(finalDict, outfile)
         
         repo.dropCollection("bikeCrashStreetlight")
@@ -119,7 +109,7 @@ class transformBikeCrash(dml.Algorithm):
 
         this_script = doc.agent('alg:nhuang54_wud#transformBikeCrash', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource1 = doc.entity('dat:nhuang54_wud#streetlight-locations', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
-        resource2 = doc.entity('dat:nhuang54_wud#crash_open_data', {'prov:label':'311, Service Requests', prov.mode.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        resource2 = doc.entity('dat:nhuang54_wud#crash_open_data', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         
         transform_bikeCrash = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(transform_bikeCrash, this_script)

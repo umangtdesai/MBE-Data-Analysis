@@ -69,14 +69,14 @@ class getHubwayStation(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         # Resource:
-        doc.add_namespace('bod', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
+        doc.add_namespace('bod', 'https://opendata.arcgis.com/datasets/')
 
         this_script = doc.agent('alg:nhuang54_wud#hubwayStation', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bod:ee7474e2a0aa45cbbdfe0b747a5eb032_0', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         get_hubwayStation = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_hubwayStation, this_script)
 
-        doc.usage(get_trafficSignal, resource, startTime, None,
+        doc.usage(get_hubwayStation, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':''
                   }

@@ -25,7 +25,6 @@ def safety_zone(la1, lo1, la2, lo2):
   c = atan2(y, x)
 
   final_dist = EARTH_R * c
-#   print(final_dist)
   if final_dist > 1:
       return True
   else:
@@ -53,10 +52,6 @@ class transformHubwayCrash(dml.Algorithm):
         # project hubway station locations in form (name, (lat, long))
         hubwayLocations = []
         for row in hubwayData:
-            # print(row)
-            # print(row['name'])
-            # print(row['\ufeffX'])
-            # print(row['Y'])
             hubwayLocations += [[row['id'], [float(row['Y']), float(row['\ufeffX'])]]]
 
         # project crash location in form (crash location id, (lat, long))
@@ -67,9 +62,7 @@ class transformHubwayCrash(dml.Algorithm):
 
         #JOIN
         hubway_crash_prod = product(hubwayLocations, crashLocations)
-        for t in hubway_crash_prod:
-            print(t)
-            break;
+
         hubway_safety_list = [(t[0][0], t[0][1][0], t[0][1][1], t[1][0], t[1][1][0], t[1][1][1], safety_zone(t[0][1][0], t[0][1][1], t[1][1][0], t[1][1][1])) for t in hubway_crash_prod]
 
         # put into dictionary
@@ -77,10 +70,8 @@ class transformHubwayCrash(dml.Algorithm):
         for row in hubway_safety_list:
             hubway_safety_dict[row[0]] = {'latitude': row[1], 'longitude': row[2], 'safe_zone': row[6]}
 
-        # print(finalDict)
-        # print(hubway_safety_dict.items())
 
-        with open("new_datasets/hubwaySafetyZone.json", 'w') as outfile:
+        with open("nhuang54_wud/new_datasets/hubwaySafetyZone.json", 'w') as outfile:
           json.dump(hubway_safety_dict, outfile)
 
         repo.dropCollection("hubwayStationSafety")
@@ -118,7 +109,7 @@ class transformHubwayCrash(dml.Algorithm):
 
         this_script = doc.agent('alg:nhuang54_wud#transformHubwayCrash', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource1 = doc.entity('dat:nhuang54_wud#Hubway_Stations', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
-        resource2 = doc.entity('dat:nhuang54_wud#crash_open_data', {'prov:label':'311, Service Requests', prov.mode.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        resource2 = doc.entity('dat:nhuang54_wud#crash_open_data', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
 
         transform_hubwayCrash = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(transform_hubwayCrash, this_script)
