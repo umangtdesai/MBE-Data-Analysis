@@ -7,10 +7,10 @@ The city of Chicago is the third largest city in the United States. Like other u
 
 ## Data Sets
 
-| Portal   | Dataset                                                                                                                             |
-|----------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Portal   | Dataset                                                                                                                             | Notes 
+|----------|-------------------------------------------------------------------------------------------------------------------------------------| ----
 | CTA      | ['L' Station Ridership Stats](https://data.cityofchicago.org/Transportation/CTA-Ridership-L-Station-Entries-Daily-Totals/5neh-572f) |
-| CTA      | ['L' Station Locations](https://data.cityofchicago.org/Transportation/CTA-L-Rail-Stations-kml/4qtv-9w43)                            |
+| CTA / datamechanics.io      | ['L' Station Locations](https://data.cityofchicago.org/Transportation/CTA-L-Rail-Stations-kml/4qtv-9w43)                            | Retrieved from CTA in .klm, converted online to .csv
 | Data USA | [Chicago Income by Location](https://datausa.io/profile/geo/chicago-il/#income_geo)                                                 |
 | !FILL    | [FILL IN](FILL IN HERE)                                                                                                             |
 | !FILL    | [FILL IN](FILL IN HERE)                                                                                                             |
@@ -18,4 +18,4 @@ The city of Chicago is the third largest city in the United States. Like other u
 ---
 #### Library Dependencies
 * pandas
-* JSON, geoJSON
+* JSON
