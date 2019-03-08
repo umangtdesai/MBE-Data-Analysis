@@ -83,7 +83,7 @@ class getLinkedin(dml.Algorithm):
         return doc
 
 
-getLinkedin.execute()
+# getLinkedin.execute()
 # doc = getLinkedin.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

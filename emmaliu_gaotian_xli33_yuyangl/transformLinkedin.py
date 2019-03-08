@@ -20,20 +20,10 @@ class transformLinkedin(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('emmaliu_gaotian_xli33_yuyangl', 'emmaliu_gaotian_xli33_yuyangl')
-        
-        # url = ''
-        # response = urllib.request.urlopen(url).read().decode("utf-8")
-        # r = json.loads(response)
-        # s = json.dumps(r, sort_keys=True, indent=2)
-        # repo.dropCollection("linkedin")
-        # repo.createCollection("linkedin")
-        # repo['emmaliu_gaotian_xli33_yuyangl.linkedin'].insert_many(r)
-        # repo['emmaliu_gaotian_xli33_yuyangl.linkedin'].metadata({'complete': True})
-        # print(repo['emmaliu_gaotian_xli33_yuyangl.linkedin'].metadata())
 
-        # Get Tweets data
+        # Get LinkedIn data
         linkedinData = repo.emmaliu_gaotian_xli33_yuyangl.linkedin.find()
-        jobs = []
+        jobs = {}
         num_change=0
         # Filter for user's location, project key value pairs.
         for data in linkedinData:
@@ -45,18 +35,13 @@ class transformLinkedin(dml.Algorithm):
                 if data['currentJob']:
                     jobchange = True
 
-                names[name] = {'jobchange':jobchange}
+                jobs[name] = {'jobchange':jobchange}
         
         for name in names:
             if data['jobchange']:
-                names[name] = {'job':currentJob}
+                jobs[name] = {'job':currentJob}
             else:
-                names[name] = {'job':job}
-
-
-
-        #with open("userLocation .json", 'w') as outfile:
-         #   json.dump(dataStored, outfile, indent=4)
+                jobs[name] = {'job':job}
 
         # store results into database
         repo.dropCollection("userLocation")
