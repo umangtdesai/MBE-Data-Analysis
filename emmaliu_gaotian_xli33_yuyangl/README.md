@@ -39,6 +39,7 @@ Export](https://phantombuster.com/api-store/3149/linkedin-search-export) to run 
 4. Calculate the average number of followers and friends for users in these location.
 
 - **LinkedIn**
+
 1.Do the aggregation transformation on the query on the dataset.
 2.According to the currentjob, calculate the number of people who changed their jobs.
 3.Do the project transformation to get the data we need.
