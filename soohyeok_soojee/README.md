@@ -32,6 +32,7 @@ We currently put together the few datasets listed above and transformed the acqu
 
 Although we have different datasets of polygons and points, our current project model is heavily dependent on geolocation datsets. We are currently researching on possible datasets to incorporate into our project to further develop user experience.
 
+### Transformation:  
 #### *landmarkRate.py*:
 - Pulls dataset of polygons from *get_neighborhoods.py*
 - Pulls dataset of polygons from *get_landmarks.py*
