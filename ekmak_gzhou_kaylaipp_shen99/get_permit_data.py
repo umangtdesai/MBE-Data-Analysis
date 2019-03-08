@@ -43,7 +43,7 @@ class get_permit_data(dml.Algorithm):
         endTime = datetime.datetime.now()
         return {"start":startTime, "end":endTime}
     
-   @staticmethod
+    @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
             Create the provenance document describing everything happening
@@ -63,27 +63,17 @@ class get_permit_data(dml.Algorithm):
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
         this_script = doc.agent('alg:ekmak_gzhou_kaylaipp_shen99#get_permit_data', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:datastore_search?resource_id=6ddcd912-32a0-43df-9908-63574f8c7e77&limit=105750&q=02127', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        # get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        resource = doc.entity('bdp:6ddcd912-32a0-43df-9908-63574f8c7e77', {'prov:label':'Permit Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+
         get_permit_data = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        # doc.wasAssociatedWith(get_found, this_script)
         doc.wasAssociatedWith(get_permit_data, this_script)
-        # doc.usage(get_found, resource, startTime, None,
-        #           {prov.model.PROV_TYPE:'ont:Retrieval',
-        #           'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-        #           }
-        #           )
+
         doc.usage(get_permit_data, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
-        # lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        # doc.wasAttributedTo(lost, this_script)
-        # doc.wasGeneratedBy(lost, get_lost, endTime)
-        # doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-
-        permit_data = doc.entity('dat:ekmak_gzhou_kaylaipp_shen99#get_permit_data', {prov.model.PROV_LABEL:'Permit Data, prov.model.PROV_TYPE:'ont:DataSet'})
+        permit_data = doc.entity('dat:ekmak_gzhou_kaylaipp_shen99#get_permit_data', {prov.model.PROV_LABEL:'Permit Data', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(permit_data, this_script)
         doc.wasGeneratedBy(permit_data, get_permit_data, endTime)
         doc.wasDerivedFrom(permit_data, resource, get_permit_data, get_permit_data, get_permit_data)
@@ -100,5 +90,5 @@ doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
-get_permit_data.execute()
+# get_permit_data.execute()
 ## eof

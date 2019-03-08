@@ -62,31 +62,19 @@ class get_boston_accessing_data(dml.Algorithm):
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
         this_script = doc.agent('alg:ekmak_gzhou_kaylaipp_shen99#get_boston_accessing_data', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('bdp:fd351943-c2c6-4630-992d-3f895360febd', {'prov:label':'Boston Accessing Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_boston_accessing_data = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        # get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+
         doc.wasAssociatedWith(get_boston_accessing_data, this_script)
-        # doc.wasAssociatedWith(get_lost, this_script)
         doc.usage(get_boston_accessing_data, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
-        # doc.usage(get_lost, resource, startTime, None,
-        #           {prov.model.PROV_TYPE:'ont:Retrieval',
-        #           'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-        #           }
-        #           )
 
-        lost = doc.entity('dat:ekmak_gzhou_kaylaipp_shen99#get_boston_accessing_data', {prov.model.PROV_LABEL:'Boston Accessing Data', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_boston_accessing_data, endTime)
-        doc.wasDerivedFrom(lost, resource, get_boston_accessing_data, get_boston_accessing_data, get_boston_accessing_data)
-
-        # found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        # doc.wasAttributedTo(found, this_script)
-        # doc.wasGeneratedBy(found, get_found, endTime)
-        # doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
-
+        accessing_data = doc.entity('dat:ekmak_gzhou_kaylaipp_shen99#get_boston_accessing_data', {prov.model.PROV_LABEL:'Boston Accessing Data', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(accessing_data, this_script)
+        doc.wasGeneratedBy(accessing_data, get_boston_accessing_data, endTime)
+        doc.wasDerivedFrom(accessing_data, resource, get_boston_accessing_data, get_boston_accessing_data, get_boston_accessing_data)
         repo.logout()
                   
         return doc
