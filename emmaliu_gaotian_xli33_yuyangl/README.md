@@ -33,7 +33,7 @@ Export](https://phantombuster.com/api-store/3149/linkedin-search-export) to run 
 ### 2. Data Transformation
 - **Twitter**
 
-1. Filtered out the tweets that the user's location is not empty.
+1. Filter out the tweets that the user's location is not empty.
 2. Do the aggregation transformation on the location in the user's profile
 3. Calculate the number of people who posted the tweets within Amman for each location where these people come from.
 4. Calculate the average number of followers and friends for users in these location.
@@ -53,4 +53,9 @@ Based on the above issues, it is hard for us to do some meaningful transformatio
 
 - **Discussion with project partner**
 
-  Based on analysis above, we have a meeting with our project partner on March 7, 2019. We made on agreement that we do not use Linkedin as a sources since there are too many problems in the data set. We will focus on Twitter for our project. Our next goal is to split users who send tweets in Amman into three groups: native, tourist and unknown and try to find more information for each group. If the results is good, we will get more tweets and do sentimental analysis for those tweets.
+  Based on analysis above, we have a meeting with our project partner on March 7, 2019. We make on agreement that we do not use Linkedin as a sources since there are too many problems in the data set. We will focus on Twitter for our project. Our next goal is to split users who send tweets in Amman into three groups: native, tourist and unknown and try to find more information for each group. If the results is good, we will get more tweets and do sentimental analysis for those tweets.
+  
+ ## Reference
+ - https://developer.twitter.com/en/docs.html
+ - https://www.json.org/
+ - http://cs-people.bu.edu/lapets/504/
