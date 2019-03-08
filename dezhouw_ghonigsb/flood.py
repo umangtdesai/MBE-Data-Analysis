@@ -19,6 +19,7 @@ class flood(dml.Algorithm):
 	reads       = []
 	writes      = ["nine_inch_sea_level_rise_1pct_annual_flood",
 				   "nine_inch_sea_level_rise_high_tide",
+				   "thirty_six_inch_sea_level_rise_high_tide",
 				   "zoning_subdistricts",
 				   "zillow_boston_neighborhood"]
 
@@ -55,6 +56,17 @@ class flood(dml.Algorithm):
 		repo.createCollection(collection_name)
 		repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
 		print("Success: [{}]".format(collection_name))
+
+		# thirty_six_inch_sea_level_rise_high_tide
+		collection_name = "thirty_six_inch_sea_level_rise_high_tide"
+		url             = "https://opendata.arcgis.com/datasets/74692fe1b9b24f3c9419cd61b87e4e3b_8.geojson"
+		gcontext        = ssl.SSLContext()
+		response        = urllib.request.urlopen(url, context=gcontext).read().decode("utf-8")
+		r               = json.loads(response)
+		repo.createCollection(collection_name)
+		repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
+		print("Success: [{}]".format(collection_name))
+
 
 		# zoning_subdistricts
 		collection_name = "zoning_subdistricts"
@@ -103,7 +115,7 @@ class flood(dml.Algorithm):
 
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-		
+
 		doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')
 		doc.add_namespace('dat', 'http://datamechanics.io/data/')
 		doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
