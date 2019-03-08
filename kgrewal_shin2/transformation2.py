@@ -37,9 +37,7 @@ class transformation2():
                 else:
                     street = address
 
-                # print(street)
                 school_streets.append(street)
-        # print(len(school_streets))
 
         streets_without_schools = []
         for x in street_names:
@@ -95,11 +93,16 @@ class transformation2():
                    }
                   )
 
+        orig_streets = doc.entity('dat:kgrewal_shin2#streets',
+                          {prov.model.PROV_LABEL: 'Streets', prov.model.PROV_TYPE: 'ont:DataSet'})
+        schools = doc.entity('dat:kgrewal_shin2#schools',
+                          {prov.model.PROV_LABEL: 'Schools', prov.model.PROV_TYPE: 'ont:DataSet'})
         streets = doc.entity('dat:kgrewal_shin2#streets_without_schools',
                           {prov.model.PROV_LABEL: 'Streets Without Schools', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(streets, this_script)
         doc.wasGeneratedBy(streets, get_streets, endTime)
-        doc.wasDerivedFrom(streets, resource, get_streets, get_streets, get_streets)
+        doc.wasDerivedFrom(orig_streets, resource, get_streets, get_streets, get_streets)
+        doc.wasDerivedFrom(schools, resource, get_streets, get_streets, get_streets)
 
         repo.logout()
 

@@ -97,11 +97,16 @@ class transformation1():
                    }
                   )
 
+        orig_streets = doc.entity('dat:kgrewal_shin2#streets',
+                          {prov.model.PROV_LABEL: 'Streets', prov.model.PROV_TYPE: 'ont:DataSet'})
+        landmarks = doc.entity('dat:kgrewal_shin2#landmarks',
+                          {prov.model.PROV_LABEL: 'Landmarks', prov.model.PROV_TYPE: 'ont:DataSet'})
         streets = doc.entity('dat:kgrewal_shin2#streets_without_landmarks',
                           {prov.model.PROV_LABEL: 'Streets Without Landmarks', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(streets, this_script)
         doc.wasGeneratedBy(streets, get_streets, endTime)
-        doc.wasDerivedFrom(streets, resource, get_streets, get_streets, get_streets)
+        doc.wasDerivedFrom(orig_streets, resource, get_streets, get_streets, get_streets)
+        doc.wasDerivedFrom(landmarks, resource, get_streets, get_streets, get_streets)
 
         repo.logout()
 
