@@ -3,6 +3,7 @@ kgrewal_shin2/MassDOT_Roads_SHP/
 .idea/
 
 #ignored files
+.DS_Store
 *.json
 *.csv
 *.xml
