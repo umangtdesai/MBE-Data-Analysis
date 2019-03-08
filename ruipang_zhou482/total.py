@@ -12,7 +12,7 @@ def aggregate(R, f):
 class total(dml.Algorithm):
 
 	contributor = 'ruipang_zhou482'
-	reads = ["ruipang_zhou482.facilities", "ruipang_zhou482.TotalSchool"]
+	reads = ["ruipang_zhou482.facilities", "ruipang_zhou482.TotalSchool", "ruipang_zhou482.PropertyAssessment"]
 	writes = ['ruipang_zhou482.total']
 
 
@@ -32,6 +32,9 @@ class total(dml.Algorithm):
 		facilities = []
 		for i in repo['ruipang_zhou482.facilities'].find():
 			facilities.append(i)
+		properties = []
+		for i in repo['ruipang_zhou482.PropertyAssessment'].find():
+			properties.append(i)
 
 		keys = {r['zipcode'] for r in school}
 		s = []
@@ -41,10 +44,16 @@ class total(dml.Algorithm):
 				if r['zipcode'] == k:
 					dic["zipcode"] = k
 					dic["num_school"] = r["count"]
+			foundFacilities = False
 			for r in facilities:
 				if r['zipcode'] == k:
-					print(r)
 					dic["num_facilities"] = r["count"]
+					foundFacilities = True
+			if foundFacilities == False:
+				dic["num_facilities"] = 0
+			for r in properties:
+				if r['zipcode'] == k:
+					dic["avg_value"] = r['avg_value']
 
 			s.append(dic)
 		repo.dropCollection('ruipang_zhou482.total')
