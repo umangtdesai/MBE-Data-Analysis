@@ -1,6 +1,18 @@
 # Project 1
-##### Ellen Mak, Xiaoyi Gabby Zhou, Kayla Ippongi, Ziyu Shen 
-###### ekmak_gzhou_kaylaipp_shen99
+##### Ellen Mak, Xiaoyi Gabby Zhou, Kayla Ippongi, Ziyu Shen (ekmak_gzhou_kaylaipp_shen99)
+
+## Data Portals and Datasets
+
+*  Boston Street Address Management 
+	* All addresses in Boston
+* Boston property assessment
+	* Tax assesment for properties in Boston
+* Zillow Search Results Data
+	* Zillow valution/zestimate, full address, zillow links 
+* Zillow Property Results DAta
+	* Number of bed,baths, valuation, home description for given property 
+
+## (Non-trivial) Derived Datasets
 
 <b>Dataset 1(num_per_street1):</b> We unioned the Boston address and accessing datasets and took counts for every address and removed any duplicates. Then, we called map reduce to aggregate sum on every address in order to get the number of properties/buildings per street. Our new datasets show 355 unique streets in South Boston. 
 
@@ -10,3 +22,14 @@
 
 With these three new datasets, we can gain a better understanding of the status of South Boston and it’s streets and potential properties to keep an eye on. With this information we can see which streets are most populated and which streets are more family friendly by figuring out which units are more cost efficient and newly renovated. This is particularly beneficial for the South Boston Neighborhood Development because this gives them an idea of which streets contain more individual houses vs apartments and offers them the ability to keep an eye on up and coming streets.  
 
+## Auth.json
+{
+	"services": {
+		"zillow": {
+			"service": "Zillow",
+			"key": "X1-ZWz1gx7ezhy3uz_9abc1"
+		}
+	}
+}
+## Running 
+`python execute.py ekmak_gzhou_kaylaipp_shen99`
