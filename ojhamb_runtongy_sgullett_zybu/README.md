@@ -6,7 +6,7 @@ The first transformation (age_cur_edu.py, edu_job.py, edu_work.py) for project o
 
 The second transformation highlights the sentiments of Jordanians in Amman on political life and the current state of affairs based on their age group. Furthermore, based on their location within Amman. 
 
-The third transformation explores relationships of Jordanians in Amman working in the private versus public sectors based on gender and employment rates. The data sets we used for this transformation contained employment rates per year, employment type, and gender. 
+The third transformation explores relationships of students in Jordan and their relationship or roots. The data sets we used for this transformation contained employment rates per year, degree type, and gender. 
 
 Overarchingly, these transformations display the demographic (i.e. employment rates, gender, age, educational status) of people in Amman, Jordan and their sentiments on the current state of affairs. These transformations were completed using the algorithms and tools that we have learned thus far in CS504.
 
