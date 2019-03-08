@@ -4,6 +4,8 @@ import dml
 import prov.model
 import datetime
 import uuid
+import pymongo
+from bson.objectid import ObjectId
 
 class example(dml.Algorithm):
     contributor = 'ido_jconstan_jeansolo_suitcase'
@@ -24,7 +26,7 @@ class example(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ido_jconstan_jeansolo_suitcase', 'ido_jconstan_jeansolo_suitcase')
 
-
+        
         # OBTAINING FIRST DATASET [Bu Transportation Study]
         url = 'http://datamechanics.io/data/ido_jconstan_jeansolo_suitcase/bu_transportation_study.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -39,15 +41,15 @@ class example(dml.Algorithm):
         # OBTAINING SECOND DATA SET [Spark Property Data]
         url = 'http://datamechanics.io/data/ido_jconstan_jeansolo_suitcase/property_data.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
+        r1 = json.loads(response)
+        s1 = json.dumps(r1, sort_keys=True, indent=2)
         repo.dropCollection("property_data")
         repo.createCollection("property_data")
-        repo['ido_jconstan_jeansolo_suitcase.property_data'].insert_many(r)
+        repo['ido_jconstan_jeansolo_suitcase.property_data'].insert_many(r1)
         repo['ido_jconstan_jeansolo_suitcase.property_data'].metadata({'complete':True})
         print(repo['ido_jconstan_jeansolo_suitcase.property_data'].metadata())
-
-
+		
+        
         # OBTAINING THIRD DATA SET [Greenhouse Emissions]
         url = 'https://drive.google.com/uc?export=download&id=1OaOvImEZLgxcmg1FmcqP4gSsABOKQu7P'
         response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -58,6 +60,7 @@ class example(dml.Algorithm):
         repo['ido_jconstan_jeansolo_suitcase.greenhouse_emissions'].insert(r)
         repo['ido_jconstan_jeansolo_suitcase.greenhouse_emissions'].metadata({'complete':True})
         print(repo['ido_jconstan_jeansolo_suitcase.greenhouse_emissions'].metadata())   
+        
 
 
         # OBTAINING FOURTH DATA SET [Boston work zones]
@@ -81,21 +84,72 @@ class example(dml.Algorithm):
         repo['ido_jconstan_jeansolo_suitcase.traffic_count'].insert(r)
         repo['ido_jconstan_jeansolo_suitcase.traffic_count'].metadata({'complete':True})
         print(repo['ido_jconstan_jeansolo_suitcase.traffic_count'].metadata())
-
+        
 		
 		
 		
-		 #Transformation One
+		#Transformation One
         #Goal: Find correlation between house price and people who take the bus
         #Select Home House # - Street from BU Transportation Study (REGISTERED STUDENT INFO) == ADDR1 from Property Assessment
-		#new data set fields: price of house, name, takes bus?
+		#new data set fields: price of house, takes bus?
         #print(r)
-        #tr = repo.zones
-		#tr = repo.zones.find({'neighborhood':'ROXBURY'}, {'street': True})
-        #for s in tr.find():
-            print(s)
-		
-		
+        #tr = repo.ido_jconstan_jeansolo_suitcase.bu_transportation_study.find()
+        #tr1 = repo.ido_jconstan_jeansolo_suitcase.bu_transportation_study.find({}, {'Address': True, _id:False})
+        #tr2 = repo.ido_jconstan_jeansolo_suitcase.property_data.find({'Address 1': {'$regex' : 'w'}},{'Address 1': True, '_id':False})
+        
+        #tr2 = repo.ido_jconstan_jeansolo_suitcase.property_data.find()
+        #for s in tr1:
+        #    print(s)
+        #for s in tr2:
+        #    print(s)
+        
+            
+            #v.rsplit(' ',1)[0];
+            #v = v.rpartition('/')[0]
+        #   print("k:",k[1])
+        #for s in tr2:
+        #    print(s)
+        #repo.ido_jconstan_jeansolo_suitcase.property_data.update_one({}, {"$set": d}, upsert=False)
+        #repo.ido_jconstan_jeansolo_suitcase.property_data.find({}).forEach(function(i){
+        #    i.Address=i.Address.rsplit(' ',1)[0];
+        #    repo.ido_jconstan_jeansolo_suitcase.property_data.save(i);
+        #    });
+        
+        
+        """
+        tr1data = repo.ido_jconstan_jeansolo_suitcase.property_data.aggregate([
+            {$match:{Address 1: {"$regex":/a/}}},
+            {
+                "$lookup":
+                    {
+                        "from": "bu_transportation_study",
+                        "localField": "Address",
+                        "foreignField": "Address 1",
+                        "as": "testing"
+                    }
+            }
+        ])
+        """
+
+        #result = repo.ido_jconstan_jeansolo_suitcase.property_data.aggregate([ {'$lookup' : {'from': repo.ido_jconstan_jeansolo_suitcase.bu_transportation_study,'localField': 'Address 1','foreignField': 'Address','as': 'results' }}])
+         
+         
+        """
+	    pipeline = [{'$lookup':
+                {'from' : 'models',
+                 'localField' : '_id',
+                 'foreignField' : 'references',
+                 'as' : 'cellmodels'}},
+            {'$unwind': '$cellmodels'},
+             {'$match':
+                 {'authors' : 'Migliore M', 'cellmodels.celltypes' : 'Hippocampus CA3 pyramidal cell'}},
+            {'$project': 
+                {'authors':1, 'cellmodels.celltypes':1}} 
+             ]
+
+for doc in (papers.aggregate(pipeline)):
+   pprint (doc)
+        """
 		#Transformation Two
 		
 		
