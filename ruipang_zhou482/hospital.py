@@ -5,6 +5,7 @@ import prov.model
 import datetime
 import uuid
 import numpy as np
+import os
 def aggregate(R, f):
 	keys = {r[0] for r in R}
 	return [(key, f([v for (k,v) in R if k == key])) for key in keys]
@@ -17,7 +18,7 @@ class hospital(dml.Algorithm):
 
 
 	@staticmethod
-	def execute(trail = False):
+	def execute(trial = False):
 
 		startTime = datetime.datetime.now()
 
@@ -58,7 +59,6 @@ class hospital(dml.Algorithm):
 		repo.logout()
 
 		endTime = datetime.datetime.now()
-
 		return {"start": startTime, "end": endTime}
 
 	@staticmethod

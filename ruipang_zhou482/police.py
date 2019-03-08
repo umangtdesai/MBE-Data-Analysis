@@ -5,6 +5,7 @@ import prov.model
 import datetime
 import uuid
 import numpy as np
+import os
 def aggregate(R, f):
 	keys = {r[0] for r in R}
 	return [(key, f([v for (k,v) in R if k == key])) for key in keys]
@@ -21,7 +22,7 @@ class police(dml.Algorithm):
 
 
 	@staticmethod
-	def execute(trail=False):
+	def execute(trial = False):
 		startTime = datetime.datetime.now()
 
 		client = dml.pymongo.MongoClient()
@@ -48,6 +49,8 @@ class police(dml.Algorithm):
 		repo.logout()
 
 		endTime = datetime.datetime.now()
+
+
 
 		return {"startTime": startTime, "endTime":endTime}
 
@@ -77,9 +80,3 @@ class police(dml.Algorithm):
 		repo.logout()
 
 		return doc
-
-
-police.execute()
-doc = police.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
