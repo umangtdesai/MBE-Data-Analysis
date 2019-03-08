@@ -75,24 +75,24 @@ class transportation(dml.Algorithm):
 
 		doc.wasAssociatedWith(get_massGov,   this_script)
 
-		doc.usage(get_massGov,   resource3, startTime, None,
+		doc.usage(get_massGov,   resource, startTime, None,
 			      {prov.model.PROV_TYPE:'ont:Retrieval',
 			      'ont:Query':'?type=Peak+Hours&select=LOCAL_ID+DAILY+LATITUDE+LONGITUDE'})
 
-		massGov   = doc.entity('dat:dezhouw_ghonigsb#massgov_most_recent_peak_hr',
+		massGov   = doc.entity('dat:dezhouw_ghonigsb#transportation',
 								{prov.model.PROV_LABEL:'Peak Hours',
 								 prov.model.PROV_TYPE:'ont:DataSet'})
 
 		doc.wasAttributedTo(massGov, this_script)
 		doc.wasGeneratedBy(massGov, get_massGov, endTime)
-		doc.wasDerivedFrom(massGov, resource1, get_massGov, get_massGov, get_massGov)
+		doc.wasDerivedFrom(massGov, resource, get_massGov, get_massGov, get_massGov)
 
 		return doc
 
 if __name__ == '__main__':
 	try:
 		print(transportation.execute())
-		# doc = flood.provenance()
+		# doc = transportation.provenance()
 		# print(doc.get_provn())
 		# print(json.dumps(json.loads(doc.serialize()), indent=4))
 	except Exception as e:
