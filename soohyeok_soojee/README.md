@@ -36,7 +36,7 @@ Although we have different datasets of polygons and points, our current project 
 #### *landmarkRate.py*:
 - Pulls dataset of polygons from *get_neighborhoods.py*
 - Pulls dataset of polygons from *get_landmarks.py*
-- Polygon datset of neighborhood is averaged into points
+- Polygon datset of landmarks is averaged into points
 - Now that we have points, checks and counts where the crime points are marked within the neighborhood polygons.
 
 #### *crimeRate.py*:
