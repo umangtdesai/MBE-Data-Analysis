@@ -50,13 +50,11 @@ class type_amount(dml.Algorithm):
 
         concatonate = project(combine, lambda t: (t[1][1], (t[0][1], 1)))
 
-        print(concatonate[2])
+        #print(concatonate[2])
 
         avgagg = reduce(lambda k,v: (k,sum(v[0])/sum(v[1])), concatonate)
 
-        print(avgagg[0])
-
-        #print(concatonate[0])
+        #print(avgagg[0])
 
         #create new database 
         repo.dropCollection("type_amount")
