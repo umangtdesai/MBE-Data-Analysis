@@ -11,6 +11,8 @@
 	* Zillow valution/zestimate, full address, zillow links 
 * Zillow Property Results DAta
 	* Number of bed,baths, valuation, home description for given property 
+* Boston Permit Database
+	* List of approved building permits for construction in Boston
 
 ## (Non-trivial) Derived Datasets
 
@@ -23,6 +25,7 @@
 With these three new datasets, we can gain a better understanding of the status of South Boston and it’s streets and potential properties to keep an eye on. With this information we can see which streets are most populated and which streets are more family friendly by figuring out which units are more cost efficient and newly renovated. This is particularly beneficial for the South Boston Neighborhood Development because this gives them an idea of which streets contain more individual houses vs apartments and offers them the ability to keep an eye on up and coming streets.  
 
 ## Auth.json
+```
 {
 	"services": {
 		"zillow": {
@@ -31,5 +34,8 @@ With these three new datasets, we can gain a better understanding of the status 
 		}
 	}
 }
+```
 ## Running 
-`python execute.py ekmak_gzhou_kaylaipp_shen99`
+```
+python execute.py ekmak_gzhou_kaylaipp_shen99
+```
