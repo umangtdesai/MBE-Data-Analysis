@@ -115,7 +115,6 @@ class sea_level(dml.Algorithm):
 			      {prov.model.PROV_TYPE:'ont:Retrieval',
 			      'ont:Query':'?type=Sea+High+Tide+36'})
 
-
 		seaLevel = doc.entity('dat:dezhouw_ghonigsb#sea_level',
 								{prov.model.PROV_LABEL:'Sea Level',
 								 prov.model.PROV_TYPE:'ont:DataSet'})
