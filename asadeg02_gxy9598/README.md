@@ -1,8 +1,8 @@
 # Project Description And Ideas 
 
-The Main project we are assigned is a spark project named "South Boston Neighborhood Development" the goal of which is to Identify buildings that may not even be on the market yet and then finding contact information of the person/people who own it and permit number of the building. Since the initial project doesn't meet the requiemetns for project#1 we decided to define some interesting questions whithin the scope of our main project  which could be potentially answered using the datasets given to us by spark. Answring these questions and analysing these answers could also provide a solution for the main project. 
+The Main project we are assigned is a spark project named "South Boston Neighborhood Development" the goal of which is to identify buildings that may not even be on the market yet and then finding contact information of the person/people who own it and permit number of the buildings. Since the initial project doesn't meet the requiemetns for project#1 we decided to define some interesting questions whithin the scope of our main project which could be potentially answered using the datasets given to us by spark. Answring these questions and analysing their answers could also provide a solution for the main project. 
 
-The two quesotions to be answred are following:
+The two quesotions to be answred are the following:
 
 1- Finding information about the buildings/properties in the most dangereous neighborhood of Boston area. These infomation include the value of these porpeties, type of the crimes happening in the neighbourhood, perimit number of buildings, owners of the porpeties,...
 
@@ -26,15 +26,17 @@ Aditional Resources
 
 Zillow Search API: "https://www.zillow.com/howto/api/GetSearchResults.htm"
 
-We are using these API to create a database of the property addresses that are on the market which are not using project#1 but is requiered for the main South Boston Neighborhood Development project. 
+We are using these API to create a database of the property addresses that are on the market which we are not using project#1 but is requiered for the main South Boston Neighborhood Development project. 
 
 Accsesssors (Accessing online - City Of Boston): https://www.cityofboston.gov/assessing/search/ 
 
 We are scraping this wesite to find the infomation we are intested in about the propeties in City Of Boston including the value of propeties. This resource is useful for both project#1 and Main project.
 
+"" Please note that scraping a website or calling an API is such a slow process and scraping accessors for all the street addresses is boyond the time and resources available so we have put a limit on the number of addresses we want to scrape accsessors for or call the api for ""
+
 
 ## Running The Code
 
-In Order to be able t oru nthe code you need to install `selenium` and `xmltodict`. We are using selenium for scraping Accsesssors and using xmltodic for parsing the Zillow Search API responses since they are in xml foramt.
+In Order to be able to run the code you need to install `selenium` and `xmltodict`. We are using selenium for scraping Accsesssors and using xmltodic for parsing the Zillow Search API responses since they are in xml foramt.
 
-Also in scrapeBostonGov method in mergeValueWithCrimeRate.py you need to specify the path to your chrome web driver. The path that is already there, is the default path when you install chrome web driver. 
+For scraping Accsesssors in scrapeBostonGov method in "mergeValueWithCrimeRate.py" module, you need to specify the path to your chrome web driver. The path already used, is the default path when you install chrome web driver. 
