@@ -4,10 +4,11 @@ import dml
 import prov.model
 import datetime
 import uuid
+import geojson
 import pandas as pd
 
 ############################################
-# getStations.py
+# get_ctastations.py
 # Script for collecting CTA Stations data
 ############################################
 
@@ -28,7 +29,7 @@ class get_ctastations(dml.Algorithm):
         repo_name = ctastations.writes[0]
 
         # ---[ Grab Data ]-------------------------------------------
-        url = 'https://data.cityofchicago.org/resource/5neh-572f.json'
+        url = 'https://data.cityofchicago.org/api/views/4qtv-9w43/files/8762c89e-813a-4c5a-9f09-fb0eb740dde0?filename=CTA_RailStations.kml'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         jsondata = json.loads(data)
         r = json.loads(response)
