@@ -10,37 +10,15 @@ import pandas as pd
 
 class uber_movement_data(dml.Algorithm):
 	# define relational models
-    def union(R, S):
-    	return R + S
-
-    def difference(R, S):
-    	return [t for t in R if t not in S]
-
-    def intersect(R, S):
-    	return [t for t in R if t in S]
-
-    def project(R, p):
-    	return [p(t) for t in R]
-
-    def select(R, s):    	
-    	return [t for t in R if s(t)]
-
-    def product(R, S):
-    	return [(t, u) for t in R for u in S]
-
-    def aggregate(R, f):
-        keys = {r[0] for r in R}
-        return [(key, f([v for (k, v) in R if k == key])) for key in keys]
-
     contributor = 'mmao95_Dongyihe_weijiang_zhukk'
     reads = []
-    writes = [(contributor + '.uber_data'),(contributor + '.boston_censustracts'),(contributor + '.boston_traffic')]
+    writes = [contributor + '.uber_data',contributor + '.boston_censustracts',contributor + '.boston_traffic']
 
     @staticmethod
     def execute(trial=False):
         start_time = datetime.datetime.now()
         contributor = 'mmao95_Dongyihe_weijiang_zhukk'
-        writes = [contributor + '.uber_data']
+        writes = [contributor + '.uber_data', contributor + '.boston_censustracts',contributor + '.boston_traffic']
         def aggregate(R, f):
             keys = {r[0] for r in R}
             return [(key, f([v for (k,v) in R if k == key])) for key in keys]
@@ -50,6 +28,29 @@ class uber_movement_data(dml.Algorithm):
         repo.authenticate(contributor, contributor)
         csv1 = pd.read_csv("http://datamechanics.io/data/boston-censustracts-2018-4-All-MonthlyAggregate.csv").values.tolist()
         csv2 = pd.read_csv("http://datamechanics.io/data/boston_censustracts.csv").values.tolist()
+        def union(R, S):
+    	    return R + S
+
+        def difference(R, S):
+    	    return [t for t in R if t not in S]
+
+        def intersect(R, S):
+    	    return [t for t in R if t in S]
+
+        def project(R, p):
+    	    return [p(t) for t in R]
+
+        def select(R, s):    	
+    	    return [t for t in R if s(t)]
+
+        def product(R, S):
+    	    return [(t, u) for t in R for u in S]
+
+        def aggregate(R, f):
+            keys = {r[0] for r in R}
+            return [(key, f([v for (k, v) in R if k == key])) for key in keys]
+
+
         l1 = [(s[0],1) for s in csv1]
         l2 = aggregate(l1,sum)
         l3 = [(s[1],s[2]) for s in csv2]
