@@ -11,8 +11,7 @@ import sys
 class getData(dml.Algorithm):
     contributor = 'asadeg02_gxy9598'
     reads = []
-    writes = ['asadeg02_gxy9598.building_permits', 'asadeg02_gxy9598.property_details', 'asadeg02_gxy9598.crime_incident_report', 
-    'asadeg02_gxy9598.active_food_stablishment', 'asadeg02_gxy9598.Get_Boston_Streets']
+    writes = ['asadeg02_gxy9598.building_permits', 'asadeg02_gxy9598.property_details', 'asadeg02_gxy9598.crime_incident_report', 'asadeg02_gxy9598.active_food_stablishment']
 
     @staticmethod
     def execute(trial = False):
@@ -109,24 +108,43 @@ class getData(dml.Algorithm):
         repo["asadeg02_gxy9598.Get_Boston_Streets"].metadata({'complete':True})
         print(repo["asadeg02_gxy9598.Get_Boston_Streets"].metadata())
        ################################################### get housing per Street #########################
-        '''repo.dropCollection("Get_Zillow_Search")
+        repo.dropCollection("Get_Zillow_Search")
         repo.createCollection("Get_Zillow_Search")
-        for addr in record_addrs[:1]:
-            print(addr)
+        for addr in record_addrs:
+            #print(addr)
             url = "https://www.zillow.com/webservice/GetSearchResults.htm?zws-id=X1-ZWz1gxzd99e39n_97i73&address=" + addr + "&citystatezip=Boston%2C+MA"
-            print(url)
+            #print(url)
             response = urllib.request.urlopen(url).read().decode("utf-8")
             my_dict = xmltodict.parse(response)
-            print(my_dict)
-            repo["asadeg02_gxy9598.Get_Zillow_Search"].insert_one(my_dict)
+            #print(my_dict['SearchResults:searchresults']['response']['results']['result']['zpid'])
+            my_dict = (my_dict['SearchResults:searchresults'])
+            if('response' in my_dict):
+                #print("has response")
+                my_dict = my_dict['response']['results']['result']
+                if(isinstance(my_dict, list)):
+                    #print("insert many")
+                    for a in my_dict:
+                        # my_dict = (my_dict['zpid'],my_dict['address'])
+                        del a["links"]
+                        del a["localRealEstate"]
+                        del a["zestimate"]
+                    repo["asadeg02_gxy9598.Get_Zillow_Search"].insert_many(my_dict)
+                else:
+                    #print("insert one")
+                    del my_dict["links"]
+                    del my_dict["localRealEstate"]
+                    del my_dict["zestimate"]
+                    repo["asadeg02_gxy9598.Get_Zillow_Search"].insert_one(my_dict)
 
+        #url = "https://www.zillow.com/webservice/GetSearchResults.htm?zws-id=X1-ZWz1gxzd99e39n_97i73&address=Yale+TER&citystatezip=Boston%2C+MA"
         s = json.dumps(r, sort_keys=True, indent=2)
         repo["asadeg02_gxy9598.Get_Zillow_Search"].metadata({'complete':True})
         print(repo["asadeg02_gxy9598.Get_Zillow_Search"].metadata())
 
+
         repo.logout()
         endTime = datetime.datetime.now()
-        return {"start":startTime, "end":endTime}'''
+        return {"start":startTime, "end":endTime}
 
       ###############################################################################################################################################
 
@@ -185,7 +203,7 @@ class getData(dml.Algorithm):
 
 
 
-        '''resource_Get_Zillow_Search = doc.entity('cob:ufcx-3fdn', {'prov:label':'Zillow housing Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_Get_Zillow_Search = doc.entity('cob:ufcx-3fdn', {'prov:label':'Zillow housing Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_Get_Zillow_Search = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, {'prov:label':'Get Zillow Search', prov.model.PROV_TYPE:'ont:Retrieval'})
         doc.wasAssociatedWith(get_Get_Zillow_Search, this_script)
         doc.usage(get_Get_Zillow_Search, resource_Get_Zillow_Search, startTime)
@@ -193,7 +211,7 @@ class getData(dml.Algorithm):
         doc.wasAttributedTo(Get_Zillow_Search, this_script)
         doc.wasGeneratedBy(Get_Zillow_Search, get_Get_Zillow_Search, endTime)
         doc.wasDerivedFrom(Get_Zillow_Search, resource_Get_Zillow_Search, get_Get_Zillow_Search,get_Get_Zillow_Search,get_Get_Zillow_Search)
-        '''
+
         repo.logout()
         return doc
 
