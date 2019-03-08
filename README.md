@@ -1,7 +1,7 @@
 # Project 1
 For this problem, we aim to try to see what affects individual's health in Boston. More specifically, 
 we intend to compare across different districts in Boston health survey data provided by the CDC against
-various characteristics of these district, some of which include demographics and access to open spaces.
+various characteristics of these district, which for now include demographics and access to open spaces.
 ### Data Portals and Datsets Used
 1. [Analyze Boston](https://data.boston.gov/dataset/)  
     - [Age demographics by neighborhood](https://data.boston.gov/dataset/8202abf2-8434-4934-959b-94643c7dac18/resource/c53f0204-3b39-4a33-8068-64168dbe9847/download/age.csv)
@@ -25,7 +25,7 @@ On Windows you need to download and install the wheel file which can be found he
 ### Algorithms
 ##### getData.py
 This algorithm goes to each of the three data portals listed above
-and retrieves the five datasets. The open space and neighborhood datasets are geojson files, the cdc health 
+and retrieves the five datasets listed. The open space and neighborhood datasets are geojson files, the cdc health 
 survey data is a json file, and the race demographics and age demographics data comes as a csv file. The algorithm
 does a little extra work with the csv file, turning them into json files so that they can be properly inserted into
 MongoDB. This algorithm doesn't modify any of the data, and each dataset is stored into its own mongo database with the 
@@ -67,12 +67,13 @@ that this survey took place in. We then store this data in mongo as Neighborhood
 
 ### Justification
 These three transformations were motivated in trying to find the how open spaces effect health in Boston.
-More specifically, in the future we look to regress the relative health scores collected by the CDC on amount of access people in these neighborhoods have to open spaces. That is why we first 
-aggregated age and race demographics for each neighborhood. The reason for collecting demographic data as another explanatory variable
-for health is that for one, age places a very important factor in health. Clearly, you would expect neighborhoods with older
-residents to have poorer health than those that are younger. Similarly, more diverse communities have been shown to have poorer health
+More specifically, in the future we look to regress the relative health scores collected by the CDC on amount of access people in these neighborhoods have to open spaces. 
+The reason I collected demographic data was to provide another explanatory variable to hopefully resolve some of the omitted variable problem. Az neighborhoods demographics can
+vary significantly, I decided that the two most important demographic figures influence health would be age and race. 
+Clearly, you would expect neighborhoods with older residents to have poorer health than those that are younger. Similarly, more diverse communities have been shown to have poorer health
 as typically these are lower income neighborhoods and limitations such as inability to speak English affect health as it is harder to 
-request for health services. This regression would not be very accurate if we didn't include demographic data of each neighborhood as then we would suffer from omitted variable bias. With
+request for health services. This regression would not be very accurate if we didn't include demographic data of each neighborhood as we wouldn't be able to discern whether open spaces really
+had an effect on health but rather was a result of hidden variables correlated to our dependent variable health and our independent variable amount of open spaces. With
 that being said, ideally we would plan to include more important explanatory variables that could effect so that we could most accurately
 capture the effect of open space. With the given transformations, much of the setup for this regression is done as we have catagorized the 
 CDC health survey data under each neighborhood as well as collected the demographics of each neighborhood as well as the percentage of
