@@ -15,7 +15,7 @@ Prof.Anderson of BU history department is conducting an ethnography of present-d
 - Do some data transformation.
 - Analyze results and discuss them with the project partner.
 
-## Our work
+## Our works
 Because our project partener do not provide us with the data, so our work focused more on how to get the useful data for the project. **We have discussed this with Prof. Andrei and he understood this and reduced the requirements for transformation for our Project #1.**
 
 ### 1. Scrape Data
