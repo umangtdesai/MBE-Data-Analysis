@@ -5,16 +5,7 @@ import csv
 import time
 import json
 import pymongo
-#
-# # MongoDB connection
-# try:
-#     mongodb = pymongo.MongoClient('mongodb://localhost')
-#     mongo = mongodb['Twitter_API']
-# except Exception as e:
-#     print('Error: Cannot connect to MongoDB! Please check the configuration.')
-#     raise e
-# print('Successfully connected to MongoDB!')
-# print('------------------------------------')
+
 
 latitude = 31.947
 longitude = 35.925

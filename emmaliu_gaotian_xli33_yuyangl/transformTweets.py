@@ -56,7 +56,7 @@ class transformTweets(dml.Algorithm):
         repo.createCollection("userLocation")
 
         for i in dataStored:
-            print(i)
+            # print(i)
             repo['emmaliu_gaotian_xli33_yuyangl.userLocation'].insert(i)
         repo['emmaliu_gaotian_xli33_yuyangl.userLocation'].metadata({'complete': True})
         print(repo['emmaliu_gaotian_xli33_yuyangl.userLocation'].metadata())
