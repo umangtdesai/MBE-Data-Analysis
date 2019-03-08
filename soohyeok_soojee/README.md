@@ -30,9 +30,13 @@ We currently put together the few datasets listed above and transformed the acqu
 - has better system of public transportation
 - has low crime rates.
 
-Although we have different datasets of polygons and points, our current project model is heavily dependant on geolocation datsets. We are currently researching on possible datasets to incorporate into our project to further develop user experience.
+Although we have different datasets of polygons and points, our current project model is heavily dependent on geolocation datsets. We are currently researching on possible datasets to incorporate into our project to further develop user experience.
 
+#### *landmarkRate.py*:
 
+#### *crimeRate.py*
+
+#### *transportation.py*
 
 
 ### Execution Script for Provenance.html:
