@@ -41,8 +41,11 @@ Export](https://phantombuster.com/api-store/3149/linkedin-search-export) to run 
 - **LinkedIn**
 
 1.Do the aggregation transformation on the query on the dataset.
+
 2.According to the currentjob, calculate the number of people who changed their jobs.
+
 3.Do the project transformation to get the data we need.
+
 Because we can only get the name,job and location, it is hard for us to do some meaningful transformation on data. Mostly what we could do is projection and selection.
 
 ### 3. Analysis and Discussion
