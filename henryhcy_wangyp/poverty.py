@@ -1,48 +1,39 @@
+
 import urllib.request
 import json
 import dml
 import prov.model
 import datetime
 import uuid
-import csv
+import csv 
 import io
 #get the data about neighborhoods
 
-class neighborhoods(dml.Algorithm):
+class poverty(dml.Algorithm):
     contributor = 'henryhcy_wangyp'
     reads = []
-    writes = ['henryhcy_wangyp.neighborhoods']
+    writes = ['henryhcy_wangyp.poverty']
 
     @staticmethod
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
-        print('5')
+        print('6')
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('henryhcy_wangyp', 'henryhcy_wangyp')
-
-       	url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/3525b0ee6e6b427f9aab5d0a1d0a1a28_0.csv'       
-        response = urllib.request.urlopen(url)
-        cr = csv.reader(io.StringIO(response.read().decode('utf-8')), delimiter = ',')
+        url = 'http://datamechanics.io/data/henryhcy_wangyp/poverty_rates.json'      
         # parse the data as following
-        rs = []
-        i = 0
-        for row in cr:
-                if(i != 0):
-                    dic = {}
-                    dic['name'] = row[1]
-                    dic['shapeSTArea'] = row[5]
-                    dic['shapeSTLength'] = row[6]
-                    rs.append(dic)
-                i += 1
-        repo.dropCollection("neighborhoods")
-        repo.createCollection("neighborhoods")
-        repo['henryhcy_wangyp.neighborhoods'].insert_many(rs)
-        repo['henryhcy_wangyp.neighborhoods'].metadata({'complete':True})
-        print(repo['henryhcy_wangyp.neighborhoods'].metadata())
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        #s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("poverty")
+        repo.createCollection("poverty")
+        repo['henryhcy_wangyp.poverty'].insert_many(r)
+        repo['henryhcy_wangyp.poverty'].metadata({'complete':True})
+        print(repo['henryhcy_wangyp.poverty'].metadata())
         repo.logout()
 
         endTime = datetime.datetime.now()
@@ -65,23 +56,23 @@ class neighborhoods(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
+        doc.add_namespace('bdp', 'http://datamechanics.io/data/henryhcy_wangyp/')
 
-        this_script = doc.agent('alg:henryhcy_wangyp#neighborhoods', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:3525b0ee6e6b427f9aab5d0a1d0a1a28_0', {'prov:label':'neighborhoods location', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
-        get_neighborhoods = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_neighborhoods, this_script)
-        doc.usage(get_neighborhoods, resource, startTime, None,
+        this_script = doc.agent('alg:henryhcy_wangyp#poverty', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('bdp:poverty_rates.json', {'prov:label':'poverty information', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_poverty = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_poverty, this_script)
+        doc.usage(get_poverty, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+                  'ont:Query':'?type=poverty&$select=name,address,city,state,location,OPEN_DT'
                   }
                   )
         
 
-        neighborhoods = doc.entity('dat:henryhcy_wangyp#neighborhoods', {prov.model.PROV_LABEL:'neighborhoods', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(neighborhoods, this_script)
-        doc.wasGeneratedBy(neighborhoods, get_neighborhoods, endTime)
-        doc.wasDerivedFrom(neighborhoods, resource, get_neighborhoods, get_neighborhoods, get_neighborhoods)
+        poverty = doc.entity('dat:henryhcy_wangyp#poverty', {prov.model.PROV_LABEL:'poverty', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(poverty, this_script)
+        doc.wasGeneratedBy(poverty, get_poverty, endTime)
+        doc.wasDerivedFrom(poverty, resource, get_poverty, get_poverty, get_poverty)
 
         
 

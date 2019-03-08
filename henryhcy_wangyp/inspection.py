@@ -18,6 +18,7 @@ class inspection(dml.Algorithm):
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
+        print('2')
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
@@ -35,6 +36,7 @@ class inspection(dml.Algorithm):
                     dic['businessName'] = row[0]
                     dic['result'] = row[11]
                     dic['resultdttm'] = row[12]
+                    dic['violation_level'] = row[14]
                     dic['viostatus'] = row[17]
                     dic['address'] = row[20]
                     dic['property_id'] = row[24]
@@ -75,7 +77,7 @@ class inspection(dml.Algorithm):
         doc.wasAssociatedWith(get_inspection, this_script)
         doc.usage(get_inspection, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=inspection&$select=name,address,city,state,location,OPEN_DT'
+                  'ont:Query':'?type=inspection&$select=businessName,result,resultdttm,viostatus,address,property_id'
                   }
                   )
         
@@ -91,13 +93,13 @@ class inspection(dml.Algorithm):
                   
         return doc
 
-'''
+
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
-example.execute()
-doc = example.provenance()
+inspection.execute()
+doc = inspection.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
-'''
+
 
 ## eof
