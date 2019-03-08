@@ -4,6 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
+import pandas as pd
 
 class example(dml.Algorithm):
     contributor = 'ido_jconstan_jeansolo_suitcase'
@@ -47,23 +48,26 @@ class example(dml.Algorithm):
     
 
         # OBTAINING THIRD DATA SET [Boston Street Segments]
-        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cfd1740c2e4b49389f47a9ce2dd236cc_8.geojson'
+        #url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cfd1740c2e4b49389f47a9ce2dd236cc_8.geojson'
+        #response = urllib.request.urlopen(url).read().decode("utf-8")
+        #r = json.loads(response)
+        #s = json.dumps(r, sort_keys=True, indent=2)
+        #repo.dropCollection("boston_street_segments")
+        #repo.createCollection("boston_street_segments") 
+        #repo['ido_jconstan_jeansolo_suitcase.boston_street_segments'].insert_many(r)
+        #repo['ido_jconstan_jeansolo_suitcase.boston_street_segments'].metadata({'complete':True})
+        #print(repo['ido_jconstan_jeansolo_suitcase.boston_street_segments'].metadata())   
+
+
+        # OBTAINING FOURTH DATA SET [Boston work zones]
+        url = 'https://drive.google.com/uc?export=download&id=1LhG0cxZgHCU2fqDNaGLdQeBZo9z7gJTj'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("boston_street_segments")
-        repo.createCollection("boston_street_segments") 
-        repo['ido_jconstan_jeansolo_suitcase.boston_street_segments'].insert_many(r)
-        repo['ido_jconstan_jeansolo_suitcase.boston_street_segments'].metadata({'complete':True})
-        print(repo['ido_jconstan_jeansolo_suitcase.boston_street_segments'].metadata())   
-
-
-        # OBTAINING FOURTH DATA SET [Boston WORK ZONES]
-        url = 'https://data.boston.gov/dataset/f9f57091-92f3-463a-8f1c-93e46361296d/resource/36fcf981-e414-4891-93ea-f5905cec46fc/download/tmpem7q29it.csv'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        data = pd.read_csv(response)
-        r = json.loads(data.to_json(orient='records'))
-        s = json.dumps(r, sort_keys=True, indent=2)
+		#response = urllib.request.urlopen(url).read().decode("utf-8")
+        #data = pd.read_csv(response, error_bad_lines=False)
+        #r = json.loads(data.to_json(orient='records'))
+        #s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("zones")
         repo.createCollection("zones")
         repo['ido_jconstan_jeansolo_suitcase.zones'].insert_many(r)
