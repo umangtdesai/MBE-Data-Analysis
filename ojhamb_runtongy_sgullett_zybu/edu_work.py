@@ -48,7 +48,7 @@ class edu_work(dml.Algorithm):
         edu_work = []
 
         for x in high_group:
-            edu_work.append({"Educational Attainment": x[0], "Rate of Employment": x[1]})
+            edu_work.append({"Educational Attainment": x[0], "Number of Expected Employment": x[1]})
 
         repo['ojhamb_runtongy_sgullett_zybu.edu_work'].insert_many(edu_work)
         repo['ojhamb_runtongy_sgullett_zybu.edu_work'].metadata({'complete': True})
