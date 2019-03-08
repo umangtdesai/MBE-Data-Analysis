@@ -79,10 +79,12 @@ class DatasetInsertion(dml.Algorithm):
         repo['kgrewal_shin2.ubers'].metadata({'complete': True})
         print(repo['kgrewal_shin2.ubers'].metadata())
 
-        # # major roads
-        # url = 'https://drive.google.com/file/d/10a3ZoJjx2kgCRWEwjjCoTHADFV-uYV3e/view?usp=sharing'
+        # major roads
+        # url = 'major_roads.json'
         # response = urllib.request.urlopen(url).read().decode("utf-8")
         # r = json.loads(response)
+        # with open('major_roads.json') as f:
+        #     r = json.load(f)
         # repo.dropCollection("major_roads")
         # repo.createCollection("major_roads")
         # repo['kgrewal_shin2.major_roads'].insert_many(r)
