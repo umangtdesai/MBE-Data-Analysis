@@ -29,7 +29,7 @@ class transformLinkedin(dml.Algorithm):
         dataStored=[]
         countchange=0
             
-        for data in A:
+        for data in linkedinData:
             if data['query'] == "amman":
                 name = data['name']
                 location = data['query']
