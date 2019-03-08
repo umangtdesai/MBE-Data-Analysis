@@ -43,10 +43,10 @@ class download_university(dml.Algorithm):
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         # our data mechanics class namespaces
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
+        doc.add_namespace('log', 'http://datamechanics.io/log/')
 
         # the namespace for geospatial datasets in boston data portal
         doc.add_namespace('bgd', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')

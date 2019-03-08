@@ -33,10 +33,6 @@ class download_mbta_stops(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('kgarber', 'kgarber')
-        repo.dropCollection("mbta.lines")
-        repo.dropCollection("mbta.routes")
-        repo.createCollection("mbta.lines")
-        repo.createCollection("mbta.routes")
 
         url = "https://cdn.mbta.com/MBTA_GTFS.zip"
         zip_urlopen = urllib.request.urlopen(url)
@@ -87,50 +83,67 @@ class download_mbta_stops(dml.Algorithm):
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         # our data mechanics class namespaces
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
+        doc.add_namespace('log', 'http://datamechanics.io/log/')
 
-        # the namespace for geospatial datasets in boston data portal
-        doc.add_namespace('blb', 'https://www.bluebikes.com/system-data')
+        # mbta namespace
+        doc.add_namespace('mbta', 'https://www.mbta.com/developers')
 
         # the agent which is my algorithn
         this_script = doc.agent(
-            'alg:kgarber#download_bluebikes', 
+            'alg:kgarber#download_mbta_stops', 
             {
                 prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 
                 'ont:Extension':'py'
             })
-        # the entity I am downloading
+
+        # entities
         resource = doc.entity(
-            'blb:data2018',
+			'mbta:GTFS',
             {
-                'prov:label':'Bluebikes Dataset', 
+                'prov:label':'MBTA GTFS', 
                 prov.model.PROV_TYPE:'ont:DataResource', 
                 'ont:Extension':'csv'
             })
-        # the activity of downloading this dataset (log the timing)
-        get_bluebikes = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        # the activity is associated with the agent
-        doc.wasAssociatedWith(get_bluebikes, this_script)
-        # log an invocation of the activity
-        doc.usage(get_bluebikes, resource, startTime, None,
+        mbta_stops = doc.entity(
+            'dat:kgarber#mbta_stops', 
             {
-                prov.model.PROV_TYPE:'ont:Retrieval',
-                'ont:Query':'https://s3.amazonaws.com/hubway-data/index.html'
-            })
-        # the newly generated entity
-        bluebikes = doc.entity(
-            'dat:kgarber#bluebikes', 
-            {
-                prov.model.PROV_LABEL:'Bluebikes', 
+                prov.model.PROV_LABEL:'MBTA Stops', 
                 prov.model.PROV_TYPE:'ont:DataSet'
             })
-        # relations for the above entity
-        doc.wasAttributedTo(bluebikes, this_script)
-        doc.wasGeneratedBy(bluebikes, get_bluebikes, endTime)
-        doc.wasDerivedFrom(bluebikes, resource, get_bluebikes, get_bluebikes, get_bluebikes)
+        mbta_lines = doc.entity(
+            'dat:kgarber#mbta_lines', 
+            {
+                prov.model.PROV_LABEL:'MBTA Lines', 
+                prov.model.PROV_TYPE:'ont:DataSet'
+            })
+        mbta_routes = doc.entity(
+            'dat:kgarber#mbta_routes', 
+            {
+                prov.model.PROV_LABEL:'MBTA Routes', 
+                prov.model.PROV_TYPE:'ont:DataSet'
+            })
+
+        # activities
+        get_data = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+
+        # activity associations
+        doc.wasAssociatedWith(get_data, this_script)
+
+        # usage of activities
+        doc.usage(get_data, resource, startTime, None,
+            {
+                prov.model.PROV_TYPE:'ont:Retrieval',
+                'ont:Query':'https://cdn.mbta.com/MBTA_GTFS.zip'
+            })
+
+        # relations for the above entities
+        for entity in [mbta_stops, mbta_routes, mbta_lines]:
+	        doc.wasAttributedTo(entity, this_script)
+	        doc.wasGeneratedBy(entity, get_data, endTime)
+	        doc.wasDerivedFrom(entity, resource, get_data, get_data, get_data)
         
         # return the generated provenance document
         return doc

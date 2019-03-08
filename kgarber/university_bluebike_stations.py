@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 class university_bluebike_stations(dml.Algorithm):
     contributor = 'kgarber'
-    reads = ['kgarber.bluebikes.stations', 'kgarber.university']
+    reads = ['kgarber.bluebikes', 'kgarber.bluebikes.stations', 'kgarber.university']
     writes = ['kgarber.university_bluebike_stations']
     @staticmethod
     def execute(trial = False):
@@ -58,13 +58,13 @@ class university_bluebike_stations(dml.Algorithm):
         for uni in tqdm(unis):
             common_stations = repo['kgarber.bluebikes'].aggregate([
                 {"$addFields": {
-                    "startHour": {"$hour": {"$toDate": "$starttime"}},
-                    "startDay": {"$dayOfWeek": {"$toDate": "$starttime"}}
+                    "startHour": {"$hour": {"$toDate": "$starttime"}},  # hour of the day
+                    "startDay": {"$dayOfWeek": {"$toDate": "$starttime"}}  # day of the week
                 }},
                 {"$match": {
                     "end station id": {"$in": uni["nearbyStations"]},
-                    "startHour": {"$gte": 7, "$lt": 11},
-                    "startDay": {"$gte": 2, "$lte": 6}
+                    "startHour": {"$gte": 7, "$lt": 11},  # between 7 and 11 AM
+                    "startDay": {"$gte": 2, "$lte": 6}  # monday through friday
                 }},
                 {"$group": {
                     "_id": "$start station id",
@@ -91,52 +91,61 @@ class university_bluebike_stations(dml.Algorithm):
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         # our data mechanics class namespaces
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
+        doc.add_namespace('log', 'http://datamechanics.io/log/')
 
-        # the namespace for geospatial datasets in boston data portal
-        doc.add_namespace('blb', 'https://www.bluebikes.com/system-data')
-
-        # the agent which is my algorithn
         this_script = doc.agent(
-            'alg:kgarber#download_bluebikes', 
+            'alg:kgarber#university_bluebike_stations', 
             {
                 prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 
                 'ont:Extension':'py'
             })
-        # the entity I am downloading
-        resource = doc.entity(
-            'blb:data2018',
-            {
-                'prov:label':'Bluebikes Dataset', 
-                prov.model.PROV_TYPE:'ont:DataResource', 
-                'ont:Extension':'csv'
-            })
-        # the activity of downloading this dataset (log the timing)
-        get_bluebikes = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        # the activity is associated with the agent
-        doc.wasAssociatedWith(get_bluebikes, this_script)
-        # log an invocation of the activity
-        doc.usage(get_bluebikes, resource, startTime, None,
-            {
-                prov.model.PROV_TYPE:'ont:Retrieval',
-                'ont:Query':'https://s3.amazonaws.com/hubway-data/index.html'
-            })
-        # the newly generated entity
         bluebikes = doc.entity(
             'dat:kgarber#bluebikes', 
             {
                 prov.model.PROV_LABEL:'Bluebikes', 
                 prov.model.PROV_TYPE:'ont:DataSet'
             })
-        # relations for the above entity
-        doc.wasAttributedTo(bluebikes, this_script)
-        doc.wasGeneratedBy(bluebikes, get_bluebikes, endTime)
-        doc.wasDerivedFrom(bluebikes, resource, get_bluebikes, get_bluebikes, get_bluebikes)
+        bluebikes_stations = doc.entity(
+            'dat:kgarber#bluebikes_stations', 
+            {
+                prov.model.PROV_LABEL:'Bluebikes Stations', 
+                prov.model.PROV_TYPE:'ont:DataSet'
+            })
+        university = doc.entity(
+            'dat:kgarber#university', 
+            {
+                prov.model.PROV_LABEL:'Universities In Boston', 
+                prov.model.PROV_TYPE:'ont:DataSet'
+            })
+        common_stations = doc.entity(
+            'dat:kgarber#common_stations',
+            {
+                prov.model.PROV_LABEL: 'Common BB Stations',
+                prov.model.PROV_TYPE: 'ont:DataSet'
+            })
+
+        gen_stations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(gen_stations, this_script)
+        doc.usage(gen_stations, bluebikes, startTime, None,
+            {prov.model.PROV_TYPE:'ont:Aggregate'})
+        doc.usage(gen_stations, bluebikes_stations, startTime, None,
+            {prov.model.PROV_TYPE:'ont:Aggregate'})
+        doc.usage(gen_stations, university, startTime, None,
+            {prov.model.PROV_TYPE:'ont:Aggregate'})
+        doc.wasAttributedTo(common_stations, this_script)
+        doc.wasGeneratedBy(common_stations, gen_stations, endTime)
+        doc.wasDerivedFrom(common_stations, bluebikes,
+                gen_stations, gen_stations, gen_stations)
+        doc.wasDerivedFrom(common_stations, bluebikes_stations,
+                gen_stations, gen_stations, gen_stations)
+        doc.wasDerivedFrom(common_stations, university,
+                gen_stations, gen_stations, gen_stations)
         
         # return the generated provenance document
         return doc
 
 # university_bluebike_stations.execute()
+# university_bluebike_stations.provenance()

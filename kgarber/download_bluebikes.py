@@ -55,8 +55,6 @@ class download_bluebikes(dml.Algorithm):
         repo = client.repo
         repo.authenticate('kgarber', 'kgarber')
 
-
-
         repo.dropCollection("bluebikes")
         repo.createCollection("bluebikes")
 
@@ -115,9 +113,6 @@ class download_bluebikes(dml.Algorithm):
                     repo['kgarber.bluebikes'].insert_many(result_rows)
                     repo['kgarber.bluebikes'].metadata({'complete':True})
 
-
-
-
         # parse all of the bike stations from this data
         print("Parsing bike stations")
         repo.dropCollection("bluebikes.stations")
@@ -163,22 +158,23 @@ class download_bluebikes(dml.Algorithm):
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         # our data mechanics class namespaces
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
+        doc.add_namespace('log', 'http://datamechanics.io/log/')
 
-        # the namespace for geospatial datasets in boston data portal
+        # specific namespaces
         doc.add_namespace('blb', 'https://www.bluebikes.com/system-data')
 
-        # the agent which is my algorithn
+        # agent
         this_script = doc.agent(
             'alg:kgarber#download_bluebikes', 
             {
                 prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 
                 'ont:Extension':'py'
             })
-        # the entity I am downloading
+
+        # entities
         resource = doc.entity(
             'blb:data2018',
             {
@@ -186,28 +182,46 @@ class download_bluebikes(dml.Algorithm):
                 prov.model.PROV_TYPE:'ont:DataResource', 
                 'ont:Extension':'csv'
             })
-        # the activity of downloading this dataset (log the timing)
-        get_bluebikes = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        # the activity is associated with the agent
-        doc.wasAssociatedWith(get_bluebikes, this_script)
-        # log an invocation of the activity
-        doc.usage(get_bluebikes, resource, startTime, None,
-            {
-                prov.model.PROV_TYPE:'ont:Retrieval',
-                'ont:Query':'https://s3.amazonaws.com/hubway-data/index.html'
-            })
-        # the newly generated entity
         bluebikes = doc.entity(
             'dat:kgarber#bluebikes', 
             {
                 prov.model.PROV_LABEL:'Bluebikes', 
                 prov.model.PROV_TYPE:'ont:DataSet'
             })
-        # relations for the above entity
+        bluebikes_stations = doc.entity(
+            'dat:kgarber#bluebikes_stations', 
+            {
+                prov.model.PROV_LABEL:'Bluebikes Stations', 
+                prov.model.PROV_TYPE:'ont:DataSet'
+            })
+
+        # activities
+        get_bluebikes = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        generate_stations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+
+        # wasAssociatedWith
+        doc.wasAssociatedWith(get_bluebikes, this_script)
+        doc.wasAssociatedWith(generate_stations, this_script)
+
+        # usage
+        doc.usage(get_bluebikes, resource, startTime, None,
+            {
+                prov.model.PROV_TYPE:'ont:Retrieval',
+                'ont:Query':'https://s3.amazonaws.com/hubway-data/index.html'
+            })
+        doc.usage(generate_stations, resource, startTime, None,
+                {prov.model.PROV_TYPE:'ont:Aggregate'})
+
+        # relations for entities
         doc.wasAttributedTo(bluebikes, this_script)
         doc.wasGeneratedBy(bluebikes, get_bluebikes, endTime)
         doc.wasDerivedFrom(bluebikes, resource, get_bluebikes, get_bluebikes, get_bluebikes)
-        
+
+        doc.wasAttributedTo(bluebikes_stations, this_script)
+        doc.wasGeneratedBy(bluebikes_stations, generate_stations, endTime)
+        doc.wasDerivedFrom(bluebikes_stations, bluebikes, generate_stations, \
+                generate_stations, generate_stations)
+
         # return the generated provenance document
         return doc
 

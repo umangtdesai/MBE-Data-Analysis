@@ -35,6 +35,8 @@
 # Final TODO
 * Write up README for submission
 * look at other project 1 requirements before submitting
+* finish provenance, clean up my code
+* better aggregation than pulling stuff into python and dealing with it...
 
 # Ideas
 * See how many bike lanes and hubways are near each university
@@ -64,6 +66,24 @@ Satisfies 5 datasets from at least 3 sources.
 	* alerts
 * NOAA
 	* boston daily weather 2018
+
+So Far:
+* Bluebikes
+* Universities
+* Weather
+* MBTA stops/lines/routes
+* MBTA alerts
+
+Portals:
+* bluebike
+* data.boston.gov
+* datamechanics.io (weather)
+* MBTA
+
+Outputs:
+* ride_weather_aggregate
+* university_bluebike_stations
+* alert_weather_aggregate
 
 # Output Datasets
 
