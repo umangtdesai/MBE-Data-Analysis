@@ -17,7 +17,7 @@ class get_zillow_search_data(dml.Algorithm):
     writes = ['ekmak_gzhou_kaylaipp_shen99.zillow_getsearchresults_data']
 
     @staticmethod
-    def execute(trial = False):
+    def execute(trial = True):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 

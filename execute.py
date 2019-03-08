@@ -55,6 +55,14 @@ print(provenance.get_provn())
 
 # Render the provenance document as an interactive graph.
 prov_json = json.loads(provenance.serialize())
+print("")
+print('')
+print('prov_json: ', prov_json)
+print('')
+print('')
+print("")
+print('')
+print(prov_json['wasAssociatedWith'].values())
 import protoql
 agents = [[a] for a in prov_json['agent']]
 entities = [[e] for e in prov_json['entity']]
