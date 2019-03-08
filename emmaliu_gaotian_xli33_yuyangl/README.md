@@ -18,19 +18,19 @@ Prof.Anderson of BU history department is conducting an ethnography of present-d
 ## Our work
 Because our project partener do not provide us with the data, so our work focused more on how to get the useful data for the project. **We have discussed this with Prof. Andrei and he understood this and reduced the requirements for transformation for our Project #1.**
 
-### Scrape Data
+### 1. Scrape Data
 Following the two topics mentioned above, out first step is getting data since we are not provided with data sets from the project partner. We decide to get data from [Twitter](https://twitter.com/?lang=en) and [LinkedIn](https://www.linkedin.com/).
 
 - **Twitter**
 
-  At first, we want to use [Twitter API](https://developer.twitter.com/content/developer-twitter/en.html) to get users who live in Amman and then get their tweets. However, the API do not provide this fuction and we cannot directly get all the users with location "Amman" in their profile. Hence, we decide to get tweets with location "Amman". We set the coordinates of the center of Amman and the radius to specify the range and get the tweets in that area. We get 5,000 tweets，store all the information as a [JSON](https://www.json.org/) file and upload it to [the course website](http://datamechanics.io/data/tweets_amman.json).
+  At first, we want to use [Twitter API](https://developer.twitter.com/content/developer-twitter/en.html) to get users who live in Amman and then get their tweets. However, the API do not provide this fuction and we cannot directly get all the users with location "Amman" in their profile. Hence, we decide to get tweets with location "Amman". We set the coordinates of the center of Amman and the radius to specify the range and get the tweets in that area. We get 5,000 tweets, store all the information as a [JSON](https://www.json.org/) file and upload it to [the course website](http://datamechanics.io/data/tweets_amman.json).
 
 - **LinkedIn**
 
   According to the project topic, we mainly focus on people who are from Amman (Jordan) and their education as well as job. We use an API called [Linkedin Search
 Export](https://phantombuster.com/api-store/3149/linkedin-search-export) to run through people’s profiles on Linkedin. We only get around 150 sets of data and upload it to [the course website](http://datamechanics.io/data/linkedindataset.json) as well. The limitaion will be discussed later.
 
-### Data Transformation
+### 2. Data Transformation
 - **Twitter**
 
 1. Filtered out the tweets that the user's location is not empty.
@@ -42,7 +42,7 @@ Export](https://phantombuster.com/api-store/3149/linkedin-search-export) to run 
 
 Based on the above issues, it is hard for us to do some meaningful transformation on data. Mostly what we could do is projection and selection.
 
-### Analysis and Discussion
+### 3. Analysis and Discussion
 - **Analysis for Twitter**
 
   The data set we get includes some useful information, such as the location of the users. By analyzing that, we find that there are basically two types of people: native and tourists and there are some difference in their number of followers and friends. About 60% of them are tourists. But there are still some people who do not specify their location in their profile. Also, some texts are in Arabic, so we maybe need to translate them into English later.
