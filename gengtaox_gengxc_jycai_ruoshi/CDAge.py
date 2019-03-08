@@ -39,6 +39,7 @@ class CDAge(dml.Algorithm):
                     "geo_level_2": str(i).zfill(2),
                     "url": "https://api.census.gov/data/2017/acs/acs1/profile",
                     "tableid": "99_mcd_people",
+                    "key": "f4a93d15173229253a4f234727b2902053f61bbd;mycd"
             }
             response = requests.get(url, params=params).json()
             CD_dict[i]['Age']["16-19"] = {
