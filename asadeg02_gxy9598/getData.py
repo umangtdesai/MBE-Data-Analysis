@@ -119,7 +119,7 @@ class getData(dml.Algorithm):
             #print(my_dict['SearchResults:searchresults']['response']['results']['result']['zpid'])
             my_dict = (my_dict['SearchResults:searchresults'])
             if('response' in my_dict):
-                print("has response")
+                #print("has response")
                 my_dict = my_dict['response']['results']['result']
                 if(isinstance(my_dict, list)):
                     #print("insert many")
