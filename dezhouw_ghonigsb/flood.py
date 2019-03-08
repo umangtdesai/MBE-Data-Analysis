@@ -60,7 +60,7 @@ class flood(dml.Algorithm):
 
 		# thirty_six_inch_sea_level_rise_high_tide
 		collection_name = "thirty_six_inch_sea_level_rise_high_tide"
-		url             = "https://opendata.arcgis.com/datasets/74692fe1b9b24f3c9419cd61b87e4e3b_8.geojson"
+		url             = "https://opendata.arcgis.com/datasets/74692fe1b9b24f3c9419cd61b87e4e3b_5.geojson"
 		gcontext        = ssl.SSLContext()
 		response        = urllib.request.urlopen(url, context=gcontext).read().decode("utf-8")
 		r               = json.loads(response)
