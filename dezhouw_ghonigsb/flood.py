@@ -22,7 +22,8 @@ class flood(dml.Algorithm):
 				   "thirty_six_inch_sea_level_rise_high_tide",
 				   "thirty_six_inch_sea_level_rise_10_pct_annual_flood",
 				   "zoning_subdistricts",
-				   "zillow_boston_neighborhood"]
+				   "zillow_boston_neighborhood",
+				   "massgov_most_recent_peak_hr"]
 
 	@staticmethod
 	def execute(trial = False):
@@ -39,45 +40,36 @@ class flood(dml.Algorithm):
 			repo.dropCollection(collection_name)
 
 		# nine_inch_sea_level_rise_1pct_annual_flood
-		collection_name = "nine_inch_sea_level_rise_1pct_annual_flood"
+		c1              = "nine_inch_sea_level_rise_1pct_annual_flood"
 		url             = "https://opendata.arcgis.com/datasets/74692fe1b9b24f3c9419cd61b87e4e3b_7.geojson"
 		gcontext        = ssl.SSLContext()
 		response        = urllib.request.urlopen(url, context=gcontext).read().decode("utf-8")
-		r               = json.loads(response)
-		repo.createCollection(collection_name)
-		repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
-		print("Success: [{}]".format(collection_name))
+		s1              = json.loads(response)
+		print("Success: [{}]".format(c1))
 
 		# nine_inch_sea_level_rise_high_tide
-		collection_name = "nine_inch_sea_level_rise_high_tide"
+		c2              = "nine_inch_sea_level_rise_high_tide"
 		url             = "https://opendata.arcgis.com/datasets/74692fe1b9b24f3c9419cd61b87e4e3b_8.geojson"
 		gcontext        = ssl.SSLContext()
 		response        = urllib.request.urlopen(url, context=gcontext).read().decode("utf-8")
-		r               = json.loads(response)
-		repo.createCollection(collection_name)
-		repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
-		print("Success: [{}]".format(collection_name))
+		s2              = json.loads(response)
+		print("Success: [{}]".format(c2))
 
 		# thirty_six_inch_sea_level_rise_high_tide
-		collection_name = "thirty_six_inch_sea_level_rise_high_tide"
+		c3              = "thirty_six_inch_sea_level_rise_high_tide"
 		url             = "https://opendata.arcgis.com/datasets/74692fe1b9b24f3c9419cd61b87e4e3b_8.geojson"
 		gcontext        = ssl.SSLContext()
 		response        = urllib.request.urlopen(url, context=gcontext).read().decode("utf-8")
-		r               = json.loads(response)
-		repo.createCollection(collection_name)
-		repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
-		print("Success: [{}]".format(collection_name))
+		s3              = json.loads(response)
+		print("Success: [{}]".format(c3))
 
 		# thirty_six_inch_sea_level_rise_10_pct_annual_flood
-		collection_name = "thirty_six_inch_sea_level_rise_10_pct_annual_flood"
+		c4              = "thirty_six_inch_sea_level_rise_10_pct_annual_flood"
 		url             = "https://opendata.arcgis.com/datasets/74692fe1b9b24f3c9419cd61b87e4e3b_3.geojson"
 		gcontext        = ssl.SSLContext()
 		response        = urllib.request.urlopen(url, context=gcontext).read().decode("utf-8")
-		r               = json.loads(response)
-		repo.createCollection(collection_name)
-		repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
-		print("Success: [{}]".format(collection_name))
-
+		s4              = json.loads(response)
+		print("Success: [{}]".format(c4))
 
 		# zoning_subdistricts
 		collection_name = "zoning_subdistricts"
@@ -117,6 +109,18 @@ class flood(dml.Algorithm):
 		for row in reader:
 			repo["dezhouw_ghonigsb."+collection_name].insert_one(row)
 		print("Success: [{}]".format(collection_name))
+
+		# Datasets Transformation
+		# >>> Combine sea level datasets
+		collection_name = "sea_level"
+		repo.createCollection(collection_name)
+		repo["dezhouw_ghonigsb."+collection_name].insert_one({c1: s1})
+		repo["dezhouw_ghonigsb."+collection_name].insert_one({c2: s2})
+		repo["dezhouw_ghonigsb."+collection_name].insert_one({c3: s3})
+		repo["dezhouw_ghonigsb."+collection_name].insert_one({c4: s4})
+
+		# >>> Calculate and combine "zoning" & "neighborhood"
+		# >>> Do select on "MassGov"
 
         # Disconnect database for data safety
 		repo.logout()
@@ -209,9 +213,9 @@ class flood(dml.Algorithm):
 if __name__ == '__main__':
 	try:
 		print(flood.execute())
-		doc = flood.provenance()
-		print(doc.get_provn())
-		print(json.dumps(json.loads(doc.serialize()), indent=4))
+		# doc = flood.provenance()
+		# print(doc.get_provn())
+		# print(json.dumps(json.loads(doc.serialize()), indent=4))
 	except Exception as e:
 		traceback.print_exc(file = sys.stdout)
 	finally:
