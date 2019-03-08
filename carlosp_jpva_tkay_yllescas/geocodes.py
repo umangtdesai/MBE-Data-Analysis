@@ -6,6 +6,7 @@ import prov.model
 import datetime
 import uuid
 import sys
+import math
 
 class geocodes(dml.Algorithm):
     contributor = 'carlosp_jpva_tkay_yllescas'
@@ -30,7 +31,7 @@ class geocodes(dml.Algorithm):
         count = 0
         for town in demographics:
             if count%5==0:
-                sys.stdout.write(str(count) + " lines parsed\r")   
+                sys.stdout.write(str(math.floor(count/demographics.count()*100)) + "% processed\r")   
                 sys.stdout.flush()
             count+=1
             query = urllib.parse.urlencode({"address": town["Community"], "key": dml.auth["services"]["googlegeocoding"]["key"]})     
