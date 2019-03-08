@@ -52,7 +52,6 @@ class PropertyAssessment(dml.Algorithm):
              
             c['zipcode'] = i
             c['avg_value']=dic[i][0]/dic[i][1]
-            print (c)
             ps.append(c)
         
         repo.dropCollection("PropertyAssessment")
@@ -91,7 +90,7 @@ class PropertyAssessment(dml.Algorithm):
         this_script = doc.agent('alg:ruipang_zhou482#PropertyAssessment', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('dat:Boston Property Values',
                               {'prov:label': 'Boston Property Values Data', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'json'})
+                               'ont:Extension': 'csv'})
         get_propvalue = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_propvalue, this_script)
         doc.usage(get_propvalue, resource, startTime, None,

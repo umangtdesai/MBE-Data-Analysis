@@ -34,13 +34,7 @@ class PublicSchool(dml.Algorithm):
                     dic[row[8]]+=1
                 else:
                     dic[row[8]] =1
-        #             dic[row[7]][0]+=float(row[18])
-        #             dic[row[7]][1]+=1
-        #         else:
-        #             p =[]
-        #             p.append(float(row[18]))
-        #             p.append(1)
-        #             dic[row[7]]=p
+
 
             i = i + 1
         # print (dic['02108'])
@@ -89,17 +83,17 @@ class PublicSchool(dml.Algorithm):
         resource = doc.entity('dat:Boston Property Values',
                               {'prov:label': 'Boston Public School Data', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
-        get_propvalue = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_propvalue, this_script)
-        doc.usage(get_propvalue, resource, startTime, None,
+        get_PublicSchool = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_PublicSchool, this_script)
+        doc.usage(get_PublicSchool, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   }
                   )
 
-        propvalue = doc.entity('dat:ruipang_zhou482#PublicSchool', {prov.model.PROV_LABEL:'Boston PublicSchool ', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(propvalue, this_script)
-        doc.wasGeneratedBy(propvalue, get_propvalue, endTime)
-        doc.wasDerivedFrom(propvalue, resource, get_propvalue, get_propvalue, get_propvalue)
+        PublicSchool = doc.entity('dat:ruipang_zhou482#PublicSchool', {prov.model.PROV_LABEL:'Boston PublicSchool ', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(PublicSchool, this_script)
+        doc.wasGeneratedBy(PublicSchool, get_PublicSchool, endTime)
+        doc.wasDerivedFrom(PublicSchool, resource, get_PublicSchool, get_PublicSchool, get_PublicSchool)
 
         repo.logout()
 

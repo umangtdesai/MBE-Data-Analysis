@@ -23,24 +23,16 @@ class TotalSchool(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ruipang_zhou482', 'ruipang_zhou482')
 
-        # This is the helper function to access the database and get the data from the tables
-        def getCollection(db):
-            temp = []
-            for i in repo['ruipang_zhou482.' + db].find():
-                temp.append(i)
-            return temp
-
-
-        # Get the data from the publicSchool table
-        public_school = getCollection('PublicSchool')
-        # Get the data from the privateSchool table
-        private_school = getCollection('PrivateSchool')
+        public_school = []
+        for i in repo['ruipang_zhou482.PublicSchool'].find():
+            public_school.append(i)
+        private_school = []
+        for i in repo['ruipang_zhou482.PrivateSchool'].find():
+            private_school.append(i)
 
     
-        print (private_school)
-        print("ssss")
+    
         total = private_school+public_school
-        print (total)
 
         s=[]
         keys = {r['zipcode'] for r in total}
@@ -91,20 +83,20 @@ class TotalSchool(dml.Algorithm):
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
         this_script = doc.agent('alg:ruipang_zhou482#TotalSchool', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:Boston Property Values',
+        resource = doc.entity('dat:Boston school',
                               {'prov:label': 'Boston Total School', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'json'})
-        get_propvalue = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_propvalue, this_script)
-        doc.usage(get_propvalue, resource, startTime, None,
+                               'ont:Extension': 'csv'})
+        get_total = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_total, this_script)
+        doc.usage(get_total, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   }
                   )
 
-        propvalue = doc.entity('dat:ruipang_zhou482#TotalSchool', {prov.model.PROV_LABEL:'Boston TotalSchool ', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(propvalue, this_script)
-        doc.wasGeneratedBy(propvalue, get_propvalue, endTime)
-        doc.wasDerivedFrom(propvalue, resource, get_propvalue, get_propvalue, get_propvalue)
+        total = doc.entity('dat:ruipang_zhou482#TotalSchool', {prov.model.PROV_LABEL:'Boston TotalSchool ', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(total, this_script)
+        doc.wasGeneratedBy(total, get_total, endTime)
+        doc.wasDerivedFrom(total, resource, get_total, get_total, get_total)
 
         repo.logout()
 
