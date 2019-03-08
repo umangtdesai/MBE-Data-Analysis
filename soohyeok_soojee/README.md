@@ -33,10 +33,22 @@ We currently put together the few datasets listed above and transformed the acqu
 Although we have different datasets of polygons and points, our current project model is heavily dependent on geolocation datsets. We are currently researching on possible datasets to incorporate into our project to further develop user experience.
 
 #### *landmarkRate.py*:
+- Pulls dataset of polygons from *get_neighborhoods.py*
+- Pulls dataset of polygons from *get_landmarks.py*
+- Polygon datset of neighborhood is averaged into points
+- Now that we have points, checks and counts where the crime points are marked within the neighborhood polygons.
 
-#### *crimeRate.py*
+#### *crimeRate.py*:
+- Pulls dataset of polygons from *get_neighborhoods.py*
+- Pulls dataset of points from *get_crimeData.py*
+- Checks and counts where the crime occurred within which polygons of neighborhoods.
 
-#### *transportation.py*
+#### *transportation.py*:
+- Pulls dataset of polygons from *get_neighborhoods.py*
+- Pulls dataset of points from *get_trainStations.py*
+- Pulls dataset of points from *get_busStops.py*
+- Merges two dataset of points of bus and train
+- Checks and counts where the bus stops and trainstations are within which polygons of neighborhoods.
 
 
 ### Execution Script for Provenance.html:
