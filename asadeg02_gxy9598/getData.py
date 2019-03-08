@@ -89,7 +89,9 @@ class getData(dml.Algorithm):
         repo["asadeg02_gxy9598.active_food_stablishment"].metadata({'complete':True})
         print(repo["asadeg02_gxy9598.active_food_stablishment"].metadata())
         print('Load active food stablishment')
-        ###############################GET Street Names###################
+
+        ###############################GET Street Names###################################################
+
         url = "https://data.boston.gov/api/3/action/datastore_search?resource_id=a07cc1c6-aa78-4eb3-a005-dcf7a949249f&limit=18992"
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
@@ -100,47 +102,45 @@ class getData(dml.Algorithm):
             if addr not in record_addrs and str(record['MUN_L']) == "Boston" and str(record['ST_TYPE']) != "None":
                 record_addrs.append(addr)
             record_addrs.sort()
-        #print(record_addrs)
+        
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("Get_Boston_Streets")
         repo.createCollection("Get_Boston_Streets")
         repo["asadeg02_gxy9598.Get_Boston_Streets"].insert_many(r)
         repo["asadeg02_gxy9598.Get_Boston_Streets"].metadata({'complete':True})
         print(repo["asadeg02_gxy9598.Get_Boston_Streets"].metadata())
+        print("Load GBoston Streets")
+
        ################################################### get housing per Street #########################
         repo.dropCollection("Get_Zillow_Search")
         repo.createCollection("Get_Zillow_Search")
-        for addr in record_addrs:
-            #print(addr)
+        print("Start calling zillow search")
+        for addr in record_addrs[:10]:
+            
             url = "https://www.zillow.com/webservice/GetSearchResults.htm?zws-id=X1-ZWz1gxzd99e39n_97i73&address=" + addr + "&citystatezip=Boston%2C+MA"
-            #print(url)
+            
             response = urllib.request.urlopen(url).read().decode("utf-8")
             my_dict = xmltodict.parse(response)
-            #print(my_dict['SearchResults:searchresults']['response']['results']['result']['zpid'])
             my_dict = (my_dict['SearchResults:searchresults'])
             if('response' in my_dict):
-                #print("has response")
+                
                 my_dict = my_dict['response']['results']['result']
-                if(isinstance(my_dict, list)):
-                    #print("insert many")
-                    for a in my_dict:
-                        # my_dict = (my_dict['zpid'],my_dict['address'])
+                if(isinstance(my_dict, list)):                    
+                    for a in my_dict:                        
                         del a["links"]
                         del a["localRealEstate"]
                         del a["zestimate"]
                     repo["asadeg02_gxy9598.Get_Zillow_Search"].insert_many(my_dict)
                 else:
-                    #print("insert one")
                     del my_dict["links"]
                     del my_dict["localRealEstate"]
                     del my_dict["zestimate"]
                     repo["asadeg02_gxy9598.Get_Zillow_Search"].insert_one(my_dict)
 
-        #url = "https://www.zillow.com/webservice/GetSearchResults.htm?zws-id=X1-ZWz1gxzd99e39n_97i73&address=Yale+TER&citystatezip=Boston%2C+MA"
         s = json.dumps(r, sort_keys=True, indent=2)
         repo["asadeg02_gxy9598.Get_Zillow_Search"].metadata({'complete':True})
         print(repo["asadeg02_gxy9598.Get_Zillow_Search"].metadata())
-
+        print("Finish Zillow Search")
 
         repo.logout()
         endTime = datetime.datetime.now()
