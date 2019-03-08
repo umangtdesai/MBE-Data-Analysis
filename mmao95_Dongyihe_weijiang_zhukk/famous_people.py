@@ -23,7 +23,7 @@ class famous_people(dml.Algorithm):
         repo.authenticate(contributor, contributor)
 
         doc = requests.get("https://www.50states.com/bio/mass.htm").text
-        soup = bs(doc)
+        soup = bs(doc, features='lxml')
         names = [e.text for e in soup.select("#content b")]
         list = []
         for name in names:
