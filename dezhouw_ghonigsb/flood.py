@@ -20,6 +20,7 @@ class flood(dml.Algorithm):
 	writes      = ["nine_inch_sea_level_rise_1pct_annual_flood",
 				   "nine_inch_sea_level_rise_high_tide",
 				   "thirty_six_inch_sea_level_rise_high_tide",
+				   "thirty_six_inch_sea_level_rise_10_pct_annual_flood",
 				   "zoning_subdistricts",
 				   "zillow_boston_neighborhood"]
 
@@ -60,6 +61,16 @@ class flood(dml.Algorithm):
 		# thirty_six_inch_sea_level_rise_high_tide
 		collection_name = "thirty_six_inch_sea_level_rise_high_tide"
 		url             = "https://opendata.arcgis.com/datasets/74692fe1b9b24f3c9419cd61b87e4e3b_8.geojson"
+		gcontext        = ssl.SSLContext()
+		response        = urllib.request.urlopen(url, context=gcontext).read().decode("utf-8")
+		r               = json.loads(response)
+		repo.createCollection(collection_name)
+		repo["dezhouw_ghonigsb."+collection_name].insert_one(r)
+		print("Success: [{}]".format(collection_name))
+
+		# thirty_six_inch_sea_level_rise_10_pct_annual_flood
+		collection_name = "thirty_six_inch_sea_level_rise_10_pct_annual_flood"
+		url             = "https://opendata.arcgis.com/datasets/74692fe1b9b24f3c9419cd61b87e4e3b_3.geojson"
 		gcontext        = ssl.SSLContext()
 		response        = urllib.request.urlopen(url, context=gcontext).read().decode("utf-8")
 		r               = json.loads(response)
