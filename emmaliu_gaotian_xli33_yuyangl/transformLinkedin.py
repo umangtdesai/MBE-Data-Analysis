@@ -29,7 +29,7 @@ class transformLinkedin(dml.Algorithm):
         dataStored=[]
         countchange=0
             
-        for data in A:
+        for data in linkedinData:
             if data['query'] == "amman":
                 name = data['name']
                 location = data['query']
@@ -39,7 +39,7 @@ class transformLinkedin(dml.Algorithm):
                 #print(currentJob)
                 if currentJob == '':
                     jobchange = False
-                print(jobchange)
+                # print(jobchange)
           #      jobs[name] = jobchange
 
             if jobchange == False:
@@ -52,16 +52,13 @@ class transformLinkedin(dml.Algorithm):
 
                 
         for key,value in jobs.items():
-            print(key)
+            # print(key)
             dataStored.append({'name':key,'job':value['job'],'currentjob':value['currentjob']})
-         
-        with open("userLocation .json", 'w') as outfile:
-            json.dump(dataStored, outfile, indent=4)   
 
 
         # store results into database
-        repo.dropCollection("userLocation")
-        repo.createCollection("userLocation")
+        repo.dropCollection("transLinkedin")
+        repo.createCollection("transLinkedin")
 
         for i in dataStored:
             # print(i)
@@ -76,7 +73,7 @@ class transformLinkedin(dml.Algorithm):
         return {"start": startTime, "end": endTime}
 
     @staticmethod
-        def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
+    def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
         '''
             Create the provenance document describing everything happening
             in this script. Each run of the script will generate a new
@@ -96,17 +93,15 @@ class transformLinkedin(dml.Algorithm):
         doc.add_namespace('bdp', '')
 
 
-        this_script = doc.agent('alg:emmaliu_gaotian_xli33_yuyangl#getLinkedin',
+        this_script = doc.agent('alg:emmaliu_gaotian_xli33_yuyangl#transformLinkedin',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bdp:linkedinapi',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
 
-
-
-        get_Linkedin = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_Linkedin, this_script)
-        doc.usage(get_Linkedin, resource, startTime, None,
+        transform_Linkedin = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(transform_Linkedin, this_script)
+        doc.usage(transform_Linkedin, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
                     }
@@ -115,14 +110,14 @@ class transformLinkedin(dml.Algorithm):
 
         Linkedin = doc.entity('dat:emmaliu_gaotian_xli33_yuyangl#get_linkedin',
                           {prov.model.PROV_LABEL: 'linkedin', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(linkedin, this_script)
-        doc.wasGeneratedBy(linkedin, get_Linkedin, endTime)
-        doc.wasDerivedFrom(linkedin, resource, get_Linkedin, get_Linkedin, get_Linkedin)
+        doc.wasAttributedTo(Linkedin, this_script)
+        doc.wasGeneratedBy(Linkedin, transform_Linkedin, endTime)
+        doc.wasDerivedFrom(Linkedin, resource, transform_Linkedin, transform_Linkedin, transform_Linkedin)
 
         repo.logout()
 
         return doc
 
-transformLinkedin.execute()
+# transformLinkedin.execute()
 # doc = getTweets.provenance()
 # print(doc.get_provn())
