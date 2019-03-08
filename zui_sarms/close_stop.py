@@ -27,10 +27,10 @@ class close_stop(dml.Algorithm):
         mbta_stops = repo['zui_sarms.mbta_stops']
 
         df_yelp = pd.DataFrame(list(yelp_business.find()))
-
-        df_yelp["closest_stop"] = None
-
         df_stops = pd.DataFrame(list(mbta_stops.find()))
+
+        # the new dataframe
+        new_df = pd.DataFrame()
 
         for index, row in df_yelp.iterrows():
             lati_yelp = row["coordinates"]["latitude"]
@@ -50,12 +50,13 @@ class close_stop(dml.Algorithm):
                     smallest_distance = dist
 
             # add now the new stop
-            # ERROR HERE
-            df_yelp[index]["closest_stop"] = df_stops[min]
+            dict = row.to_dict()
+            dict.update({'closeset_stop': df_stops.iloc[min]})
+            new_df = new_df.append([dict])
 
         repo.dropCollection("close_stop")
         repo.createCollection("close_stop")
-        repo['zui_sarms.close_stop'].insert_many(df_yelp.to_dict(orient='records'))
+        repo['zui_sarms.close_stop'].insert_many(new_df.to_dict(orient='records'))
         repo['zui_sarms.close_stop'].metadata({'complete': True})
         print(repo['zui_sarms.close_stop'].metadata())
 
@@ -88,7 +89,7 @@ class close_stop(dml.Algorithm):
         doc.usage(addition, mbta_stops, startTime, None,{prov.model.PROV_TYPE: 'ont:Retrieval'})
         doc.usage(addition, yelp_business, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
-        close_stop = doc.entity('dat:zui_sarms#yelp_business',
+        close_stop = doc.entity('dat:zui_sarms#close_stop',
                                    {prov.model.PROV_LABEL: 'Yelp Businesses', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(close_stop, this_script)
         doc.wasGeneratedBy(close_stop, addition, endTime)
