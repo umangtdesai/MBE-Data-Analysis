@@ -9,7 +9,7 @@ import io
 class PublicSchool(dml.Algorithm):
     contributor = 'ruipang_zhou482'
     reads = []
-    writes = ['ruipang_zhou482.PrivateSchool']
+    writes = ['ruipang_zhou482.PublicSchool']
 
     @staticmethod
     def execute(trial = False):
@@ -20,7 +20,7 @@ class PublicSchool(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ruipang_zhou482', 'ruipang_zhou482')
-        print ("abcdefg")
+        
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/1d9509a8b2fd485d9ad471ba2fdb1f90_0.csv'
         response = urllib.request.urlopen(url)
         cr = csv.reader(io.StringIO(response.read().decode('utf-8')), delimiter = ',')
@@ -29,7 +29,7 @@ class PublicSchool(dml.Algorithm):
         dic={}
         for row in cr:
             if(i != 0):
-                print (row[8])
+                
                 if row[8] in dic:
                     dic[row[8]]+=1
                 else:
@@ -50,16 +50,16 @@ class PublicSchool(dml.Algorithm):
             c['zipcode'] = i
             c['num_school']=dic[i]
             ps.append(c)
-        print(ps)
+    
         repo.dropCollection("PublicSchool")
         repo.createCollection("PublicSchool")
         
         
         repo['ruipang_zhou482.PublicSchool'].insert_many(ps)
         repo['ruipang_zhou482.PublicSchool'].metadata({'complete':True})
-        print("sssssssas")
+        
         print(repo['ruipang_zhou482.PublicSchool'].metadata())
-        print("sssssssas")
+        
         repo.logout()
         
         endTime = datetime.datetime.now()
@@ -96,7 +96,7 @@ class PublicSchool(dml.Algorithm):
                   }
                   )
 
-        propvalue = doc.entity('dat:ruipang_zhou482#PublicSchool', {prov.model.PROV_LABEL:'Boston PrivateSchool ', prov.model.PROV_TYPE:'ont:DataSet'})
+        propvalue = doc.entity('dat:ruipang_zhou482#PublicSchool', {prov.model.PROV_LABEL:'Boston PublicSchool ', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(propvalue, this_script)
         doc.wasGeneratedBy(propvalue, get_propvalue, endTime)
         doc.wasDerivedFrom(propvalue, resource, get_propvalue, get_propvalue, get_propvalue)

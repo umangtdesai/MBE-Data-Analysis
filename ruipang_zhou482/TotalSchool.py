@@ -10,7 +10,7 @@ import io
 class TotalSchool(dml.Algorithm):
     
     contributor = 'ruipang_zhou482'
-    reads = ['ruipang_zhou482.publicSchool', 'ruipang_zhou482.privateSchool']
+    reads = ['ruipang_zhou482.PublicSchool', 'ruipang_zhou482.PrivateSchool']
     writes = ['ruipang_zhou482.TotalSchool']
 
     @staticmethod
@@ -61,8 +61,8 @@ class TotalSchool(dml.Algorithm):
         #repo.authenticate('debhe_wangdayu', 'debhe_wangdayu')
         repo.dropCollection('ruipang_zhou482.TotalSchool')
         repo.createCollection('ruipang_zhou482.TotalSchool')
-        repo['ruipang_zhou482.allSchool'].insert_many(s)
-        repo['ruipang_zhou482.allSchool'].metadata({'complete':True})
+        repo['ruipang_zhou482.TotalSchool'].insert_many(s)
+        repo['ruipang_zhou482.TotalSchool'].metadata({'complete':True})
         # print(repo['debhe_wangdayu.allSchool'].metadata())
 
 
