@@ -6,22 +6,22 @@
 
 ## Datasets
 
-Colleges and Universities within the City of Boston
+Colleges and Universities within the City of Boston: 
 http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2.csv
 
-Boston Public Schools for 2018-2019 
+Boston Public Schools for 2018-2019: 
 http://bostonopendata-boston.opendata.arcgis.com/datasets/1d9509a8b2fd485d9ad471ba2fdb1f90_0.csv
 
-Educational Attainment Demographics by Neighborhood from 1950 to 2010
+Educational Attainment Demographics by Neighborhood from 1950 to 2010: 
 https://data.boston.gov/dataset/8202abf2-8434-4934-959b-94643c7dac18/resource/bb0f26f8-e472-483c-8f0c-e83048827673/download/educational-attainment-age-25.csv
 
-Information on Vulnerable Populations Throughout Boston (Low Income, People With Disabilities, People of Color, etc) from 2008-2012
+Information on Vulnerable Populations Throughout Boston (Low Income, People With Disabilities, People of Color, etc) from 2008-2012: 
 http://bostonopendata-boston.opendata.arcgis.com/datasets/34f2c48b670d4b43a617b1540f20efe3_0.csv
 
-MBTA Bus Stops
+MBTA Bus Stops: 
 https://opendata.arcgis.com/datasets/2c00111621954fa08ff44283364bba70_0.csv?outSR=%7B%22wkid%22%3A102100%2C%22latestWkid%22%3A3857%7D
 
-MBTA T-Stops 
+MBTA T-Stops:  
 http://maps-massgis.opendata.arcgis.com/datasets/a9e4d01cbfae407fbf5afe67c5382fde_2.csv
 
 ## Transformations: 
