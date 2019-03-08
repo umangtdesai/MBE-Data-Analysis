@@ -21,6 +21,7 @@ class getLinkedin(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('emmaliu_gaotian_xli33_yuyangl', 'emmaliu_gaotian_xli33_yuyangl')
+
         url = 'http://datamechanics.io/data/linkedindataset.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
@@ -46,7 +47,6 @@ class getLinkedin(dml.Algorithm):
             document describing that invocation event.
             '''
 
-
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -58,14 +58,11 @@ class getLinkedin(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', '')
 
-
         this_script = doc.agent('alg:emmaliu_gaotian_xli33_yuyangl#getLinkedin',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bdp:linkedinapi',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
-
-
 
         get_Linkedin = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_Linkedin, this_script)
@@ -75,19 +72,18 @@ class getLinkedin(dml.Algorithm):
                     }
                   )
 
-
         Linkedin = doc.entity('dat:emmaliu_gaotian_xli33_yuyangl#get_linkedin',
                           {prov.model.PROV_LABEL: 'linkedin', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(linkedin, this_script)
-        doc.wasGeneratedBy(linkedin, get_Linkedin, endTime)
-        doc.wasDerivedFrom(linkedin, resource, get_Linkedin, get_Linkedin, get_Linkedin)
+        doc.wasAttributedTo(Linkedin, this_script)
+        doc.wasGeneratedBy(Linkedin, get_Linkedin, endTime)
+        doc.wasDerivedFrom(Linkedin, resource, get_Linkedin, get_Linkedin, get_Linkedin)
 
         repo.logout()
 
         return doc
 
 
-# getLinkedin.execute()
+getLinkedin.execute()
 # doc = getLinkedin.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

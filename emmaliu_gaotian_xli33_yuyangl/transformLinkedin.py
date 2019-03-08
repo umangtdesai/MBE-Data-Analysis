@@ -21,15 +21,15 @@ class transformLinkedin(dml.Algorithm):
         repo = client.repo
         repo.authenticate('emmaliu_gaotian_xli33_yuyangl', 'emmaliu_gaotian_xli33_yuyangl')
         
-        url = ''
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("linkedin")
-        repo.createCollection("linkedin")
-        repo['emmaliu_gaotian_xli33_yuyangl.linkedin'].insert_many(r)
-        repo['emmaliu_gaotian_xli33_yuyangl.linkedin'].metadata({'complete': True})
-        print(repo['emmaliu_gaotian_xli33_yuyangl.linkedin'].metadata())
+        # url = ''
+        # response = urllib.request.urlopen(url).read().decode("utf-8")
+        # r = json.loads(response)
+        # s = json.dumps(r, sort_keys=True, indent=2)
+        # repo.dropCollection("linkedin")
+        # repo.createCollection("linkedin")
+        # repo['emmaliu_gaotian_xli33_yuyangl.linkedin'].insert_many(r)
+        # repo['emmaliu_gaotian_xli33_yuyangl.linkedin'].metadata({'complete': True})
+        # print(repo['emmaliu_gaotian_xli33_yuyangl.linkedin'].metadata())
 
         # Get Tweets data
         linkedinData = repo.emmaliu_gaotian_xli33_yuyangl.linkedin.find()
@@ -42,7 +42,7 @@ class transformLinkedin(dml.Algorithm):
                 location = data['query']
                 job = data['job']
                 currentJob = data['currentJob']
-                if data['currentJob'] != null:
+                if data['currentJob']:
                     jobchange = True
 
                 names[name] = {'jobchange':jobchange}
