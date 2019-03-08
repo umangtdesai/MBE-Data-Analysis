@@ -27,7 +27,7 @@ class mergeRestaurantInspection(dml.Algorithm):
         newdata = []
         for i in restaurant.find():
             i = i.copy()
-            print(i)
+        
             temps = inspection.find({'property_id':i['property_id']})
             if temps:
                 v1 = 0
@@ -113,7 +113,7 @@ class mergeRestaurantInspection(dml.Algorithm):
                   
         return doc
 
-mergeRestaurantInspection.execute()
-doc = mergeRestaurantInspection.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+#mergeRestaurantInspection.execute()
+#doc = mergeRestaurantInspection.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))

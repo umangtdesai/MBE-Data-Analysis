@@ -19,7 +19,7 @@ class supermarket(dml.Algorithm):
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
-        print('8')
+        
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -144,6 +144,7 @@ class supermarket(dml.Algorithm):
                   }
                   )
         
+
 
         supermarket = doc.entity('dat:henryhcy_wangyp#supermarket', {prov.model.PROV_LABEL:'supermarket', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(supermarket, this_script)

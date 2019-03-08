@@ -17,7 +17,7 @@ class restaurant(dml.Algorithm):
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
-        print('7')
+    
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
