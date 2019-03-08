@@ -13,8 +13,8 @@ The city of Chicago is the third largest city in the United States. Like other u
 | Chicago Data Portal    | [Chicago Neighborhoods](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Neighborhoods/bbvz-uum9E) | Received as .geojson                                                                                                        |
 | Chicago Data Portal    | [Census Socioeconomic Indicatiors](https://data.cityofchicago.org/Health-Human-Services/Census-Data-Selected-socioeconomic-indicators-in-C/kn9c-c2s2)    |Received as .json
 | Data USA | [Chicago Income by Location](https://datausa.io/profile/geo/chicago-il/#income_geo)    | Received as .csv                                             |                                                                                                         |
-| datamechanics.io      | ['L' Station Locations](https://google.com)                           | Retrieved from CTA in .klm, manually converted to .geojson
+| datamechanics.io      | ['L' Station Locations](https://google.com)                           | Retrieved from CTA in .klm, manually converted to .json
 ---
 #### Library Dependencies
 * pandas
-* JSON, geoJSON
+* JSON

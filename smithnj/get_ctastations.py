@@ -4,8 +4,6 @@ import dml
 import prov.model
 import datetime
 import uuid
-import geojson
-import pandas as pd
 
 ############################################
 # get_ctastations.py
