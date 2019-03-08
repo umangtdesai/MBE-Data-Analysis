@@ -11,7 +11,7 @@ class getData(dml.Algorithm):
     contributor = 'tlux'
     reads = []
     writes = ['tlux.Raw_Age_Demo', 'tlux.Raw_Race_Demo',
-              'tlux.Raw_CDC_Health', 'tlux.Raw_Open_Spaces', 'tlux.Raw_Neighborhoods' ]
+              'tlux.Raw_CDC_Health', 'tlux.Raw_Open_Spaces', 'tlux.Raw_Neighborhoods']
 
     @staticmethod
     def execute(trial=False):
