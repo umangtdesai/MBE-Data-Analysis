@@ -6,14 +6,14 @@ import datetime
 import uuid
 
 ############################################
-# get_ctastations.py
+# grab_stationstats.py
 # Script for collecting CTA Stations data
 ############################################
 
-class get_ctastations(dml.Algorithm):
+class grab_ctastations(dml.Algorithm):
     contributor = 'smithnj'
     reads = []
-    writes = ['smithnj.ctastations']
+    writes = ['smithnj.stationstats']
 
     @staticmethod
     def execute(trial=False):
@@ -22,20 +22,20 @@ class get_ctastations(dml.Algorithm):
 
         # ---[ Connect to Database ]---------------------------------
         client = dml.pymongo.MongoClient()
-        repo = client.cs506
-        repo.authenticate('smithnj', 'bOstonuniv!!')
-        repo_name = ctastations.writes[0]
+        repo = client.repo
+        repo.authenticate('smithnj', 'smithnj')
+        repo_name = stationstats.writes[0]
 
         # ---[ Grab Data ]-------------------------------------------
-        url = 'https://data.cityofchicago.org/api/views/4qtv-9w43/files/8762c89e-813a-4c5a-9f09-fb0eb740dde0?filename=CTA_RailStations.kml'
+        url = 'https://data.cityofchicago.org/resource/5neh-572f.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         jsondata = json.loads(data)
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
 
         # ---[ MongoDB Insertion ]-------------------------------------------
-        repo.dropCollection('ctastations')
-        repo.createCollection('ctastations')
+        repo.dropCollection('stationstats')
+        repo.createCollection('stationstats')
         repo[repo_name].insert_many(r)
         repo[repo_name].metadata({'complete': True})
 
@@ -59,11 +59,11 @@ class get_ctastations(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofchicago.org/Transportation/CTA-Ridership-L-Station-Entries-Daily-Totals/5neh-572f')
         doc.add_namespace('dmc', 'http://datamechanics.io/data/smithnj')
-        this_script = doc.agent('alg:smithnj#get_ctastations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:smithnj#grab_stationstats', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('dmc:5neh-572f.json', {'prov:label':'CTA - Ridership - L Station Entries - Daily Totals', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_ctastations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_ctastations, this_script)
-        doc.usage(get_ctastations, resource, startTime, None, {prov.model.PROV_TYPE.'ont:Retrieval'})
-        ctastations = doc.entity('dat:smithnj#ctastations', {prov.model.PROV_LABEL:''})
+        grab_stationstats = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(grab_stationstats, this_script)
+        doc.usage(grab_stationstats, resource, startTime, None, {prov.model.PROV_TYPE.'ont:Retrieval'})
+        stationstats = doc.entity('dat:smithnj#stationstats', {prov.model.PROV_LABEL:''})
 
         return doc
