@@ -6,7 +6,7 @@ The two quesotions to be answred are the following:
 
 1- Finding information about the buildings/properties in the most dangereous neighborhood of Boston area. These infomation include the value of these porpeties, type of the crimes happening in the neighbourhood, perimit number of buildings, owners of the porpeties,...
 
-2- Clustering food stablishments in Boston area using their location and then finding infomation about properties in the most compact cluster (with the most number of food stablishments in it) to see if access to food stablishments has any impact in the population in the living in that area or on the value of properties.
+2- Clustering food stablishments in Boston area using their location and then finding infomation about properties in the most compact cluster (with the most food stablishments in it) to see if access to food stablishments has any impact in the population in the living in that area or on the value of properties.
 
 ---
 Data Sets
@@ -26,13 +26,19 @@ Aditional Resources
 
 Zillow Search API: "https://www.zillow.com/howto/api/GetSearchResults.htm"
 
-We are using these API to create a database of the property addresses that are on the market which we are not using project#1 but is requiered for the main South Boston Neighborhood Development project. 
+We are using these API to create a database of the property addresses that are on the market which we are not using for project#1 but is requiered for the main South Boston Neighborhood Development project. 
 
 Accsesssors (Accessing online - City Of Boston): https://www.cityofboston.gov/assessing/search/ 
 
 We are scraping this wesite to find the infomation we are intested in about the propeties in City Of Boston including the value of propeties. This resource is useful for both project#1 and Main project.
 
-"" Please note that scraping a website or calling an API is such a slow process and scraping accessors for all the street addresses is boyond the time and resources available so we have put a limit on the number of addresses we want to scrape accsessors for or call the api for ""
+**Please note that scraping a website or calling an API is such a slow process and scraping accessors for all the street addresses is boyond the time and resources available so we have put a limit on the number of addresses we want to scrape accsessors for or call the api for**
+
+## Overview Of Transformations 
+
+"aggregateCrimesIncident", "mergeValueWithCrimeRate" and "mergeValueWithPermitAndCrime" are 3 transfomations done to provide an answer for the first question by first aggregating crime incident data set using the "street" attribute as keys and then sorting the result in ascending order then finding the value and ParcelID for the result by scraping `Accsesssors` (we can look at this part of tranfomation as a merge but one of the data sets is in the cloud and not stored in the data base due to time constraints explained) and finally merging the result with crime indincet and permit databases and projecting the desired attributes. Please note that our notion of "the most dangerous" here is the street addresses with the most records in "crime incident report" database.
+
+"foodStablishmentClusters" provides an answer for the second question asked by fisrt clustering food stablishments by ther locations, then counting the number of food stablishments in each cluster, then finding the closest food stablishment center for each building in permit data base) and finally storing the infomation about propeties in the most compact cluster (with the most food stablishments) into a databse.
 
 
 ## Running The Code
