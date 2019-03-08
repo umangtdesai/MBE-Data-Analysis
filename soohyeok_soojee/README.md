@@ -1,7 +1,7 @@
 # CS504 Project#1: Proper Boston Tour
 
 ## Contributors:
-- Soo Hyeok Lee
+- Soohyeok Lee
 - Soojee Lee
 
 ### Project Goal:
