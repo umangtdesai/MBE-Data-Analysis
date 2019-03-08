@@ -12,7 +12,7 @@ class CvsWalEviction(dml.Algorithm):
     contributor = "jshen97_leochans"
     reads = ['jshen97_leochans.cvs',
              'jshen97_leochans.walgreen',
-             'jshen97_leochans.Eviction']
+             'jshen97_leochans.eviction']
     writes = ['jshen97_leochans.cvsEviction',
               'jshen97_leochans.walgreenEviction']
 
