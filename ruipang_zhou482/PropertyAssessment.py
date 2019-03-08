@@ -35,7 +35,6 @@ class PropertyAssessment(dml.Algorithm):
                     # print (row[20])
                     if(row[20]!='' and float(row[20])!=0.0):
                         dic[row[7]][0]+=float(row[18])/float(row[20])
-                        print (float(row[18]),float(row[20]))
                         dic[row[7]][1]+=1
                     
                 else:
