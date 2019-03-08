@@ -1,3 +1,7 @@
+# Project 1
+##### Ellen Mak, Xiaoyi Gabby Zhou, Kayla Ippongi, Ziyu Shen 
+###### ekmak_gzhou_kaylaipp_shen99
+
 <b>Dataset 1(num_per_street1):</b> We unioned the Boston address and accessing datasets and took counts for every address and removed any duplicates. Then, we called map reduce to aggregate sum on every address in order to get the number of properties/buildings per street. Our new datasets show 355 unique streets in South Boston. 
 
 <b>Dataset 2 (type_amount):</b> We took two Zillow API calls (getPropertyData and getSearchResults) and combined them to get the different types of units and their average cost. We did this by first filtering out only the South Boston addresses then took the product and took out the duplicates. Finally we combined the two datasets by taking the average of the amounts and mapping it to the respective unit type. 
