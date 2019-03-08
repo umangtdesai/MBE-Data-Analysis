@@ -4,7 +4,8 @@ import dml
 import prov.model
 import datetime
 import uuid
-
+import csv
+import pandas as pd
 
 class example(dml.Algorithm):
     contributor = 'arshadr_rcallah_shaikh1'
@@ -17,38 +18,52 @@ class example(dml.Algorithm):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
+        opener = urllib.request.build_opener()
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        urllib.request.install_opener(opener)
+
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('arshadr_rcallah_shaikh1', 'arshadr_rcallah_shaikh1')
 
         # Zillow rent prices
-        url = 'http://datamechanics.io/data/arshadr_rcallah_shaikh1/City_ZriPerSqft_AllHomes.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8", errors = 'replace')
-        r = json.loads(response)
+        # url = 'http://datamechanics.io/data/arshadr_rcallah_shaikh1/City_ZriPerSqft_AllHomes.json'
+        url = 'http://files.zillowstatic.com/research/public/City/City_ZriPerSqft_AllHomes.csv'
+        urllib.request.urlretrieve(url, 'rent-prices.csv')
+        r = pd.read_csv('rent-prices.csv', encoding="ISO-8859-1").to_json()
+
+        r = json.loads(r)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("rental_prices")
         repo.createCollection("rental_prices")
-        repo['arshadr_rcallah_shaikh1.rental_prices'].insert_many(r)
+        repo['arshadr_rcallah_shaikh1.rental_prices'].insert_one(r)
         repo['arshadr_rcallah_shaikh1.rental_prices'].metadata({'complete':True})
         print(repo['arshadr_rcallah_shaikh1.rental_prices'].metadata())
 
         # Zillow single family home buying prices
-        url = 'http://datamechanics.io/data/arshadr_rcallah_shaikh1/City_Zhvi_SingleFamilyResidence.json'
-        r = json.loads(response)
+        # url = 'http://datamechanics.io/data/arshadr_rcallah_shaikh1/City_Zhvi_SingleFamilyResidence.json'
+        url = 'http://files.zillowstatic.com/research/public/Metro/Metro_Zhvi_Summary_AllHomes.csv'
+        urllib.request.urlretrieve(url, 'single-family-prices.csv')
+        r = pd.read_csv('single-family-prices.csv', encoding="ISO-8859-1").to_json()
+
+        r = json.loads(r)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("home_values")
         repo.createCollection("home_values")
-        repo['arshadr_rcallah_shaikh1.home_values'].insert_many(r)
+        repo['arshadr_rcallah_shaikh1.home_values'].insert_one(r)
 
 
         # Fiscal year 2019 Chelsea property data (https://www.chelseama.gov/assessor/pages/chelsea-property-data)
-        url = "http://datamechanics.io/data/arshadr_rcallah_shaikh1/fy19_chelsea_property_data.json"
-        r = json.loads(response)
+        url = "https://www.chelseama.gov/home/files/housing-data"
+        urllib.request.urlretrieve(url, "housing-data.xls")
+        r = pd.read_excel('./housing-data.xls').to_json()
+
+        r = json.loads(r)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("property_values")
         repo.createCollection("property_values")
-        repo['arshadr_rcallah_shaikh1.property_values'].insert_many(r)
+        repo['arshadr_rcallah_shaikh1.property_values'].insert_one(r)
 
         repo.logout()
 
