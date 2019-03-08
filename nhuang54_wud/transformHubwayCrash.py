@@ -23,7 +23,7 @@ def safety_zone(la1, lo1, la2, lo2):
       )
   x = sin(la1) * sin(la2) + cos(la1) * cos(la2) * cos(long_dif)
   c = atan2(y, x)
-  
+
   final_dist = EARTH_R * c
 #   print(final_dist)
   if final_dist > 1:
@@ -103,7 +103,7 @@ class transformHubwayCrash(dml.Algorithm):
             Create the provenance document describing everything happening
             in this script. Each run of the script will generate a new
             document describing that invocation event.
-            '''
+        '''
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()

@@ -37,7 +37,7 @@ class getCrashRecord(dml.Algorithm):
         # get the csv file from website and turn into json object
         url = 'https://data.boston.gov/dataset/7b29c1b2-7ec2-4023-8292-c24f5d8f0905/resource/e4bfe397-6bfc-49c5-9367-c879fac7401d/download/crash_open_data.csv'
         json_file = csv_to_json(url)
-        
+
         # Store in DB
         repo.dropCollection("crashRecord")
         repo.createCollection("crashRecord")
@@ -50,7 +50,7 @@ class getCrashRecord(dml.Algorithm):
         endTime = datetime.datetime.now()
 
         return {"start":startTime, "end":endTime}
-    
+
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
@@ -83,13 +83,13 @@ class getCrashRecord(dml.Algorithm):
                   }
                   )
 
-        crashRecord = doc.entity('dat:nhuang54_wud#crashRecord', {prov.model.PROV_LABEL:'Traffic Signal', prov.model.PROV_TYPE:'ont:DataSet'})
+        crashRecord = doc.entity('dat:nhuang54_wud#crashRecord', {prov.model.PROV_LABEL:'Crash Records', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(crashRecord, this_script)
         doc.wasGeneratedBy(crashRecord, get_crashRecord, endTime)
         doc.wasDerivedFrom(crashRecord, resource, get_crashRecord, get_crashRecord, get_crashRecord)
 
         repo.logout()
-                  
+
         return doc
 
 ##example.execute()

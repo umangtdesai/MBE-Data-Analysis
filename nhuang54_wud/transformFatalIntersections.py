@@ -46,7 +46,7 @@ class transformFatalIntersections(dml.Algorithm):
         trafficLocations = repo.nhuang54_wud.trafficSignal.find()
 
         # Select fatalities at intersections
-        intersectionFatalities = [t for t in fatalityLocations if t['"location_type"'] == 'Intersection'] 
+        intersectionFatalities = [t for t in fatalityLocations if t['"location_type"'] == 'Intersection']
 
         # Put traffic locations in an array
         trafficArray = [t for t in trafficLocations if t['Y'] != '']
@@ -110,7 +110,7 @@ class transformFatalIntersections(dml.Algorithm):
         this_script = doc.agent('alg:nhuang54_wud#transformFatalIntersections', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource1 = doc.entity('dat:nhuang54_wud#fatality_open_data', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         resource2 = doc.entity('dat:nhuang54_wud#Traffic_Signals', {'prov:label':'311, Service Requests', prov.mode.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
-        
+
         transform_fatalIntersections = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(transform_fatalIntersections, this_script)
 
@@ -125,7 +125,7 @@ class transformFatalIntersections(dml.Algorithm):
                   }
                   )
 
-        bikeFatalityTrafficSignal= doc.entity('dat:nhuang54_wud#bikeFatalityTrafficSignal', {prov.model.PROV_LABEL:'Deaths proximity to traffic signals', prov.model.PROV_TYPE:'ont:DataSet'})
+        bikeFatalityTrafficSignal= doc.entity('dat:nhuang54_wud#bikeFatalityTrafficSignal', {prov.model.PROV_LABEL:'Deaths proximity to intersections', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(bikeFatalityTrafficSignal, this_script)
         doc.wasGeneratedBy(bikeFatalityTrafficSignal, transform_fatalIntersections, endTime)
         doc.wasDerivedFrom(bikeFatalityTrafficSignal, resource1, transform_fatalIntersections, transform_fatalIntersections, transform_fatalIntersections)
@@ -133,7 +133,7 @@ class transformFatalIntersections(dml.Algorithm):
 
 
         repo.logout()
-                  
+
         return doc
 
 '''

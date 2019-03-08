@@ -36,8 +36,8 @@ class getStreetlightLocation(dml.Algorithm):
 
         # Get the csv file containing the data for streetlight locations
         url = 'https://data.boston.gov/dataset/52b0fdad-4037-460c-9c92-290f5774ab2b/resource/c2fcc1e3-c38f-44ad-a0cf-e5ea2a6585b5/download/streetlight-locations.csv'
-        json_file = csv_to_json(url)        
-        
+        json_file = csv_to_json(url)
+
         # Store in DB
         repo.dropCollection("streetlightLocation")
         repo.createCollection("streetlightLocation")
@@ -50,7 +50,7 @@ class getStreetlightLocation(dml.Algorithm):
         endTime = datetime.datetime.now()
 
         return {"start":startTime, "end":endTime}
-    
+
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
@@ -83,13 +83,13 @@ class getStreetlightLocation(dml.Algorithm):
                   }
                   )
 
-        streetlightLocation = doc.entity('dat:nhuang54_wud#streetlightLocation', {prov.model.PROV_LABEL:'Traffic Signal', prov.model.PROV_TYPE:'ont:DataSet'})
+        streetlightLocation = doc.entity('dat:nhuang54_wud#streetlightLocation', {prov.model.PROV_LABEL:'Streetlight Location', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(streetlightLocation, this_script)
         doc.wasGeneratedBy(streetlightLocation, get_streetlightLocation, endTime)
         doc.wasDerivedFrom(streetlightLocation, resource, get_streetlightLocation, get_streetlightLocation, get_streetlightLocation)
 
         repo.logout()
-                  
+
         return doc
 
 ##example.execute()
