@@ -59,7 +59,7 @@ class analyze_boston(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:zui_sarms#analyzeboston', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        this_script = doc.agent('alg:zui_sarms#analyze_boston', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bdp:Analyze Boston',{'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'json'})
         get_landmarks = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         get_parks = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
@@ -68,12 +68,12 @@ class analyze_boston(dml.Algorithm):
         doc.usage(get_parks, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
         doc.usage(get_landmarks, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
-        parks = doc.entity('dat:alice_bob#parks', {prov.model.PROV_LABEL: 'Open Space', prov.model.PROV_TYPE: 'ont:DataSet'})
+        parks = doc.entity('dat:zui_sarms#parks', {prov.model.PROV_LABEL: 'Open Space', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(parks, this_script)
         doc.wasGeneratedBy(parks, get_parks, endTime)
         doc.wasDerivedFrom(parks, resource, get_parks, get_parks, get_parks)
 
-        landmarks = doc.entity('dat:alice_bob#landmarks', {prov.model.PROV_LABEL: 'Open Space', prov.model.PROV_TYPE: 'ont:DataSet'})
+        landmarks = doc.entity('dat:zui_sarms#landmarks', {prov.model.PROV_LABEL: 'Open Space', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(landmarks, this_script)
         doc.wasGeneratedBy(landmarks, get_landmarks, endTime)
         doc.wasDerivedFrom(landmarks, resource, get_landmarks, get_landmarks, get_landmarks)
@@ -82,4 +82,4 @@ class analyze_boston(dml.Algorithm):
 
         return doc
 
-        ## eof
+## eof
