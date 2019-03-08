@@ -12,7 +12,7 @@ The City of Chicago is the third largest city in the United States. Like other u
 |----------|-------------------------------------------------------------------------------------------------------------------------------------| ----
 | Chicago Data Portal      | ['L' Station Ridership Stats](https://data.cityofchicago.org/Transportation/CTA-Ridership-L-Station-Entries-Daily-Totals/5neh-572f) | Received as .json
 | Chicago Data Portal    | [Chicago Neighborhoods](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Neighborhoods/bbvz-uum9) | Received as .geojson                                                                                                       |
-| Chicago Data Portal    | [Census Socioeconomic Indicatiors](https://data.cityofchicago.org/Health-Human-Services/Census-Data-Selected-socioeconomic-indicators-in-C/kn9c-c2s2)    |Received as .json
+| Chicago Data Portal    | [Census Socioeconomic Hardship](https://data.cityofchicago.org/Health-Human-Services/Census-Data-Selected-socioeconomic-indicators-in-C/kn9c-c2s2)    |Received as .json
 | Data.gov | [Chicago Congestion](https://catalog.data.gov/dataset/chicago-traffic-tracker-historical-congestion-estimates-by-region-a0e83)    | Received as .json                                             |                                                                                                         |
 | datamechanics.io      | ['L' Station Locations](http://datamechanics.io/?prefix=smithnj/) | Retrieved from CTA in .klm, manually converted to .geojson
 
