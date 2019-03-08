@@ -44,7 +44,7 @@ Export](https://phantombuster.com/api-store/3149/linkedin-search-export) to run 
 2. According to the current job, calculate the number of people who changed their jobs.
 3. Do the project transformation to get the data we need.
 
-    Because we can only get the name, job and location, it is hard for us to do some meaningful transformations on LinkedIn data set. Mostly what we could do are projection and selection.
+  Because we can only get the name, job and location, it is hard for us to do some meaningful transformations on LinkedIn data set. Mostly what we could do are projection and selection.
 
 ### 3. Analysis and Discussion
 - **Analysis for Twitter**
