@@ -23,7 +23,7 @@ Following the two topics mentioned above, out first step is getting data since w
 
 - **Twitter**
 
-  At first, we want to use [Twitter API](https://developer.twitter.com/content/developer-twitter/en.html) to get users who live in Amman and then get their tweets. However, the API do not provide this fuction and we cannot directly get all the users with location "Amman" in their profile. Hence, we decide to get tweets with location "Amman". We set the coordinates of the center of Amman and the radius to specify the range and get the tweets in that area. We get 5,000 tweets, store all the information as a [JSON](https://www.json.org/) file and upload it to [the course website](http://datamechanics.io/data/tweets_amman.json). Due to the execute.py will run all python file in the subdirectory, we upload the code for getting tweets in crawlTweets.pdf.
+  At first, we want to use [Twitter API](https://developer.twitter.com/content/developer-twitter/en.html) to get users who live in Amman and then get their tweets. However, the API do not provide this fuction and we cannot directly get all the users with location "Amman" in their profile. Hence, we decide to get tweets with location "Amman". We set the coordinates of the center of Amman and the radius to specify the range and get the tweets in that area. We get 5,000 tweets, store all the information as a [JSON](https://www.json.org/) file and upload it to [the course website](http://datamechanics.io/data/tweets_amman.json). **Due to the execute.py will run all Python file in subdirectory, we upload the source code for getting tweets in crawlTweets.pdf.**
 
 - **LinkedIn**
 
@@ -41,10 +41,10 @@ Export](https://phantombuster.com/api-store/3149/linkedin-search-export) to run 
 - **LinkedIn**
 
 1. Do the aggregation transformation on the query on the dataset.
-2. According to the currentjob, calculate the number of people who changed their jobs.
+2. According to the current job, calculate the number of people who changed their jobs.
 3. Do the project transformation to get the data we need.
 
-Because we can only get the name,job and location, it is hard for us to do some meaningful transformation on data. Mostly what we could do is projection and selection.
+  Because we can only get the name, job and location, it is hard for us to do some meaningful transformations on LinkedIn data set. Mostly what we could do are projection and selection.
 
 ### 3. Analysis and Discussion
 - **Analysis for Twitter**
