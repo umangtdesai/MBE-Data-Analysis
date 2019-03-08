@@ -1,8 +1,8 @@
 # CS504 Project#1: Proper Boston Tour
 
 ## Contributors:
+- Soojee Kim
 - Soohyeok Lee
-- Soojee Lee
 
 ### Project Goal:
 Our goal is to determine best travel experiences for incoming tourists within Greater Boston Area. Having such an immense area, people may not have their best experiences in their limited time of travel and we wanted to suggest specific areas based on various datasets for the best possible experience.
