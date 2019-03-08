@@ -6,31 +6,30 @@ import datetime
 import uuid
 
 ############################################
-# grab_censusstats.py
-# Script for collecting Chicago Census Socioeconomic Indicators
+# grab_neighborhoods.py
+# Script for collecting Chicago neighborhoods
 ############################################
 
-class grab_censusstats(dml.Algorithm):
+class grab_neighborhoods(dml.Algorithm):
     contributor = 'smithnj'
     reads = []
-    writes = ['smithnj.census']
+    writes = ['smithnj.congestion']
 
     @staticmethod
     def execute(trial=False):
 
         startTime = datetime.datetime.now()
-
         # ---[ Connect to Database ]---------------------------------
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('smithnj', 'smithnj')
-        repo_name = 'smithnj.census'
+        repo_name = 'smithnj.neighborhoods'
         # ---[ Grab Data ]-------------------------------------------
-        df = pd.read_json('http://data.cityofchicago.org/resource/kn9c-c2s2.json').to_json(orient='records')
+        df = pd.read_csv('http://datamechanics.io/data/smithnj/Neighborhoods_2012b.csv').to_json(orient='records')
         loaded = json.loads(df)
         # ---[ MongoDB Insertion ]-------------------------------------------
-        repo.dropCollection('census')
-        repo.createCollection('census')
+        repo.dropCollection('neighborhoods')
+        repo.createCollection('neighborhoods')
         print('done')
         repo[repo_name].insert_many(loaded)
         repo[repo_name].metadata({'complete': True})
@@ -38,7 +37,6 @@ class grab_censusstats(dml.Algorithm):
         print(repo[repo_name].metadata())
         repo.logout()
         endTime = datetime.datetime.now()
-
         return {"start": startTime, "end": endTime}
 
 

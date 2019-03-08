@@ -19,28 +19,20 @@ class grab_neighborhoods(dml.Algorithm):
     def execute(trial=False):
 
         startTime = datetime.datetime.now()
-
         # ---[ Connect to Database ]---------------------------------
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('smithnj', 'smithnj')
-        repo_name = neighborhoods.writes[0]
-
+        repo_name = 'smithnj.neighborhoods'
         # ---[ Grab Data ]-------------------------------------------
-        url = 'https://data.cityofchicago.org/api/views/y6yq-dbs2/rows.json?accessType=DOWNLOAD'
-        request = urllib.request.Request(url)
-        response = urllib.request.urlopen(request)
-        content = response.read()
-        json_response = json.loads(content)
-        json_string = json.dumps(json_response, sort_keys=True, indent=2)
-
-
+        df = pd.read_csv('http://datamechanics.io/data/smithnj/Neighborhoods_2012b.csv').to_json(orient='records')
+        loaded = json.loads(df)
         # ---[ MongoDB Insertion ]-------------------------------------------
         repo.dropCollection('neighborhoods')
         repo.createCollection('neighborhoods')
-        repo[repo_name].insert_many(json_response)
+        print('done')
+        repo[repo_name].insert_many(loaded)
         repo[repo_name].metadata({'complete': True})
-
         # ---[ Finishing Up ]-------------------------------------------
         print(repo[repo_name].metadata())
         repo.logout()

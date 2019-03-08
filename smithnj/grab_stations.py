@@ -3,7 +3,7 @@ import json
 import dml
 import prov.model
 import datetime
-import uuid
+import geopandas
 
 ############################################
 # grab_stations.py
@@ -17,30 +17,22 @@ class grab_stations(dml.Algorithm):
 
     @staticmethod
     def execute(trial=False):
-
         startTime = datetime.datetime.now()
 
         # ---[ Connect to Database ]---------------------------------
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('smithnj', 'smithnj')
-        repo_name = stations.writes[0]
-
+        repo_name = 'smithnj.stations'
         # ---[ Grab Data ]-------------------------------------------
-        url = 'http://datamechanics.io/data/smithnj/CTA_RailStations.json'
-        request = urllib.request.Request(url)
-        response = urllib.request.urlopen(request)
-        content = response.read()
-        json_response = json.loads(content)
-        json_string = json.dumps(json_response, sort_keys=True, indent=2)
-
-
+        url = 'http://datamechanics.io/data/CTA_RailStations.csv'
+        df = pd.read_csv('http://datamechanics.io/data/smithnj/CTA_RailStations.csv').to_json(orient='records')
+        loaded = json.loads(df)
         # ---[ MongoDB Insertion ]-------------------------------------------
         repo.dropCollection('stations')
         repo.createCollection('stations')
-        repo[repo_name].insert_many(json_response)
+        repo[repo_name].insert_many(loaded)
         repo[repo_name].metadata({'complete': True})
-
         # ---[ Finishing Up ]-------------------------------------------
         print(repo[repo_name].metadata())
         repo.logout()

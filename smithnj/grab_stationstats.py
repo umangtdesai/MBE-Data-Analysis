@@ -13,7 +13,7 @@ import uuid
 class grab_ctastations(dml.Algorithm):
     contributor = 'smithnj'
     reads = []
-    writes = ['smithnj.stationstats']
+    writes = ['smithnj.ctastats']
 
     @staticmethod
     def execute(trial=False):
@@ -24,26 +24,20 @@ class grab_ctastations(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('smithnj', 'smithnj')
-        repo_name = stationstats.writes[0]
-
+        repo_name = 'smithnj.ctastats'
         # ---[ Grab Data ]-------------------------------------------
-        url = 'https://data.cityofchicago.org/resource/5neh-572f.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        jsondata = json.loads(data)
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
-
+        df = pd.read_json('https://data.cityofchicago.org/resource/5neh-572f.json').to_json(orient='records')
+        loaded = json.loads(df)
         # ---[ MongoDB Insertion ]-------------------------------------------
-        repo.dropCollection('stationstats')
-        repo.createCollection('stationstats')
-        repo[repo_name].insert_many(r)
+        repo.dropCollection('ctastats')
+        repo.createCollection('ctastats')
+        print('done')
+        repo[repo_name].insert_many(loaded)
         repo[repo_name].metadata({'complete': True})
-
         # ---[ Finishing Up ]-------------------------------------------
         print(repo[repo_name].metadata())
         repo.logout()
         endTime = datetime.datetime.now()
-        return {"start": startTime, "end": endTime}
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
