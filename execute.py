@@ -36,14 +36,16 @@ for r,d,f in os.walk(path):
 # sets that they read and write.
 datasets = set()
 ordered = []
+print('dnajdnjkasndj')
 while len(algorithms) > 0:
     for i in range(0,len(algorithms)):
+        print(algorithms[i])
         if set(algorithms[i].reads).issubset(datasets):
             datasets = datasets | set(algorithms[i].writes)
             ordered.append(algorithms[i])
             del algorithms[i]
             break
-
+print('scsdfcdsfcsF')
 # Execute the algorithms in order.
 provenance = prov.model.ProvDocument()
 for algorithm in ordered:
