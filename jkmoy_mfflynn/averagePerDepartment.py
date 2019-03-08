@@ -4,7 +4,6 @@ import dml
 import prov.model
 import datetime
 import uuid
-import pandas as pd
 
 def aggregate(R, f):
     keys = {r[0] for r in R}
@@ -32,38 +31,52 @@ class averagePerDepartment(dml.Algorithm):
         data = [{'Neighborhood':doc['Neighborhood'].strip()} for doc in collection if doc['Neighborhood'] != '']
         s = []
         for x in data:
-            x = (x['Neighborhood'], 1)
+            x = (x['Neighborhood'].upper(), 1)
             s.append(x)
 
         a = aggregate(s, sum) # List of tuples with neighborhoods and amount of incidents
-            
-        neighborhoodCounts = [{'Neighborhood': tup[0], 'Count': tup[1]} for tup in a] # List of dicts with the neighborhood and amount of incidents
-
-        #print(collection2[0])
-        #print(collection2[1])
-
-        data = [doc['attributes']["PD"] for doc in collection2 if doc['attributes']["PD"].strip() != '']
+        
+        data = [{'Neighborhood':doc['attributes']["PD"].strip()} for doc in collection2 if doc['attributes']["PD"].strip() != '']
+        s = []
         for x in data:
+            x = (x['Neighborhood'], 1)
+            s.append(x)
+
+        b = aggregate(s, sum)
+        
+        while(len(b) > 11):
+            for x in b:
+                if x[0] == 'FENWAY/KENMORE':
+                    b.remove(x)
+                elif x[0] == 'CENTRAL':
+                    b.remove(x)
+                elif x[0] == 'SOUTH END':
+                    b.remove(x)
+                elif x[0] == 'BACK BAY/BEACON HILL':
+                    b.remove(x)
+                    
+        b.append(('BOSTON', 4))
+
+        final = []
+        for j in range(11):
+            for k in range(11):
+                if (a[j][0][:3] == b[k][0][:3]):
+                    final.append((a[j][0], a[j][1] // b[k][1]))
+
+        finalDataset = [{'Neighborhood':tup[0], 'Count':tup[1]} for tup in final]
+        for x in finalDataset:
             print(x)
         
-        i = 0
-        for x in range(len(collection2)):
-            if i < 0:
-                print(collection2[x]['attributes'])
-                i += 1
-        
-
-        '''
         repo.dropCollection('jkmoy_mfflynn.averagePerDepartment')
         repo.createCollection('jkmoy_mfflynn.averagePerDepartment')
         
-        repo['jkmoy_mfflynn.averagePerDepartment'].insert_many(data)
+        repo['jkmoy_mfflynn.averagePerDepartment'].insert_many(finalDataset)
         repo['jkmoy_mfflynn.averagePerDepartment'].metadata({'complete': True})
 
         print(repo['jkmoy_mfflynn.averagePerDepartment'].metadata())
-        '''                           
+        
         repo.logout()
-
+        
         endTime = datetime.datetime.now()
 
         return {"start":startTime, "end":endTime}
@@ -81,38 +94,22 @@ class averagePerDepartment(dml.Algorithm):
         repo = client.repo
         repo.authenticate('jkmoy_mfflynn', 'jkmoy_mfflynn')
         
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/jkmoy_mfflynn') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/jkmoy_mfflynn') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('fire', 'https://data.boston.gov/datastore/odata3.0/220a4ce5-a991-4336-a19b-159881d7c2e7?$format=json')
 
-        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
+        this_script = doc.agent('alg:jkmoy_mfflynn#averagePerDepartment', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dat:fires', {'prov:label':'Incidents per department', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_avg = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_avg, this_script)
+        doc.usage(get_avg, resource, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'})
 
-        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-
-        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        avg = doc.entity('dat:jkmoy_mfflynn#averages', {prov.model.PROV_LABEL:'Average per department', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(avg, this_script)
+        doc.wasGeneratedBy(avg, get_avg, endTime)
+        doc.wasDerivedFrom(avg, resource, get_avg, get_avg, get_avg)
 
         repo.logout()
                   
@@ -126,30 +123,6 @@ doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
-averagePerDepartment.execute()
-
-
-def union(R, S):
-    return R + S
-
-def difference(R, S):
-    return [t for t in R if t not in S]
-
-def intersect(R, S):
-    return [t for t in R if t in S]
-
-def project(R, p):
-    return [p(t) for t in R]
-
-def select(R, s):
-    return [t for t in R if s(t)]
- 
-def product(R, S):
-    return [(t,u) for t in R for u in S]
-
-def aggregate(R, f):
-    keys = {r[0] for r in R}
-    return [(key, f([v for (k,v) in R if k == key])) for key in keys]
-
+#averagePerDepartment.execute()
 
 ## eof
