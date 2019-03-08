@@ -4,14 +4,15 @@ import dml
 import prov.model
 import datetime
 import uuid
-import pandas as pd
 
 class example(dml.Algorithm):
     contributor = 'ido_jconstan_jeansolo_suitcase'
     reads = []
     writes = ['ido_jconstan_jeansolo_suitcase.bu_transportation_study',
               'ido_jconstan_jeansolo_suitcase.property_data',
-              'ido_jconstan_jeansolo_suitcase.boston_street_segments']
+              'ido_jconstan_jeansolo_suitcase.gas_emissions',
+              'ido_jconstan_jeansolo_suitcase.zones',
+              'ido_jconstan_jeansolo_suitcase.traffic_count']
 
     @staticmethod
     def execute(trial = False):
@@ -45,18 +46,18 @@ class example(dml.Algorithm):
         repo['ido_jconstan_jeansolo_suitcase.property_data'].insert_many(r)
         repo['ido_jconstan_jeansolo_suitcase.property_data'].metadata({'complete':True})
         print(repo['ido_jconstan_jeansolo_suitcase.property_data'].metadata())
-    
 
-        # OBTAINING THIRD DATA SET [Boston Street Segments]
-        #url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cfd1740c2e4b49389f47a9ce2dd236cc_8.geojson'
-        #response = urllib.request.urlopen(url).read().decode("utf-8")
-        #r = json.loads(response)
-        #s = json.dumps(r, sort_keys=True, indent=2)
-        #repo.dropCollection("boston_street_segments")
-        #repo.createCollection("boston_street_segments") 
-        #repo['ido_jconstan_jeansolo_suitcase.boston_street_segments'].insert_many(r)
-        #repo['ido_jconstan_jeansolo_suitcase.boston_street_segments'].metadata({'complete':True})
-        #print(repo['ido_jconstan_jeansolo_suitcase.boston_street_segments'].metadata())   
+
+        # OBTAINING THIRD DATA SET [Greenhouse Emissions]
+        url = 'https://drive.google.com/uc?export=download&id=1OaOvImEZLgxcmg1FmcqP4gSsABOKQu7P'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("greenhouse_emissions")
+        repo.createCollection("greenhouse_emissions") 
+        repo['ido_jconstan_jeansolo_suitcase.greenhouse_emissions'].insert(r)
+        repo['ido_jconstan_jeansolo_suitcase.greenhouse_emissions'].metadata({'complete':True})
+        print(repo['ido_jconstan_jeansolo_suitcase.greenhouse_emissions'].metadata())   
 
 
         # OBTAINING FOURTH DATA SET [Boston work zones]
@@ -64,17 +65,47 @@ class example(dml.Algorithm):
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-		#response = urllib.request.urlopen(url).read().decode("utf-8")
-        #data = pd.read_csv(response, error_bad_lines=False)
-        #r = json.loads(data.to_json(orient='records'))
-        #s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("zones")
         repo.createCollection("zones")
         repo['ido_jconstan_jeansolo_suitcase.zones'].insert_many(r)
         repo['ido_jconstan_jeansolo_suitcase.zones'].metadata({'complete':True})
         print(repo['ido_jconstan_jeansolo_suitcase.zones'].metadata())
 
+        # OBTAINING FIFTH DATA SET [Traffic Count Locations]
+        url = 'https://opendata.arcgis.com/datasets/53cd17c661da464c807dfa6ae0563470_0.geojson'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("traffic_count")
+        repo.createCollection("traffic_count")
+        repo['ido_jconstan_jeansolo_suitcase.traffic_count'].insert(r)
+        repo['ido_jconstan_jeansolo_suitcase.traffic_count'].metadata({'complete':True})
+        print(repo['ido_jconstan_jeansolo_suitcase.traffic_count'].metadata())
 
+		
+		
+		
+		 #Transformation One
+        #Goal: Find correlation between house price and people who take the bus
+        #Select Home House # - Street from BU Transportation Study (REGISTERED STUDENT INFO) == ADDR1 from Property Assessment
+		#new data set fields: price of house, name, takes bus?
+        #print(r)
+        #tr = repo.zones
+		#tr = repo.zones.find({'neighborhood':'ROXBURY'}, {'street': True})
+        #for s in tr.find():
+            print(s)
+		
+		
+		#Transformation Two
+		
+		
+		#Transformation Three
+		
+		
+		
+		
+		
+		
         repo.logout()
 
         endTime = datetime.datetime.now()
@@ -98,37 +129,56 @@ class example(dml.Algorithm):
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
-
+        doc.add_namespace('dbg', 'https://data.boston.gov/dataset/greenhouse-gas-emissions/resource/')
+        doc.add_namespace('dbg2', 'https://data.boston.gov/dataset/public-works-active-work-zones/resource/')
+        doc.add_namespace('oda', 'https://opendata.arcgis.com/datasets/')
         # CHANGES ONLY MADE BELOW THIS COMMENT
 
         this_script = doc.agent('alg:ido_jconstan_jeansolo_suitcase#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
 
 
-        resource_transportStudy = doc.entity('dmi:bu_transportation_study', {'prov:label':'BU Transportation Study', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        resource_propertyData = doc.entity('dmi:property_data', {'prov:label':'Property Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        resource_streetSegments = doc.entity('dbg:cfd1740c2e4b49389f47a9ce2dd236cc_8', {'prov:label':'Boston Street Segments', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
+        resource_transportStudy = doc.entity('dat:bu_transportation_study', {'prov:label':'BU Transportation Study', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_propertyData = doc.entity('dat:property_data', {'prov:label':'Property Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_gasEmissions = doc.entity('dbg:bd8dd4bb-867e-4ca2-b6c7-6c3bd9e6c290', {'prov:label':'Gas Emissions', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_workZones = doc.entity('dbg2:36fcf981-e414-4891-93ea-f5905cec46fc', {'prov:label':'Work Zones', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_trafficCount = doc.entity('oda:53cd17c661da464c807dfa6ae0563470_0', {'prov:label':'Traffic Count', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+
 
         get_bu_transport_study = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         get_property_data = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_boston_street_segments = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_gas_emissions = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_work_zones = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_traffic_count = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+
 
         doc.wasAssociatedWith(get_bu_transport_study, this_script)
         doc.wasAssociatedWith(get_property_data, this_script)
-        doc.wasAssociatedWith(get_boston_street_segments, this_script)
+        doc.wasAssociatedWith(get_gas_emissions, this_script)
+        doc.wasAssociatedWith(get_work_zones, this_script)
+        doc.wasAssociatedWith(get_traffic_count, this_script)
 
-        doc.usage(get_bu_transport_study, resource, startTime, None,
+        doc.usage(get_bu_transport_study, resource_transportStudy, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   }
                   )
-        doc.usage(get_property_data, resource, startTime, None,
+        doc.usage(get_property_data, resource_propertyData, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   }
                   )
-        doc.usage(get_boston_street_segments, resource, startTime, None,
+        doc.usage(get_gas_emissions, resource_gasEmissions, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   }
                   )
+        doc.usage(get_work_zones, resource_workZones, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval',
+                  }
+                  )
+        doc.usage(get_traffic_count, resource_trafficCount, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval',
+                  }
+                  )
+
 
         bu_transportation_study = doc.entity('dat:ido_jconstan_jeansolo_suitcase#bu_transportation_study', {prov.model.PROV_LABEL:'BU Transportation Study', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(bu_transportation_study, this_script)
@@ -140,10 +190,20 @@ class example(dml.Algorithm):
         doc.wasGeneratedBy(property_data, get_property_data, endTime)
         doc.wasDerivedFrom(property_data, resource_propertyData, get_property_data, get_property_data, get_property_data)
 
-        boston_street_segments = doc.entity('dat:ido_jconstan_jeansolo_suitcase#bu_transportation_study', {prov.model.PROV_LABEL:'BU Transportation Study', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(boston_street_segments, this_script)
-        doc.wasGeneratedBy(boston_street_segments, get_boston_street_segments, endTime)
-        doc.wasDerivedFrom(boston_street_segments, resource_streetSegments, get_boston_street_segments, get_boston_street_segments, get_boston_street_segments)
+        gas_emissions = doc.entity('dat:ido_jconstan_jeansolo_suitcase#gas_emissions', {prov.model.PROV_LABEL:'Greenhouse Gas Emissions', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(gas_emissions, this_script)
+        doc.wasGeneratedBy(gas_emissions, get_gas_emissions, endTime)
+        doc.wasDerivedFrom(gas_emissions, resource_gasEmissions, get_gas_emissions, get_gas_emissions, get_gas_emissions)
+
+        work_zones = doc.entity('dat:ido_jconstan_jeansolo_suitcase#work_zones', {prov.model.PROV_LABEL:'Active Work Zones', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(work_zones, this_script)
+        doc.wasGeneratedBy(work_zones, get_work_zones, endTime)
+        doc.wasDerivedFrom(work_zones, resource_workZones, get_work_zones, get_work_zones, get_work_zones)
+
+        traffic_count = doc.entity('dat:ido_jconstan_jeansolo_suitcase#traffic_count', {prov.model.PROV_LABEL:'Traffic Count', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(traffic_count, this_script)
+        doc.wasGeneratedBy(traffic_count, get_traffic_count, endTime)
+        doc.wasDerivedFrom(traffic_count, resource_trafficCount, get_traffic_count, get_traffic_count, get_traffic_count)
 
 
         repo.logout()
@@ -158,5 +218,3 @@ doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
-
-## eof
