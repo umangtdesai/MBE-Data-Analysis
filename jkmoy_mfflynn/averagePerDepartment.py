@@ -11,7 +11,7 @@ def aggregate(R, f):
 
 class averagePerDepartment(dml.Algorithm):
     contributor = 'jkmoy_mfflynn'
-    reads = ['jkmoy_mfflynn.fire', 'jkmoy_mfflynnfire.fire_departments']
+    reads = ['jkmoy_mfflynn.fire', 'jkmoy_mfflynn.fire_departments']
     writes = ['jkmoy_mfflynn.averagePerDepartment']
 
     @staticmethod
@@ -64,8 +64,6 @@ class averagePerDepartment(dml.Algorithm):
                     final.append((a[j][0], a[j][1] // b[k][1]))
 
         finalDataset = [{'Neighborhood':tup[0], 'Count':tup[1]} for tup in final]
-        for x in finalDataset:
-            print(x)
         
         repo.dropCollection('jkmoy_mfflynn.averagePerDepartment')
         repo.createCollection('jkmoy_mfflynn.averagePerDepartment')
