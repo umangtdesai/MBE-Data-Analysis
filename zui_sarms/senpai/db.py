@@ -1,6 +1,7 @@
 import logging
 import os
-import pymongo
+import dml
+
 from sshtunnel import SSHTunnelForwarder
 
 from senpai.utils import load_config
@@ -25,7 +26,7 @@ def mongo_wrapper(f):
                                 ssh_username=MONGO_USER,
                                 ssh_pkey=MONGO_PKEY,
                                 remote_bind_address=('127.0.0.1', MONGO_PORT)) as tunnel:
-            client = pymongo.MongoClient('127.0.0.1',
+            client = dml.pymongo.MongoClient('127.0.0.1',
                                          tunnel.local_bind_port)  # server.local_bind_port is assigned local port
             db = client.get_database(MONGO_DB)
 

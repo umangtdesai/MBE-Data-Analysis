@@ -1,12 +1,11 @@
-from sshtunnel import SSHTunnelForwarder
-import os
-import pymongo
-import pprint
 import logging
 
+import pymongo
 from senpai.db import mongo_wrapper
 
 log = logging.getLogger(__name__)
+
+
 # logging.basicConfig(level=logging.DEBUG)
 
 
