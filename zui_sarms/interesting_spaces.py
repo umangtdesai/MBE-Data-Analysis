@@ -59,10 +59,7 @@ class interesting_spaces(dml.Algorithm):
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-        # Set up the database connection.
-        client = dml.pymongo.MongoClient()
-        repo = client.repo
-        repo.authenticate('zui_sarms', 'zui_sarms')
+
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -77,14 +74,10 @@ class interesting_spaces(dml.Algorithm):
         doc.usage(merge, parks, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
         doc.usage(merge, landmarks, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
-        interesting_spaces = doc.entity('dat:zui_sarms#interesting_spaces', {prov.model.PROV_LABEL: 'Open Space', prov.model.PROV_TYPE: 'ont:DataSet'})
+        interesting_spaces = doc.entity('dat:zui_sarms#interesting_spaces', {prov.model.PROV_LABEL: 'Interesting Spaces', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(interesting_spaces, this_script)
         doc.wasGeneratedBy(interesting_spaces, merge, endTime)
         doc.wasDerivedFrom(interesting_spaces, landmarks, merge, merge, merge)
         doc.wasDerivedFrom(interesting_spaces, parks, merge, merge, merge)
 
-        repo.logout()
-
         return doc
-
-## eof

@@ -112,6 +112,22 @@ class RequestsDownloader(BaseDownloader):
         return path
 
 
+
+
+def parse_coor(s):
+    """
+    Parse the string to tuple of coordinate
+    In the format of (lat, long)
+    """
+
+    lat, long = s.split(", ")
+    lat = lat[1:]
+    long = long[:-1]
+    lat = float(lat)
+    long = float(long)
+
+    return [lat, long]
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     # Quick test for RequestsDownloader
