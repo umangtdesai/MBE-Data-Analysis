@@ -84,17 +84,17 @@ class close_stop(dml.Algorithm):
                                 'ont:Extension': 'json'})
         mbta_stops = doc.entity('dat:zui_sarms#mbta_stops', {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                             'ont:Extension': 'json'})
-        addition = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(addition, this_script)
-        doc.usage(addition, mbta_stops, startTime, None,{prov.model.PROV_TYPE: 'ont:Retrieval'})
-        doc.usage(addition, yelp_business, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+        find_closest = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(find_closest, this_script)
+        doc.usage(find_closest, mbta_stops, startTime, None,{prov.model.PROV_TYPE: 'ont:Retrieval'})
+        doc.usage(find_closest, yelp_business, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
         close_stop = doc.entity('dat:zui_sarms#close_stop',
-                                   {prov.model.PROV_LABEL: 'Yelp Businesses', prov.model.PROV_TYPE: 'ont:DataSet'})
+                                   {prov.model.PROV_LABEL: 'Close Stop', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(close_stop, this_script)
-        doc.wasGeneratedBy(close_stop, addition, endTime)
-        doc.wasDerivedFrom(close_stop, yelp_business, addition, addition, addition)
-        doc.wasDerivedFrom(close_stop, mbta_stops, addition, addition, addition)
+        doc.wasGeneratedBy(close_stop, find_closest, endTime)
+        doc.wasDerivedFrom(close_stop, yelp_business, find_closest, find_closest, find_closest)
+        doc.wasDerivedFrom(close_stop, mbta_stops, find_closest, find_closest, find_closest)
 
         repo.logout()
 

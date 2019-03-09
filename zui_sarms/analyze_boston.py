@@ -73,7 +73,7 @@ class analyze_boston(dml.Algorithm):
         doc.wasGeneratedBy(parks, get_parks, endTime)
         doc.wasDerivedFrom(parks, resource, get_parks, get_parks, get_parks)
 
-        landmarks = doc.entity('dat:zui_sarms#landmarks', {prov.model.PROV_LABEL: 'Open Space', prov.model.PROV_TYPE: 'ont:DataSet'})
+        landmarks = doc.entity('dat:zui_sarms#landmarks', {prov.model.PROV_LABEL: 'Boston Landmarks', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(landmarks, this_script)
         doc.wasGeneratedBy(landmarks, get_landmarks, endTime)
         doc.wasDerivedFrom(landmarks, resource, get_landmarks, get_landmarks, get_landmarks)

@@ -77,7 +77,7 @@ class interesting_spaces(dml.Algorithm):
         doc.usage(merge, parks, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
         doc.usage(merge, landmarks, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
-        interesting_spaces = doc.entity('dat:zui_sarms#interesting_spaces', {prov.model.PROV_LABEL: 'Open Space', prov.model.PROV_TYPE: 'ont:DataSet'})
+        interesting_spaces = doc.entity('dat:zui_sarms#interesting_spaces', {prov.model.PROV_LABEL: 'Interesting Spaces', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(interesting_spaces, this_script)
         doc.wasGeneratedBy(interesting_spaces, merge, endTime)
         doc.wasDerivedFrom(interesting_spaces, landmarks, merge, merge, merge)
