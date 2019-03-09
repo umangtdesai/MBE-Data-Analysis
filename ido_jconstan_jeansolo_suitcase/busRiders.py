@@ -129,7 +129,7 @@ class busRiders(dml.Algorithm):
                   }
                   )
 
-        bus_Riders = doc.entity('dat:ido_jconstan_jeansolo_suitcase#bus_Riders', {prov.model.PROV_LABEL:'Traffic Count', prov.model.PROV_TYPE:'ont:DataSet'})
+        bus_Riders = doc.entity('dat:ido_jconstan_jeansolo_suitcase#bus_Riders', {prov.model.PROV_LABEL:'Bus Riders', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(bus_Riders, this_script)
         doc.wasGeneratedBy(bus_Riders, get_busRiders, endTime)
         doc.wasDerivedFrom(bus_Riders, resource_busRiders, get_busRiders, get_busRiders, get_busRiders)
