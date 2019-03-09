@@ -13,11 +13,10 @@ import dml
 import pandas as pd
 import prov.model
 
-# Is this URL permanent?
-from senpai.db import mongo_wrapper
 from senpai.utils import download_file
 
 RES_ID = "4582bec6-2b4f-4f9e-bc55-cbaa73117f4c"
+# Is this URL permanent?
 URL = f"https://data.boston.gov/dataset/03693648-2c62-4a2c-a4ec-48de2ee14e18/resource/{RES_ID}/download/tmp1yzpct9p.csv"
 
 
