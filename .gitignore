@@ -117,4 +117,5 @@ dmypy.json
 
 .idea
 
-zui_sarms/senpai/mongo_pkey
+zui_sarms/mongo_pkey
+food_insp.csv
