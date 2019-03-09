@@ -9,6 +9,9 @@ Most of the needed sets already exist, just need to be analyzed.
 ## Project #1
 In this part we retrived some datasets and managed to transform them into some meaningful datasets using relational primitives.
 
+### Street Book
+After our contacts with BU Spark! staff, we get this Street Book dataset which mainly describes basic information of `Street Name`, `Gender`, `Zipcodes`, `Rank`, etc. Therefore, we fully use this dataset with our Famous People one to get related data and generate a new dataset named Filtered_ famous_poeple_streets.
+
 ### Famous People
 This dataset comes from [https://www.50states.com/bio/mass.htm](https://www.50states.com/bio/mass.htm). We parsed names of famous people and stored them into MongoDB with their `full_name`, `first_name`, `last_name` and `middle_name`.
 
@@ -22,4 +25,4 @@ This dataset comes from [http://bostonopendata-boston.opendata.arcgis.com/datase
 This dataset can be derived from [http://bostonopendata-boston.opendata.arcgis.com/datasets/cb00f9248aa6404ab741071ca3806c0e_6.csv](http://bostonopendata-boston.opendata.arcgis.com/datasets/cb00f9248aa6404ab741071ca3806c0e_6.csv). For this dataset, we re-arrange the columns and store them into MongoDB with column name `Branch Name`, `Address`, `City`, `Zipcode`, `Latitude`, `Longitude`, `Numbers`.
 
 ### Landmarks
-This dataset can be derived from [http://bostonopendata-boston.opendata.arcgis.com/datasets/7a7aca614ad740e99b060e0ee787a228_3.csv](http://bostonopendata-boston.opendata.arcgis.com/datasets/7a7aca614ad740e99b060e0ee787a228_3.csv). For the origin dataset, we fill in the missing values and select rows that its column "Petiton" > 15. Then project to have a dateset have six cloumns: `Petition`, `Name of landmarks`, `Areas_Desi`, `Address`, `Neighbourhood`, `ShapeSTWidth`.
+This dataset can be derived from [http://bostonopendata-boston.opendata.arcgis.com/datasets/7a7aca614ad740e99b060e0ee787a228_3.csv](http://bostonopendata-boston.opendata.arcgis.com/datasets/7a7aca614ad740e99b060e0ee787a228_3.csv). For the origin dataset, we fill in the missing values and select rows that its column "Petiton" > 15. Then project to have a dateset have six cloumns: `Petition`, `Name of landmarks`, `Areas_Desi`, `Address`, `Neighbourhood`, `ShapeSTWidth`. Besides, based on Landmarks dataset and Colleges and Universities dataset, we filter the data and use `City` as the key value to get a new dataset which desrcibes the features related to street names.
