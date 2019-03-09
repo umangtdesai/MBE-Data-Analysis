@@ -8,11 +8,14 @@ Another data set is the race and ethincity data set gathered from census data. D
 
 Data Set Three
 ---------------
+We also pulled the salary data for all employees employed by the city of Boston (teachers, etc.) from data.boston.gov. These data include total compensation, base salary, as well as overtime and various extra payments. From the data, we filtered for employees of the Boston Police Department. Then, we pulled out relevant subsections of salary for each officer and aggregated them to compute the total amount paid for each category using MapReduce (total, overtime, detail, etc.). This transformation gives us better insight into the amounts spent towards police salaries by the City of Boston. The city spends nearly 400 million on police compensation, and there are some officers who have made upwards of $100,000 in overtime or detail work (more than their base salaries) which we find intriguing.  
 
 
 Data Set Four
 ---------------
-
+We also pulled the BPD Field Interrogation and Observation records from data.boston.gov. These include traffic stops, car searches, wellness checks, etc. and include officer names, dates, and incident descriptions. We plan to use this dataset with our police salary information to potentially look at which officers are mentioned in the most FIO entries, and by what types. This could be useful given we have compensation information for each officer and so we may discover a trend of some kind there. We can also look at the locations of each incident and aggregate them by police district to potentially find trends there. It may also be interesting to see if certain police spend time in certain areas, potentially helping us see where the city's resources are being used.
 
 Data Set Five
 ---------------
+Finally, we have pulled the Boston Police Department's Crime Incident Reports, which document crimes reported and documented by the BPD. Similarly to the FIO records mentioned above, we can look at how different officers were involved in dealing with various crimes and crime trends based on location. These data are notably different from the FIO records, though, in that these are include all activity responded to by BPD and the FIO records only include occurences initiated by police and which only sometimes result in discovered criminal activity. With these two datasets we may obtain a more complete view of police activity than with either alone. Thus, we could potentially begin to figure out what relationships exist between compensation (the expenditure of city resources) and police engagement (the expenditure of BPD resources). 
+
