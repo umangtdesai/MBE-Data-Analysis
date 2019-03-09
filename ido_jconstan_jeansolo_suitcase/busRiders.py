@@ -7,7 +7,8 @@ import uuid
 import pymongo
 from bson.objectid import ObjectId
 
-class nonBusRiders(dml.Algorithm):
+class busRiders(dml.Algorithm):
+	print("busRiders")
 	contributor = 'ido_jconstan_jeansolo_suitcase'
 	reads = ['ido_jconstan_jeansolo_suitcase.bu_transportation_study',
 			 'ido_jconstan_jeansolo_suitcase.property_data']
@@ -82,24 +83,20 @@ class nonBusRiders(dml.Algorithm):
 
 		# Transform 1
 		# Get the students who do NOT ride the bus
-		notBusRiders = []
+		busRiders = []
 		tempFlag = False
 		for x in r1:
 			for y in r:
 			    # if the student does ride the bus
 			    if x['Address 1'] in y['Address']:
-			        tempFlag = True
-			if (tempFlag == False):
-			    notBusRiders.append(x)
-			else:
-			    tempFlag = False
+			        busRiders.append(x)
 		
 		# Get the house price of students who do NOT ride the bus
-		nbrHouseValue = []
-		for x in notBusRiders:
-		    nbrHouseValue.append({"Address 1": x['Address 1'], "Assessed Total":x['Assessed Total']})
+		brHouseValue = []
+		for x in busRiders:
+		    brHouseValue.append({"Address 1": x['Address 1'], "Assessed Total":x['Assessed Total']})
 
-		repo['ido_jconstan_jeansolo_suitcase.PropertyValueNonRiders'].insert_many(nbrHouseValue)
+		repo['ido_jconstan_jeansolo_suitcase.PropertyValueNonRiders'].insert_many(brHouseValue)
 
 		repo.logout()
 
