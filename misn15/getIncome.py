@@ -51,7 +51,7 @@ class getIncome(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('cb', 'https://api.census.gov/data/')
 
-        this_script = doc.agent('alg:misn15#income', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:misn15#getIncome', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('cb:Boston_income', {'prov:label':'Boston_income', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         get_income = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_income, this_script)
@@ -67,13 +67,10 @@ class getIncome(dml.Algorithm):
                   
         return doc
 
-'''
-# This is example code you might use for debugging this module.
-# Please remove all top-level function calls before submitting.
-example.execute()
-doc = example.provenance()
+getIncome.execute()
+doc = getIncome.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
-'''
+
 
 ## eof

@@ -47,10 +47,10 @@ class getZipcodes(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://www.census.gov/geo/reference/codes/cou.html')
+        doc.add_namespace('census', 'https://www.census.gov/geo/reference/codes/cou.html')
 
-        this_script = doc.agent('alg:misn15#zipcodes', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:Boston_zipcodes', {'prov:label':'Boston_zipcodes', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        this_script = doc.agent('alg:misn15#getZipcodes', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('census:Boston_zipcodes', {'prov:label':'Boston_zipcodes', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_zipcodes = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_zipcodes, this_script)
         doc.usage(get_zipcodes, resource, startTime, None,
@@ -59,18 +59,16 @@ class getZipcodes(dml.Algorithm):
                   )
         zipcodes_data = doc.entity('dat:misn15#getZipcodes', {prov.model.PROV_LABEL:'Boston Crime', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(zipcodes_data, this_script)
-        doc.wasGeneratedBy(zipcodes_data, get_crime, endTime)
+        doc.wasGeneratedBy(zipcodes_data, get_zipcodes, endTime)
         doc.wasDerivedFrom(zipcodes_data, resource, get_zipcodes, get_zipcodes, get_zipcodes)
                   
         return doc
 
-'''
-# This is example code you might use for debugging this module.
-# Please remove all top-level function calls before submitting.
-example.execute()
-doc = example.provenance()
+
+getZipcodes.execute()
+doc = getZipcodes.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
-'''
+
 
 ## eof

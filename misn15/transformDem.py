@@ -24,10 +24,6 @@ class transformDem(dml.Algorithm):
         repo = client.repo
         repo.authenticate('misn15', 'misn15')
 
-        # census returns median income by census tract number
-        c = Census("a839d0b0a206355591f27266b5205596d1bae45c", year=2017)
-        data = c.acs5.state_county_tract('B06011_001E', states.MA.fips, '025', Census.ALL)
-        
         zipcodes = []
         zipcodes = repo['misn15.zipcodes'].find()
         zipcodes = [x for x in zipcodes]
@@ -119,31 +115,54 @@ class transformDem(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT * from "12cb3883-56f5-47de-afa5-3b1cf61b257b" WHERE CAST(year AS Integer) > 2016')
-
-        this_script = doc.agent('alg:misn15#crime', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:Boston_crime', {'prov:label':'Boston_crime', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_crime = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_crime, this_script)
-        doc.usage(get_crime, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query': '?sql=SELECT * from "12cb3883-56f5-47de-afa5-3b1cf61b257b" WHERE CAST(year AS Integer) > 2016'
+        doc.add_namespace('waste', 'http://datamechanics.io/data/misn15/hwgenids.json') 
+        doc.add_namespace('zipcodes', 'http://datamechanics.io/data/zip_tracts.json')
+        doc.add_namespace('income', 'http://datamechanics.io/')
+        
+               
+        this_script = doc.agent('alg:misn15#transformDem', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dat:zipcodes', {'prov:label':'Boston Zip Codes', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})                  
+        resource2 = doc.entity('dat:income', {'prov:label':'Median Income', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource3 = doc.entity('dat:waste', {'prov:label':'Waste Sites', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+         
+        get_zips = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_zips, this_script)
+        doc.usage(get_zips, resource, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                     }
+                  )      
+        doc.usage(get_zips, resource2, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
-        crime_data = doc.entity('dat:misn15#RetrieveCrime', {prov.model.PROV_LABEL:'Boston Crime', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(crime_data, this_script)
-        doc.wasGeneratedBy(crime_data, get_crime, endTime)
-        doc.wasDerivedFrom(crime_data, resource, get_crime, get_crime, get_crime)
+        doc.usage(get_zips, resource3, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+                  )
+        zipcodes = doc.entity('dat:misn15#zipcodes', {prov.model.PROV_LABEL:'Boston Crime', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(zipcodes, this_script)
+        doc.wasGeneratedBy(zipcodes, get_zips, endTime)
+        doc.wasDerivedFrom(zipcodes, resource, get_zips, get_zips, get_zips)
+
+        income = doc.entity('dat:misn15#income', {prov.model.PROV_LABEL:'Boston Crime', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(income, this_script)
+        doc.wasGeneratedBy(income, get_zips, endTime)
+        doc.wasDerivedFrom(income, resource2, get_zips, get_zips, get_zips)
+
+        waste = doc.entity('dat:misn15#waste', {prov.model.PROV_LABEL:'Boston Crime', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(waste, this_script)
+        doc.wasGeneratedBy(waste, get_zips, endTime)
+        doc.wasDerivedFrom(waste, resource3, get_zips, get_zips, get_zips)
+
+
                   
         return doc
 
-'''
-# This is example code you might use for debugging this module.
-# Please remove all top-level function calls before submitting.
-example.execute()
-doc = example.provenance()
+
+transformDem.execute()
+doc = transformDem.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
-'''
+
 
 ## eof
