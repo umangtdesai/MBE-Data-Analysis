@@ -25,6 +25,7 @@ class example(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ido_jconstan_jeansolo_suitcase', 'ido_jconstan_jeansolo_suitcase')
+       
 
         
         # OBTAINING FIRST DATASET [Bu Transportation Study]
@@ -93,17 +94,23 @@ class example(dml.Algorithm):
         #Select Home House # - Street from BU Transportation Study (REGISTERED STUDENT INFO) == ADDR1 from Property Assessment
 		#new data set fields: price of house, takes bus?
         #print(r)
-        #tr = repo.ido_jconstan_jeansolo_suitcase.bu_transportation_study.find()
-        #tr1 = repo.ido_jconstan_jeansolo_suitcase.bu_transportation_study.find({}, {'Address': True, _id:False})
-        #tr2 = repo.ido_jconstan_jeansolo_suitcase.property_data.find({'Address 1': {'$regex' : 'w'}},{'Address 1': True, '_id':False})
+        #tr = repo.ido_jconstan_jeansolo_suitcase.traffic_count.find()
+        #tr1 = repo.ido_jconstan_jeansolo_suitcase.bu_transportation_study.find()
         
+        #tr2 = repo.ido_jconstan_jeansolo_suitcase.property_data.find({'Address 1': {'$regex' : 'w'}},{'Address 1': True, '_id':False})
+        #tr1 = repo.ido_jconstan_jeansolo_suitcase.property_data.find({}, {'Address 1': True, '_id':False})
         #tr2 = repo.ido_jconstan_jeansolo_suitcase.property_data.find()
+        #for s in tr:
+        #    print(s)
         #for s in tr1:
         #    print(s)
-        #for s in tr2:
-        #    print(s)
         
-            
+        #repo.ido_jconstan_jeansolo_suitcase.property_data.update_many({},{
+        #{$set: {Address1: newval}}
+        #}, upsert=False)         
+
+    
+         
             #v.rsplit(' ',1)[0];
             #v = v.rpartition('/')[0]
         #   print("k:",k[1])
@@ -115,21 +122,22 @@ class example(dml.Algorithm):
         #    repo.ido_jconstan_jeansolo_suitcase.property_data.save(i);
         #    });
         
+        #pdata = repo.ido_jconstan_jeansolo_suitcase.property_data.find()
+        #plist = []
+        #for item in pdata:
+        #    for addr in item['Address 1']:
+        #        new_dict = {}
+        #            new_dict['City'] = addr['properties']['CITY']
+        #            new_dict['Station Name'] = addr['properties']['STATION_NA']
+        #            new_dict['Address'] = addr['properties']['ADDRESS']
+        #            new_dict['Longitude'] = addr['properties']['LONGITUDE']
+        #            new_dict['Address'] = addr['properties']['LATITDE'].rsplit('',1)[0]
+        #            plist.append(new_dict)
+        #print(charging_list)
+        #repo.ido_jconstan_jeansolo_suitcase.property_data.insert_many(plist)
         
-        """
-        tr1data = repo.ido_jconstan_jeansolo_suitcase.property_data.aggregate([
-            {$match:{Address 1: {"$regex":/a/}}},
-            {
-                "$lookup":
-                    {
-                        "from": "bu_transportation_study",
-                        "localField": "Address",
-                        "foreignField": "Address 1",
-                        "as": "testing"
-                    }
-            }
-        ])
-        """
+        
+        
 
         #result = repo.ido_jconstan_jeansolo_suitcase.property_data.aggregate([ {'$lookup' : {'from': repo.ido_jconstan_jeansolo_suitcase.bu_transportation_study,'localField': 'Address 1','foreignField': 'Address','as': 'results' }}])
          
