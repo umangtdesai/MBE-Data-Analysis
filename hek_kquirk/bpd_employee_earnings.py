@@ -58,9 +58,9 @@ class bpd_employee_earnings(dml.Algorithm):
         resource = doc.entity('dat:hek_kquirk#boston_employee_earnings', {'prov:label':'Boston Open Data search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_bpd_employee_earnings = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_bpd_employee_earnings, this_script)
-        doc.usage(bpd_fio, resource, startTime, None,
+        doc.usage(get_bpd_employee_earnings, resource, startTime, None,
                   {
-                      prov.model.PROV_TYPE:'ont:Retrieval'
+                      prov.model.PROV_TYPE:'ont:Computation'
                   }
         )
         

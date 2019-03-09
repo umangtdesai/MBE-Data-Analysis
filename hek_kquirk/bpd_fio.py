@@ -65,12 +65,12 @@ class bpd_fio(dml.Algorithm):
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/')
-
+        
         this_script = doc.agent('alg:hek_kquirk#bpd_fio', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource = doc.entity('bdp:api/3/datastore_search/', {'prov:label':'Boston Open Data search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_bpd_fio = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(bpd_fio, this_script)
+        doc.wasAssociatedWith(get_bpd_fio, this_script)
         doc.usage(get_bpd_fio, resource, startTime, None,
                   {
                       prov.model.PROV_TYPE:'ont:Retrieval',
