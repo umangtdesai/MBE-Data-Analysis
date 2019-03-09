@@ -8,7 +8,7 @@ import pandas as pd
 from ast import literal_eval as make_tuple
 
 
-class Station(dml.Algorithm):
+class station(dml.Algorithm):
     contributor = 'kzhang21_ryuc'
     reads = []
     writes = ['kzhang21_ryuc.bpd']

@@ -128,7 +128,7 @@ class crimeLoc(dml.Algorithm):
 
         this_script = doc.agent('alg:kzhang21_ryuc#crimeLoc',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:crimeLoc',
+        resource = doc.entity('dat:kzhang21_ryuc#crime',
                               {'prov:label': 'Crime and Station Search', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
         get_lit = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)

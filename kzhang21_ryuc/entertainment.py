@@ -8,7 +8,7 @@ import uuid
 import pandas as pd
 from ast import literal_eval as make_tuple 
 
-class Entertainment(dml.Algorithm):
+class entertainment(dml.Algorithm):
     contributor = 'kzhang21_ryuc'
     reads = []
     writes = ['kzhang21_ryuc.play']
@@ -77,10 +77,10 @@ class Entertainment(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         #additional resource
-        doc.add_namespace('ent', 'http://datamechanics.io/data/boston_entertainment.csv')
+        doc.add_namespace('ent', 'http://datamechanics.io/data/')
 
         this_script = doc.agent('alg:kzhang21_ryuc#play', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:play', {'prov:label':'Entertainment, Entertainment Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('ent:boston_entertainment.csv', {'prov:label':'Entertainment, Entertainment Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_place = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_place, this_script)
         doc.usage(get_place, resource, startTime, None,

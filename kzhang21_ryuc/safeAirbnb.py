@@ -7,7 +7,7 @@ import datetime
 import uuid
 import pandas as pd 
 
-class SafeAirbnb(dml.Algorithm):
+class safeAirbnb(dml.Algorithm):
     contributor = 'kzhang21_ryuc'
     reads = ['kzhang21_ryuc.airbnb', 'kzhang21_ryuc.crimeLoc']
     writes = ['kzhang21_ryuc.safeAirbnb']
@@ -91,7 +91,7 @@ class SafeAirbnb(dml.Algorithm):
                           'http://bostonopendata-boston.opendata.arcgis.com/datasets/e5a0066d38ac4e2abbc7918197a4f6af_6.csv')
 
         this_script = doc.agent('alg:kzhang21_ryuc#safeairbnb', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:safeairbnb', {'prov:label':'Safe Airbnb, Location Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('dat:kzhang21_ryuc#airbnb', {'prov:label':'Airbnb, Location Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_place = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_place, this_script)
         doc.usage(get_place, resource, startTime, None,

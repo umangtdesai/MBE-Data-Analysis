@@ -7,7 +7,7 @@ import datetime
 import uuid
 import pandas as pd 
 
-class Airbnb(dml.Algorithm):
+class airbnb(dml.Algorithm):
     contributor = 'kzhang21_ryuc'
     reads = ['kzhang21_ryuc.play']
     writes = ['kzhang21_ryuc.airbnb']
@@ -95,18 +95,15 @@ class Airbnb(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         #additional resource
-        doc.add_namespace('airbnb', 'http://datamechanics.io/data/airbnb_listing.csv')
+        doc.add_namespace('airbnb', 'http://datamechanics.io/data/')
 
         this_script = doc.agent('alg:kzhang21_ryuc#airbnb', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:airbnb', {'prov:label':'Airbnb, Location Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('airbnb:airbnb_listing.csv', {'prov:label':'Airbnb, Location Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_place = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_place, this_script)
-        doc.usage(get_place, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval'
-                  }
-                  )
+        doc.usage(get_place, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
 
-        airbnb = doc.entity('dat:kzhang21_ryuc#airbnb', {prov.model.PROV_LABEL:'Place Found', prov.model.PROV_TYPE:'ont:DataSet'})
+        airbnb = doc.entity('dat:kzhang21_ryuc#airbnb', {prov.model.PROV_LABEL:'Airbnb Listings', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(airbnb, this_script)
         doc.wasGeneratedBy(airbnb, get_place, endTime)
         doc.wasDerivedFrom(airbnb, resource, get_place, get_place, get_place)

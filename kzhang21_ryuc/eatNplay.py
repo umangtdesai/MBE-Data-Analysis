@@ -14,7 +14,7 @@ Purpose: Reduce redundancy and create general data set of places to go
 def product(R, S):
     return [(t,u) for t in R for u in S]
 
-class EatNPlay(dml.Algorithm):
+class eatNplay(dml.Algorithm):
     contributor = 'kzhang21_ryuc'
     reads = ['kzhang21_ryuc.food', 'kzhang21_ryuc.play']
     writes = ['kzhang21_ryuc.eatNplay']
@@ -91,7 +91,7 @@ class EatNPlay(dml.Algorithm):
         doc.add_namespace('ent', 'http://datamechanics.io/data/boston_entertainment.csv')
 
         this_script = doc.agent('alg:kzhang21_ryuc#eatNplay', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:eatNplay', {'prov:label':'Food and Entertainment Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('dat:kzhang21_ryuc#eat', {'prov:label':'Food Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_lit = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_lit, this_script)
         doc.usage(get_lit, resource, startTime, None,

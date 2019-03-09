@@ -69,10 +69,10 @@ class crime(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         # additional resource
-        doc.add_namespace('crime', 'https://data.boston.gov/dataset/6220d948-eae2-4e4b-8723-2dc8e67722a3/resource/12cb3883-56f5-47de-afa5-3b1cf61b257b/download/tmpxjqz5gin.csv')
+        doc.add_namespace('crime', 'https://data.boston.gov/dataset/')
 
         this_script = doc.agent('alg:kzhang21_ryuc#crime', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:crime', {'prov:label':'Crime, Crime Records', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('crime:6220d948-eae2-4e4b-8723-2dc8e67722a3/resource/12cb3883-56f5-47de-afa5-3b1cf61b257b/download/tmpxjqz5gin.csv', {'prov:label':'Crime, Crime Records', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         #get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         #get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         #doc.wasAssociatedWith(get_found, this_script)

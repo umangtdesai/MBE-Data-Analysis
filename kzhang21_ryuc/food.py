@@ -7,7 +7,7 @@ import uuid
 import pandas as pd 
 from ast import literal_eval as make_tuple
 
-class Food(dml.Algorithm):
+class food(dml.Algorithm):
     contributor = 'kzhang21_ryuc'
     reads = []
     writes = ['kzhang21_ryuc.food']
@@ -75,16 +75,13 @@ class Food(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         #additional resource
-        doc.add_namespace('food', 'https://data.boston.gov/dataset/03693648-2c62-4a2c-a4ec-48de2ee14e18/resource/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c/download/tmper3diw4s.csv')
+        doc.add_namespace('food', 'https://data.boston.gov/dataset/')
 
         this_script = doc.agent('alg:kzhang21_ryuc#food', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:food', {'prov:label':'Food, Food Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('food:03693648-2c62-4a2c-a4ec-48de2ee14e18/resource/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c/download/tmper3diw4s.csv', {'prov:label':'Food, Food Search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_place = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_place, this_script)
-        doc.usage(get_place, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval'
-                  }
-                  )
+        doc.usage(get_place, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
 
         food = doc.entity('dat:kzhang21_ryuc#food', {prov.model.PROV_LABEL:'Food Found', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(food, this_script)
