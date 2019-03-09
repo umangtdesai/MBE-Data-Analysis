@@ -80,3 +80,4 @@ Therefore, there are 3 datasets finally:
 * dml==0.0.16.0
 * protoql==0.0.3.0
 * xmltodict==0.12.0
+* Shapely==1.6.4.post2
