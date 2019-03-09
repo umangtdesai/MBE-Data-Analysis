@@ -8,7 +8,6 @@ import pymongo
 from bson.objectid import ObjectId
 
 class busRiders(dml.Algorithm):
-	print("busRiders")
 	contributor = 'ido_jconstan_jeansolo_suitcase'
 	reads = ['ido_jconstan_jeansolo_suitcase.bu_transportation_study',
 			 'ido_jconstan_jeansolo_suitcase.property_data']
@@ -16,6 +15,7 @@ class busRiders(dml.Algorithm):
 
 	@staticmethod
 	def execute(trial = False):
+		print("busRiders")
 		startTime = datetime.datetime.now()
 
 		# Set up the database connection.
