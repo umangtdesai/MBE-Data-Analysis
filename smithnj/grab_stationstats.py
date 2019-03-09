@@ -26,7 +26,7 @@ class grab_ctastations(dml.Algorithm):
         repo.authenticate('smithnj', 'smithnj')
         repo_name = 'smithnj.ctastats'
         # ---[ Grab Data ]-------------------------------------------
-        df = pd.read_json('https://data.cityofchicago.org/resource/5neh-572f.json').to_json(orient='records')
+        df = pd.read_csv('http://datamechanics.io/data/smithnj/smithnj/CTA_Ridership_Totals.csv').to_json(orient='records')
         loaded = json.loads(df)
         # ---[ MongoDB Insertion ]-------------------------------------------
         repo.dropCollection('ctastats')

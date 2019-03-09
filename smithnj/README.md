@@ -17,10 +17,14 @@ The City of Chicago is the third largest city in the United States. Like other u
 | datamechanics.io    | ['L' Station Locations](http://datamechanics.io/?prefix=smithnj/)                                                                                  | Retrieved as .klm, manually converted to .geojson |
 ## Transformations
 Transformations should point to reducing/projecting data in a way to determine price for all L stations on a certain day, such as Weekday, Weekend, or Holiday.
+1. **create_travelstats**: Utilizes pandas library to aggregate ridership sums per station per month [aggregation]. An four year average is calculated after using the ridership sums [projection].
 
+    This can point to calculating whether or not a station should expect to be busy on a certain type of day (weekday, weekend, holiday) and adjust pricing accordingly.
+2. 
 
 ---
 #### Library Dependencies
 * pandas, geopandas
 * JSON
 * Data Mechanics Library, Provenance, Protoql
+* datetime

@@ -1,8 +1,6 @@
-import urllib.request
 import json
 import dml
 import prov.model
-import datetime
 import uuid
 import pandas as pd
 import datetime
@@ -28,7 +26,7 @@ class grab_ctastations(dml.Algorithm):
         repo.authenticate('smithnj', 'smithnj')
         repo_name = 'smithnj.travelstats'
         # ---[ Grab Data ]-------------------------------------------
-        df = pd.read_csv('/Users/nathaniel/Desktop/smithnj/CTA_Ridership_Totals.csv')  # TODO CHANGE TO WEB LINK
+        df = pd.read_csv('http://datamechanics.io/data/smithnj/smithnj/CTA_Ridership_Totals.csv')
         # ---[ Begin Transformation ]--------------------------------
         df['date'] = pd.to_datetime(df['date'])  # Convert "date" index to datetime
         df.index = df['date']  # set dataframe index to date
