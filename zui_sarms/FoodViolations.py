@@ -6,7 +6,7 @@ import pandas as pd
 import prov.model
 
 # Is this URL permanent?
-from utils import parse_coor
+from .utils import parse_coor
 
 
 class FoodViolations(dml.Algorithm):
