@@ -40,6 +40,10 @@ class uber(dml.Algorithm):
         df = df1.filter(['month', 'mean_travel_time'])
         r = df.to_dict(orient='records')
 
+        # print(df2.to_dict(orient='records')[0])
+        # print(df2[1:])
+        # print(r[-2])
+
         repo.dropCollection("uber")
         repo.createCollection("uber")
         repo['ctrinh.uber'].insert_many(r)
