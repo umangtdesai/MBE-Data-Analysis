@@ -58,10 +58,10 @@ Our zone algorithm combines the data from Zillow (5) and Boston's Neighborhoods 
 
 Finally, the Traffic Data (6) from Mass Dot (retrieval explained in Resources), was cleaned to contain the most useful information. Since we mostly care about overall volume, we selected the daily volume column from the set, in addition to the longitude and latitude. These will be used to compare the impact the flooding will have on traffic.
 
-Therefore, there are 3 datasets finally:
+Therefore, there are 3 final datasets:
 * sea_level
-* transportation
 * zone
+* transportation
 
 ![datasets](./resources/images/datasets.png)
 
