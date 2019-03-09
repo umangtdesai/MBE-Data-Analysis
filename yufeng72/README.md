@@ -8,19 +8,18 @@ Bluebikes is a public bike share system in Boston, Brookline, Cambridge and Some
 There are five datasets at this time, each has a retrieve algorithm in separated python files:
 
 Subway stop locations:
-
 http://datamechanics.io/data/yufeng72/Subway_Stops.json
+
 Bus stop locations:
-
 http://datamechanics.io/data/yufeng72/Bus_Stops.csv
+
 College and university locations:
-
 http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2.csv
+
 Bluebike station locations:
-
 https://s3.amazonaws.com/hubway-data/Hubway_Stations_as_of_July_2017.csv
-Bluebike trip data 2018.9:
 
+Bluebike trip data 2018.9:
 http://datamechanics.io/data/yufeng72/Bluebikes_Tripdata_201809.csv
 
 <h2>Transformations</h2>
