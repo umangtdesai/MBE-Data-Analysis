@@ -69,7 +69,7 @@ class boston_nonpublic_schools(dml.Algorithm):
         doc.wasAssociatedWith(get_nps, this_script)
         doc.usage(get_nps, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':''
+                  'ont:Query':'?type=Point&$select=coordinates'
                   }
                   )
 

@@ -35,6 +35,7 @@ class boston_fire_hydrants(dml.Algorithm):
             pt = {'coordinates':coords}
             pts.append(pt)
         repo['npearce.boston_fire_hydrants'].insert_many(pts)
+        repo['npearce.boston_fire_hydrants'].create_index([('coordinates', dml.pymongo.GEO2D)])
         
         repo['npearce.boston_fire_hydrants'].metadata({'complete':True})
         print(repo['npearce.boston_fire_hydrants'].metadata())
@@ -69,7 +70,7 @@ class boston_fire_hydrants(dml.Algorithm):
         doc.wasAssociatedWith(get_fhs, this_script)
         doc.usage(get_fhs, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':''
+                  'ont:Query':'?type=Point&$select=coordinates'
                   }
                   )
 

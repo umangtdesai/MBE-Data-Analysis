@@ -35,6 +35,7 @@ class boston_fire_alarm_boxes(dml.Algorithm):
             pt = {'coordinates':coords}
             pts.append(pt)
         repo['npearce.boston_fire_alarm_boxes'].insert_many(pts)
+        repo['npearce.boston_fire_alarm_boxes'].create_index([('coordinates', dml.pymongo.GEO2D)])
         
         repo['npearce.boston_fire_alarm_boxes'].metadata({'complete':True})
         print(repo['npearce.boston_fire_alarm_boxes'].metadata())
@@ -69,7 +70,7 @@ class boston_fire_alarm_boxes(dml.Algorithm):
         doc.wasAssociatedWith(get_fabs, this_script)
         doc.usage(get_fabs, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':''
+                  'ont:Query':'?type=Point&$select=coordinates'
                   }
                   )
 
