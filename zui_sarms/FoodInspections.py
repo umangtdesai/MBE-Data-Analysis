@@ -6,6 +6,7 @@ Pulling data from City of Boston data portal about
 
 """
 import datetime
+import io
 import logging
 import os
 import tempfile
@@ -108,8 +109,8 @@ def download_csv(url):
     temp = download_file(url)
 
     # After we finished writing the temp-file, we can read it as a CSV file
-
-    df = pd.read_csv(temp)
+    temp_io = io.StringIO(temp.decode("utf-8"))
+    df = pd.read_csv(temp_io)
 
     return df
 
