@@ -11,7 +11,7 @@ class ratioStudents(dml.Algorithm):
 	contributor = 'ido_jconstan_jeansolo_suitcase'
 	reads = ['ido_jconstan_jeansolo_suitcase.bu_transportation_study',
 			 'ido_jconstan_jeansolo_suitcase.property_data']
-	writes = ['ido_jconstan_jeansolo_suitcase.PropertyValueNonRiders']
+	writes = ['ido_jconstan_jeansolo_suitcase.RatioRiders']
 
 	@staticmethod
 	def execute(trial = False):
@@ -24,8 +24,8 @@ class ratioStudents(dml.Algorithm):
 		repo.authenticate('ido_jconstan_jeansolo_suitcase', 'ido_jconstan_jeansolo_suitcase')
 
 		# create new things
-		repo.dropCollection("PropertyValueNonRiders")
-		repo.createCollection("PropertyValueNonRiders")
+		repo.dropCollection("RatioRiders")
+		repo.createCollection("RatioRiders")
 
 		#r = repo.ido_jconstan_jeansolo_suitcase.bu_transportation_study.find()
 		# OBTAINING FIRST DATASET [Bu Transportation Study]
@@ -111,7 +111,7 @@ class ratioStudents(dml.Algorithm):
 			numNonRiders = numNonRiders + 1
 
 		numRidersFinal = [{"Bus_Riders":numRiders, "Non_Bus_Riders":numNonRiders}]
-		repo['ido_jconstan_jeansolo_suitcase.PropertyValueNonRiders'].insert_many(numRidersFinal)
+		repo['ido_jconstan_jeansolo_suitcase.RatioRiders'].insert_many(numRidersFinal)
 
 		repo.logout()
 

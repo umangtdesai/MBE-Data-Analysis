@@ -11,7 +11,7 @@ class busRiders(dml.Algorithm):
 	contributor = 'ido_jconstan_jeansolo_suitcase'
 	reads = ['ido_jconstan_jeansolo_suitcase.bu_transportation_study',
 			 'ido_jconstan_jeansolo_suitcase.property_data']
-	writes = ['ido_jconstan_jeansolo_suitcase.PropertyValueNonRiders']
+	writes = ['ido_jconstan_jeansolo_suitcase.PropertyValueRiders']
 
 	@staticmethod
 	def execute(trial = False):
@@ -24,8 +24,8 @@ class busRiders(dml.Algorithm):
 		repo.authenticate('ido_jconstan_jeansolo_suitcase', 'ido_jconstan_jeansolo_suitcase')
 
 		# create new things
-		repo.dropCollection("PropertyValueNonRiders")
-		repo.createCollection("PropertyValueNonRiders")
+		repo.dropCollection("PropertyValueRiders")
+		repo.createCollection("PropertyValueRiders")
 
 		#r = repo.ido_jconstan_jeansolo_suitcase.bu_transportation_study.find()
 		# OBTAINING FIRST DATASET [Bu Transportation Study]
@@ -96,7 +96,7 @@ class busRiders(dml.Algorithm):
 		for x in busRiders:
 		    brHouseValue.append({"Address 1": x['Address 1'], "Assessed Total":x['Assessed Total']})
 
-		repo['ido_jconstan_jeansolo_suitcase.PropertyValueNonRiders'].insert_many(brHouseValue)
+		repo['ido_jconstan_jeansolo_suitcase.PropertyValueRiders'].insert_many(brHouseValue)
 
 		repo.logout()
 
