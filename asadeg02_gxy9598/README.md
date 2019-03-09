@@ -6,7 +6,7 @@ The two quesotions to be answred are the following:
 
 1- Finding information about the buildings/properties in the most dangereous neighborhood of Boston area. These infomation include the value of these porpeties, type of the crimes happening in the neighbourhood, perimit number of buildings, owners of the porpeties,...
 
-2- Clustering food stablishments in Boston area using their location and then finding infomation about properties in the most compact cluster (with the most food stablishments in it) to see if access to food stablishments has any impact in the population in the living in that area or on the value of properties.
+2- Clustering food stablishments in Boston area using their location and then finding infomation about properties in the most compact cluster (with the most food stablishments in it) to see if access to food stablishments has any impact in the population living in that area or on the value of properties.
 
 ---
 Data Sets

@@ -132,7 +132,7 @@ class mergeValueWithCrimeRate(dml.Algorithm):
         doc.wasAssociatedWith(merge_value_with_crime_rate, this_script) 
         
         resource_crimes_incident = doc.entity('dat:asadeg02_gxy9598#address_crime_rate', {prov.model.PROV_LABEL:'Address Crime Rate', prov.model.PROV_TYPE:'ont:DataSet'})
-        resource_property_value = doc.entity('cob:ufcx-3fdn', {'prov:label':'Real Estate Assessments', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_property_value = doc.entity('cob:', {'prov:label':'Real Estate Assessments', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         doc.usage(merge_value_with_crime_rate, resource_crimes_incident, startTime)
         doc.usage(merge_value_with_crime_rate, resource_property_value, startTime)
 

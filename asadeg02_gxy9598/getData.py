@@ -159,11 +159,12 @@ class getData(dml.Algorithm):
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('cob', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('zillow', 'https://www.zillow.com/webservice/GetSearchResults.htm')         
         doc.add_namespace('bod', 'http://bostonopendata.boston.opendata.arcgis.com/datasets/')
 
         this_script = doc.agent('alg:asadeg02_gxy9598#getData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 
-        resource_building_permits = doc.entity('cob:ufcx-3fdn', {'prov:label':'Permits DataBase', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_building_permits = doc.entity('cob:6ddcd912-32a0-43df-9908-63574f8c7e77', {'prov:label':'Permits DataBase', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_building_permits = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, {'prov:label':'Get Building Permits', prov.model.PROV_TYPE:'ont:Retrieval'})
         doc.wasAssociatedWith(get_building_permits, this_script)
         doc.usage(get_building_permits, resource_building_permits, startTime)
@@ -173,7 +174,7 @@ class getData(dml.Algorithm):
         doc.wasDerivedFrom(building_permits, resource_building_permits, get_building_permits,get_building_permits,get_building_permits)
 
 
-        resource_crimes_incident = doc.entity('cob:ufcx-3fdn', {'prov:label':'Crimes Incident Report', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_crimes_incident = doc.entity('cob:12cb3883-56f5-47de-afa5-3b1cf61b257b', {'prov:label':'Crimes Incident Report', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_crimes_incident = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, {'prov:label':'Get Crimes Incident Reports', prov.model.PROV_TYPE:'ont:Retrieval'})
         doc.wasAssociatedWith(get_crimes_incident, this_script)
         doc.usage(get_crimes_incident, resource_crimes_incident)
@@ -182,7 +183,7 @@ class getData(dml.Algorithm):
         doc.wasGeneratedBy(crimes_incident, get_crimes_incident, endTime)
         doc.wasDerivedFrom(crimes_incident, resource_crimes_incident, get_crimes_incident, get_crimes_incident, get_crimes_incident)
 
-        resource_active_food_stablishment = doc.entity('cob:ufcx-3fdn', {'prov:label':'Actvie food stablishment', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_active_food_stablishment = doc.entity('cob:f1e13724-284d-478c-b8bc-ef042aa5b70b', {'prov:label':'Actvie food stablishment', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_active_food_stablishment = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, {'prov:label':'Get Active Food Stablishment', prov.model.PROV_TYPE:'ont:Retrieval'})
         doc.wasAssociatedWith(get_active_food_stablishment, this_script)
         doc.usage(get_active_food_stablishment, resource_active_food_stablishment)
@@ -192,7 +193,7 @@ class getData(dml.Algorithm):
         doc.wasDerivedFrom(active_food_stablishment, resource_active_food_stablishment, get_active_food_stablishment, get_active_food_stablishment, get_active_food_stablishment)
         
         
-        resource_Get_Boston_Streets = doc.entity('cob:ufcx-3fdn', {'prov:label':'Boston Street Name', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_Get_Boston_Streets = doc.entity('cob:a07cc1c6-aa78-4eb3-a005-dcf7a949249f', {'prov:label':'Boston Street Name', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_Get_Boston_Streets = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, {'prov:label':'Get_Boston_Streets', prov.model.PROV_TYPE:'ont:Retrieval'})
         doc.wasAssociatedWith(get_Get_Boston_Streets, this_script)
         doc.usage(get_Get_Boston_Streets, resource_Get_Boston_Streets, startTime)
@@ -203,7 +204,7 @@ class getData(dml.Algorithm):
 
 
 
-        resource_Get_Zillow_Search = doc.entity('cob:ufcx-3fdn', {'prov:label':'Zillow housing Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_Get_Zillow_Search = doc.entity('zillow:X1-ZWz1gxzd99e39n_97i73', {'prov:label':'Zillow housing Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_Get_Zillow_Search = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, {'prov:label':'Get Zillow Search', prov.model.PROV_TYPE:'ont:Retrieval'})
         doc.wasAssociatedWith(get_Get_Zillow_Search, this_script)
         doc.usage(get_Get_Zillow_Search, resource_Get_Zillow_Search, startTime)
