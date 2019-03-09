@@ -110,7 +110,7 @@ def download_csv(url):
 
     # After we finished writing the temp-file, we can read it as a CSV file
     temp_io = io.StringIO(temp.decode("utf-8"))
-    df = pd.read_csv(temp_io)
+    df = pd.read_csv(temp_io, low_memory=False)
 
     return df
 
