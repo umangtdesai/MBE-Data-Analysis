@@ -1,4 +1,5 @@
 import datetime
+import logging
 import uuid
 
 import dml
@@ -6,7 +7,7 @@ import pandas as pd
 import prov.model
 
 # Is this URL permanent?
-from .utils import parse_coor
+log = logging.getLogger(__name__)
 
 
 class FoodViolations(dml.Algorithm):
@@ -60,7 +61,6 @@ class FoodViolations(dml.Algorithm):
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont',
@@ -84,3 +84,18 @@ class FoodViolations(dml.Algorithm):
         doc.wasDerivedFrom(fv, resource, get_fv, get_fv, get_fv)
 
         return doc
+
+
+def parse_coor(s):
+    """
+    Parse the string to tuple of coordinate
+    In the format of (lat, long)
+    """
+
+    lat, long = s.split(", ")
+    lat = lat[1:]
+    long = long[:-1]
+    lat = float(lat)
+    long = float(long)
+
+    return [lat, long]
