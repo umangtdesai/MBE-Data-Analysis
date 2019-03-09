@@ -42,7 +42,6 @@ class police_districts(dml.Algorithm):
             buf.append(dict(type="Feature", geometry=geom, properties=atr))
         
         geojson = open("Police_Districts.json", "w")
-        #geojson.write(json.dumps({"type": "FeatureCollection","features": buf}, sort_keys=True, indent=2) + "\n")
         geojson.write(json.dumps(buf, sort_keys=True, indent=2) + "\n")
         geojson.close()
 
@@ -66,10 +65,36 @@ class police_districts(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
-
+        
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
-                  
+        repo = client.repo
+        repo.authenticate('hek_kquirk', 'hek_kquirk')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('dvh', 'https://dataverse.harvard.edu/')
+
+        this_script = doc.agent('alg:hek_kquirk#police_districts', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        
+        resource = doc.entity('dvh:api/access/datafile/:persistentId/', {'prov:label':'Harvard Dataverse', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'zip'})
+        police_districts = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(police_districts, this_script)
+        doc.usage(police_districts, resource, startTime, None,
+                  {
+                      prov.model.PROV_TYPE:'ont:Retrieval',
+                      'ont:Query':'?persistentId=doi:10.7910/DVN/JZV6ON/BGTJS7&version=1.1'
+                  }
+        )
+
+        police_districts = doc.entity('dat:hek_kquirk#police_districts', {prov.model.PROV_LABEL:'Boston Police Districts', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(police_districts, this_script)
+        doc.wasGeneratedBy(police_districts, police_districts, endTime)
+        doc.wasDerivedFrom(police_districts, resource, police_districts, police_districts, police_districts)
+
+        repo.logout()
+
         return doc
 
 '''

@@ -68,6 +68,7 @@ class districts_race(dml.Algorithm):
         repo['hek_kquirk.tmp_collection'].map_reduce(mapper, reducer, "hek_kquirk.district_race")
         repo['hek_kquirk.district_race'].metadata({'complete':True})
         print(repo['hek_kquirk.district_race'].metadata())
+        repo.dropCollection("hek_kquirk.tmp_collection")
 
         repo.logout()
 
@@ -86,39 +87,36 @@ class districts_race(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
+        repo.authenticate('hek_kquirk', 'hek_kquirk')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+        this_script = doc.agent('alg:hek_kquirk#districts_race', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        
+        resource_race = doc.entity('dat:hek_kquirk#race_and_ethnicity', {'prov:label':'Boston Neighborhoods Race and Ethnicity Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_neighborhood = doc.entity('dat:hek_kquirk#neighborhood_district', {'prov:label':'Boston Neighborhood to Police Districts', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_race = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_districts = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_districts_race, this_script)
+        doc.usage(get_race, resource_race, startTime, None,
+                  {
+                      prov.model.PROV_TYPE:'ont:Retrieval'
                   }
-                  )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
+        )
+        doc.usage(get_districts, resource_neighborhood, startTime, None,
+                  {
+                      prov.model.PROV_TYPE:'ont:Retrieval'
                   }
-                  )
-
-        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-
-        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        )
+        
+        district_race = doc.entity('dat:hek_kquirk#district_race', {prov.model.PROV_LABEL:'Race and Ethnicity to Police District', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(district_race, this_script)
+        doc.wasGeneratedBy(district_race, get_race, endTime)
+        doc.wasGeneratedBy(district_race, get_districts, endTime)
+        doc.wasDerivedFrom(district_race, resource_race, get_race, get_race, get_race)
+        doc.wasDerivedFrom(district_race, resource_neighborhood, get_districts, get_districts, get_districts)
 
         repo.logout()
                   
