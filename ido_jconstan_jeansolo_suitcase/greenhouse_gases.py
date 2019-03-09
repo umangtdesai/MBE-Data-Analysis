@@ -12,7 +12,6 @@ class greenhouse_gases(dml.Algorithm):
 
     @staticmethod
     def execute(trial = False):
-        pass
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
@@ -31,13 +30,14 @@ class greenhouse_gases(dml.Algorithm):
             new_dict['VCount'] = vcount
             if (feature['properties']['Source'] == 'Vehicle Fuel'):
                 new_dict['VCount'] = new_dict['VCount']+1
-                new_dict['Latitude'] = feature['properties']['LATITDE']
             else:
                 nvcount+=1
             new_dict[nvCount] = nvcount
             new_dict[vPercentage] = new_dict['VCount'] / (nvCount+new_dict['VCount'])
             gglist.append(new_dict)
         repo['ido_jconstan_jeansolo_suitcase.greenhouse_emissions'].insert_many(gglist)
+        for t in gg:
+            print(t)
 
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
