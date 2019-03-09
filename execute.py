@@ -27,9 +27,8 @@ path = args.contributor_folder
 algorithms = []
 for r,d,f in os.walk(path):
     for file in f:
-        if r.find(os.sep) == -1 and file.split(".")[-1] == "py":     
+        if r.find(os.sep) == -1 and file.split(".")[-1] == "py":
             name_module = ".".join(file.split(".")[0:-1])
-
             module = importlib.import_module(path + "." + name_module)
             algorithms.append(module.__dict__[name_module])
 
@@ -39,7 +38,6 @@ datasets = set()
 ordered = []
 while len(algorithms) > 0:
     for i in range(0,len(algorithms)):
-
         if set(algorithms[i].reads).issubset(datasets):
             datasets = datasets | set(algorithms[i].writes)
             ordered.append(algorithms[i])
@@ -52,11 +50,10 @@ for algorithm in ordered:
     algorithm.execute(trial=args.trial)
     provenance = algorithm.provenance(provenance)
 
-
 # Display a provenance record of the overall execution process.
 print(provenance.get_provn())
-# Render the provenance document as an interactive graph.
 
+# Render the provenance document as an interactive graph.
 prov_json = json.loads(provenance.serialize())
 import protoql
 agents = [[a] for a in prov_json['agent']]
