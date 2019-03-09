@@ -5,10 +5,10 @@ import prov.model
 import datetime
 import uuid
 
-class boston_employee_earnings(dml.Algorithm):
+class bpd_fio(dml.Algorithm):
     contributor = 'hek_kquirk'
     reads = []
-    writes = ['hek_kquirk.boston_employee_earnings']
+    writes = ['hek_kquirk.bpd_fio']
 
     @staticmethod
     def execute(trial = False):
@@ -20,26 +20,27 @@ class boston_employee_earnings(dml.Algorithm):
         repo.authenticate('hek_kquirk', 'hek_kquirk')
 
         # Drop/recreate mongo collection
-        repo.dropCollection("boston_employee_earnings")
-        repo.createCollection("boston_employee_earnings")
+        repo.dropCollection("bpd_fio")
+        repo.createCollection("bpd_fio")
 
         # Api call for employee earnings dataset
-        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=70129b87-bd4e-49bb-aa09-77644da73503&limit=30000'
-
+        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=35f3fb8f-4a01-4242-9758-f664e7ead125&limit=30000'
+            
         # Can only get 100 entries at a time. Keep querying until there are
         # no more entries.
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)['result']
-        repo['hek_kquirk.boston_employee_earnings'].insert_many(r['records'])
+        repo['hek_kquirk.bpd_fio'].insert_many(r['records'])
         while len(r['records']) > 0 and 'next' in r['_links']:
             url = 'https://data.boston.gov' + r['_links']['next']
             response = urllib.request.urlopen(url).read().decode("utf-8")
             r = json.loads(response)['result']
             if len(r['records']) > 0:
-                repo['hek_kquirk.boston_employee_earnings'].insert_many(r['records'])
+                repo['hek_kquirk.bpd_fio'].insert_many(r['records'])
                 
-        repo['hek_kquirk.boston_employee_earnings'].metadata({'complete':True})
-        print(repo['hek_kquirk.boston_employee_earnings'].metadata())
+            
+        repo['hek_kquirk.bpd_fio'].metadata({'complete':True})
+        print(repo['hek_kquirk.bpd_fio'].metadata())
 
         repo.logout()
 
@@ -54,7 +55,7 @@ class boston_employee_earnings(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
-
+        
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -65,7 +66,7 @@ class boston_employee_earnings(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/')
 
-        this_script = doc.agent('alg:hek_kquirk#boston_employee_earnings', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:hek_kquirk#bpd_fio', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource = doc.entity('bdp:api/3/datastore_search/', {'prov:label':'Boston Open Data search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         bpd_fio = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
@@ -73,15 +74,15 @@ class boston_employee_earnings(dml.Algorithm):
         doc.usage(bpd_fio, resource, startTime, None,
                   {
                       prov.model.PROV_TYPE:'ont:Retrieval',
-                      'ont:Query':'?resource_id=70129b87-bd4e-49bb-aa09-77644da73503'
+                      'ont:Query':'?resource_id=35f3fb8f-4a01-4242-9758-f664e7ead125'
                   }
         )
 
-        boston_employee_earnings = doc.entity('dat:hek_kquirk#boston_employee_earnings', {prov.model.PROV_LABEL:'Boston Employee Earnings', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(boston_employee_earnings, this_script)
-        doc.wasGeneratedBy(boston_employee_earnings, boston_employee_earnings, endTime)
-        doc.wasDerivedFrom(boston_employee_earnings, resource, boston_employee_earnings, boston_employee_earnings, boston_employee_earnings)
-        
+        bpd_fio = doc.entity('dat:hek_kquirk#bpd_fio', {prov.model.PROV_LABEL:'BPD Field Interigation and Observation', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(bpd_fio, this_script)
+        doc.wasGeneratedBy(bpd_fio, bpd_fio, endTime)
+        doc.wasDerivedFrom(bpd_fio, resource, bpd_fio, bpd_fio, bpd_fio)
+
         return doc
 
 '''

@@ -5,10 +5,10 @@ import prov.model
 import datetime
 import uuid
 
-class boston_employee_earnings(dml.Algorithm):
+class boston_crime_incidents(dml.Algorithm):
     contributor = 'hek_kquirk'
     reads = []
-    writes = ['hek_kquirk.boston_employee_earnings']
+    writes = ['hek_kquirk.boston_crime_incidents']
 
     @staticmethod
     def execute(trial = False):
@@ -20,26 +20,26 @@ class boston_employee_earnings(dml.Algorithm):
         repo.authenticate('hek_kquirk', 'hek_kquirk')
 
         # Drop/recreate mongo collection
-        repo.dropCollection("boston_employee_earnings")
-        repo.createCollection("boston_employee_earnings")
+        repo.dropCollection("boston_crime_incidents")
+        repo.createCollection("boston_crime_incidents")
 
         # Api call for employee earnings dataset
-        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=70129b87-bd4e-49bb-aa09-77644da73503&limit=30000'
+        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=12cb3883-56f5-47de-afa5-3b1cf61b257b&limit=30000'
 
         # Can only get 100 entries at a time. Keep querying until there are
         # no more entries.
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)['result']
-        repo['hek_kquirk.boston_employee_earnings'].insert_many(r['records'])
+        repo['hek_kquirk.boston_crime_incidents'].insert_many(r['records'])
         while len(r['records']) > 0 and 'next' in r['_links']:
             url = 'https://data.boston.gov' + r['_links']['next']
             response = urllib.request.urlopen(url).read().decode("utf-8")
             r = json.loads(response)['result']
             if len(r['records']) > 0:
-                repo['hek_kquirk.boston_employee_earnings'].insert_many(r['records'])
-                
-        repo['hek_kquirk.boston_employee_earnings'].metadata({'complete':True})
-        print(repo['hek_kquirk.boston_employee_earnings'].metadata())
+                repo['hek_kquirk.boston_crime_incidents'].insert_many(r['records'])
+        
+        repo['hek_kquirk.boston_crime_incidents'].metadata({'complete':True})
+        print(repo['hek_kquirk.boston_crime_incidents'].metadata())
 
         repo.logout()
 
@@ -65,7 +65,7 @@ class boston_employee_earnings(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/')
 
-        this_script = doc.agent('alg:hek_kquirk#boston_employee_earnings', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:hek_kquirk#boston_crime_incidents', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource = doc.entity('bdp:api/3/datastore_search/', {'prov:label':'Boston Open Data search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         bpd_fio = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
@@ -73,14 +73,14 @@ class boston_employee_earnings(dml.Algorithm):
         doc.usage(bpd_fio, resource, startTime, None,
                   {
                       prov.model.PROV_TYPE:'ont:Retrieval',
-                      'ont:Query':'?resource_id=70129b87-bd4e-49bb-aa09-77644da73503'
+                      'ont:Query':'?resource_id=12cb3883-56f5-47de-afa5-3b1cf61b257b'
                   }
         )
 
-        boston_employee_earnings = doc.entity('dat:hek_kquirk#boston_employee_earnings', {prov.model.PROV_LABEL:'Boston Employee Earnings', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(boston_employee_earnings, this_script)
-        doc.wasGeneratedBy(boston_employee_earnings, boston_employee_earnings, endTime)
-        doc.wasDerivedFrom(boston_employee_earnings, resource, boston_employee_earnings, boston_employee_earnings, boston_employee_earnings)
+        boston_crime_incidents = doc.entity('dat:hek_kquirk#boston_crime_incidents', {prov.model.PROV_LABEL:'Boston Crime Incidents', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(boston_crime_incidents, this_script)
+        doc.wasGeneratedBy(boston_crime_incidents, boston_employee_earnings, endTime)
+        doc.wasDerivedFrom(boston_crime_incidents, resource, boston_crime_incidents, boston_crime_incidents, boston_crime_incidents)
         
         return doc
 
