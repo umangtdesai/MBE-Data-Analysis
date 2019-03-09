@@ -15,7 +15,6 @@ class nonBusRiders(dml.Algorithm):
 
     @staticmethod
     def execute(trial = False):
-        print("nonBusRiders")
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
