@@ -24,7 +24,7 @@ For Project 1, we plan at looking at the following five datasets:
 
 
 The question we want to answer is: Can we identify any way to reduce the amount of car accidents per year in the 
-city of revere?
+city of Revere?
 
 We plan to combine these data sets to look at a number of things. One of those things is to analyze accident hotspots within Revere. We can look at the manners of collision at those hotspots to see if there is any thing that can be done to reduce the frequency of those types collisions. We also want to compare the rates of change in accidents per year with cities near Revere. If there is a noticeable difference in rates of change in accidents between Revere and another city, it can possibly lead to new questions to ask regarding why there is such a difference. We also plan to use the population data of Suffolk county to determine the 
 correlation between population and accidents per year. In the future we also want to look at changes in speed limit on certain roads to see if those changes led to an increase/decrease in accidents per year at certain hotspots.
