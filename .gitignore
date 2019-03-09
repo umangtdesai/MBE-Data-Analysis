@@ -116,6 +116,6 @@ dmypy.json
 .pyre/
 
 .idea
-
+auth.json
 zui_sarms/mongo_pkey
 food_insp.csv
