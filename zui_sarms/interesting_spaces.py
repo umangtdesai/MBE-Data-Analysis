@@ -1,12 +1,10 @@
-import urllib.request
-import json
 import dml
 import prov.model
 import datetime
 import uuid
 import pandas as pd
 
-from senpai.utils import geocoding
+from utils import geocoding
 
 
 class interesting_spaces(dml.Algorithm):

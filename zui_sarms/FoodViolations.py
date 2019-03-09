@@ -1,5 +1,4 @@
 import datetime
-import tempfile
 import uuid
 
 import dml
@@ -7,8 +6,7 @@ import pandas as pd
 import prov.model
 
 # Is this URL permanent?
-from senpai.db import mongo_wrapper
-from senpai.utils import download_file, parse_coor
+from utils import parse_coor
 
 
 class FoodViolations(dml.Algorithm):

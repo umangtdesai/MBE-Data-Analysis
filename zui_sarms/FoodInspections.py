@@ -13,7 +13,7 @@ import dml
 import pandas as pd
 import prov.model
 
-from senpai.utils import download_file
+from utils import download_file
 
 RES_ID = "4582bec6-2b4f-4f9e-bc55-cbaa73117f4c"
 # Is this URL permanent?
