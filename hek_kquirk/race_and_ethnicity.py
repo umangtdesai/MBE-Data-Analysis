@@ -63,12 +63,11 @@ class race_and_ethnicity(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('dhk', 'http://datamechanics.io/data/hek_kquirk/')
 
         this_script = doc.agent('alg:hek_kquirk#race_and_ethnicity', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
-        resource_race = doc.entity('dhk:race_and_ethnicity.json', {'prov:label':'Data Mechanics Race and Ethincity', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        resource_neighborhood = doc.entity('dhk:neighborhood_district.json', {'prov:label':'Data Mechanics Boston Neighborhood to Police Districts', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_race = doc.entity('dat:hek_kquirk/race_and_ethnicity.json', {'prov:label':'Data Mechanics Race and Ethincity', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource_neighborhood = doc.entity('dat:hek_kquirk/neighborhood_district.json', {'prov:label':'Data Mechanics Boston Neighborhood to Police Districts', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_race_and_ethnicity = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         get_neighborhood_district = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_race_and_ethnicity, this_script)
