@@ -146,7 +146,7 @@ class ratioStudents(dml.Algorithm):
 
         ratio_students = doc.entity('dat:ido_jconstan_jeansolo_suitcase#ratio_students', {prov.model.PROV_LABEL:'Ratio Students', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(ratio_students, this_script)
-        doc.wasGeneratedBy(ratio_students, get_traffic_count, endTime)
+        doc.wasGeneratedBy(ratio_students, get_ratioStudents, endTime)
         doc.wasDerivedFrom(ratio_students, resource_ratioStudents, get_ratioStudents, get_ratioStudents, get_ratioStudents)
         
         repo.logout()
