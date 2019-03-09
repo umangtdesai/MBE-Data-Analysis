@@ -73,17 +73,17 @@ class transformation3(dml.Algorithm):
             lat = x['lat']
             lng = x['lng']
             api_limit+=1
-            x.update({'city': 'Boston'})
-            collisionCity.append(x)
+            # x.update({'city': 'Boston'})
+            # collisionCity.append(x)
             
-            # # reverse geocode the lat lng of the collision and cross reference the city with city's weather
-            # results = geocoder.reverse_geocode(lat, lng)
-            # if 'city' in results[0]['components']:
-            #     x.update({'city': (results[0]['components']['city'])})
-            #     collisionCity.append(x)
+            # reverse geocode the lat lng of the collision and cross reference the city with city's weather
+            results = geocoder.reverse_geocode(lat, lng)
+            if 'city' in results[0]['components']:
+                x.update({'city': (results[0]['components']['city'])})
+                collisionCity.append(x)
 
-            # if api_limit >= 2500: # exceed api requests per day
-            #     break
+            if api_limit >= 2500: # exceed api requests per day -- reduce to 100 if you want it to run faster
+                break
 
 
         # Boston Weather

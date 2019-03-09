@@ -49,6 +49,9 @@ python execute.py tkixi
 ```
 
 ## Transformations
-transformation1.py : 
-transformation2.py
-transformation3.py
+
+transformation1.py : The first transformation takes in the bike lane network and the location of the Hubway station and reverse geocode’s the latitude and longitude of the Hubway station data in order to cross reference the street of the bike lanes and ultimately produce whether or not each bike lane has a Hubway station on its street.
+
+transformation2.py : The second transformation takes in the locations of the traffic signals and the Boston collision datasets and then aggregates every bike collision at a particular intersection, which would help further analyze if the intersection is biker-friendly. 
+
+transformation3.py : The third transformation takes in the data of Boston weather and of the Boston collisions and cross references the city of weather and the collision by reverse geocoding the latitude and longitude of the collision. Then we take in the wind speed on a day that a bike collision occurs and aggregate the average wind speed on a monthly basis of all bike collisions that occurred on a particular month.
