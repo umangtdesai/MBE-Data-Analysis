@@ -1,5 +1,7 @@
 Presenting the Relationships Between Neighborhoods, Crime and, Health Choices.
-============================================================================= 
+=============================================================================
+ Team: Gaspard Etienne (gasparde) & Leo McGann (ljmcgann)
+---------------------------------------------------------------------
 Why?
 -----------------------------------------------------------------------------
 Given some of the data sets we found we wanted to show if there was some relationships we could derive from associating neighborhoods, crime data provided by the city of boston, health data on measures of chronic disease related to unhealthy behaviors, property values, and service request to the boston government by residents on problems they perceive in their city. 
