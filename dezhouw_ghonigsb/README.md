@@ -63,13 +63,13 @@ Therefore, there are 3 datasets finally:
 * transportation
 * zone
 
-[datasets](./resources/images/datasets.png)
+![datasets](./resources/images/datasets.png)
 
 ---
 
 ### Provenance Graph
 
-[provenance](./resources/images/provenance.png)
+![provenance](./resources/images/provenance.png)
 
 ---
 
