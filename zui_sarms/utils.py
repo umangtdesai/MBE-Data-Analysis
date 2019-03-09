@@ -56,7 +56,8 @@ class BaseDownloader:
             filename = self._make_filename(url)
         path = self._make_path(filename)
 
-        self._download(url, path)
+        if self.raw:
+            return self._download(url, path)
 
         log.info("Downloaded: %s -> %s", url, path)
         return path
