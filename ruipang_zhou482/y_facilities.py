@@ -9,7 +9,7 @@ import os
 def aggregate(R, f):
 	keys = {r[0] for r in R}
 	return [(key, f([v for (k,v) in R if k == key])) for key in keys]
-class facilities(dml.Algorithm):
+class y_facilities(dml.Algorithm):
 
 	contributor = 'ruipang_zhou482'
 	reads = ["ruipang_zhou482.hospital", "ruipang_zhou482.police"]
@@ -66,7 +66,7 @@ class facilities(dml.Algorithm):
 		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 		doc.add_namespace('bdp', 'https://data.boston.gov/dataset/d9871e89-2d1e-4ecf-b0de-046f553027c0/resource/6222085d-ee88-45c6-ae40-0c7464620d64/download/')
 		
-		this_script = doc.agent('alg:ruipang_zhou482#facilities', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':"py"})
+		this_script = doc.agent('alg:ruipang_zhou482#y_facilities', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':"py"})
 		resource = doc.entity('dat:hospital and police', {'prov:label':'hospital', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
 		
 		get_facilities = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
@@ -81,5 +81,3 @@ class facilities(dml.Algorithm):
 		repo.logout()
 
 		return doc
-
-facilities.execute()

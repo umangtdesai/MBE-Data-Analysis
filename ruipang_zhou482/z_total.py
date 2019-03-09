@@ -9,7 +9,7 @@ import os
 def aggregate(R, f):
 	keys = {r[0] for r in R}
 	return [(key, f([v for (k,v) in R if k == key])) for key in keys]
-class total(dml.Algorithm):
+class z_total(dml.Algorithm):
 
 	contributor = 'ruipang_zhou482'
 	reads = ["ruipang_zhou482.facilities", "ruipang_zhou482.TotalSchool", "ruipang_zhou482.PropertyAssessment"]
@@ -75,7 +75,7 @@ class total(dml.Algorithm):
 		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 		doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 		
-		this_script = doc.agent('alg:ruipang_zhou482#total', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':"py"})
+		this_script = doc.agent('alg:ruipang_zhou482#z_total', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':"py"})
 		resource = doc.entity('dat:facilities and schools', {'prov:label':'facilities', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
 		
 		get_total = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
@@ -90,5 +90,3 @@ class total(dml.Algorithm):
 		repo.logout()
 
 		return doc
-
-total.execute()
