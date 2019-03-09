@@ -8,6 +8,7 @@ import zillow
 import requests
 import xmltodict
 import csv
+import re
 
 #number of buildings per street in south boston 
 class newly_renovated_5_years(dml.Algorithm):
@@ -31,43 +32,64 @@ class newly_renovated_5_years(dml.Algorithm):
         #retrieve zillow property data
         zillow_property_data = repo.ekmak_gzhou_kaylaipp_shen99.zillow_property_data.find()
         for info in zillow_property_data:
-            full_address = info.lower()                         #25 beacon st
-            full_yearBuilt = info['editedFacts']['yearBuilt']   #1880               #           
+            full_address = info['address']['street'].lower().replace(".", "")        #25 beacon st
+            try:                         
+                full_yearBuilt = info['editedFacts']['yearBuilt']   #1880  
+            except KeyError as e:             
+                continue          
             #get tuples of all addresses and year built in south boston 
-            all_year_built.append(full_address, full_yearBuilt)
+            all_year_built.append((full_address, full_yearBuilt))
 
         #retreieve permit data
         permit_data = repo.ekmak_gzhou_kaylaipp_shen99.permit_data.find()
         for info in permit_data:
-            zipcode = ['ZIP']                       #02127
-            full_address = info['ADDRESS'].lower()  #175  w boundary rd
-            pemit_year = info['ISSUE_DATE'][:3]     #2014
+            zipcode = info['ZIP']                       #02127
+            full_address = info['ADDRESS'].lower().replace(".", "")  #175  w boundary rd
+            full_address = re.sub(' +', ' ', full_address)
+            pemit_year = info['ISSUED_DATE'][:4]     #2014
             #get all addresses and year of recent construction in south boston
             if zipcode == '02127':
-                all_construction.append(full_address, pemit_year)
-
+                all_construction.append((full_address, pemit_year))
 
          
         #combine two data sets
-        temp = map (lambda k, v: [(k, ('Year of Built', v))], all_year_built) \
-        + reduce (lambda k, v: [(k, ('Year of Recent Construction', v))], all_construction)
-        total = reduce(lambda k,vs:\
-          (k,(vs[0][1], vs[1][1]) if vs[0][0] == 'Year of Built' else (vs[1][1],vs[0][1])), X)
+        temp = map (lambda k, v: [(k, ('Year of Built', v))], all_year_built) + reduce (lambda k, v: [(k, ('Year of Recent Construction', v))], all_construction)
+
+
+        d = {}
+        for house in all_year_built: 
+            if house[0] not in d: 
+                d[house[0]] = [house[1], 0]
+        
+        for house in all_construction: 
+            if house[0] not in d: 
+                d[house[0]] = [0, house[1]]
+            else: 
+                d[house[0]][1] = house[1]
+
+        combined = []
+        for st,years in d.items(): 
+            combined.append((st,(years[0], years[1])))
+
+        # total = reduce(lambda k,vs:\
+        #   (k,(vs[0][1], vs[1][1]) if vs[0][0] == 'Year of Built' else (vs[1][1],vs[0][1])), temp)
+
         #output should be list of tuples 
         #('address', ('1880', '2015'))
-        
-        print total[0]
 
-        #select those are constructed within 5 years (after 2014)
-        recons_5 = reduce (lambda k, vs: (k, vs) if vs[1] >= 2014, total)
-        print recons_5 [0]
+        #get those are constructed within 5 years (after 2014)
+        recons_5 = map(lambda k,vs: [(k,vs)] if int(vs[1]) >= 2014 else [], combined) 
+
+        # print('')
+        # print('')
+        # print(recons_5)
 
         #create new database 
         repo.dropCollection("newly_renovated_5_years")
         repo.createCollection("newly_renovated_5_years")
 
         #add to database in {street: count} form 
-        for t in total: 
+        for t in combined: 
             repo['ekmak_gzhou_kaylaipp_shen99.newly_renovated_5_years'].insert_one({t[0]:t[1]})
 
         print('inserted newly renovated within 5 years data')
@@ -109,7 +131,7 @@ class newly_renovated_5_years(dml.Algorithm):
         get_num_houses_5_years = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
         doc.usage(get_num_houses_5_years, permit_data_resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
-        doc.usage(get_num_houses_5_years, zillow_data_resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+        doc.usage(get_num_houses_5_years, zillow_property_data_resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
 
         doc.wasAssociatedWith(get_num_houses_5_years, this_agent)
 
@@ -123,8 +145,11 @@ class newly_renovated_5_years(dml.Algorithm):
                   
         return doc
 
+# def map(f, R):
+#     return [t for (k,v,s) in R for t in f(k,v)]
+
 def map(f, R):
-    return [t for (k,v,s) in R for t in f(k,v)]
+    return [t for (k,v) in R for t in f(k,v)]
     
 def reduce(f, R):
     keys = {k for (k,v) in R}
@@ -143,10 +168,8 @@ print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
 
-newly_renovated_5_years.execute()
-print('generating newly renovated house provenance...')
-print('')
-doc = newly_renovated_5_years.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
-## eof
+# newly_renovated_5_years.execute()
+# print('generating newly renovated house provenance...')
+# doc = newly_renovated_5_years.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
