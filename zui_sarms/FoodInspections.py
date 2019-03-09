@@ -7,6 +7,7 @@ Pulling data from City of Boston data portal about
 """
 import datetime
 import tempfile
+import uuid
 
 import dml
 import pandas as pd
@@ -20,15 +21,14 @@ RES_ID = "4582bec6-2b4f-4f9e-bc55-cbaa73117f4c"
 URL = f"https://data.boston.gov/dataset/03693648-2c62-4a2c-a4ec-48de2ee14e18/resource/{RES_ID}/download/tmp1yzpct9p.csv"
 
 
-class FoodInspection(dml.Algorithm):
+class FoodInspections(dml.Algorithm):
     contributor = 'zui_sarms'
     reads = []
-    writes = ['zui_sarms.food_insp', 'zui_sarms.food_violations']
+    writes = ['zui_sarms.food_inspections']
 
     @staticmethod
     def execute(trial=False):
         startTime = datetime.datetime.now()
-
         # Set up the database connection.
         # This will fail to connect to the one require SSH auth
         client = dml.pymongo.MongoClient()
@@ -45,26 +45,55 @@ class FoodInspection(dml.Algorithm):
         # Remove the row which has an empty value [x for row in table for x in row if x]
         DF = DF.dropna()
 
-        # Select all the Fail violations
-        DF = DF[DF["violstatus"] == "Fail"]
+        DF["_id"] = DF.index.values
 
-        # Count violations per restaurant
-        VC = DF.groupby("licenseno").count()
+        r_dict = DF.to_dict(orient="record")
 
-        DF_R = DF.set_index("licenseno")[["businessname", "address", "city", "state", "zip", "location"]]
-        DF_R["violation_count"] = VC["violstatus"]
-        DF_R = DF_R.drop_duplicates()
+        repo.dropCollection("food_inspections")
+        repo.createCollection("food_inspections")
+        repo['zui_sarms.food_inspections'].insert_many(r_dict)
 
-        DF_R["_id"] = DF_R.index.values
-        DF_R["location"] = DF_R["location"].map(parse_coor)
+        repo.logout()
 
-        r_dict = DF_R.to_dict(orient="record")
+        endTime = datetime.datetime.now()
 
-        
+        return {"start": startTime, "end": endTime}
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-        pass
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('alice_bob', 'alice_bob')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont',
+                          'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+
+        this_script = doc.agent('alg:alice_bob#FoodInspection',
+                                {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        resource = doc.entity('bdp:4582bec6-2b4f-4f9e-bc55-cbaa73117f4c',
+                              {'prov:label': 'Food Establishment Inspections', prov.model.PROV_TYPE: 'ont:DataResource',
+                               'ont:Extension': 'csv'})
+        get_fi = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_fi, this_script)
+        doc.usage(get_fi, resource, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
+                   'ont:DataSet': '03693648-2c62-4a2c-a4ec-48de2ee14e18/resource/{RES_ID}/download/tmp1yzpct9p.csv'
+                   }
+                  )
+        fi = doc.entity('dat:zui_sarms#FoodInspection',
+                           {prov.model.PROV_LABEL: 'Food Inspections', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(fi, this_script)
+        doc.wasGeneratedBy(fi, get_fi, endTime)
+        doc.wasDerivedFrom(fi, resource, get_fi, get_fi, get_fi)
+
+        repo.logout()
+
+        return doc
+
 
 
 def download_csv(url):
@@ -86,17 +115,3 @@ def download_csv(url):
 
     return df
 
-
-def parse_coor(s):
-    """
-    Parse the string to tuple of coordinate
-    In the format of (lat, long)
-    """
-
-    lat, long = s.split(", ")
-    lat = lat[1:]
-    long = long[:-1]
-    lat = float(lat)
-    long = float(long)
-
-    return [lat, long]
