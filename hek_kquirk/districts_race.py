@@ -99,7 +99,8 @@ class districts_race(dml.Algorithm):
         resource_neighborhood = doc.entity('dat:hek_kquirk#neighborhood_district', {'prov:label':'Boston Neighborhood to Police Districts', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_race = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         get_districts = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_districts_race, this_script)
+        doc.wasAssociatedWith(get_race, this_script)
+        doc.wasAssociatedWith(get_districts, this_script)
         doc.usage(get_race, resource_race, startTime, None,
                   {
                       prov.model.PROV_TYPE:'ont:Retrieval'

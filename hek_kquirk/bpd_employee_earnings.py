@@ -66,7 +66,7 @@ class bpd_employee_earnings(dml.Algorithm):
         
         bpd_employee_earnings = doc.entity('dat:hek_kquirk#bpd_employee_earnings', {prov.model.PROV_LABEL:'BPD Employee Earnings', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(bpd_employee_earnings, this_script)
-        doc.wasGeneratedBy(bpd_employee_earnings, get_boston_employee_earnings, endTime)
+        doc.wasGeneratedBy(bpd_employee_earnings, get_bpd_employee_earnings, endTime)
         doc.wasDerivedFrom(bpd_employee_earnings, resource, get_bpd_employee_earnings, get_bpd_employee_earnings, get_bpd_employee_earnings)
 
         repo.logout()

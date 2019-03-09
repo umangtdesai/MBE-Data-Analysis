@@ -70,16 +70,16 @@ class boston_crime_incidents(dml.Algorithm):
         resource = doc.entity('bdp:api/3/datastore_search/', {'prov:label':'Boston Open Data search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_boston_crime_incidents = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_boston_crime_incidents, this_script)
-        doc.usage(get_boston_crime_incidents, resource, startTime, None,
-                  {
+        doc.usage(bpd_fio, resource, startTime, None,
+                {
                       prov.model.PROV_TYPE:'ont:Retrieval',
                       'ont:Query':'?resource_id=12cb3883-56f5-47de-afa5-3b1cf61b257b'
                   }
         )
-
+        
         boston_crime_incidents = doc.entity('dat:hek_kquirk#boston_crime_incidents', {prov.model.PROV_LABEL:'Boston Crime Incidents', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(boston_crime_incidents, this_script)
-        doc.wasGeneratedBy(boston_crime_incidents, get_boston_crime_incidents, endTime)
+        doc.wasGeneratedBy(boston_crime_incidents, boston_crime_incidents, endTime)
         doc.wasDerivedFrom(boston_crime_incidents, resource, get_boston_crime_incidents, get_boston_crime_incidents, get_boston_crime_incidents)
 
         repo.logout()
