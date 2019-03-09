@@ -139,7 +139,7 @@ class example(dml.Algorithm):
 
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
-example.execute()
+# example.execute()
 '''
 doc = example.provenance()
 print(doc.get_provn())
