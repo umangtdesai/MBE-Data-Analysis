@@ -1,9 +1,11 @@
-Inspiration: 
+CS 504 Project #1
+
+----Inspiration----
 
 Bluebikes is a public bike share system in Boston, Brookline, Cambridge and Somerville. I ride their bike to BU everyday and it's really convenient. However, sometimes I find it hard to find a bike or a dock to park my bike because the bike stations are not located very reasonably. For example, the Bluebike station at BU campus has only 10 docks, and I have to look for another bike station nearby sometimes because that one full. That actually made me late for CS504 class for twice this semester! So I am thinking, if Bluebike can learn more about their bike-using situation and set their bike stations more properly, it will be very nice for people who use their bike service like me. Thus in this project, I will try to find out which places are good choices to place a Bluebike station and how many docks each station should have.
 
 
-Datasets:
+----Datasets----
 
 There are five datasets at this time, each has a retrieve algorithm in separated python files:
 
@@ -18,7 +20,7 @@ Bluebike station locations: https://s3.amazonaws.com/hubway-data/Hubway_Stations
 Bluebike trip data 2018.9: http://datamechanics.io/data/yufeng72/Bluebikes_Tripdata_201809.csv
 
 
-Transformations:
+----Transformations----
 
 Implemented 3 transformations for now, all three using selection, projection and combination:
 
