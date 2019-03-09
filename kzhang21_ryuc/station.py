@@ -11,7 +11,7 @@ from ast import literal_eval as make_tuple
 class station(dml.Algorithm):
     contributor = 'kzhang21_ryuc'
     reads = []
-    writes = ['kzhang21_ryuc.bpd']
+    writes = ['kzhang21_ryuc.station']
 
     @staticmethod
     def execute(trial=False):
