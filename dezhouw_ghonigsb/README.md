@@ -9,17 +9,19 @@
 
 ### Project Goal
 How  will future flooding affect Boston?
-The city of Boston has made data available showing where flooding will take place at both high tide and during the worst storm surges in future years. We would like to use this information, and apply it to other publicly available sets to discover how the city, its citizens, and industries will be most affected. Specifically, we will combine the flood data with other geographic data, such as zoning to show what types of areas ares will be affected. With this information, we will then be able to look at more specific information about neighborhoods, using census data that will show which demographics will be most affected by flooding, based on where flooding is mapped to residential zones. We will also use traffic data from Uber, which can show us how disruptions in these areas affected traffic in the rest of the city, to demonstrate how the affect of flooding will spread outwards.
+
+The city of Boston has made data available showing where flooding will take place at both high tide and during the worst storm surges in future years. We would like to use this information, and apply it to other publicly available sets to discover how the city, its citizens, and industries will be most affected. Specifically, we will combine the flood data with other geographic data, such as zoning, traffic and home value data to show what types of areas areas will be affected and how great the impact might be. This information will inform how important action in preperation and prevention will be by demonstrating the scope of the issue. Hopefully the data will provide insight into who will be most affected and how. 
 
 ---
 
 ### Resources
-(To modify)
 * API: sea level rise (1) [Link](http://bostonopendata-boston.opendata.arcgis.com/datasets/9inch-sea-level-rise-1pct-annual-flood?geometry=-71.151%2C42.334%2C-70.931%2C42.379&selectedAttribute=Shape__Area)
 * API: sea level rise (2) [link](http://bostonopendata-boston.opendata.arcgis.com/datasets/9inch-sea-level-rise-high-tide)
+* API: sea level rise (3) [link](http://bostonopendata-boston.opendata.arcgis.com/datasets/74692fe1b9b24f3c9419cd61b87e4e3b_3)
+* API: sea level rise (4) [link](http://bostonopendata-boston.opendata.arcgis.com/datasets/74692fe1b9b24f3c9419cd61b87e4e3b_5)
 * Zoning Data [link](http://bostonopendata-boston.opendata.arcgis.com/datasets/zoning-subdistricts/data?geometry=-71.188%2C42.322%2C-70.968%2C42.367)
 * API: Zillow (https://www.zillow.com/webservice/GetRegionChildren.htm?zws-id=[ZWS-ID]&state=ma&city=boston&childtype=neighborhood). Zillow ID can be obtained by creating an account on the Zillow website [website](https://www.zillow.com/howto/api/APIOverview.htm)
-* Mass DOT Transportation Data Management System: CSV was created from [Mass DOT Website](http://mass.gov/traffic-volume-and-classification), by using Interactive Map application. In application, TCDS quick search was performed setting Community to Boston. After search, data was generated using "Report Center". In this module, under "Reports" tab Volume --> Peak Voume By Year selected. Under "Options", selected for Last 3 Years. After picking paramaters, generated data was downloaded as a CSV, and uploaded to [datamechanics.io](http://datamechanics.io) in folder ghonigsb_dezhouw.
+* Mass DOT Transportation Data Management System: CSV was created from [Mass DOT Website](http://mass.gov/traffic-volume-and-classification), by using their Interactive Map application. In the application, we used the TCDS quick search tool by setting Community to Boston. After entering the search, data was generated using "Report Center" button. In this module, under "Reports" tab, we clicked on the Volume option, selecting "Peak Volume By Year". Then, under "Options", selected for Last 3 Years. After picking paramaters, generated data was downloaded as a CSV, and uploaded to [datamechanics.io](http://datamechanics.io) in folder ghonigsb_dezhouw.
 
 ---
 
@@ -40,19 +42,21 @@ The format should be like the following:
 ---
 
 ### Algorithms
-(To add) How obtain data? How combine data? Any tranformation?
-There are five original datasets:
-1. seaAnnual
-2. seaTide
-3. zoning
-4. zillow
-5. massGov
+There are seven original datasets:
+1. 9 Inch Annual Flood
+2. 9 Inch High Tide Flood
+3. 36 Inch Annual Flood
+4. 36 Inch High Tide Flood
+5. Zillow Boston Neighborhood Data
+6. Mass DOT Traffic Volume Data
+7. Boston Neighborhood Zoning Data
 
-[1, 2, 3] are from OpenData Website.
+Our flood algorithm retrieves the flood data, and combines the different types of flooding into one data set, which will be used to compare the effects of the flooding in diferent scenarios. This was created from set 1, 2, 3, 4.
 
-[4] is from Zillow API.
+Our zone algorithm combines the data from Zillow (5) and Boston's Neighborhoods (7). The Zillow data is fetched in XML format, and converted into nested ordered dictionaries. Within these dictionaries, the information we care most about is location, which is in the form of longitude and latitude coordinates, and value, which is given in a string representing USD. Since theses values are nested, they had to be retrieved recursively, so that they could be applied to Boston's Neighborhoods. The neighborhood data was combined with the Zillow data by seeing if the coordinates provided in dataset 5 was inside the polygons provided by dataset 7. If it was, the value was added.
 
-[5] is obtains through massGov website. (see details in "Resources" part)
+Finally, the Traffic Data (6) from Mass Dot (retrieval explained in Resources), was cleaned to contain the most useful information. Since we mostly care about overall volume, we selected the daily volume column from the set, in addition to the longitude and latitude. These will be used to compare the impact the flooding will have on traffic.
+
 
 ---
 
