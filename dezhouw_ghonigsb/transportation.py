@@ -60,6 +60,9 @@ class transportation(dml.Algorithm):
 
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
+		client = dml.pymongo.MongoClient()
+		repo   = client.repo
+		repo.authenticate("dezhouw_ghonigsb", "dezhouw_ghonigsb")
 
 		doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')
 		doc.add_namespace('dat', 'http://datamechanics.io/data/')
@@ -70,12 +73,12 @@ class transportation(dml.Algorithm):
 		doc.add_namespace('gov', 'http://datamechanics.io/data/ghonigsb_dezhouw/')
 
 		this_script   = doc.agent('alg:dezhouw_ghonigsb#transportation', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-		resource     = doc.entity('gov:boston', {'prov:label':'MassGov',          prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+		resource     = doc.entity('gov:boston', {'prov:label':'MassGov', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
 		get_massGov   = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
 		doc.wasAssociatedWith(get_massGov, this_script)
 
-		doc.usage(get_massGov,   resource, startTime, None,
+		doc.usage(get_massGov, resource, startTime, None,
 			      {prov.model.PROV_TYPE:'ont:Retrieval',
 			      'ont:Query':'?type=Peak+Hours&select=LOCAL_ID+DAILY+LATITUDE+LONGITUDE'})
 
@@ -87,14 +90,16 @@ class transportation(dml.Algorithm):
 		doc.wasGeneratedBy(massGov, get_massGov, endTime)
 		doc.wasDerivedFrom(massGov, resource, get_massGov, get_massGov, get_massGov)
 
+		repo.logout()
+
 		return doc
 
 if __name__ == '__main__':
 	try:
 		print(transportation.execute())
-		# doc = transportation.provenance()
-		# print(doc.get_provn())
-		# print(json.dumps(json.loads(doc.serialize()), indent=4))
+		doc = transportation.provenance()
+		print(doc.get_provn())
+		print(json.dumps(json.loads(doc.serialize()), indent=4))
 	except Exception as e:
 		traceback.print_exc(file = sys.stdout)
 	finally:

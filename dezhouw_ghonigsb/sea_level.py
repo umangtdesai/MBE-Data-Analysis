@@ -81,6 +81,9 @@ class sea_level(dml.Algorithm):
 
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
+		client = dml.pymongo.MongoClient()
+		repo   = client.repo
+		repo.authenticate("dezhouw_ghonigsb", "dezhouw_ghonigsb")
 
 		doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')
 		doc.add_namespace('dat', 'http://datamechanics.io/data/')
@@ -108,10 +111,10 @@ class sea_level(dml.Algorithm):
 		doc.usage(get_seaTide,   resource, startTime, None,
 			      {prov.model.PROV_TYPE:'ont:Retrieval',
 			      'ont:Query':'?type=Sea+High+Tide+9'})
-		doc.usage(get_seaAnnual2, resource, startTime, None,
+		doc.usage(get_seaAnnual2,resource, startTime, None,
 			      {prov.model.PROV_TYPE:'ont:Retrieval',
 			      'ont:Query':'?type=Sea+Level+Annual+36'})
-		doc.usage(get_seaTide2,   resource, startTime, None,
+		doc.usage(get_seaTide2,  resource, startTime, None,
 			      {prov.model.PROV_TYPE:'ont:Retrieval',
 			      'ont:Query':'?type=Sea+High+Tide+36'})
 
@@ -122,26 +125,17 @@ class sea_level(dml.Algorithm):
 		doc.wasGeneratedBy(seaLevel, get_seaAnnual, endTime)
 		doc.wasDerivedFrom(seaLevel, resource, get_seaAnnual, get_seaAnnual, get_seaAnnual)
 
-		seaLevel = doc.entity('dat:dezhouw_ghonigsb#sea_level',
-								{prov.model.PROV_LABEL:'Sea Level',
-								 prov.model.PROV_TYPE:'ont:DataSet'})
-		doc.wasAttributedTo(seaLevel, this_script)
+
 		doc.wasGeneratedBy(seaLevel, get_seaTide, endTime)
 		doc.wasDerivedFrom(seaLevel, resource, get_seaTide, get_seaTide, get_seaTide)
 
-		seaLevel = doc.entity('dat:dezhouw_ghonigsb#sea_level',
-								{prov.model.PROV_LABEL:'Sea Level',
-								 prov.model.PROV_TYPE:'ont:DataSet'})
-		doc.wasAttributedTo(seaLevel, this_script)
 		doc.wasGeneratedBy(seaLevel, get_seaAnnual2, endTime)
 		doc.wasDerivedFrom(seaLevel, resource, get_seaAnnual2, get_seaAnnual2, get_seaAnnual2)
 
-		seaLevel = doc.entity('dat:dezhouw_ghonigsb#sea_level',
-								{prov.model.PROV_LABEL:'Sea Level',
-								 prov.model.PROV_TYPE:'ont:DataSet'})
-		doc.wasAttributedTo(seaLevel, this_script)
 		doc.wasGeneratedBy(seaLevel, get_seaTide2, endTime)
 		doc.wasDerivedFrom(seaLevel, resource, get_seaTide2, get_seaTide2, get_seaTide2)
+
+		repo.logout()
 
 		return doc
 

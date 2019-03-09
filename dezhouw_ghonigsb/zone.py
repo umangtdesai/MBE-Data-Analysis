@@ -103,6 +103,9 @@ class zone(dml.Algorithm):
 
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
+		client = dml.pymongo.MongoClient()
+		repo   = client.repo
+		repo.authenticate("dezhouw_ghonigsb", "dezhouw_ghonigsb")
 
 		doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')
 		doc.add_namespace('dat', 'http://datamechanics.io/data/')
@@ -140,14 +143,16 @@ class zone(dml.Algorithm):
 		doc.wasGeneratedBy(zone, get_zillow, endTime)
 		doc.wasDerivedFrom(zone, resource1, get_zillow, get_zillow, get_zillow)
 
+		repo.logout()
+
 		return doc
 
 if __name__ == '__main__':
 	try:
 		print(zone.execute())
-		# doc = zone.provenance()
-		# print(doc.get_provn())
-		# print(json.dumps(json.loads(doc.serialize()), indent=4))
+		doc = zone.provenance()
+		print(doc.get_provn())
+		print(json.dumps(json.loads(doc.serialize()), indent=4))
 	except Exception as e:
 		traceback.print_exc(file = sys.stdout)
 	finally:
