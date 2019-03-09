@@ -7,7 +7,8 @@ import uuid
 import pymongo
 from bson.objectid import ObjectId
 
-class nonBusRiders(dml.Algorithm):
+class busRiders(dml.Algorithm):
+	print("busRiders")
 	contributor = 'ido_jconstan_jeansolo_suitcase'
 	reads = ['ido_jconstan_jeansolo_suitcase.bu_transportation_study',
 			 'ido_jconstan_jeansolo_suitcase.property_data']
@@ -82,24 +83,20 @@ class nonBusRiders(dml.Algorithm):
 
 		# Transform 1
 		# Get the students who do NOT ride the bus
-		notBusRiders = []
+		busRiders = []
 		tempFlag = False
 		for x in r1:
 			for y in r:
 			    # if the student does ride the bus
 			    if x['Address 1'] in y['Address']:
-			        tempFlag = True
-			if (tempFlag == False):
-			    notBusRiders.append(x)
-			else:
-			    tempFlag = False
+			        busRiders.append(x)
 		
 		# Get the house price of students who do NOT ride the bus
-		nbrHouseValue = []
-		for x in notBusRiders:
-		    nbrHouseValue.append({"Address 1": x['Address 1'], "Assessed Total":x['Assessed Total']})
+		brHouseValue = []
+		for x in busRiders:
+		    brHouseValue.append({"Address 1": x['Address 1'], "Assessed Total":x['Assessed Total']})
 
-		repo['ido_jconstan_jeansolo_suitcase.PropertyValueNonRiders'].insert_many(nbrHouseValue)
+		repo['ido_jconstan_jeansolo_suitcase.PropertyValueNonRiders'].insert_many(brHouseValue)
 
 		repo.logout()
 
@@ -109,37 +106,6 @@ class nonBusRiders(dml.Algorithm):
 
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-        client = dml.pymongo.MongoClient()
-        repo = client.repo
-        this_script = doc.agent('alg:ido_jconstan_jeansolo_suitcase#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        resource_transportStudy = doc.entity('dat:bu_transportation_study', {'prov:label':'BU Transportation Study', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        resource_propertyData = doc.entity('dat:property_data', {'prov:label':'Property Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_bu_transport_study = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_property_data = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_bu_transport_study, this_script)
-        doc.wasAssociatedWith(get_property_data, this_script)
-        doc.usage(get_bu_transport_study, resource_transportStudy, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  }
-                  )
-        doc.usage(get_property_data, resource_propertyData, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  }
-                  )
-                  
-                  
-        bu_transportation_study = doc.entity('dat:ido_jconstan_jeansolo_suitcase#bu_transportation_study', {prov.model.PROV_LABEL:'BU Transportation Study', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(bu_transportation_study, this_script)
-        doc.wasGeneratedBy(bu_transportation_study, get_bu_transport_study, endTime)
-        doc.wasDerivedFrom(bu_transportation_study, resource_transportStudy, get_bu_transport_study, get_bu_transport_study, get_bu_transport_study)
+		pass
 
-        property_data = doc.entity('dat:ido_jconstan_jeansolo_suitcase#property_data', {prov.model.PROV_LABEL:'Property Data', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(property_data, this_script)
-        doc.wasGeneratedBy(property_data, get_property_data, endTime)
-        doc.wasDerivedFrom(property_data, resource_propertyData, get_property_data, get_property_data, get_property_data)
-        
-        repo.logout()
-                  
-        return doc
+	#nonBusRiders.execute()
