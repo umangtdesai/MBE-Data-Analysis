@@ -20,34 +20,24 @@ class units(dml.Algorithm):
         repo = client.repo
         repo.authenticate('robinhe_rqtian_hongyf_zhjiang', 'robinhe_rqtian_hongyf_zhjiang')
 
-        annualUnits = repo['robinhe_rqtian_hongyf_zhjiang.City of Revere Units Added']
+        # Read resource data.
+        url = 'http://datamechanics.io/data/robinhe_rqtian_hongyf_zhjiang/revere_units_added.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        json_r = json.loads(response)
 
-        annualUnitsDF = pd.DataFrame(list(annualUnits.find()))
-
-        annualUnitsDF = annualUnitsDF[['Year','Units']]
-        # build sum of each industry
-        data = {}
-        for years, units in annualUnitsDF.iterrows():
-            year = row['Year']
-            if (year in data):
-                data[year] += units
+        # Project resource to output, in order to eliminate useless attributes
+        outputs = []
+        year_counts = {}
+        for item in json_r:
+            if item["Year"] in year_counts:
+                year_counts[item["Year"]] += item["# of units"]
             else:
-                data[industry] = units
-
-        listOfUnits = list(data)
-        listOfTuples = []
-        for ind in listOfUnits:
-            listOfTuples.append((year, data[year]))
-
-        AnnualUnitsIncreaseDF = pd.DataFrame(listOfTuples, columns = ['Year', 'Number of Units Added'])
-
-        AnnualUnitsIncreaseDF = AnnualUnitsIncreaseDF.sort_values(by=['Number of Units Added'], ascending=False)
-
-        #print(AnnualUnitsIncreaseDF)
-
-        #records = json.loads(AnnualUnitsIncreaseDF.T.to_json()).values()
-
-        
+                year_counts[item["Year"]] = item["# of units"]
+        for (k,v) in year_counts.items():
+            output = {}
+            output["Year"] = k;
+            output["Number of units"] = v
+            outputs.append(output)
         repo.dropCollection("units")
         repo.createCollection("units")
         repo['robinhe_rqtian_hongyf_zhjiang.units'].insert_many(outputs)
@@ -57,7 +47,7 @@ class units(dml.Algorithm):
         endTime = datetime.datetime.now()
 
         return {"start":startTime, "end":endTime}
-        
+
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
         '''
@@ -80,21 +70,21 @@ class units(dml.Algorithm):
         # Data resource
         doc.add_namespace('dsrc', 'http://datamechanics.io/data/robinhe_rqtian_hongyf_zhjiang/')
 
-        this_script = doc.agent('alg:robinhe_rqtian_hongyf_zhjiang#units_aggregation',
+        this_script = doc.agent('alg:robinhe_rqtian_hongyf_zhjiang#units_aggregate',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dsrc:unit_original',
-                              {'prov:label': 'original unit data', prov.model.PROV_TYPE: 'ont:DataResource',
+        resource = doc.entity('dsrc:units_original',
+                              {'prov:label': 'original units data', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
-        aggregate_units = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(aggregate_units, this_script)
-        doc.usage(aggregate_units, resource, startTime, None,
+        project_crash = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(project_crash, this_script)
+        doc.usage(project_crash, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
         crash = doc.entity('dat:robinhe_rqtian_hongyf_zhjiang#units',
-                          {prov.model.PROV_LABEL: 'crash data from 01 to 19', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(units, this_script)
-        doc.wasGeneratedBy(units, aggregate_units, endTime)
-        doc.wasDerivedFrom(units, resource, aggregate_units, aggregate_units, aggregate_units)
+                          {prov.model.PROV_LABEL: 'units added per year', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(crash, this_script)
+        doc.wasGeneratedBy(crash, project_crash, endTime)
+        doc.wasDerivedFrom(crash, resource, project_crash, project_crash, project_crash)
 
         repo.logout()
 
