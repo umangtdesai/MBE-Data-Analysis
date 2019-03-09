@@ -39,6 +39,28 @@ class example(dml.Algorithm):
         repo['ido_jconstan_jeansolo_suitcase.bu_transportation_study'].metadata({'complete':True})
         print(repo['ido_jconstan_jeansolo_suitcase.bu_transportation_study'].metadata())
 
+        for i in r:
+            i['Address'] = i['Address'].upper()
+
+            if "STREET" in i['Address']:
+                i['Address'] = i['Address'].replace("STREET", "ST")
+            if "PLACE" in i['Address']:
+                i['Address'] = i['Address'].replace("PLACE", "PL")
+            if "TERRACE" in i['Address']:
+                i['Address'] = i['Address'].replace("TERRACE", "TER")
+            if "AVENUE" in i['Address']:
+                i['Address'] = i['Address'].replace("AVENUE", "AVE")
+            if "CIRCLE" in i['Address']:
+                i['Address'] = i['Address'].replace("CIRCLE", "CIR")
+            if "COURT" in i['Address']:
+                i['Address'] = i['Address'].replace("COURT", "CT")
+            if "LANE" in i['Address']:
+                i['Address'] = i['Address'].replace("LANE", "LN")
+            if "ROAD" in i['Address']:
+                i['Address'] = i['Address'].replace("ROAD", "RD")
+            if "PARK" in i['Address']:
+                i['Address'] = i['Address'].replace("PARK", "PK")
+
         # OBTAINING SECOND DATA SET [Spark Property Data]
         url = 'http://datamechanics.io/data/ido_jconstan_jeansolo_suitcase/property_data.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -50,12 +72,33 @@ class example(dml.Algorithm):
         repo['ido_jconstan_jeansolo_suitcase.property_data'].metadata({'complete':True})
         print(repo['ido_jconstan_jeansolo_suitcase.property_data'].metadata())
 		
-        
+        for i in r1:
+            i['Address 1'] = i['Address 1'].upper()
+
+            if "STREET" in i['Address 1']:
+                i['Address 1'] = i['Address 1'].replace("STREET", "ST")
+            if "PLACE" in i['Address 1']:
+                i['Address 1'] = i['Address 1'].replace("PLACE", "PL")
+            if "TERRACE" in i['Address 1']:
+                i['Address 1'] = i['Address 1'].replace("TERRACE", "TER")
+            if "AVENUE" in i['Address 1']:
+                i['Address 1'] = i['Address 1'].replace("AVENUE", "AVE")
+            if "CIRCLE" in i['Address 1']:
+                i['Address 1'] = i['Address 1'].replace("CIRCLE", "CIR")
+            if "COURT" in i['Address 1']:
+                i['Address 1'] = i['Address 1'].replace("COURT", "CT")
+            if "LANE" in i['Address 1']:
+                i['Address 1'] = i['Address 1'].replace("LANE", "LN")
+            if "ROAD" in i['Address 1']:
+                i['Address 1'] = i['Address 1'].replace("ROAD", "RD")
+            if "PARK" in i['Address 1']:
+                i['Address 1'] = i['Address 1'].replace("PARK", "PK")
+
         # OBTAINING THIRD DATA SET [Greenhouse Emissions]
         url = 'https://drive.google.com/uc?export=download&id=1OaOvImEZLgxcmg1FmcqP4gSsABOKQu7P'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
+        r2 = json.loads(response)
+        s2 = json.dumps(r2, sort_keys=True, indent=2)
         repo.dropCollection("greenhouse_emissions")
         repo.createCollection("greenhouse_emissions") 
         repo['ido_jconstan_jeansolo_suitcase.greenhouse_emissions'].insert(r)
@@ -67,8 +110,8 @@ class example(dml.Algorithm):
         # OBTAINING FOURTH DATA SET [Boston work zones]
         url = 'https://drive.google.com/uc?export=download&id=1LhG0cxZgHCU2fqDNaGLdQeBZo9z7gJTj'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
+        r3 = json.loads(response)
+        s3 = json.dumps(r3, sort_keys=True, indent=2)
         repo.dropCollection("zones")
         repo.createCollection("zones")
         repo['ido_jconstan_jeansolo_suitcase.zones'].insert_many(r)
@@ -78,15 +121,37 @@ class example(dml.Algorithm):
         # OBTAINING FIFTH DATA SET [Traffic Count Locations]
         url = 'https://opendata.arcgis.com/datasets/53cd17c661da464c807dfa6ae0563470_0.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
+        r4 = json.loads(response)
+        s4 = json.dumps(r4, sort_keys=True, indent=2)
         repo.dropCollection("traffic_count")
         repo.createCollection("traffic_count")
         repo['ido_jconstan_jeansolo_suitcase.traffic_count'].insert(r)
         repo['ido_jconstan_jeansolo_suitcase.traffic_count'].metadata({'complete':True})
         print(repo['ido_jconstan_jeansolo_suitcase.traffic_count'].metadata())
         
-		
+        # Transform 1
+		# Get the students who do NOT ride the bus
+        notBusRiders = []
+        tempFlag = False
+        for x in r1:
+            for y in r:
+                # if the student does ride the bus
+                if x['Address 1'] in y['Address']:
+                    tempFlag = True
+            if (tempFlag == False):
+                notBusRiders.append(x)
+            else:
+                tempFlag = False
+
+        # Get the house price of students who do NOT ride the bus
+        nbrHouseValue = []
+        for x in notBusRiders:
+            nbrHouseValue.append({"Address 1": x['Address 1'], "Assessed Total":x['Assessed Total']})
+
+        repo.dropCollection("PropertyValueNonRiders")
+        repo.createCollection("PropertyValueNonRiders")
+        repo['ido_jconstan_jeansolo_suitcase.PropertyValueNonRiders'].insert_many(nbrHouseValue)
+
 		
 		
 		#Transformation One
@@ -109,7 +174,7 @@ class example(dml.Algorithm):
         #{$set: {Address1: newval}}
         #}, upsert=False)         
 
-    
+        
          
             #v.rsplit(' ',1)[0];
             #v = v.rpartition('/')[0]
