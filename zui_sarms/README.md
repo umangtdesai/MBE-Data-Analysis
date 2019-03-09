@@ -4,22 +4,20 @@
 
 ## How to run this code?
 
-### Connecting to mongoDB
-
-- The `mongoDB` is currently running on GCP. The address of the database is specified in the `config.json`. Make sure that you have the `mongo_pkey` file. Either copy your private key into the folder or `symlink` your private key to this file.
+### About mongoDB
+- If the mongoDB is not running on the localhost, like how this code initially set-up, there must be an ssh tunnel to the server. 
+`ssh -L 27017:localhost:27017 user@example.org`
 
 ## Choice of Datasets/Services
-====================
-From Analyze Boston:
-- Food Inspection (Violation)
-- Opens Spaces (Parks)
-- Boston Landmarks
 
-From Yelp API:
-- Businesses Around Boston (Restaurant/Bars)
-
-From MBTA API:
-- MBTA Stops
+- From Analyze Boston:
+    - Food Inspection (Violation)
+    - Opens Spaces (Parks)
+    - Boston Landmarks
+- From Yelp API:
+    - Businesses Around Boston (Restaurant/Bars)
+- From MBTA API:
+    - MBTA Stops
 
 ## Objective of these Datasets:
 Imagine yourself in the Boston Area for only 24 hours. You want to take advantage of your time and make the most out of your trip. By entering a cuisine you're interested in and a particular neighbourhood, we're able to plan the perfect day without any inconveniences. Firstly, a list of restaurants that are hygenic (can't afford food poisining). We ensure this by analyzing the Food Inspection Dataset and utilizing Yelp Services (this could also be sorted by price point). Secondly, by using MBTA stops, we provide you transportation information/options from and to your destination. Lastly, we provide a list of scenic spaces/historical landmarks so that you get to experience Boston's culture in that particular area.

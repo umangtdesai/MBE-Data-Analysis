@@ -112,8 +112,6 @@ class RequestsDownloader(BaseDownloader):
         return path
 
 
-
-
 def parse_coor(s):
     """
     Parse the string to tuple of coordinate
@@ -127,6 +125,37 @@ def parse_coor(s):
     long = float(long)
 
     return [lat, long]
+
+
+def geocoding(address):
+    """
+    Take in an address and return the proper address and the coordinate tuple
+    """
+
+    r = requests.get(f"https://maps.googleapis.com/maps/api/geocode/json", params={
+        "address": address,
+        "key": AUTH["GMAP_API"]
+    })
+
+    if r.status_code == 200:
+        r = r.json()
+        results = r["results"]
+        if len(results) < 1:
+            log.error("No result geocoding for %s", address)
+            return (-1, -1)
+
+        result = results[0]
+        proper_address = result["formatted_address"]
+        loc = result["geometry"]["location"]
+        lat = loc["lat"]
+        lng = loc["lng"]
+
+        return (proper_address, lat, lng)
+
+    else:
+        log.error("Error in Geocoding %s", address)
+        return (-1, -1)
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
