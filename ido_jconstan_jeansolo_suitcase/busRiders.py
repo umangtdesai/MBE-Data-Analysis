@@ -8,6 +8,7 @@ import pymongo
 from bson.objectid import ObjectId
 
 class busRiders(dml.Algorithm):
+	print("busRiders")
 	contributor = 'ido_jconstan_jeansolo_suitcase'
 	reads = ['ido_jconstan_jeansolo_suitcase.bu_transportation_study',
 			 'ido_jconstan_jeansolo_suitcase.property_data']
@@ -15,7 +16,6 @@ class busRiders(dml.Algorithm):
 
 	@staticmethod
 	def execute(trial = False):
-		print("busRiders")
 		startTime = datetime.datetime.now()
 
 		# Set up the database connection.
@@ -106,6 +106,38 @@ class busRiders(dml.Algorithm):
 
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-		pass
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('ido_jconstan_jeansolo_suitcase', 'ido_jconstan_jeansolo_suitcase')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('dbg', 'https://data.boston.gov/dataset/greenhouse-gas-emissions/resource/')
+        doc.add_namespace('dbg2', 'https://data.boston.gov/dataset/public-works-active-work-zones/resource/')
+        doc.add_namespace('oda', 'https://opendata.arcgis.com/datasets/')
+
+
+
+        this_script = doc.agent('alg:ido_jconstan_jeansolo_suitcase#busRiders', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource_busRiders = doc.entity('dat:busRiders', {'prov:label':'Bus Riders', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_busRiders = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+
+        doc.wasAssociatedWith(get_busRiders, this_script)
+        doc.usage(get_busRiders, resource_busRiders, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval',
+                  }
+                  )
+
+        bus_Riders = doc.entity('dat:ido_jconstan_jeansolo_suitcase#bus_Riders', {prov.model.PROV_LABEL:'Traffic Count', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(bus_Riders, this_script)
+        doc.wasGeneratedBy(bus_Riders, get_busRiders, endTime)
+        doc.wasDerivedFrom(bus_Riders, resource_busRiders, get_busRiders, get_busRiders, get_busRiders)
+        
+        repo.logout()
+                  
+        return doc
+
 
 	#nonBusRiders.execute()
