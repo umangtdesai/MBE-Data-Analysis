@@ -1,6 +1,6 @@
-## Comparing Recreational Bike Use by Population for 4 Major Cities
+# Comparing Recreational Bike Use by Population for 4 Major Cities
 
-# Summary
+## Summary
 
 Our goal was to determine how much time people in different cities spend biking for pleasure.  We decided to use publicly 
 available data sets for major bike rental companies for 4 cities to determine how much time was spent renting bikes.  We chose
@@ -14,17 +14,17 @@ with our 5th dataset, which included census data on all American cities, to crea
 (ObjectID, City, TotalDuration, Population) to give us an idea of the ratio between time spent on bikes vs population to 
 determine which cities utilized rental bikes more.
 
-# Data Sets
-Chicago Bike Data
-New York City Bike Data
-Washington Bike Data
-Chattanooga Bike Data
-Census Data
+## Data Sets
+-Chicago Bike Data
+-New York City Bike Data
+-Washington Bike Data
+-Chattanooga Bike Data
+-Census Data
 
 While the first 4 data sets contain similar information, they were made available in various methods including zipped CSV's
 and JSON.  They also had varying schemas, which necesitated different code to parse each.
 
-# Transformations
-Sum Aggregation for each City's Bike Data
-Union of the 4 Sum Aggregations
-Join of the bike data aggregation and census data for each city
+## Transformations
+-Sum Aggregation for each City's Bike Data
+-Union of the 4 Sum Aggregations
+-Join of the bike data aggregation and census data for each city
