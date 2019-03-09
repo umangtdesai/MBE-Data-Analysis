@@ -16,8 +16,8 @@ For Project 1, we plan at looking at the following five datasets:
 3. Revere2016updated.csv
 	- This is car accident data for the city of Revere in 2016. Sourced from our Spark Project partner, who originally got it from massDot.
 4. TotalCrashesbyTownandYear1990_2016updated.csv
-	- The is data showing the accidents recorded per year in the cities of Massachussets. Sourced from our Spark Project partner, who    
-    originally got it from the Registry of Motor Vehicles
+	- The is data showing the accidents recorded per year in the cities of Massachussets. Sourced from our Spark Project partner, who
+	originally got it from the Registry of Motor Vehicles
 5. popData.csv
 	- Population data of Suffolk County from 2005 to 2018. Sourced from IPUMS.org(Census Bureau)
 
