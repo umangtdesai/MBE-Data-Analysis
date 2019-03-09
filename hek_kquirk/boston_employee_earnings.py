@@ -24,7 +24,7 @@ class boston_employee_earnings(dml.Algorithm):
         repo.createCollection("boston_employee_earnings")
 
         # Api call for employee earnings dataset
-        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=70129b87-bd4e-49bb-aa09-77644da73503'
+        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=70129b87-bd4e-49bb-aa09-77644da73503&limit=30000'
 
         # Can only get 100 entries at a time. Keep querying until there are
         # no more entries.
@@ -54,7 +54,34 @@ class boston_employee_earnings(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
-               
+
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('hek_kquirk', 'hek_kquirk')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/')
+
+        this_script = doc.agent('alg:hek_kquirk#boston_employee_earnings', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        
+        resource = doc.entity('bdp:api/3/datastore_search/', {'prov:label':'Boston Open Data search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        bpd_fio = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(bpd_fio, this_script)
+        doc.usage(bpd_fio, resource, startTime, None,
+                  {
+                      prov.model.PROV_TYPE:'ont:Retrieval',
+                      'ont:Query':'?resource_id=70129b87-bd4e-49bb-aa09-77644da73503'
+                  }
+        )
+
+        boston_employee_earnings = doc.entity('dat:hek_kquirk#boston_employee_earnings', {prov.model.PROV_LABEL:'Boston Employee Earnings', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(boston_employee_earnings, this_script)
+        doc.wasGeneratedBy(boston_employee_earnings, boston_employee_earnings, endTime)
+        doc.wasDerivedFrom(boston_employee_earnings, resource, boston_employee_earnings, boston_employee_earnings, boston_employee_earnings)
+        
         return doc
 
 '''

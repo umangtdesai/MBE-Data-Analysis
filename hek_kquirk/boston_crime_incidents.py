@@ -24,22 +24,20 @@ class boston_crime_incidents(dml.Algorithm):
         repo.createCollection("boston_crime_incidents")
 
         # Api call for employee earnings dataset
-        url = 'https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20%2212cb3883-56f5-47de-afa5-3b1cf61b257b%22%20WHERE%20year=%272017%27%20ORDER%20BY%20occurred_on_date'
-        
-        # Can only get 32000 entries at a time. Keep querying until there are
+        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=12cb3883-56f5-47de-afa5-3b1cf61b257b&limit=30000'
+
+        # Can only get 100 entries at a time. Keep querying until there are
         # no more entries.
-        num_entries = 0
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)['result']
         repo['hek_kquirk.boston_crime_incidents'].insert_many(r['records'])
-        num_entries += len(r['records'])
-        while 'records_truncated' in r:
-            url = 'https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20%2212cb3883-56f5-47de-afa5-3b1cf61b257b%22%20WHERE%20year=%272017%27%20ORDER%20BY%20occurred_on_date%20OFFSET%20' + str(num_entries)
+        while len(r['records']) > 0 and 'next' in r['_links']:
+            url = 'https://data.boston.gov' + r['_links']['next']
             response = urllib.request.urlopen(url).read().decode("utf-8")
             r = json.loads(response)['result']
-            repo['hek_kquirk.boston_crime_incidents'].insert_many(r['records'])
-            num_entries += len(r['records'])
-            
+            if len(r['records']) > 0:
+                repo['hek_kquirk.boston_crime_incidents'].insert_many(r['records'])
+        
         repo['hek_kquirk.boston_crime_incidents'].metadata({'complete':True})
         print(repo['hek_kquirk.boston_crime_incidents'].metadata())
 
@@ -56,7 +54,34 @@ class boston_crime_incidents(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
-               
+
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('hek_kquirk', 'hek_kquirk')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/')
+
+        this_script = doc.agent('alg:hek_kquirk#boston_crime_incidents', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        
+        resource = doc.entity('bdp:api/3/datastore_search/', {'prov:label':'Boston Open Data search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        bpd_fio = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(bpd_fio, this_script)
+        doc.usage(bpd_fio, resource, startTime, None,
+                  {
+                      prov.model.PROV_TYPE:'ont:Retrieval',
+                      'ont:Query':'?resource_id=12cb3883-56f5-47de-afa5-3b1cf61b257b'
+                  }
+        )
+
+        boston_crime_incidents = doc.entity('dat:hek_kquirk#boston_crime_incidents', {prov.model.PROV_LABEL:'Boston Crime Incidents', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(boston_crime_incidents, this_script)
+        doc.wasGeneratedBy(boston_crime_incidents, boston_employee_earnings, endTime)
+        doc.wasDerivedFrom(boston_crime_incidents, resource, boston_crime_incidents, boston_crime_incidents, boston_crime_incidents)
+        
         return doc
 
 '''
