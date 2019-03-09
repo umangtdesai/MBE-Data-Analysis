@@ -13,12 +13,11 @@ Using the following 5 datasets, I computed complex transformations to produce 3 
 ## Datasets Used
 Data Set|Description
 -|-
-Fatality Record | Data from Vision Zero that provides statistics on death by transportation in Boston (pedestrian, biking, vehicle deaths).
-Crash Record | Data from Vision Zero that provides statistics on recent crashes in Boston (car crashes, bike crashes, more).
-Hubway Stations | Data provided by Hubway that shows the locations for every Hubway bike station in Boston.
-Streetlight Locations | Data provided by the Department of Innovation and Technology that describes over 74,000 streetlights in Boston (locations, etc.)
-Traffic Signal Locations | Data provided by the Department of Innovation and Technology that gives information on all of Boston's traffic signals.
-
+Boston Hubway Station Location | A dataset provided by Hubway that shows all locations for Hubway bike stations in Boston.
+Boston Collisions | A dataset provided by the team of the Vision Zero Boston program that contain the date, time, location, and type of incident
+Boston Weather | A dataset provided by NOAA's National Centers for Environmental Information that shows the weather containing information such as precipitation, wind speed, and the date.
+Boston Traffic Signal Locations | A dataset provided by the city of Boston's Analyze Boston that contains information on all of Boston's traffic signals
+Boston Bike Lanes | A dataset provided by BostonGIS that contains information such as the jurisdiction, street, and the length of the bike lane
 ---
 
 **This project description will be updated as we continue work on the infrastructure.**
