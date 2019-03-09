@@ -7,7 +7,7 @@ import datetime
 
 ############################################
 # create_communitydata.py
-# Script for merging Census Socioeconomic Hardship data with Community Geospatial Data
+# Script for merging L-station GeoSpatial Data with Community Area Number GeoSpatial Data
 ############################################
 
 class grab_ctastations(dml.Algorithm):
@@ -23,20 +23,19 @@ class grab_ctastations(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('smithnj', 'smithnj')
-        repo_name = 'smithnj.communitydata'
+        repo_name = 'smithnj.merged_stations'
         # ---[ Grab Data ]-------------------------------------------
         communityareas = geopandas.read_file(
             'https://data.cityofchicago.org/api/geospatial/cauq-8yn6?method=export&format=GeoJSON')
-        census = pd.read_json('http://data.cityofchicago.org/resource/kn9c-c2s2.json')
-        # ---[ Merge Data ]-------------------------------------------
-        communityareas['area_numbe'] = communityareas['area_numbe'].convert_objects(convert_numeric=True)
-        merged = communityareas.merge(census, left_on='area_numbe', right_on='ca')
+        stationloc = geopandas.read_file('http://datamechanics.io/data/smithnj/CTA_RailStations.geojson')
+        # ---[ Create Data ]-----------------------------------------
+        merged = geopandas.sjoin(communityareas, stationloc, how="inner", op='within')
         # ---[ Write Data to JSON ]----------------------------------
         data = merged.to_json()
         loaded = json.loads(data)
         # ---[ MongoDB Insertion ]-------------------------------------------
-        repo.dropCollection('communitydata')
-        repo.createCollection('communitydata')
+        repo.dropCollection('merged_stations')
+        repo.createCollection('merged_stations')
         repo[repo_name].insert_one(loaded)
         repo[repo_name].metadata({'complete': True})
         # ---[ Finishing Up ]-------------------------------------------
@@ -47,7 +46,7 @@ class grab_ctastations(dml.Algorithm):
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-#TODO COMPLETE COMMUNITYDATA PROV
+#TODO COMPLETE MERGEDSTATION PROV
         '''
             Create the provenance document describing everything happening
             in this script. Each run of the script will generate a new

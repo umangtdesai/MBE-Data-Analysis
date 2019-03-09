@@ -20,9 +20,11 @@ Transformations should point to reducing/projecting data in a way to determine p
 1. **create_travelstats**: Utilizes pandas library to aggregate ridership sums per station per month [aggregation]. A four year average is calculated after using the ridership sums [projection].
 
     This can point to calculating whether or not a station should expect to be busy on a certain type of day (weekday, weekend, holiday) and adjust pricing accordingly.
-2. **create_communitydata**: Utilizes pandas and geopandas libaries to merge census socioeconomic hardship data and geospatial data for each specific Community Area Number [projection].
+2. **create_communitydata**: Utilizes pandas and geopandas libaries to merge census socioeconomic hardship data and geospatial data for each specific Community Area Number [union] and drops [projection] unutilized census data.
 
-    Chicago uses Community  Area Numbers as a way to identify specific regions. By joining these two databases, socioeconomic hardship is now linked with geospatial data of the neighborhood, which can lead to determining hardship of the area surrounding an L-station.
+    Chicago uses Community Area Numbers as a way to identify specific regions. By joining these two databases, socioeconomic hardship is now linked with geospatial data of the neighborhood, which can lead to determining hardship of the area surrounding an L-station.
+    
+3. **create_mergedstations**: Utilizes geopandas libary to merge two distinct types of geospatial data: point and multipolygon. Points in Chicago L-station date are mapped onto [projection] the Chicago Community Area Numbers dataset.
 
 ---
 #### Library Dependencies
@@ -30,3 +32,4 @@ Transformations should point to reducing/projecting data in a way to determine p
 * JSON
 * Data Mechanics Library, Provenance, Protoql
 * datetime
+* spatialindex
