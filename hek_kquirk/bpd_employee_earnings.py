@@ -43,7 +43,34 @@ class bpd_employee_earnings(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
-               
+
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('hek_kquirk', 'hek_kquirk')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+
+        this_script = doc.agent('alg:hek_kquirk#bpd_employee_earnings', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        
+        resource = doc.entity('dat:hek_kquirk#boston_employee_earnings', {'prov:label':'Boston Open Data search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_bpd_employee_earnings = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_bpd_employee_earnings, this_script)
+        doc.usage(bpd_fio, resource, startTime, None,
+                  {
+                      prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+        )
+        
+        bpd_employee_earnings = doc.entity('dat:hek_kquirk#bpd_employee_earnings', {prov.model.PROV_LABEL:'BPD Employee Earnings', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(bpd_employee_earnings, this_script)
+        doc.wasGeneratedBy(bpd_employee_earnings, get_boston_employee_earnings, endTime)
+        doc.wasDerivedFrom(bpd_employee_earnings, resource, get_bpd_employee_earnings, get_bpd_employee_earnings, get_bpd_employee_earnings)
+
+        repo.logout()
+        
         return doc
 
 '''

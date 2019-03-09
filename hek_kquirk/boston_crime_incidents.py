@@ -68,8 +68,8 @@ class boston_crime_incidents(dml.Algorithm):
         this_script = doc.agent('alg:hek_kquirk#boston_crime_incidents', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource = doc.entity('bdp:api/3/datastore_search/', {'prov:label':'Boston Open Data search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        bpd_fio = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(bpd_fio, this_script)
+        get_boston_crime_incidents = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_boston_crime_incidents, this_script)
         doc.usage(bpd_fio, resource, startTime, None,
                   {
                       prov.model.PROV_TYPE:'ont:Retrieval',
@@ -79,8 +79,10 @@ class boston_crime_incidents(dml.Algorithm):
 
         boston_crime_incidents = doc.entity('dat:hek_kquirk#boston_crime_incidents', {prov.model.PROV_LABEL:'Boston Crime Incidents', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(boston_crime_incidents, this_script)
-        doc.wasGeneratedBy(boston_crime_incidents, boston_employee_earnings, endTime)
-        doc.wasDerivedFrom(boston_crime_incidents, resource, boston_crime_incidents, boston_crime_incidents, boston_crime_incidents)
+        doc.wasGeneratedBy(boston_crime_incidents, get_boston_crime_incidents, endTime)
+        doc.wasDerivedFrom(boston_crime_incidents, resource, get_boston_crime_incidents, get_boston_crime_incidents, get_boston_crime_incidents)
+
+        repo.logout()
         
         return doc
 

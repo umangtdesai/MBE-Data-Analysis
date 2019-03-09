@@ -69,9 +69,9 @@ class bpd_fio(dml.Algorithm):
         this_script = doc.agent('alg:hek_kquirk#bpd_fio', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource = doc.entity('bdp:api/3/datastore_search/', {'prov:label':'Boston Open Data search', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        bpd_fio = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_bpd_fio = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(bpd_fio, this_script)
-        doc.usage(bpd_fio, resource, startTime, None,
+        doc.usage(get_bpd_fio, resource, startTime, None,
                   {
                       prov.model.PROV_TYPE:'ont:Retrieval',
                       'ont:Query':'?resource_id=35f3fb8f-4a01-4242-9758-f664e7ead125'
@@ -80,9 +80,11 @@ class bpd_fio(dml.Algorithm):
 
         bpd_fio = doc.entity('dat:hek_kquirk#bpd_fio', {prov.model.PROV_LABEL:'BPD Field Interigation and Observation', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(bpd_fio, this_script)
-        doc.wasGeneratedBy(bpd_fio, bpd_fio, endTime)
-        doc.wasDerivedFrom(bpd_fio, resource, bpd_fio, bpd_fio, bpd_fio)
+        doc.wasGeneratedBy(bpd_fio, get_bpd_fio, endTime)
+        doc.wasDerivedFrom(bpd_fio, resource, get_bpd_fio, get_bpd_fio, get_bpd_fio)
 
+        repo.logout()
+        
         return doc
 
 '''
