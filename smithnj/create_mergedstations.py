@@ -46,23 +46,37 @@ class grab_ctastations(dml.Algorithm):
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-#TODO COMPLETE MERGEDSTATION PROV
-        '''
-            Create the provenance document describing everything happening
-            in this script. Each run of the script will generate a new
-            document describing that invocation event.
-        '''
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofchicago.org/Transportation/CTA-Ridership-L-Station-Entries-Daily-Totals/5neh-572f')
-        doc.add_namespace('dmc', 'http://datamechanics.io/data/smithnj')
-        this_script = doc.agent('alg:smithnj#grab_stationstats', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dmc:5neh-572f.json', {'prov:label':'CTA - Ridership - L Station Entries - Daily Totals', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        grab_stationstats = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(grab_stationstats, this_script)
-        doc.usage(grab_stationstats, resource, startTime, None, {prov.model.PROV_TYPE.'ont:Retrieval'})
-        stationstats = doc.entity('dat:smithnj#stationstats', {prov.model.PROV_LABEL:''})
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('smithnj', 'smithnj')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont',
+                          'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+
+        this_script = doc.agent('alg:smithnj#merged_stations',
+                                {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        communityareas = doc.entity('dat:smithnj#communityareas',
+                                     {prov.model.PROV.LABEL: 'Chicago Community Areas Data',
+                                      prov.model.PROV_TYPE: 'ont:DataSet'})
+        stationlocation = doc.entity('dat:smithnj#stations', {prov.model.PROV.LABEL: 'Chicago L-Station Location',
+                                                   prov.model.PROV_TYPE: 'ont:DataSet'})
+        merge = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+
+        doc.wasAssociatedWith(merge, this_script)
+        doc.usage(merge, communityareas, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+        doc.usage(merge, stationlocation, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+
+        merged_stations_with_geo = doc.entity('dat:smithnj#merged_stations', {
+            prov.model.PROV_LABEL: 'Chicago L Stations',
+            prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(merged_stations, this_script)
+        doc.wasGeneratedBy(merged_stations_with_geo, merge, endTime)
+        doc.wasDerivedFrom(merged_stations_with_geo, communityareas)
+        doc.wasDerivedFrom(merged_stations_with_geo, stationlocation)
+
+        repo.logout()
 
         return doc

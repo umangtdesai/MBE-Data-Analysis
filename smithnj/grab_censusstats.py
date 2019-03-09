@@ -42,12 +42,32 @@ class grab_censusstats(dml.Algorithm):
         return {"start": startTime, "end": endTime}
 
 
+        @staticmethod
+        def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
+            client = dml.pymongo.MongoClient()
+            repo = client.repo
+            repo.authenticate('smithnj', 'smithnj')
+            doc.add_namespace('alg',
+                              'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
+            doc.add_namespace('dat',
+                              'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+            doc.add_namespace('ont',
+                              'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+            doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
+            doc.add_namespace('bdp', 'http://data.cityofchicago.org/resource/kn9c-c2s2.json')
 
+            this_script = doc.agent('alg:smithnj#census',
+                                    {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+            resource = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
+            get_censusstats = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
+            doc.wasAssociatedWith(get_censusstats, this_script)
+            doc.usage(get_censusstats, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+            doc.wasAttributedTo(get_censusstats, this_script)
+            doc.wasGeneratedBy(get_censusstats, resource, endTime)
+            doc.wasDerivedFrom(get_censusstats, resource)
 
+            repo.logout()
 
-
-
-        #@staticmethod
-        #def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
+            return doc
