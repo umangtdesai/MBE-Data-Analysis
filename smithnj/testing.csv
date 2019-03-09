@@ -1,0 +1,1741 @@
+date,station_id,stationname,rides
+1,40010,Austin-Forest Park,57859.5
+1,40020,Harlem-Lake,113553.0
+1,40030,Pulaski-Lake,48457.0
+1,40040,Quincy/Wells,224008.25
+1,40050,Davis,117653.25
+1,40060,Belmont-O'Hare,169682.75
+1,40070,Jackson/Dearborn,216326.25
+1,40080,Sheridan,172299.25
+1,40090,Damen-Brown,84968.0
+1,40100,Morse,149821.25
+1,40120,35th/Archer,87956.75
+1,40130,51st,31297.0
+1,40140,Dempster-Skokie,54518.25
+1,40150,Pulaski-Cermak,36127.5
+1,40160,LaSalle/Van Buren,83609.0
+1,40170,Ashland-Lake,69889.5
+1,40180,Oak Park-Forest Park,51649.0
+1,40190,Sox-35th-Dan Ryan,130798.0
+1,40200,Randolph/Wabash,191636.0
+1,40210,Damen-Cermak,44988.75
+1,40220,Western-Forest Park,50361.25
+1,40230,Cumberland,125161.0
+1,40240,79th,223358.25
+1,40250,Kedzie-Homan-Forest Park,67766.75
+1,40260,State/Lake,289753.25
+1,40270,Main,38359.0
+1,40280,Central-Lake,66254.25
+1,40290,Ashland/63rd,38722.5
+1,40300,Indiana,26627.5
+1,40310,Western-Orange,109150.0
+1,40320,Division/Milwaukee,190660.25
+1,40330,Grand/State,368888.25
+1,40340,Berwyn,111629.0
+1,40350,UIC-Halsted,167973.0
+1,40360,Southport,107796.0
+1,40370,Washington/Dearborn,344970.0
+1,40380,Clark/Lake,558974.25
+1,40390,Forest Park,101188.0
+1,40400,Noyes,27768.25
+1,40420,Cicero-Cermak,38953.0
+1,40430,Clinton-Forest Park,111290.5
+1,40440,California-Cermak,43347.0
+1,40450,95th/Dan Ryan,329811.0
+1,40460,Merchandise Mart,220075.75
+1,40470,Racine,69195.75
+1,40480,Cicero-Lake,43631.5
+1,40490,Grand/Milwaukee,79747.5
+1,40510,Garfield-South Elevated,41177.25
+1,40520,Foster,26908.0
+1,40530,Diversey,173680.25
+1,40540,Wilson,188247.75
+1,40550,Irving Park-O'Hare,131871.5
+1,40560,Jackson/State,320484.25
+1,40570,California/Milwaukee,160641.75
+1,40580,54th/Cermak,62735.25
+1,40590,Damen/Milwaukee,200399.25
+1,40600,Kostner,15361.5
+1,40610,Ridgeland,37434.5
+1,40630,Clark/Division,248295.0
+1,40640,Madison/Wabash,76918.25
+1,40650,North/Clybourn,198393.25
+1,40660,Armitage,132365.0
+1,40670,Western/Milwaukee,157865.0
+1,40680,Adams/Wabash,223339.5
+1,40690,Dempster,28212.0
+1,40700,Laramie,39604.25
+1,40710,Chicago/Franklin,204281.75
+1,40720,East 63rd-Cottage Grove,37113.0
+1,40730,Washington/Wells,218341.5
+1,40740,Western-Cermak,35702.25
+1,40750,Harlem-O'Hare,85704.5
+1,40760,Granville,132509.0
+1,40770,Lawrence,102808.25
+1,40780,Central Park,37233.5
+1,40790,Monroe/Dearborn,217032.25
+1,40800,Sedgwick,115617.75
+1,40810,Medical Center,89132.25
+1,40820,Rosemont,175513.75
+1,40830,18th,56316.75
+1,40840,South Boulevard,24218.0
+1,40850,Library,108007.75
+1,40870,Francisco,47681.0
+1,40880,Thorndale,99715.75
+1,40890,O'Hare Airport,329353.0
+1,40900,Howard,186120.75
+1,40910,63rd-Dan Ryan,98744.75
+1,40920,Pulaski-Forest Park,57832.75
+1,40930,Midway Airport,242740.75
+1,40940,Halsted/63rd,22175.75
+1,40960,Pulaski-Orange,142245.5
+1,40970,Cicero-Forest Park,44343.0
+1,40980,Harlem-Forest Park,34861.0
+1,40990,69th,165520.0
+1,41000,Cermak-Chinatown,127656.25
+1,41010,Rockwell,57072.25
+1,41020,Logan Square,222723.75
+1,41030,Polk,91577.0
+1,41040,Kedzie-Cermak,32704.5
+1,41050,Linden,24481.25
+1,41060,Ashland-Orange,46224.75
+1,41070,Kedzie-Lake,47114.5
+1,41080,47th-South Elevated,37962.0
+1,41090,Monroe/State,309768.5
+1,41120,35-Bronzeville-IIT,58208.75
+1,41130,Halsted-Orange,78665.0
+1,41140,King Drive,18059.5
+1,41150,Kedzie-Midway,96915.0
+1,41160,Clinton-Lake,118138.5
+1,41170,Garfield-Dan Ryan,109029.75
+1,41180,Kedzie-Brown,63257.5
+1,41190,Jarvis,54286.75
+1,41200,Argyle,103120.5
+1,41210,Wellington,93823.25
+1,41220,Fullerton,429548.0
+1,41230,47th-Dan Ryan,93696.75
+1,41240,Addison-O'Hare,82639.0
+1,41250,Central-Evanston,23751.25
+1,41260,Austin-Lake,57859.25
+1,41270,43rd,31361.25
+1,41280,Jefferson Park,204341.25
+1,41290,Kimball,126741.5
+1,41300,Loyola,174571.5
+1,41310,Paulina,85283.5
+1,41320,Belmont-North Main,404916.25
+1,41330,Montrose-O'Hare,73786.0
+1,41340,LaSalle,85582.0
+1,41350,Oak Park-Lake,44960.0
+1,41360,California-Lake,31840.25
+1,41380,Bryn Mawr,151538.0
+1,41400,Roosevelt,334029.5
+1,41410,Chicago/Milwaukee,129271.75
+1,41420,Addison-North Main,208055.75
+1,41430,87th,132164.0
+1,41440,Addison-Brown,75412.75
+1,41450,Chicago/State,457047.75
+1,41460,Irving Park-Brown,96850.25
+1,41480,Western-Brown,128545.0
+1,41490,Harrison,122688.0
+1,41500,Montrose-Brown,86934.5
+1,41510,Morgan-Lake,77149.25
+1,41660,Lake/State,616751.0
+1,41670,Conservatory,27372.0
+1,41680,Oakton-Skokie,26290.0
+1,41690,Cermak-McCormick Place,22885.0
+1,41700,Washington/Wabash,56327.5
+2,40010,Austin-Forest Park,57523.0
+2,40020,Harlem-Lake,111934.75
+2,40030,Pulaski-Lake,47062.0
+2,40040,Quincy/Wells,213117.0
+2,40050,Davis,115251.25
+2,40060,Belmont-O'Hare,167167.25
+2,40070,Jackson/Dearborn,216890.25
+2,40080,Sheridan,168265.0
+2,40090,Damen-Brown,82975.0
+2,40100,Morse,153626.5
+2,40120,35th/Archer,89373.75
+2,40130,51st,30846.0
+2,40140,Dempster-Skokie,53472.5
+2,40150,Pulaski-Cermak,35729.75
+2,40160,LaSalle/Van Buren,81001.25
+2,40170,Ashland-Lake,68846.5
+2,40180,Oak Park-Forest Park,50435.75
+2,40190,Sox-35th-Dan Ryan,132358.75
+2,40200,Randolph/Wabash,189280.75
+2,40210,Damen-Cermak,45481.0
+2,40220,Western-Forest Park,50941.0
+2,40230,Cumberland,122827.5
+2,40240,79th,217061.5
+2,40250,Kedzie-Homan-Forest Park,65607.5
+2,40260,State/Lake,296667.0
+2,40270,Main,37100.5
+2,40280,Central-Lake,64951.5
+2,40290,Ashland/63rd,37363.0
+2,40300,Indiana,26357.5
+2,40310,Western-Orange,109080.25
+2,40320,Division/Milwaukee,187814.25
+2,40330,Grand/State,343548.5
+2,40340,Berwyn,109259.0
+2,40350,UIC-Halsted,198058.25
+2,40360,Southport,102921.5
+2,40370,Washington/Dearborn,338447.5
+2,40380,Clark/Lake,535562.0
+2,40390,Forest Park,98796.0
+2,40400,Noyes,27565.25
+2,40420,Cicero-Cermak,38669.5
+2,40430,Clinton-Forest Park,108200.5
+2,40440,California-Cermak,42818.25
+2,40450,95th/Dan Ryan,324630.25
+2,40460,Merchandise Mart,215109.75
+2,40470,Racine,69851.75
+2,40480,Cicero-Lake,42533.0
+2,40490,Grand/Milwaukee,78103.5
+2,40510,Garfield-South Elevated,40356.5
+2,40520,Foster,27160.0
+2,40530,Diversey,166425.5
+2,40540,Wilson,189979.5
+2,40550,Irving Park-O'Hare,128475.0
+2,40560,Jackson/State,317342.0
+2,40570,California/Milwaukee,157629.75
+2,40580,54th/Cermak,61612.5
+2,40590,Damen/Milwaukee,196615.75
+2,40600,Kostner,15355.75
+2,40610,Ridgeland,36629.25
+2,40630,Clark/Division,240647.25
+2,40640,Madison/Wabash,77707.75
+2,40650,North/Clybourn,188252.0
+2,40660,Armitage,129847.5
+2,40670,Western/Milwaukee,154393.5
+2,40680,Adams/Wabash,228251.75
+2,40690,Dempster,27011.75
+2,40700,Laramie,38769.75
+2,40710,Chicago/Franklin,200034.25
+2,40720,East 63rd-Cottage Grove,36347.25
+2,40730,Washington/Wells,209927.25
+2,40740,Western-Cermak,35955.25
+2,40750,Harlem-O'Hare,84514.5
+2,40760,Granville,136697.0
+2,40770,Lawrence,107508.0
+2,40780,Central Park,36950.25
+2,40790,Monroe/Dearborn,216624.0
+2,40800,Sedgwick,112227.5
+2,40810,Medical Center,88642.5
+2,40820,Rosemont,171347.5
+2,40830,18th,57064.0
+2,40840,South Boulevard,23451.0
+2,40850,Library,113346.5
+2,40870,Francisco,46080.75
+2,40880,Thorndale,98796.5
+2,40890,O'Hare Airport,307813.0
+2,40900,Howard,180961.75
+2,40910,63rd-Dan Ryan,97171.5
+2,40920,Pulaski-Forest Park,56815.5
+2,40930,Midway Airport,236689.5
+2,40940,Halsted/63rd,22177.5
+2,40960,Pulaski-Orange,145516.75
+2,40970,Cicero-Forest Park,42007.0
+2,40980,Harlem-Forest Park,33665.25
+2,40990,69th,160850.0
+2,41000,Cermak-Chinatown,133304.5
+2,41010,Rockwell,55510.0
+2,41020,Logan Square,218703.25
+2,41030,Polk,93218.0
+2,41040,Kedzie-Cermak,32363.0
+2,41050,Linden,23527.25
+2,41060,Ashland-Orange,46044.75
+2,41070,Kedzie-Lake,46492.25
+2,41080,47th-South Elevated,38246.25
+2,41090,Monroe/State,307258.0
+2,41120,35-Bronzeville-IIT,59132.75
+2,41130,Halsted-Orange,81929.75
+2,41140,King Drive,17803.5
+2,41150,Kedzie-Midway,98211.5
+2,41160,Clinton-Lake,115977.5
+2,41170,Garfield-Dan Ryan,106758.5
+2,41180,Kedzie-Brown,62108.75
+2,41190,Jarvis,52661.5
+2,41200,Argyle,99989.75
+2,41210,Wellington,90348.25
+2,41220,Fullerton,415710.0
+2,41230,47th-Dan Ryan,91881.75
+2,41240,Addison-O'Hare,81771.75
+2,41250,Central-Evanston,22627.0
+2,41260,Austin-Lake,56635.5
+2,41270,43rd,30608.5
+2,41280,Jefferson Park,197915.0
+2,41290,Kimball,124707.5
+2,41300,Loyola,179519.0
+2,41310,Paulina,83146.0
+2,41320,Belmont-North Main,391377.25
+2,41330,Montrose-O'Hare,72559.5
+2,41340,LaSalle,92577.0
+2,41350,Oak Park-Lake,43902.75
+2,41360,California-Lake,30927.25
+2,41380,Bryn Mawr,148029.0
+2,41400,Roosevelt,338778.5
+2,41410,Chicago/Milwaukee,127306.75
+2,41420,Addison-North Main,201821.5
+2,41430,87th,130378.75
+2,41440,Addison-Brown,74088.5
+2,41450,Chicago/State,446662.75
+2,41460,Irving Park-Brown,94301.0
+2,41480,Western-Brown,125263.0
+2,41490,Harrison,141725.0
+2,41500,Montrose-Brown,85030.0
+2,41510,Morgan-Lake,75980.75
+2,41660,Lake/State,597979.75
+2,41670,Conservatory,27157.0
+2,41680,Oakton-Skokie,26637.75
+2,41690,Cermak-McCormick Place,30644.0
+2,41700,Washington/Wabash,53553.25
+3,40010,Austin-Forest Park,64384.25
+3,40020,Harlem-Lake,127145.75
+3,40030,Pulaski-Lake,53252.5
+3,40040,Quincy/Wells,244003.0
+3,40050,Davis,125998.25
+3,40060,Belmont-O'Hare,187745.5
+3,40070,Jackson/Dearborn,245376.75
+3,40080,Sheridan,187414.25
+3,40090,Damen-Brown,93513.75
+3,40100,Morse,169382.75
+3,40120,35th/Archer,102171.75
+3,40130,51st,35205.75
+3,40140,Dempster-Skokie,60998.0
+3,40150,Pulaski-Cermak,39237.25
+3,40160,LaSalle/Van Buren,89904.25
+3,40170,Ashland-Lake,82411.75
+3,40180,Oak Park-Forest Park,56801.25
+3,40190,Sox-35th-Dan Ryan,151758.0
+3,40200,Randolph/Wabash,230216.25
+3,40210,Damen-Cermak,51583.25
+3,40220,Western-Forest Park,56926.75
+3,40230,Cumberland,143704.25
+3,40240,79th,242337.0
+3,40250,Kedzie-Homan-Forest Park,73540.75
+3,40260,State/Lake,341690.0
+3,40270,Main,40978.75
+3,40280,Central-Lake,73227.75
+3,40290,Ashland/63rd,42053.5
+3,40300,Indiana,29436.75
+3,40310,Western-Orange,124955.0
+3,40320,Division/Milwaukee,211218.5
+3,40330,Grand/State,422898.5
+3,40340,Berwyn,119886.0
+3,40350,UIC-Halsted,194345.25
+3,40360,Southport,115889.0
+3,40370,Washington/Dearborn,394192.75
+3,40380,Clark/Lake,631592.75
+3,40390,Forest Park,113217.75
+3,40400,Noyes,28026.5
+3,40420,Cicero-Cermak,43208.0
+3,40430,Clinton-Forest Park,123663.25
+3,40440,California-Cermak,48440.25
+3,40450,95th/Dan Ryan,365945.5
+3,40460,Merchandise Mart,243599.5
+3,40470,Racine,79912.5
+3,40480,Cicero-Lake,47255.25
+3,40490,Grand/Milwaukee,88246.75
+3,40510,Garfield-South Elevated,45716.5
+3,40520,Foster,27317.25
+3,40530,Diversey,187121.75
+3,40540,Wilson,207633.75
+3,40550,Irving Park-O'Hare,148037.75
+3,40560,Jackson/State,340703.5
+3,40570,California/Milwaukee,175610.0
+3,40580,54th/Cermak,69478.5
+3,40590,Damen/Milwaukee,232495.5
+3,40600,Kostner,17483.75
+3,40610,Ridgeland,41522.75
+3,40630,Clark/Division,275629.25
+3,40640,Madison/Wabash,66192.25
+3,40650,North/Clybourn,213587.75
+3,40660,Armitage,144768.75
+3,40670,Western/Milwaukee,180834.75
+3,40680,Adams/Wabash,263410.0
+3,40690,Dempster,29816.75
+3,40700,Laramie,43098.5
+3,40710,Chicago/Franklin,219326.75
+3,40720,East 63rd-Cottage Grove,40427.5
+3,40730,Washington/Wells,236456.0
+3,40740,Western-Cermak,40259.5
+3,40750,Harlem-O'Hare,97676.5
+3,40760,Granville,148036.25
+3,40770,Lawrence,120027.5
+3,40780,Central Park,40813.0
+3,40790,Monroe/Dearborn,246698.75
+3,40800,Sedgwick,126992.0
+3,40810,Medical Center,100428.75
+3,40820,Rosemont,213356.0
+3,40830,18th,65181.25
+3,40840,South Boulevard,26143.75
+3,40850,Library,125869.75
+3,40870,Francisco,52279.25
+3,40880,Thorndale,110042.5
+3,40890,O'Hare Airport,362916.5
+3,40900,Howard,203014.75
+3,40910,63rd-Dan Ryan,109153.25
+3,40920,Pulaski-Forest Park,63544.25
+3,40930,Midway Airport,283838.75
+3,40940,Halsted/63rd,23791.5
+3,40960,Pulaski-Orange,167036.0
+3,40970,Cicero-Forest Park,46872.0
+3,40980,Harlem-Forest Park,38574.25
+3,40990,69th,180149.25
+3,41000,Cermak-Chinatown,158629.5
+3,41010,Rockwell,62014.25
+3,41020,Logan Square,246052.75
+3,41030,Polk,100605.25
+3,41040,Kedzie-Cermak,36575.75
+3,41050,Linden,26794.25
+3,41060,Ashland-Orange,53649.5
+3,41070,Kedzie-Lake,52473.0
+3,41080,47th-South Elevated,42752.0
+3,41090,Monroe/State,351506.5
+3,41120,35-Bronzeville-IIT,64833.25
+3,41130,Halsted-Orange,91761.5
+3,41140,King Drive,19905.5
+3,41150,Kedzie-Midway,111800.75
+3,41160,Clinton-Lake,128476.5
+3,41170,Garfield-Dan Ryan,119382.25
+3,41180,Kedzie-Brown,70116.5
+3,41190,Jarvis,58356.75
+3,41200,Argyle,110983.75
+3,41210,Wellington,100521.75
+3,41220,Fullerton,430620.25
+3,41230,47th-Dan Ryan,105730.25
+3,41240,Addison-O'Hare,89092.0
+3,41250,Central-Evanston,24670.5
+3,41260,Austin-Lake,63955.5
+3,41270,43rd,34360.75
+3,41280,Jefferson Park,224518.0
+3,41290,Kimball,139154.5
+3,41300,Loyola,190105.5
+3,41310,Paulina,93567.25
+3,41320,Belmont-North Main,447665.75
+3,41330,Montrose-O'Hare,82711.25
+3,41340,LaSalle,102819.25
+3,41350,Oak Park-Lake,51053.0
+3,41360,California-Lake,35444.25
+3,41380,Bryn Mawr,164390.75
+3,41400,Roosevelt,383550.75
+3,41410,Chicago/Milwaukee,142575.75
+3,41420,Addison-North Main,243064.0
+3,41430,87th,146613.0
+3,41440,Addison-Brown,83757.5
+3,41450,Chicago/State,517178.0
+3,41460,Irving Park-Brown,106049.75
+3,41480,Western-Brown,141059.25
+3,41490,Harrison,153943.75
+3,41500,Montrose-Brown,94628.0
+3,41510,Morgan-Lake,87984.0
+3,41660,Lake/State,696195.0
+3,41670,Conservatory,32049.0
+3,41680,Oakton-Skokie,30120.25
+3,41690,Cermak-McCormick Place,35717.25
+3,41700,Washington/Wabash,64005.5
+4,40010,Austin-Forest Park,63810.0
+4,40020,Harlem-Lake,121115.0
+4,40030,Pulaski-Lake,51968.5
+4,40040,Quincy/Wells,231491.75
+4,40050,Davis,126345.0
+4,40060,Belmont-O'Hare,180132.25
+4,40070,Jackson/Dearborn,240933.5
+4,40080,Sheridan,182846.0
+4,40090,Damen-Brown,87443.25
+4,40100,Morse,162967.25
+4,40120,35th/Archer,99152.75
+4,40130,51st,33865.0
+4,40140,Dempster-Skokie,65038.5
+4,40150,Pulaski-Cermak,37840.25
+4,40160,LaSalle/Van Buren,83867.5
+4,40170,Ashland-Lake,76411.75
+4,40180,Oak Park-Forest Park,57304.25
+4,40190,Sox-35th-Dan Ryan,173740.5
+4,40200,Randolph/Wabash,229654.25
+4,40210,Damen-Cermak,49275.0
+4,40220,Western-Forest Park,53963.25
+4,40230,Cumberland,140983.75
+4,40240,79th,233487.25
+4,40250,Kedzie-Homan-Forest Park,71291.25
+4,40260,State/Lake,335094.5
+4,40270,Main,39859.0
+4,40280,Central-Lake,67321.0
+4,40290,Ashland/63rd,40516.25
+4,40300,Indiana,27708.25
+4,40310,Western-Orange,121126.5
+4,40320,Division/Milwaukee,197901.25
+4,40330,Grand/State,413814.25
+4,40340,Berwyn,116331.0
+4,40350,UIC-Halsted,205342.5
+4,40360,Southport,111794.75
+4,40370,Washington/Dearborn,373040.25
+4,40380,Clark/Lake,602884.75
+4,40390,Forest Park,113156.75
+4,40400,Noyes,29324.25
+4,40420,Cicero-Cermak,42455.0
+4,40430,Clinton-Forest Park,116182.25
+4,40440,California-Cermak,46814.0
+4,40450,95th/Dan Ryan,348595.0
+4,40460,Merchandise Mart,227463.75
+4,40470,Racine,70897.75
+4,40480,Cicero-Lake,45693.25
+4,40490,Grand/Milwaukee,85294.25
+4,40510,Garfield-South Elevated,44712.0
+4,40520,Foster,29955.75
+4,40530,Diversey,178975.25
+4,40540,Wilson,198997.25
+4,40550,Irving Park-O'Hare,142903.5
+4,40560,Jackson/State,354200.0
+4,40570,California/Milwaukee,167621.75
+4,40580,54th/Cermak,68862.0
+4,40590,Damen/Milwaukee,235977.0
+4,40600,Kostner,16602.25
+4,40610,Ridgeland,39845.5
+4,40630,Clark/Division,265943.5
+4,40640,Madison/Wabash,44557.0
+4,40650,North/Clybourn,207863.0
+4,40660,Armitage,133801.0
+4,40670,Western/Milwaukee,181465.25
+4,40680,Adams/Wabash,272836.75
+4,40690,Dempster,29275.0
+4,40700,Laramie,46045.5
+4,40710,Chicago/Franklin,209806.0
+4,40720,East 63rd-Cottage Grove,39104.75
+4,40730,Washington/Wells,224517.25
+4,40740,Western-Cermak,38174.0
+4,40750,Harlem-O'Hare,92874.5
+4,40760,Granville,145232.25
+4,40770,Lawrence,116453.0
+4,40780,Central Park,38751.75
+4,40790,Monroe/Dearborn,238240.5
+4,40800,Sedgwick,119310.75
+4,40810,Medical Center,93813.5
+4,40820,Rosemont,202235.75
+4,40830,18th,63079.5
+4,40840,South Boulevard,25772.5
+4,40850,Library,124090.25
+4,40870,Francisco,50095.25
+4,40880,Thorndale,102341.0
+4,40890,O'Hare Airport,382675.25
+4,40900,Howard,197463.25
+4,40910,63rd-Dan Ryan,103751.25
+4,40920,Pulaski-Forest Park,60157.0
+4,40930,Midway Airport,280928.75
+4,40940,Halsted/63rd,22764.5
+4,40960,Pulaski-Orange,158491.0
+4,40970,Cicero-Forest Park,46000.5
+4,40980,Harlem-Forest Park,38149.5
+4,40990,69th,173998.25
+4,41000,Cermak-Chinatown,153507.0
+4,41010,Rockwell,58992.0
+4,41020,Logan Square,232764.5
+4,41030,Polk,97057.25
+4,41040,Kedzie-Cermak,35635.25
+4,41050,Linden,28869.5
+4,41060,Ashland-Orange,51463.0
+4,41070,Kedzie-Lake,49721.0
+4,41080,47th-South Elevated,40895.5
+4,41090,Monroe/State,342964.25
+4,41120,35-Bronzeville-IIT,64050.0
+4,41130,Halsted-Orange,92194.5
+4,41140,King Drive,19109.5
+4,41150,Kedzie-Midway,108478.75
+4,41160,Clinton-Lake,124612.75
+4,41170,Garfield-Dan Ryan,118020.75
+4,41180,Kedzie-Brown,67699.5
+4,41190,Jarvis,56771.5
+4,41200,Argyle,108076.5
+4,41210,Wellington,95760.25
+4,41220,Fullerton,456624.0
+4,41230,47th-Dan Ryan,102866.0
+4,41240,Addison-O'Hare,86300.0
+4,41250,Central-Evanston,23986.5
+4,41260,Austin-Lake,60336.25
+4,41270,43rd,33567.75
+4,41280,Jefferson Park,217226.25
+4,41290,Kimball,134752.0
+4,41300,Loyola,186659.25
+4,41310,Paulina,88096.75
+4,41320,Belmont-North Main,434156.75
+4,41330,Montrose-O'Hare,79015.25
+4,41340,LaSalle,100905.25
+4,41350,Oak Park-Lake,49197.0
+4,41360,California-Lake,34708.0
+4,41380,Bryn Mawr,159461.75
+4,41400,Roosevelt,379396.5
+4,41410,Chicago/Milwaukee,133970.25
+4,41420,Addison-North Main,322082.0
+4,41430,87th,141850.0
+4,41440,Addison-Brown,77544.75
+4,41450,Chicago/State,513574.75
+4,41460,Irving Park-Brown,100194.25
+4,41480,Western-Brown,135689.5
+4,41490,Harrison,155519.75
+4,41500,Montrose-Brown,90157.75
+4,41510,Morgan-Lake,84678.75
+4,41660,Lake/State,680963.75
+4,41670,Conservatory,31235.75
+4,41680,Oakton-Skokie,30049.75
+4,41690,Cermak-McCormick Place,37205.75
+4,41700,Washington/Wabash,59968.75
+5,40010,Austin-Forest Park,65220.5
+5,40020,Harlem-Lake,125677.75
+5,40030,Pulaski-Lake,55737.0
+5,40040,Quincy/Wells,235561.25
+5,40050,Davis,130786.75
+5,40060,Belmont-O'Hare,183429.75
+5,40070,Jackson/Dearborn,240204.5
+5,40080,Sheridan,189834.75
+5,40090,Damen-Brown,91778.75
+5,40100,Morse,167137.0
+5,40120,35th/Archer,102319.75
+5,40130,51st,35766.75
+5,40140,Dempster-Skokie,62573.75
+5,40150,Pulaski-Cermak,39819.0
+5,40160,LaSalle/Van Buren,84306.0
+5,40170,Ashland-Lake,80021.25
+5,40180,Oak Park-Forest Park,57777.0
+5,40190,Sox-35th-Dan Ryan,189593.5
+5,40200,Randolph/Wabash,238159.25
+5,40210,Damen-Cermak,50904.25
+5,40220,Western-Forest Park,58072.25
+5,40230,Cumberland,150027.5
+5,40240,79th,249138.0
+5,40250,Kedzie-Homan-Forest Park,77344.25
+5,40260,State/Lake,339333.0
+5,40270,Main,41001.25
+5,40280,Central-Lake,71674.25
+5,40290,Ashland/63rd,43338.0
+5,40300,Indiana,30078.75
+5,40310,Western-Orange,127071.75
+5,40320,Division/Milwaukee,205481.5
+5,40330,Grand/State,448657.0
+5,40340,Berwyn,118813.0
+5,40350,UIC-Halsted,128450.0
+5,40360,Southport,115366.25
+5,40370,Washington/Dearborn,391322.5
+5,40380,Clark/Lake,630152.0
+5,40390,Forest Park,116218.25
+5,40400,Noyes,29871.75
+5,40420,Cicero-Cermak,45244.5
+5,40430,Clinton-Forest Park,118967.25
+5,40440,California-Cermak,49247.25
+5,40450,95th/Dan Ryan,368006.0
+5,40460,Merchandise Mart,226196.25
+5,40470,Racine,79760.25
+5,40480,Cicero-Lake,48807.25
+5,40490,Grand/Milwaukee,92501.75
+5,40510,Garfield-South Elevated,47703.0
+5,40520,Foster,31047.5
+5,40530,Diversey,183947.0
+5,40540,Wilson,197019.25
+5,40550,Irving Park-O'Hare,149819.25
+5,40560,Jackson/State,349556.0
+5,40570,California/Milwaukee,171497.25
+5,40580,54th/Cermak,72232.25
+5,40590,Damen/Milwaukee,232993.75
+5,40600,Kostner,17848.75
+5,40610,Ridgeland,41562.25
+5,40630,Clark/Division,284033.75
+5,40640,Madison/Wabash,43315.25
+5,40650,North/Clybourn,220064.75
+5,40660,Armitage,141276.25
+5,40670,Western/Milwaukee,180336.0
+5,40680,Adams/Wabash,274167.0
+5,40690,Dempster,30802.25
+5,40700,Laramie,49015.5
+5,40710,Chicago/Franklin,206890.75
+5,40720,East 63rd-Cottage Grove,40993.75
+5,40730,Washington/Wells,227714.25
+5,40740,Western-Cermak,40100.25
+5,40750,Harlem-O'Hare,97926.5
+5,40760,Granville,135436.25
+5,40770,Lawrence,120194.5
+5,40780,Central Park,40766.75
+5,40790,Monroe/Dearborn,239683.5
+5,40800,Sedgwick,126953.5
+5,40810,Medical Center,87929.5
+5,40820,Rosemont,225271.75
+5,40830,18th,66524.75
+5,40840,South Boulevard,26350.0
+5,40850,Library,122526.5
+5,40870,Francisco,52869.0
+5,40880,Thorndale,108962.0
+5,40890,O'Hare Airport,440762.75
+5,40900,Howard,208159.25
+5,40910,63rd-Dan Ryan,111603.0
+5,40920,Pulaski-Forest Park,63620.0
+5,40930,Midway Airport,298908.25
+5,40940,Halsted/63rd,23236.75
+5,40960,Pulaski-Orange,166664.5
+5,40970,Cicero-Forest Park,49454.0
+5,40980,Harlem-Forest Park,40007.75
+5,40990,69th,186592.25
+5,41000,Cermak-Chinatown,166577.0
+5,41010,Rockwell,60765.25
+5,41020,Logan Square,239203.5
+5,41030,Polk,93869.5
+5,41040,Kedzie-Cermak,37634.0
+5,41050,Linden,35546.25
+5,41060,Ashland-Orange,54161.75
+5,41070,Kedzie-Lake,55884.5
+5,41080,47th-South Elevated,43051.25
+5,41090,Monroe/State,346998.75
+5,41120,35-Bronzeville-IIT,60365.25
+5,41130,Halsted-Orange,89172.75
+5,41140,King Drive,20869.5
+5,41150,Kedzie-Midway,110339.75
+5,41160,Clinton-Lake,125939.5
+5,41170,Garfield-Dan Ryan,126717.5
+5,41180,Kedzie-Brown,70257.0
+5,41190,Jarvis,58763.75
+5,41200,Argyle,111126.25
+5,41210,Wellington,96993.75
+5,41220,Fullerton,471830.5
+5,41230,47th-Dan Ryan,111021.0
+5,41240,Addison-O'Hare,97769.5
+5,41250,Central-Evanston,25093.75
+5,41260,Austin-Lake,63578.25
+5,41270,43rd,36015.5
+5,41280,Jefferson Park,227450.5
+5,41290,Kimball,136502.25
+5,41300,Loyola,167356.25
+5,41310,Paulina,91552.0
+5,41320,Belmont-North Main,452734.5
+5,41330,Montrose-O'Hare,76043.0
+5,41340,LaSalle,96106.75
+5,41350,Oak Park-Lake,51685.5
+5,41360,California-Lake,36577.0
+5,41380,Bryn Mawr,165419.25
+5,41400,Roosevelt,399537.5
+5,41410,Chicago/Milwaukee,140739.0
+5,41420,Addison-North Main,369424.25
+5,41430,87th,151653.5
+5,41440,Addison-Brown,82062.25
+5,41450,Chicago/State,522879.25
+5,41460,Irving Park-Brown,104942.5
+5,41480,Western-Brown,141327.5
+5,41490,Harrison,142432.0
+5,41500,Montrose-Brown,92936.75
+5,41510,Morgan-Lake,90664.25
+5,41660,Lake/State,706431.5
+5,41670,Conservatory,35084.75
+5,41680,Oakton-Skokie,27565.75
+5,41690,Cermak-McCormick Place,39717.25
+5,41700,Washington/Wabash,67785.5
+6,40010,Austin-Forest Park,65428.25
+6,40020,Harlem-Lake,133370.0
+6,40030,Pulaski-Lake,54806.25
+6,40040,Quincy/Wells,245463.25
+6,40050,Davis,132944.5
+6,40060,Belmont-O'Hare,184146.0
+6,40070,Jackson/Dearborn,239882.25
+6,40080,Sheridan,196347.0
+6,40090,Damen-Brown,91585.75
+6,40100,Morse,170479.0
+6,40120,35th/Archer,101440.5
+6,40130,51st,35569.0
+6,40140,Dempster-Skokie,58334.25
+6,40150,Pulaski-Cermak,39364.0
+6,40160,LaSalle/Van Buren,88278.5
+6,40170,Ashland-Lake,80172.25
+6,40180,Oak Park-Forest Park,59629.5
+6,40190,Sox-35th-Dan Ryan,186250.25
+6,40200,Randolph/Wabash,250371.0
+6,40210,Damen-Cermak,49608.5
+6,40220,Western-Forest Park,55196.5
+6,40230,Cumberland,160161.5
+6,40240,79th,245861.0
+6,40250,Kedzie-Homan-Forest Park,75341.0
+6,40260,State/Lake,351328.0
+6,40270,Main,43357.25
+6,40280,Central-Lake,72359.0
+6,40290,Ashland/63rd,43266.0
+6,40300,Indiana,29930.75
+6,40310,Western-Orange,130177.25
+6,40320,Division/Milwaukee,204166.75
+6,40330,Grand/State,474603.5
+6,40340,Berwyn,123763.5
+6,40350,UIC-Halsted,116041.25
+6,40360,Southport,120713.5
+6,40370,Washington/Dearborn,415104.0
+6,40380,Clark/Lake,660837.5
+6,40390,Forest Park,119907.0
+6,40400,Noyes,28843.0
+6,40420,Cicero-Cermak,46508.0
+6,40430,Clinton-Forest Park,120033.0
+6,40440,California-Cermak,49288.0
+6,40450,95th/Dan Ryan,359426.5
+6,40460,Merchandise Mart,245869.75
+6,40470,Racine,73756.5
+6,40480,Cicero-Lake,48290.75
+6,40490,Grand/Milwaukee,96989.75
+6,40510,Garfield-South Elevated,48353.5
+6,40520,Foster,30928.5
+6,40530,Diversey,194314.5
+6,40540,Wilson,203144.5
+6,40550,Irving Park-O'Hare,150899.25
+6,40560,Jackson/State,321135.0
+6,40570,California/Milwaukee,174487.75
+6,40580,54th/Cermak,75372.0
+6,40590,Damen/Milwaukee,241767.5
+6,40600,Kostner,17362.5
+6,40610,Ridgeland,44457.0
+6,40630,Clark/Division,293499.75
+6,40640,Madison/Wabash,46140.75
+6,40650,North/Clybourn,218159.5
+6,40660,Armitage,141998.5
+6,40670,Western/Milwaukee,183108.25
+6,40680,Adams/Wabash,269735.75
+6,40690,Dempster,32407.0
+6,40700,Laramie,43983.25
+6,40710,Chicago/Franklin,215603.25
+6,40720,East 63rd-Cottage Grove,41219.25
+6,40730,Washington/Wells,244488.0
+6,40740,Western-Cermak,39743.25
+6,40750,Harlem-O'Hare,99290.0
+6,40760,Granville,134218.75
+6,40770,Lawrence,117578.25
+6,40780,Central Park,41362.75
+6,40790,Monroe/Dearborn,246074.25
+6,40800,Sedgwick,144241.5
+6,40810,Medical Center,86590.25
+6,40820,Rosemont,236966.0
+6,40830,18th,67311.75
+6,40840,South Boulevard,27407.75
+6,40850,Library,128291.25
+6,40870,Francisco,53935.0
+6,40880,Thorndale,104770.0
+6,40890,O'Hare Airport,438429.5
+6,40900,Howard,213939.25
+6,40910,63rd-Dan Ryan,106841.75
+6,40920,Pulaski-Forest Park,63864.0
+6,40930,Midway Airport,308042.75
+6,40940,Halsted/63rd,22792.5
+6,40960,Pulaski-Orange,165917.0
+6,40970,Cicero-Forest Park,49162.75
+6,40980,Harlem-Forest Park,40477.0
+6,40990,69th,182867.5
+6,41000,Cermak-Chinatown,164602.0
+6,41010,Rockwell,61668.0
+6,41020,Logan Square,243916.0
+6,41030,Polk,98207.5
+6,41040,Kedzie-Cermak,37115.5
+6,41050,Linden,39264.0
+6,41060,Ashland-Orange,55033.5
+6,41070,Kedzie-Lake,52014.0
+6,41080,47th-South Elevated,42971.75
+6,41090,Monroe/State,362204.5
+6,41120,35-Bronzeville-IIT,58849.0
+6,41130,Halsted-Orange,83380.75
+6,41140,King Drive,21181.25
+6,41150,Kedzie-Midway,107881.25
+6,41160,Clinton-Lake,131885.0
+6,41170,Garfield-Dan Ryan,123754.0
+6,41180,Kedzie-Brown,69297.75
+6,41190,Jarvis,59744.75
+6,41200,Argyle,111539.5
+6,41210,Wellington,104212.25
+6,41220,Fullerton,393989.25
+6,41230,47th-Dan Ryan,108463.75
+6,41240,Addison-O'Hare,96101.75
+6,41250,Central-Evanston,28072.0
+6,41260,Austin-Lake,66946.0
+6,41270,43rd,36364.5
+6,41280,Jefferson Park,228661.5
+6,41290,Kimball,134978.25
+6,41300,Loyola,170192.75
+6,41310,Paulina,95079.0
+6,41320,Belmont-North Main,477860.25
+6,41330,Montrose-O'Hare,79918.5
+6,41340,LaSalle,92516.25
+6,41350,Oak Park-Lake,55755.0
+6,41360,California-Lake,36810.25
+6,41380,Bryn Mawr,169737.0
+6,41400,Roosevelt,418307.5
+6,41410,Chicago/Milwaukee,139488.5
+6,41420,Addison-North Main,398978.25
+6,41430,87th,150966.25
+6,41440,Addison-Brown,79831.75
+6,41450,Chicago/State,549580.5
+6,41460,Irving Park-Brown,113279.5
+6,41480,Western-Brown,142898.25
+6,41490,Harrison,130769.25
+6,41500,Montrose-Brown,93528.75
+6,41510,Morgan-Lake,100870.75
+6,41660,Lake/State,747187.0
+6,41670,Conservatory,32726.0
+6,41680,Oakton-Skokie,25015.75
+6,41690,Cermak-McCormick Place,42568.5
+6,41700,Washington/Wabash,70214.75
+7,40010,Austin-Forest Park,64917.25
+7,40020,Harlem-Lake,135738.0
+7,40030,Pulaski-Lake,54946.25
+7,40040,Quincy/Wells,241766.0
+7,40050,Davis,134161.0
+7,40060,Belmont-O'Hare,183415.75
+7,40070,Jackson/Dearborn,242410.0
+7,40080,Sheridan,187084.75
+7,40090,Damen-Brown,87591.25
+7,40100,Morse,168376.5
+7,40120,35th/Archer,100339.25
+7,40130,51st,36460.75
+7,40140,Dempster-Skokie,60672.5
+7,40150,Pulaski-Cermak,39832.5
+7,40160,LaSalle/Van Buren,84222.75
+7,40170,Ashland-Lake,95661.25
+7,40180,Oak Park-Forest Park,58950.75
+7,40190,Sox-35th-Dan Ryan,195081.75
+7,40200,Randolph/Wabash,268578.0
+7,40210,Damen-Cermak,50010.0
+7,40220,Western-Forest Park,53238.5
+7,40230,Cumberland,161914.5
+7,40240,79th,250350.0
+7,40250,Kedzie-Homan-Forest Park,75081.5
+7,40260,State/Lake,374069.25
+7,40270,Main,42566.5
+7,40280,Central-Lake,73355.0
+7,40290,Ashland/63rd,44165.25
+7,40300,Indiana,31189.5
+7,40310,Western-Orange,133834.75
+7,40320,Division/Milwaukee,200069.25
+7,40330,Grand/State,520312.75
+7,40340,Berwyn,120262.5
+7,40350,UIC-Halsted,118911.25
+7,40360,Southport,119806.5
+7,40370,Washington/Dearborn,417489.5
+7,40380,Clark/Lake,655104.5
+7,40390,Forest Park,120678.0
+7,40400,Noyes,29367.5
+7,40420,Cicero-Cermak,47721.25
+7,40430,Clinton-Forest Park,118664.25
+7,40440,California-Cermak,49437.75
+7,40450,95th/Dan Ryan,361331.5
+7,40460,Merchandise Mart,227451.75
+7,40470,Racine,60424.5
+7,40480,Cicero-Lake,47763.25
+7,40490,Grand/Milwaukee,99185.25
+7,40510,Garfield-South Elevated,51829.5
+7,40520,Foster,31127.25
+7,40530,Diversey,181899.25
+7,40540,Wilson,192493.25
+7,40550,Irving Park-O'Hare,141003.25
+7,40560,Jackson/State,318217.0
+7,40570,California/Milwaukee,176003.5
+7,40580,54th/Cermak,77282.0
+7,40590,Damen/Milwaukee,249457.0
+7,40600,Kostner,17462.25
+7,40610,Ridgeland,44554.5
+7,40630,Clark/Division,286145.0
+7,40640,Madison/Wabash,49139.5
+7,40650,North/Clybourn,214766.0
+7,40660,Armitage,129284.5
+7,40670,Western/Milwaukee,174671.75
+7,40680,Adams/Wabash,299872.75
+7,40690,Dempster,32676.25
+7,40700,Laramie,43765.0
+7,40710,Chicago/Franklin,213282.0
+7,40720,East 63rd-Cottage Grove,42869.75
+7,40730,Washington/Wells,228743.5
+7,40740,Western-Cermak,39724.0
+7,40750,Harlem-O'Hare,96331.5
+7,40760,Granville,136301.5
+7,40770,Lawrence,121315.5
+7,40780,Central Park,42481.75
+7,40790,Monroe/Dearborn,246245.75
+7,40800,Sedgwick,136281.25
+7,40810,Medical Center,82866.75
+7,40820,Rosemont,246781.75
+7,40830,18th,65582.5
+7,40840,South Boulevard,26992.5
+7,40850,Library,126982.0
+7,40870,Francisco,52603.0
+7,40880,Thorndale,98399.75
+7,40890,O'Hare Airport,462042.0
+7,40900,Howard,215439.5
+7,40910,63rd-Dan Ryan,106610.75
+7,40920,Pulaski-Forest Park,66046.5
+7,40930,Midway Airport,312408.0
+7,40940,Halsted/63rd,22989.75
+7,40960,Pulaski-Orange,160144.75
+7,40970,Cicero-Forest Park,48277.0
+7,40980,Harlem-Forest Park,40692.25
+7,40990,69th,186837.25
+7,41000,Cermak-Chinatown,176249.75
+7,41010,Rockwell,59299.0
+7,41020,Logan Square,240584.0
+7,41030,Polk,97397.0
+7,41040,Kedzie-Cermak,37393.75
+7,41050,Linden,42393.5
+7,41060,Ashland-Orange,53541.5
+7,41070,Kedzie-Lake,48136.75
+7,41080,47th-South Elevated,45200.75
+7,41090,Monroe/State,367647.0
+7,41120,35-Bronzeville-IIT,60318.25
+7,41130,Halsted-Orange,82371.25
+7,41140,King Drive,21340.25
+7,41150,Kedzie-Midway,101603.5
+7,41160,Clinton-Lake,129903.0
+7,41170,Garfield-Dan Ryan,125963.25
+7,41180,Kedzie-Brown,67518.5
+7,41190,Jarvis,59552.0
+7,41200,Argyle,112648.75
+7,41210,Wellington,95706.0
+7,41220,Fullerton,357475.25
+7,41230,47th-Dan Ryan,107686.5
+7,41240,Addison-O'Hare,98029.0
+7,41250,Central-Evanston,28035.5
+7,41260,Austin-Lake,67410.0
+7,41270,43rd,37905.0
+7,41280,Jefferson Park,228751.0
+7,41290,Kimball,131135.75
+7,41300,Loyola,172148.0
+7,41310,Paulina,92535.5
+7,41320,Belmont-North Main,444882.5
+7,41330,Montrose-O'Hare,84032.0
+7,41340,LaSalle,93704.0
+7,41350,Oak Park-Lake,55988.75
+7,41360,California-Lake,37695.25
+7,41380,Bryn Mawr,168872.25
+7,41400,Roosevelt,441700.5
+7,41410,Chicago/Milwaukee,134820.5
+7,41420,Addison-North Main,417886.0
+7,41430,87th,154328.75
+7,41440,Addison-Brown,72533.0
+7,41450,Chicago/State,578347.75
+7,41460,Irving Park-Brown,102246.5
+7,41480,Western-Brown,141999.0
+7,41490,Harrison,137476.5
+7,41500,Montrose-Brown,90625.5
+7,41510,Morgan-Lake,98453.25
+7,41660,Lake/State,761192.25
+7,41670,Conservatory,34024.0
+7,41680,Oakton-Skokie,25724.5
+7,41690,Cermak-McCormick Place,43251.75
+7,41700,Washington/Wabash,74485.0
+8,40010,Austin-Forest Park,67027.25
+8,40020,Harlem-Lake,138053.75
+8,40030,Pulaski-Lake,54323.0
+8,40040,Quincy/Wells,248179.0
+8,40050,Davis,130472.0
+8,40060,Belmont-O'Hare,178362.5
+8,40070,Jackson/Dearborn,246569.75
+8,40080,Sheridan,189855.25
+8,40090,Damen-Brown,89191.5
+8,40100,Morse,170713.0
+8,40120,35th/Archer,102212.0
+8,40130,51st,37364.0
+8,40140,Dempster-Skokie,61429.75
+8,40150,Pulaski-Cermak,40117.5
+8,40160,LaSalle/Van Buren,86658.0
+8,40170,Ashland-Lake,82269.0
+8,40180,Oak Park-Forest Park,61103.5
+8,40190,Sox-35th-Dan Ryan,200568.75
+8,40200,Randolph/Wabash,253996.0
+8,40210,Damen-Cermak,51077.25
+8,40220,Western-Forest Park,53964.5
+8,40230,Cumberland,163565.5
+8,40240,79th,250523.75
+8,40250,Kedzie-Homan-Forest Park,75031.75
+8,40260,State/Lake,366137.5
+8,40270,Main,42247.0
+8,40280,Central-Lake,72238.75
+8,40290,Ashland/63rd,44982.5
+8,40300,Indiana,30623.5
+8,40310,Western-Orange,135256.0
+8,40320,Division/Milwaukee,203923.25
+8,40330,Grand/State,505490.5
+8,40340,Berwyn,122135.0
+8,40350,UIC-Halsted,152195.0
+8,40360,Southport,120353.75
+8,40370,Washington/Dearborn,417484.25
+8,40380,Clark/Lake,669797.0
+8,40390,Forest Park,121870.25
+8,40400,Noyes,25539.75
+8,40420,Cicero-Cermak,47250.75
+8,40430,Clinton-Forest Park,123575.0
+8,40440,California-Cermak,50188.0
+8,40450,95th/Dan Ryan,364062.0
+8,40460,Merchandise Mart,238935.25
+8,40470,Racine,66999.25
+8,40480,Cicero-Lake,48014.0
+8,40490,Grand/Milwaukee,97538.0
+8,40510,Garfield-South Elevated,51008.5
+8,40520,Foster,29159.25
+8,40530,Diversey,186277.0
+8,40540,Wilson,197282.5
+8,40550,Irving Park-O'Hare,145914.5
+8,40560,Jackson/State,313956.75
+8,40570,California/Milwaukee,178497.5
+8,40580,54th/Cermak,77678.75
+8,40590,Damen/Milwaukee,241820.25
+8,40600,Kostner,17303.0
+8,40610,Ridgeland,44963.0
+8,40630,Clark/Division,291953.75
+8,40640,Madison/Wabash,47887.25
+8,40650,North/Clybourn,219814.0
+8,40660,Armitage,129557.0
+8,40670,Western/Milwaukee,180523.5
+8,40680,Adams/Wabash,277947.5
+8,40690,Dempster,31792.5
+8,40700,Laramie,44182.0
+8,40710,Chicago/Franklin,217940.0
+8,40720,East 63rd-Cottage Grove,42597.0
+8,40730,Washington/Wells,242278.25
+8,40740,Western-Cermak,39978.25
+8,40750,Harlem-O'Hare,99302.0
+8,40760,Granville,139320.0
+8,40770,Lawrence,118878.25
+8,40780,Central Park,42097.5
+8,40790,Monroe/Dearborn,251086.0
+8,40800,Sedgwick,137785.25
+8,40810,Medical Center,84625.25
+8,40820,Rosemont,245142.75
+8,40830,18th,64936.75
+8,40840,South Boulevard,26987.75
+8,40850,Library,127427.5
+8,40870,Francisco,53554.75
+8,40880,Thorndale,100871.5
+8,40890,O'Hare Airport,461473.25
+8,40900,Howard,216539.25
+8,40910,63rd-Dan Ryan,108518.75
+8,40920,Pulaski-Forest Park,65786.25
+8,40930,Midway Airport,314811.25
+8,40940,Halsted/63rd,23717.75
+8,40960,Pulaski-Orange,162615.75
+8,40970,Cicero-Forest Park,49462.75
+8,40980,Harlem-Forest Park,42788.75
+8,40990,69th,186796.0
+8,41000,Cermak-Chinatown,171957.75
+8,41010,Rockwell,57589.0
+8,41020,Logan Square,252344.0
+8,41030,Polk,101634.25
+8,41040,Kedzie-Cermak,37898.5
+8,41050,Linden,41537.5
+8,41060,Ashland-Orange,54639.0
+8,41070,Kedzie-Lake,49176.5
+8,41080,47th-South Elevated,46172.5
+8,41090,Monroe/State,372277.25
+8,41120,35-Bronzeville-IIT,66122.0
+8,41130,Halsted-Orange,85393.25
+8,41140,King Drive,21304.75
+8,41150,Kedzie-Midway,103433.75
+8,41160,Clinton-Lake,133862.25
+8,41170,Garfield-Dan Ryan,123089.0
+8,41180,Kedzie-Brown,67985.75
+8,41190,Jarvis,60241.0
+8,41200,Argyle,114231.75
+8,41210,Wellington,98746.5
+8,41220,Fullerton,356017.5
+8,41230,47th-Dan Ryan,104734.0
+8,41240,Addison-O'Hare,99507.5
+8,41250,Central-Evanston,28556.25
+8,41260,Austin-Lake,67933.25
+8,41270,43rd,38761.25
+8,41280,Jefferson Park,234271.0
+8,41290,Kimball,133258.0
+8,41300,Loyola,181678.75
+8,41310,Paulina,94159.75
+8,41320,Belmont-North Main,447144.0
+8,41330,Montrose-O'Hare,85470.0
+8,41340,LaSalle,95216.25
+8,41350,Oak Park-Lake,56584.25
+8,41360,California-Lake,38729.0
+8,41380,Bryn Mawr,169166.0
+8,41400,Roosevelt,428932.5
+8,41410,Chicago/Milwaukee,136544.25
+8,41420,Addison-North Main,424069.25
+8,41430,87th,152632.0
+8,41440,Addison-Brown,74761.25
+8,41450,Chicago/State,580784.0
+8,41460,Irving Park-Brown,104287.0
+8,41480,Western-Brown,141979.5
+8,41490,Harrison,134537.5
+8,41500,Montrose-Brown,92039.25
+8,41510,Morgan-Lake,100188.5
+8,41660,Lake/State,763954.5
+8,41670,Conservatory,33001.25
+8,41680,Oakton-Skokie,26506.25
+8,41690,Cermak-McCormick Place,41161.0
+8,41700,Washington/Wabash,78750.25
+9,40010,Austin-Forest Park,69091.5
+9,40020,Harlem-Lake,131985.5
+9,40030,Pulaski-Lake,55652.0
+9,40040,Quincy/Wells,230828.25
+9,40050,Davis,126734.75
+9,40060,Belmont-O'Hare,169826.25
+9,40070,Jackson/Dearborn,248248.0
+9,40080,Sheridan,196605.25
+9,40090,Damen-Brown,92337.25
+9,40100,Morse,170937.0
+9,40120,35th/Archer,107397.25
+9,40130,51st,37542.25
+9,40140,Dempster-Skokie,58300.0
+9,40150,Pulaski-Cermak,41002.75
+9,40160,LaSalle/Van Buren,82824.5
+9,40170,Ashland-Lake,89036.0
+9,40180,Oak Park-Forest Park,59879.0
+9,40190,Sox-35th-Dan Ryan,193862.75
+9,40200,Randolph/Wabash,176380.25
+9,40210,Damen-Cermak,54677.25
+9,40220,Western-Forest Park,61733.75
+9,40230,Cumberland,155328.5
+9,40240,79th,253950.5
+9,40250,Kedzie-Homan-Forest Park,78960.5
+9,40260,State/Lake,386959.0
+9,40270,Main,42107.75
+9,40280,Central-Lake,73352.75
+9,40290,Ashland/63rd,43855.5
+9,40300,Indiana,31206.25
+9,40310,Western-Orange,139854.5
+9,40320,Division/Milwaukee,206799.0
+9,40330,Grand/State,443938.5
+9,40340,Berwyn,123531.5
+9,40350,UIC-Halsted,241841.75
+9,40360,Southport,122506.0
+9,40370,Washington/Dearborn,395052.0
+9,40380,Clark/Lake,632770.5
+9,40390,Forest Park,120106.0
+9,40400,Noyes,27386.25
+9,40420,Cicero-Cermak,46181.75
+9,40430,Clinton-Forest Park,119690.25
+9,40440,California-Cermak,66841.0
+9,40450,95th/Dan Ryan,376912.75
+9,40460,Merchandise Mart,225460.5
+9,40470,Racine,79700.0
+9,40480,Cicero-Lake,49310.75
+9,40490,Grand/Milwaukee,90382.5
+9,40510,Garfield-South Elevated,47178.75
+9,40520,Foster,28166.5
+9,40530,Diversey,183880.75
+9,40540,Wilson,220348.5
+9,40550,Irving Park-O'Hare,146394.5
+9,40560,Jackson/State,358997.25
+9,40570,California/Milwaukee,149792.25
+9,40580,54th/Cermak,76626.0
+9,40590,Damen/Milwaukee,235095.5
+9,40600,Kostner,18264.5
+9,40610,Ridgeland,43240.5
+9,40630,Clark/Division,284230.75
+9,40640,Madison/Wabash,45911.5
+9,40650,North/Clybourn,219329.25
+9,40660,Armitage,138808.25
+9,40670,Western/Milwaukee,187646.75
+9,40680,Adams/Wabash,267850.0
+9,40690,Dempster,30671.25
+9,40700,Laramie,45656.5
+9,40710,Chicago/Franklin,212665.75
+9,40720,East 63rd-Cottage Grove,40452.5
+9,40730,Washington/Wells,227628.5
+9,40740,Western-Cermak,41861.5
+9,40750,Harlem-O'Hare,97476.5
+9,40760,Granville,155783.5
+9,40770,Lawrence,121420.75
+9,40780,Central Park,43911.75
+9,40790,Monroe/Dearborn,239248.75
+9,40800,Sedgwick,126166.0
+9,40810,Medical Center,103505.25
+9,40820,Rosemont,230364.75
+9,40830,18th,68050.0
+9,40840,South Boulevard,26099.25
+9,40850,Library,135838.75
+9,40870,Francisco,53676.75
+9,40880,Thorndale,110095.0
+9,40890,O'Hare Airport,439335.0
+9,40900,Howard,214386.25
+9,40910,63rd-Dan Ryan,117391.75
+9,40920,Pulaski-Forest Park,66299.5
+9,40930,Midway Airport,311922.25
+9,40940,Halsted/63rd,25735.0
+9,40960,Pulaski-Orange,177610.5
+9,40970,Cicero-Forest Park,50856.0
+9,40980,Harlem-Forest Park,41921.75
+9,40990,69th,190122.0
+9,41000,Cermak-Chinatown,176393.25
+9,41010,Rockwell,54165.25
+9,41020,Logan Square,254174.0
+9,41030,Polk,105219.5
+9,41040,Kedzie-Cermak,46587.5
+9,41050,Linden,35637.25
+9,41060,Ashland-Orange,56413.25
+9,41070,Kedzie-Lake,55702.0
+9,41080,47th-South Elevated,44288.25
+9,41090,Monroe/State,354659.5
+9,41120,35-Bronzeville-IIT,73250.75
+9,41130,Halsted-Orange,96375.0
+9,41140,King Drive,21043.75
+9,41150,Kedzie-Midway,109015.75
+9,41160,Clinton-Lake,128829.0
+9,41170,Garfield-Dan Ryan,126813.25
+9,41180,Kedzie-Brown,70514.0
+9,41190,Jarvis,60707.25
+9,41200,Argyle,113834.0
+9,41210,Wellington,98723.75
+9,41220,Fullerton,493976.0
+9,41230,47th-Dan Ryan,106522.25
+9,41240,Addison-O'Hare,104789.75
+9,41250,Central-Evanston,31643.25
+9,41260,Austin-Lake,65758.0
+9,41270,43rd,37077.75
+9,41280,Jefferson Park,232441.5
+9,41290,Kimball,142509.5
+9,41300,Loyola,218161.25
+9,41310,Paulina,91291.25
+9,41320,Belmont-North Main,441390.5
+9,41330,Montrose-O'Hare,87652.0
+9,41340,LaSalle,105757.25
+9,41350,Oak Park-Lake,52815.0
+9,41360,California-Lake,38144.25
+9,41380,Bryn Mawr,169555.5
+9,41400,Roosevelt,418310.75
+9,41410,Chicago/Milwaukee,136879.5
+9,41420,Addison-North Main,387418.5
+9,41430,87th,152907.25
+9,41440,Addison-Brown,81509.0
+9,41450,Chicago/State,558890.5
+9,41460,Irving Park-Brown,104364.0
+9,41480,Western-Brown,141571.25
+9,41490,Harrison,166086.75
+9,41500,Montrose-Brown,90783.75
+9,41510,Morgan-Lake,95960.75
+9,41660,Lake/State,742494.5
+9,41670,Conservatory,34192.25
+9,41680,Oakton-Skokie,26752.25
+9,41690,Cermak-McCormick Place,44719.25
+9,41700,Washington/Wabash,131542.75
+10,40010,Austin-Forest Park,72297.0
+10,40020,Harlem-Lake,137350.25
+10,40030,Pulaski-Lake,58227.0
+10,40040,Quincy/Wells,253276.5
+10,40050,Davis,137890.75
+10,40060,Belmont-O'Hare,189929.75
+10,40070,Jackson/Dearborn,276197.0
+10,40080,Sheridan,209472.5
+10,40090,Damen-Brown,98683.5
+10,40100,Morse,176561.5
+10,40120,35th/Archer,112727.0
+10,40130,51st,40609.75
+10,40140,Dempster-Skokie,58730.25
+10,40150,Pulaski-Cermak,42717.75
+10,40160,LaSalle/Van Buren,90833.25
+10,40170,Ashland-Lake,88302.25
+10,40180,Oak Park-Forest Park,63195.75
+10,40190,Sox-35th-Dan Ryan,173387.75
+10,40200,Randolph/Wabash,185811.25
+10,40210,Damen-Cermak,57824.75
+10,40220,Western-Forest Park,64240.25
+10,40230,Cumberland,161246.75
+10,40240,79th,266367.5
+10,40250,Kedzie-Homan-Forest Park,80245.5
+10,40260,State/Lake,408462.25
+10,40270,Main,44601.0
+10,40280,Central-Lake,77088.0
+10,40290,Ashland/63rd,45307.0
+10,40300,Indiana,33274.75
+10,40310,Western-Orange,147604.75
+10,40320,Division/Milwaukee,226754.0
+10,40330,Grand/State,465443.75
+10,40340,Berwyn,130837.5
+10,40350,UIC-Halsted,261776.75
+10,40360,Southport,127736.75
+10,40370,Washington/Dearborn,427900.5
+10,40380,Clark/Lake,684886.25
+10,40390,Forest Park,125161.0
+10,40400,Noyes,34151.5
+10,40420,Cicero-Cermak,48328.5
+10,40430,Clinton-Forest Park,129969.5
+10,40440,California-Cermak,53419.25
+10,40450,95th/Dan Ryan,392469.5
+10,40460,Merchandise Mart,253423.25
+10,40470,Racine,87108.75
+10,40480,Cicero-Lake,51274.25
+10,40490,Grand/Milwaukee,97121.5
+10,40510,Garfield-South Elevated,46412.25
+10,40520,Foster,34177.5
+10,40530,Diversey,200367.5
+10,40540,Wilson,231771.75
+10,40550,Irving Park-O'Hare,154890.75
+10,40560,Jackson/State,398975.75
+10,40570,California/Milwaukee,170511.25
+10,40580,54th/Cermak,78653.0
+10,40590,Damen/Milwaukee,228700.75
+10,40600,Kostner,19068.25
+10,40610,Ridgeland,45914.5
+10,40630,Clark/Division,300213.0
+10,40640,Madison/Wabash,49009.5
+10,40650,North/Clybourn,231930.75
+10,40660,Armitage,155701.75
+10,40670,Western/Milwaukee,201526.5
+10,40680,Adams/Wabash,299543.5
+10,40690,Dempster,32269.5
+10,40700,Laramie,47738.25
+10,40710,Chicago/Franklin,237794.75
+10,40720,East 63rd-Cottage Grove,41977.75
+10,40730,Washington/Wells,252159.75
+10,40740,Western-Cermak,43576.5
+10,40750,Harlem-O'Hare,106578.25
+10,40760,Granville,164794.0
+10,40770,Lawrence,133558.25
+10,40780,Central Park,45500.25
+10,40790,Monroe/Dearborn,263841.5
+10,40800,Sedgwick,141699.75
+10,40810,Medical Center,113252.75
+10,40820,Rosemont,241048.5
+10,40830,18th,73429.75
+10,40840,South Boulevard,27397.0
+10,40850,Library,146523.25
+10,40870,Francisco,56065.0
+10,40880,Thorndale,117112.25
+10,40890,O'Hare Airport,461082.0
+10,40900,Howard,224231.75
+10,40910,63rd-Dan Ryan,121740.0
+10,40920,Pulaski-Forest Park,69077.75
+10,40930,Midway Airport,325151.5
+10,40940,Halsted/63rd,26081.0
+10,40960,Pulaski-Orange,186368.25
+10,40970,Cicero-Forest Park,53374.25
+10,40980,Harlem-Forest Park,44510.5
+10,40990,69th,201351.75
+10,41000,Cermak-Chinatown,187700.25
+10,41010,Rockwell,63634.5
+10,41020,Logan Square,264553.5
+10,41030,Polk,111840.5
+10,41040,Kedzie-Cermak,40154.0
+10,41050,Linden,35290.25
+10,41060,Ashland-Orange,59687.0
+10,41070,Kedzie-Lake,58460.25
+10,41080,47th-South Elevated,45770.75
+10,41090,Monroe/State,382812.75
+10,41120,35-Bronzeville-IIT,76584.25
+10,41130,Halsted-Orange,105246.5
+10,41140,King Drive,21359.75
+10,41150,Kedzie-Midway,114492.75
+10,41160,Clinton-Lake,140267.75
+10,41170,Garfield-Dan Ryan,134201.75
+10,41180,Kedzie-Brown,73253.25
+10,41190,Jarvis,61519.0
+10,41200,Argyle,119014.25
+10,41210,Wellington,106994.75
+10,41220,Fullerton,532805.25
+10,41230,47th-Dan Ryan,117024.25
+10,41240,Addison-O'Hare,106983.75
+10,41250,Central-Evanston,34752.0
+10,41260,Austin-Lake,69049.25
+10,41270,43rd,38713.25
+10,41280,Jefferson Park,230342.5
+10,41290,Kimball,148262.75
+10,41300,Loyola,218129.25
+10,41310,Paulina,97817.0
+10,41320,Belmont-North Main,494271.0
+10,41330,Montrose-O'Hare,96251.75
+10,41340,LaSalle,117242.0
+10,41350,Oak Park-Lake,55725.5
+10,41360,California-Lake,39031.25
+10,41380,Bryn Mawr,176989.0
+10,41400,Roosevelt,438028.5
+10,41410,Chicago/Milwaukee,147523.75
+10,41420,Addison-North Main,326698.0
+10,41430,87th,161030.25
+10,41440,Addison-Brown,88147.75
+10,41450,Chicago/State,586129.25
+10,41460,Irving Park-Brown,111417.25
+10,41480,Western-Brown,148982.5
+10,41490,Harrison,184916.0
+10,41500,Montrose-Brown,97499.75
+10,41510,Morgan-Lake,101527.75
+10,41660,Lake/State,777649.25
+10,41670,Conservatory,35049.0
+10,41680,Oakton-Skokie,28245.25
+10,41690,Cermak-McCormick Place,55410.5
+10,41700,Washington/Wabash,138377.0
+11,40010,Austin-Forest Park,50965.5
+11,40020,Harlem-Lake,98821.5
+11,40030,Pulaski-Lake,42498.5
+11,40040,Quincy/Wells,173257.5
+11,40050,Davis,97663.75
+11,40060,Belmont-O'Hare,143401.0
+11,40070,Jackson/Dearborn,186617.25
+11,40080,Sheridan,145628.0
+11,40090,Damen-Brown,69464.5
+11,40100,Morse,129015.5
+11,40120,35th/Archer,79997.0
+11,40130,51st,26761.25
+11,40140,Dempster-Skokie,48098.25
+11,40150,Pulaski-Cermak,31315.0
+11,40160,LaSalle/Van Buren,63995.0
+11,40170,Ashland-Lake,61500.25
+11,40180,Oak Park-Forest Park,44310.0
+11,40190,Sox-35th-Dan Ryan,119704.75
+11,40200,Randolph/Wabash,171421.0
+11,40210,Damen-Cermak,40918.25
+11,40220,Western-Forest Park,44710.5
+11,40230,Cumberland,109659.5
+11,40240,79th,196230.25
+11,40250,Kedzie-Homan-Forest Park,58221.5
+11,40260,State/Lake,278953.75
+11,40270,Main,31715.75
+11,40280,Central-Lake,56223.5
+11,40290,Ashland/63rd,33692.25
+11,40300,Indiana,23095.75
+11,40310,Western-Orange,106320.25
+11,40320,Division/Milwaukee,167981.75
+11,40330,Grand/State,330778.25
+11,40340,Berwyn,93727.25
+11,40350,UIC-Halsted,171379.75
+11,40360,Southport,86312.5
+11,40370,Washington/Dearborn,309907.5
+11,40380,Clark/Lake,472552.75
+11,40390,Forest Park,88869.0
+11,40400,Noyes,23580.25
+11,40420,Cicero-Cermak,35303.25
+11,40430,Clinton-Forest Park,94079.75
+11,40440,California-Cermak,38513.25
+11,40450,95th/Dan Ryan,288338.25
+11,40460,Merchandise Mart,172469.0
+11,40470,Racine,58298.75
+11,40480,Cicero-Lake,37668.25
+11,40490,Grand/Milwaukee,67063.5
+11,40510,Garfield-South Elevated,35603.75
+11,40520,Foster,23721.25
+11,40530,Diversey,136670.75
+11,40540,Wilson,159228.25
+11,40550,Irving Park-O'Hare,111928.25
+11,40560,Jackson/State,259823.0
+11,40570,California/Milwaukee,131144.5
+11,40580,54th/Cermak,57079.25
+11,40590,Damen/Milwaukee,131322.75
+11,40600,Kostner,13660.0
+11,40610,Ridgeland,32112.0
+11,40630,Clark/Division,212126.5
+11,40640,Madison/Wabash,40931.25
+11,40650,North/Clybourn,169668.0
+11,40660,Armitage,104869.0
+11,40670,Western/Milwaukee,143062.5
+11,40680,Adams/Wabash,204364.25
+11,40690,Dempster,23427.25
+11,40700,Laramie,34032.75
+11,40710,Chicago/Franklin,162789.0
+11,40720,East 63rd-Cottage Grove,31572.75
+11,40730,Washington/Wells,172990.75
+11,40740,Western-Cermak,31460.5
+11,40750,Harlem-O'Hare,76319.25
+11,40760,Granville,116496.0
+11,40770,Lawrence,96950.25
+11,40780,Central Park,32629.25
+11,40790,Monroe/Dearborn,182306.75
+11,40800,Sedgwick,94146.0
+11,40810,Medical Center,76803.75
+11,40820,Rosemont,166812.75
+11,40830,18th,51091.75
+11,40840,South Boulevard,19404.0
+11,40850,Library,98868.75
+11,40870,Francisco,39373.0
+11,40880,Thorndale,82462.0
+11,40890,O'Hare Airport,325336.5
+11,40900,Howard,157125.75
+11,40910,63rd-Dan Ryan,86433.0
+11,40920,Pulaski-Forest Park,50824.75
+11,40930,Midway Airport,228498.75
+11,40940,Halsted/63rd,18760.25
+11,40960,Pulaski-Orange,129801.0
+11,40970,Cicero-Forest Park,39667.75
+11,40980,Harlem-Forest Park,31218.25
+11,40990,69th,148506.0
+11,41000,Cermak-Chinatown,127339.5
+11,41010,Rockwell,45018.25
+11,41020,Logan Square,184016.5
+11,41030,Polk,77594.75
+11,41040,Kedzie-Cermak,28940.0
+11,41050,Linden,22521.75
+11,41060,Ashland-Orange,41699.25
+11,41070,Kedzie-Lake,41347.5
+11,41080,47th-South Elevated,32727.75
+11,41090,Monroe/State,268344.5
+11,41120,35-Bronzeville-IIT,51405.25
+11,41130,Halsted-Orange,71579.75
+11,41140,King Drive,16163.75
+11,41150,Kedzie-Midway,80009.75
+11,41160,Clinton-Lake,96549.5
+11,41170,Garfield-Dan Ryan,98043.25
+11,41180,Kedzie-Brown,53189.75
+11,41190,Jarvis,45393.25
+11,41200,Argyle,85323.25
+11,41210,Wellington,73650.0
+11,41220,Fullerton,334411.75
+11,41230,47th-Dan Ryan,85692.25
+11,41240,Addison-O'Hare,73741.25
+11,41250,Central-Evanston,22414.25
+11,41260,Austin-Lake,49805.5
+11,41270,43rd,27389.25
+11,41280,Jefferson Park,175365.0
+11,41290,Kimball,106283.25
+11,41300,Loyola,153987.75
+11,41310,Paulina,68138.5
+11,41320,Belmont-North Main,337170.25
+11,41330,Montrose-O'Hare,65240.25
+11,41340,LaSalle,79723.75
+11,41350,Oak Park-Lake,38589.25
+11,41360,California-Lake,27059.75
+11,41380,Bryn Mawr,126426.25
+11,41400,Roosevelt,309983.75
+11,41410,Chicago/Milwaukee,104146.5
+11,41420,Addison-North Main,190906.75
+11,41430,87th,117640.0
+11,41440,Addison-Brown,60488.5
+11,41450,Chicago/State,433178.25
+11,41460,Irving Park-Brown,78203.5
+11,41480,Western-Brown,104762.75
+11,41490,Harrison,125779.75
+11,41500,Montrose-Brown,69544.25
+11,41510,Morgan-Lake,67046.5
+11,41660,Lake/State,556339.75
+11,41670,Conservatory,24159.25
+11,41680,Oakton-Skokie,23104.25
+11,41690,Cermak-McCormick Place,29728.5
+11,41700,Washington/Wabash,64106.5
+12,40010,Austin-Forest Park,46469.75
+12,40020,Harlem-Lake,93168.25
+12,40030,Pulaski-Lake,41159.0
+12,40040,Quincy/Wells,160423.25
+12,40050,Davis,87437.75
+12,40060,Belmont-O'Hare,136705.75
+12,40070,Jackson/Dearborn,156162.75
+12,40080,Sheridan,128895.75
+12,40090,Damen-Brown,66283.5
+12,40100,Morse,121632.0
+12,40120,35th/Archer,73544.0
+12,40130,51st,25813.5
+12,40140,Dempster-Skokie,44566.0
+12,40150,Pulaski-Cermak,30548.5
+12,40160,LaSalle/Van Buren,60371.25
+12,40170,Ashland-Lake,57308.0
+12,40180,Oak Park-Forest Park,40927.5
+12,40190,Sox-35th-Dan Ryan,106673.0
+12,40200,Randolph/Wabash,167918.25
+12,40210,Damen-Cermak,37535.75
+12,40220,Western-Forest Park,40716.5
+12,40230,Cumberland,104081.25
+12,40240,79th,193336.25
+12,40250,Kedzie-Homan-Forest Park,57606.75
+12,40260,State/Lake,241718.0
+12,40270,Main,29346.5
+12,40280,Central-Lake,55249.25
+12,40290,Ashland/63rd,32030.25
+12,40300,Indiana,21571.5
+12,40310,Western-Orange,98410.5
+12,40320,Division/Milwaukee,156273.75
+12,40330,Grand/State,311833.5
+12,40340,Berwyn,88328.0
+12,40350,UIC-Halsted,101281.0
+12,40360,Southport,80532.25
+12,40370,Washington/Dearborn,311166.5
+12,40380,Clark/Lake,440194.0
+12,40390,Forest Park,83350.5
+12,40400,Noyes,17057.0
+12,40420,Cicero-Cermak,33972.5
+12,40430,Clinton-Forest Park,88501.0
+12,40440,California-Cermak,36149.0
+12,40450,95th/Dan Ryan,278663.0
+12,40460,Merchandise Mart,159468.75
+12,40470,Racine,53213.5
+12,40480,Cicero-Lake,36833.5
+12,40490,Grand/Milwaukee,63018.75
+12,40510,Garfield-South Elevated,32651.0
+12,40520,Foster,16480.0
+12,40530,Diversey,125904.25
+12,40540,Wilson,141295.25
+12,40550,Irving Park-O'Hare,108011.0
+12,40560,Jackson/State,195675.5
+12,40570,California/Milwaukee,124872.25
+12,40580,54th/Cermak,54053.5
+12,40590,Damen/Milwaukee,130356.75
+12,40600,Kostner,13010.25
+12,40610,Ridgeland,29832.75
+12,40630,Clark/Division,198344.75
+12,40640,Madison/Wabash,43010.25
+12,40650,North/Clybourn,161560.25
+12,40660,Armitage,98662.25
+12,40670,Western/Milwaukee,133366.75
+12,40680,Adams/Wabash,172036.25
+12,40690,Dempster,21353.25
+12,40700,Laramie,32971.0
+12,40710,Chicago/Franklin,150431.0
+12,40720,East 63rd-Cottage Grove,29718.5
+12,40730,Washington/Wells,160396.75
+12,40740,Western-Cermak,29819.75
+12,40750,Harlem-O'Hare,71240.25
+12,40760,Granville,100192.75
+12,40770,Lawrence,88345.5
+12,40780,Central Park,31041.5
+12,40790,Monroe/Dearborn,168376.5
+12,40800,Sedgwick,88303.75
+12,40810,Medical Center,67166.5
+12,40820,Rosemont,154265.75
+12,40830,18th,45743.75
+12,40840,South Boulevard,18376.25
+12,40850,Library,79199.5
+12,40870,Francisco,38068.25
+12,40880,Thorndale,78338.75
+12,40890,O'Hare Airport,299447.25
+12,40900,Howard,151129.5
+12,40910,63rd-Dan Ryan,82952.0
+12,40920,Pulaski-Forest Park,49192.75
+12,40930,Midway Airport,212229.0
+12,40940,Halsted/63rd,16787.25
+12,40960,Pulaski-Orange,119232.5
+12,40970,Cicero-Forest Park,38666.5
+12,40980,Harlem-Forest Park,29556.0
+12,40990,69th,143704.25
+12,41000,Cermak-Chinatown,110330.75
+12,41010,Rockwell,43681.5
+12,41020,Logan Square,175836.5
+12,41030,Polk,66235.0
+12,41040,Kedzie-Cermak,27606.75
+12,41050,Linden,20965.75
+12,41060,Ashland-Orange,39227.0
+12,41070,Kedzie-Lake,39211.5
+12,41080,47th-South Elevated,31452.75
+12,41090,Monroe/State,254574.0
+12,41120,35-Bronzeville-IIT,41510.5
+12,41130,Halsted-Orange,61621.0
+12,41140,King Drive,15562.75
+12,41150,Kedzie-Midway,75402.75
+12,41160,Clinton-Lake,89129.0
+12,41170,Garfield-Dan Ryan,91331.0
+12,41180,Kedzie-Brown,50859.75
+12,41190,Jarvis,43492.25
+12,41200,Argyle,81115.5
+12,41210,Wellington,66880.5
+12,41220,Fullerton,219539.75
+12,41230,47th-Dan Ryan,82121.25
+12,41240,Addison-O'Hare,68912.5
+12,41250,Central-Evanston,18388.0
+12,41260,Austin-Lake,48145.25
+12,41270,43rd,26259.75
+12,41280,Jefferson Park,167831.75
+12,41290,Kimball,101662.5
+12,41300,Loyola,125771.25
+12,41310,Paulina,64479.75
+12,41320,Belmont-North Main,301212.0
+12,41330,Montrose-O'Hare,60456.75
+12,41340,LaSalle,66872.75
+12,41350,Oak Park-Lake,36409.25
+12,41360,California-Lake,25945.5
+12,41380,Bryn Mawr,119743.75
+12,41400,Roosevelt,285659.0
+12,41410,Chicago/Milwaukee,98872.5
+12,41420,Addison-North Main,155219.75
+12,41430,87th,115838.75
+12,41440,Addison-Brown,56420.5
+12,41450,Chicago/State,405885.75
+12,41460,Irving Park-Brown,73676.0
+12,41480,Western-Brown,101680.75
+12,41490,Harrison,101298.0
+12,41500,Montrose-Brown,66069.5
+12,41510,Morgan-Lake,62890.75
+12,41660,Lake/State,539617.0
+12,41670,Conservatory,23054.0
+12,41680,Oakton-Skokie,20630.25
+12,41690,Cermak-McCormick Place,22517.25
+12,41700,Washington/Wabash,60602.5

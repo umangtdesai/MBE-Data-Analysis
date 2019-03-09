@@ -4,10 +4,12 @@ import dml
 import prov.model
 import datetime
 import uuid
+import pandas as pd
+import datetime
 
 ############################################
-# grab_stationstats.py
-# Script for collecting CTA Stations data
+# create_travelstats.py
+# Script for transforming CTA Station Satistics
 ############################################
 
 class grab_ctastations(dml.Algorithm):
@@ -24,13 +26,21 @@ class grab_ctastations(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('smithnj', 'smithnj')
-        repo_name = 'smithnj.ctastats'
+        repo_name = 'smithnj.travelstats'
         # ---[ Grab Data ]-------------------------------------------
-        df = pd.read_json('https://data.cityofchicago.org/resource/5neh-572f.json').to_json(orient='records')
-        loaded = json.loads(df)
+        df = pd.read_csv('/Users/nathaniel/Desktop/smithnj/CTA_Ridership_Totals.csv')  # TODO CHANGE TO WEB LINK
+        # ---[ Begin Transformation ]--------------------------------
+        df['date'] = pd.to_datetime(df['date'])  # Convert "date" index to datetime
+        df.index = df['date']  # set dataframe index to date
+        monthly_sums = df.groupby([df.index.month, df['station_id'], df['stationname']]).sum()  # find total num of travelers per station per month
+        monthly_sums['rides'] = monthly_sums['rides'].apply(lambda x: x / 4)  # divide rides by four as data is over a four year period
+        # ---[ Write Data to JSON ]----------------------------------
+        monthly_sums = monthly_sums.reset_index()
+        df_json = monthly_sums.to_json(orient='records')
+        loaded = json.loads(df_json)
         # ---[ MongoDB Insertion ]-------------------------------------------
-        repo.dropCollection('ctastats')
-        repo.createCollection('ctastats')
+        repo.dropCollection('travelstats')
+        repo.createCollection('travelstats')
         print('done')
         repo[repo_name].insert_many(loaded)
         repo[repo_name].metadata({'complete': True})
@@ -38,10 +48,11 @@ class grab_ctastations(dml.Algorithm):
         print(repo[repo_name].metadata())
         repo.logout()
         endTime = datetime.datetime.now()
+        return {"start": startTime, "end": endTime}
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-#TODO COMPLETE STATIONSTATS PROV
+#TODO COMPLETE TRAVELSATS PROV
         '''
             Create the provenance document describing everything happening
             in this script. Each run of the script will generate a new
