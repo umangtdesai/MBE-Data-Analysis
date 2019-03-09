@@ -18,6 +18,8 @@
     - Businesses Around Boston (Restaurant/Bars)
 - From MBTA API:
     - MBTA Stops
+- From Google Maps Geocoding API
+    - Locations for interesting_spaces
 
 ## Objective of these Datasets:
 Imagine yourself in the Boston Area for only 24 hours. You want to take advantage of your time and make the most out of your trip. By entering a cuisine you're interested in and a particular neighbourhood, we're able to plan the perfect day without any inconveniences. Firstly, a list of restaurants that are hygenic (can't afford food poisining). We ensure this by analyzing the Food Inspection Dataset and utilizing Yelp Services (this could also be sorted by price point). Secondly, by using MBTA stops, we provide you transportation information/options from and to your destination. Lastly, we provide a list of scenic spaces/historical landmarks so that you get to experience Boston's culture in that particular area.

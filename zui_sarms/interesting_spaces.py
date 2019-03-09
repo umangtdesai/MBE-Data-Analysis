@@ -6,6 +6,8 @@ import datetime
 import uuid
 import pandas as pd
 
+from senpai.utils import geocoding
+
 
 class interesting_spaces(dml.Algorithm):
     contributor = 'zui_sarms'
@@ -43,7 +45,12 @@ class interesting_spaces(dml.Algorithm):
         frames = [df2_parks, df2_landmarks]
         final_df = pd.concat(frames)
 
-        print(list(final_df))
+        # Annotate the final dataframe with the geocoding from Google Map
+
+        geo_coded = map(lambda x: geocoding("{}, boston".format(x)), final_df["Address"].values)
+
+        final_df["ProperAddress"] = [addr for addr, _,_ in geo_coded]
+        final_df["Location"] = [[lat, lng] for _, lat, lng in geo_coded]
 
         repo.dropCollection("interesting_spaces")
         repo.createCollection("interesting_spaces")
