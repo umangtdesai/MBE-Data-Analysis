@@ -8,7 +8,7 @@ import xlrd
 import os
 
 
-class CDMap(dml.Algorithm):
+class CDCandidiate(dml.Algorithm):
     contributor = 'gengtaox_gengxc_jycai_ruoshi'
     reads = []
     writes = ['gengtaox_gengxc_jycai_ruoshi.CDcandidate', ]
@@ -30,7 +30,6 @@ class CDMap(dml.Algorithm):
         r = requests.get(CandidiateURL)
         dir = "gengtaox_gengxc_jycai_ruoshi/"
         fname = "registered-candidates.zip"
-        os.mkdir(dir)
         with open(dir + fname, 'wb') as fd:
             for chunk in r.iter_content(chunk_size=1024):
                 fd.write(chunk)
