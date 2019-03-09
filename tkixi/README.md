@@ -1,7 +1,25 @@
-# course-2019-spr-proj
-Joint repository for the collection of student course projects in the Spring 2019 iteration of the Data Mechanics course at Boston University.
+# Project 1 
+### Gijung(Tony) Kim : tkixi@bu.edu
 
-In this project, you will implement platform components that can obtain a some data sets from web services of your choice, and platform components that combine these data sets into at least two additional derived data sets. These components will interact with the backend repository by inserting and retrieving data sets as necessary. They will also satisfy a standard interface by supporting specified capabilities (such as generation of dependency information and provenance records).
+## Narrative
+Tony has always preferred to ride bikes as his commute to class or to work.
+
+As a biker, Tony would like to know what are some of the factors that may contribute to bike accidents. Especially in a city like Boston, it is critical to analyze data on bikes, the weather, traffic signal locations, hubway bike system, and on bike lanes.
+
+Using the following 5 datasets, I computed complex transformations to produce 3 new datasets that would allow bikers to see their own safety in a new light.
+
+
+
+## Datasets Used
+Data Set|Description
+-|-
+Fatality Record | Data from Vision Zero that provides statistics on death by transportation in Boston (pedestrian, biking, vehicle deaths).
+Crash Record | Data from Vision Zero that provides statistics on recent crashes in Boston (car crashes, bike crashes, more).
+Hubway Stations | Data provided by Hubway that shows the locations for every Hubway bike station in Boston.
+Streetlight Locations | Data provided by the Department of Innovation and Technology that describes over 74,000 streetlights in Boston (locations, etc.)
+Traffic Signal Locations | Data provided by the Department of Innovation and Technology that gives information on all of Boston's traffic signals.
+
+---
 
 **This project description will be updated as we continue work on the infrastructure.**
 
