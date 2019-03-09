@@ -54,7 +54,8 @@ class FoodInspections(dml.Algorithm):
 
         repo.dropCollection("food_inspections")
         repo.createCollection("food_inspections")
-        repo['zui_sarms.food_inspections'].insert_many(r_dict)
+        for rr in r_dict:
+            repo['zui_sarms.food_inspections'].insert_one(rr)
 
         repo.logout()
 
