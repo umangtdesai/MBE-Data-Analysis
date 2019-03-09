@@ -73,7 +73,7 @@ class transportation(dml.Algorithm):
 		resource     = doc.entity('gov:boston', {'prov:label':'MassGov',          prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
 		get_massGov   = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
-		doc.wasAssociatedWith(get_massGov,   this_script)
+		doc.wasAssociatedWith(get_massGov, this_script)
 
 		doc.usage(get_massGov,   resource, startTime, None,
 			      {prov.model.PROV_TYPE:'ont:Retrieval',
