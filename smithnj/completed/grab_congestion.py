@@ -4,7 +4,6 @@ import dml
 import prov.model
 import datetime
 import uuid
-import geopandas
 
 ############################################
 # grab_neighborhoods.py
@@ -14,7 +13,7 @@ import geopandas
 class grab_neighborhoods(dml.Algorithm):
     contributor = 'smithnj'
     reads = []
-    writes = ['smithnj.neighborhoods']
+    writes = ['smithnj.congestion']
 
     @staticmethod
     def execute(trial=False):
@@ -24,13 +23,14 @@ class grab_neighborhoods(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('smithnj', 'smithnj')
-        repo_name = 'smithnj.neighborhoods'
+        repo_name = 'smithnj.congestion'
         # ---[ Grab Data ]-------------------------------------------
-        df = geopandas.read_file('https://data.cityofchicago.org/api/geospatial/cauq-8yn6?method=export&format=GeoJSON').to_json(orient='records')
+        df = pd.read_csv('https://data.cityofchicago.org/api/views/t2qc-9pjd/rows.csv?accessType=DOWNLOAD').to_json(
+            orient='records')
         loaded = json.loads(df)
         # ---[ MongoDB Insertion ]-------------------------------------------
-        repo.dropCollection('neighborhoods')
-        repo.createCollection('neighborhoods')
+        repo.dropCollection('congestion')
+        repo.createCollection('congestion')
         print('done')
         repo[repo_name].insert_many(loaded)
         repo[repo_name].metadata({'complete': True})
@@ -50,3 +50,4 @@ class grab_neighborhoods(dml.Algorithm):
 
         #@staticmethod
         #def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
+    #TODO add congestion provenance
