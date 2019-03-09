@@ -87,7 +87,7 @@ class FoodInspections(dml.Algorithm):
                    }
                   )
         fi = doc.entity('dat:zui_sarms#FoodInspection',
-                           {prov.model.PROV_LABEL: 'Food Inspections', prov.model.PROV_TYPE: 'ont:DataSet'})
+                        {prov.model.PROV_LABEL: 'Food Inspections', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(fi, this_script)
         doc.wasGeneratedBy(fi, get_fi, endTime)
         doc.wasDerivedFrom(fi, resource, get_fi, get_fi, get_fi)
@@ -95,7 +95,6 @@ class FoodInspections(dml.Algorithm):
         repo.logout()
 
         return doc
-
 
 
 def download_csv(url):
@@ -106,16 +105,14 @@ def download_csv(url):
     :return: pandas.DataFrame containing the content of the CSV file
     :rtype: pandas.DataFrame
     """
-    temp = tempfile.TemporaryFile()
-    temp.write(download_file(url))
+    temp = download_file(url)
 
     # After we finished writing the temp-file, we can read it as a CSV file
 
     df = pd.read_csv(temp)
 
-    temp.close()
-
     return df
+
 
 def download_file(url):
     """
