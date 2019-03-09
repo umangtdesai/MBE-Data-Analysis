@@ -62,10 +62,7 @@ class FoodViolations(dml.Algorithm):
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-        # Set up the database connection.
-        client = dml.pymongo.MongoClient()
-        repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
+
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont',
@@ -75,22 +72,17 @@ class FoodViolations(dml.Algorithm):
 
         this_script = doc.agent('alg:alice_bob#FoodViolations',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('bdp:4582bec6-2b4f-4f9e-bc55-cbaa73117f4c',
-                              {'prov:label': 'Food Establishment Violation', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'csv'})
-        get_fi = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_fi, this_script)
-        doc.usage(get_fi, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:DataSet': '03693648-2c62-4a2c-a4ec-48de2ee14e18/resource/{RES_ID}/download/tmp1yzpct9p.csv'
-                   }
+        resource = doc.entity('dat:zui_sarms#FoodInspection',
+                              {prov.model.PROV_LABEL: 'Food Inspections', prov.model.PROV_TYPE: 'ont:DataSet'})
+        get_fv = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_fv, this_script)
+        doc.usage(get_fv, resource, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Computation'}
                   )
-        fi = doc.entity('dat:zui_sarms#FoodInspection',
-                        {prov.model.PROV_LABEL: 'Food Inspections', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(fi, this_script)
-        doc.wasGeneratedBy(fi, get_fi, endTime)
-        doc.wasDerivedFrom(fi, resource, get_fi, get_fi, get_fi)
-
-        repo.logout()
+        fv = doc.entity('dat:zui_sarms#FoodViolations',
+                        {prov.model.PROV_LABEL: 'Food Establishment Violations', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(fv, this_script)
+        doc.wasGeneratedBy(fv, get_fv, endTime)
+        doc.wasDerivedFrom(fv, resource, get_fv, get_fv, get_fv)
 
         return doc
