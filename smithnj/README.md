@@ -10,7 +10,7 @@ The City of Chicago is the third largest city in the United States. Like other u
 
 | Portal              | Dataset                                                                                                                                            | Notes                                             |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|
-| Chicago Data Portal | ['L' Station Ridership Stats](https://data.cityofchicago.org/Transportation/CTA-Ridership-L-Station-Entries-Daily-Totals/5neh-572f)                | Retrieved as .json                                |
+| datamechanics.io | ['L' Station Ridership Stats](http://datamechanics.io/data/smithnj/smithnj/CTA_Ridership_Totals.csv)                | Retrieved as .csv                                |
 | Chicago Data Portal | [Chicago Neighborhoods](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Neighborhoods/bbvz-uum9)                        | Retrieved as .geojson                                |
 | Chicago Data Portal | [Census Socioeconomic Hardship](https://data.cityofchicago.org/Health-Human-Services/Census-Data-Selected-socioeconomic-indicators-in-C/kn9c-c2s2) | Retrieved as .json                                |
 | Data.gov            | [Chicago Congestion](https://catalog.data.gov/dataset/chicago-traffic-tracker-historical-congestion-estimates-by-region-a0e83)                     | Retrieved as .json                                |
@@ -20,7 +20,9 @@ Transformations should point to reducing/projecting data in a way to determine p
 1. **create_travelstats**: Utilizes pandas library to aggregate ridership sums per station per month [aggregation]. An four year average is calculated after using the ridership sums [projection].
 
     This can point to calculating whether or not a station should expect to be busy on a certain type of day (weekday, weekend, holiday) and adjust pricing accordingly.
-2. 
+2. **create_communitydata**: Utilizes pandas and geopandas libaries to merge census socioeconomic hardship data and geospatial data for each specific Community Area Number [projection].
+
+    Chicago uses Community  Area Numbers as a way to identify specific regions. By joining these two databases, socioeconomic hardship is now linked with geospatial data of the neighborhood, which can lead to determining hardship of the area surrounding an L station.
 
 ---
 #### Library Dependencies

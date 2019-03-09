@@ -4,6 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
+import geopandas
 
 ############################################
 # grab_neighborhoods.py
@@ -25,7 +26,7 @@ class grab_neighborhoods(dml.Algorithm):
         repo.authenticate('smithnj', 'smithnj')
         repo_name = 'smithnj.neighborhoods'
         # ---[ Grab Data ]-------------------------------------------
-        df = pd.read_csv('http://datamechanics.io/data/smithnj/Neighborhoods_2012b.csv').to_json(orient='records')
+        df = geopandas.read_file('https://data.cityofchicago.org/api/geospatial/cauq-8yn6?method=export&format=GeoJSON').to_json(orient='records')
         loaded = json.loads(df)
         # ---[ MongoDB Insertion ]-------------------------------------------
         repo.dropCollection('neighborhoods')
