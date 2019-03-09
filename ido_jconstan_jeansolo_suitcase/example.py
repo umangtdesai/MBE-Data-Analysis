@@ -39,28 +39,6 @@ class example(dml.Algorithm):
         repo['ido_jconstan_jeansolo_suitcase.bu_transportation_study'].metadata({'complete':True})
         print(repo['ido_jconstan_jeansolo_suitcase.bu_transportation_study'].metadata())
 
-        for i in r:
-            i['Address'] = i['Address'].upper()
-
-            if "STREET" in i['Address']:
-                i['Address'] = i['Address'].replace("STREET", "ST")
-            if "PLACE" in i['Address']:
-                i['Address'] = i['Address'].replace("PLACE", "PL")
-            if "TERRACE" in i['Address']:
-                i['Address'] = i['Address'].replace("TERRACE", "TER")
-            if "AVENUE" in i['Address']:
-                i['Address'] = i['Address'].replace("AVENUE", "AVE")
-            if "CIRCLE" in i['Address']:
-                i['Address'] = i['Address'].replace("CIRCLE", "CIR")
-            if "COURT" in i['Address']:
-                i['Address'] = i['Address'].replace("COURT", "CT")
-            if "LANE" in i['Address']:
-                i['Address'] = i['Address'].replace("LANE", "LN")
-            if "ROAD" in i['Address']:
-                i['Address'] = i['Address'].replace("ROAD", "RD")
-            if "PARK" in i['Address']:
-                i['Address'] = i['Address'].replace("PARK", "PK")
-
         # OBTAINING SECOND DATA SET [Spark Property Data]
         url = 'http://datamechanics.io/data/ido_jconstan_jeansolo_suitcase/property_data.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -72,28 +50,6 @@ class example(dml.Algorithm):
         repo['ido_jconstan_jeansolo_suitcase.property_data'].metadata({'complete':True})
         print(repo['ido_jconstan_jeansolo_suitcase.property_data'].metadata())
 		
-        for i in r1:
-            i['Address 1'] = i['Address 1'].upper()
-
-            if "STREET" in i['Address 1']:
-                i['Address 1'] = i['Address 1'].replace("STREET", "ST")
-            if "PLACE" in i['Address 1']:
-                i['Address 1'] = i['Address 1'].replace("PLACE", "PL")
-            if "TERRACE" in i['Address 1']:
-                i['Address 1'] = i['Address 1'].replace("TERRACE", "TER")
-            if "AVENUE" in i['Address 1']:
-                i['Address 1'] = i['Address 1'].replace("AVENUE", "AVE")
-            if "CIRCLE" in i['Address 1']:
-                i['Address 1'] = i['Address 1'].replace("CIRCLE", "CIR")
-            if "COURT" in i['Address 1']:
-                i['Address 1'] = i['Address 1'].replace("COURT", "CT")
-            if "LANE" in i['Address 1']:
-                i['Address 1'] = i['Address 1'].replace("LANE", "LN")
-            if "ROAD" in i['Address 1']:
-                i['Address 1'] = i['Address 1'].replace("ROAD", "RD")
-            if "PARK" in i['Address 1']:
-                i['Address 1'] = i['Address 1'].replace("PARK", "PK")
-
         # OBTAINING THIRD DATA SET [Greenhouse Emissions]
         url = 'https://drive.google.com/uc?export=download&id=1OaOvImEZLgxcmg1FmcqP4gSsABOKQu7P'
         response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -129,6 +85,8 @@ class example(dml.Algorithm):
         repo['ido_jconstan_jeansolo_suitcase.traffic_count'].metadata({'complete':True})
         print(repo['ido_jconstan_jeansolo_suitcase.traffic_count'].metadata())
         
+
+        '''
         # Transform 1
 		# Get the students who do NOT ride the bus
         notBusRiders = []
@@ -151,7 +109,7 @@ class example(dml.Algorithm):
         repo.dropCollection("PropertyValueNonRiders")
         repo.createCollection("PropertyValueNonRiders")
         repo['ido_jconstan_jeansolo_suitcase.PropertyValueNonRiders'].insert_many(nbrHouseValue)
-
+        '''
 		
 		
 		#Transformation One
