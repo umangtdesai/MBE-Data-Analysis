@@ -111,34 +111,32 @@ class nonBusRiders(dml.Algorithm):
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        this_script = doc.agent('alg:ido_jconstan_jeansolo_suitcase#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        repo.authenticate('ido_jconstan_jeansolo_suitcase', 'ido_jconstan_jeansolo_suitcase')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        resource_transportStudy = doc.entity('dat:bu_transportation_study', {'prov:label':'BU Transportation Study', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        resource_propertyData = doc.entity('dat:property_data', {'prov:label':'Property Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_bu_transport_study = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_property_data = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_bu_transport_study, this_script)
-        doc.wasAssociatedWith(get_property_data, this_script)
-        doc.usage(get_bu_transport_study, resource_transportStudy, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  }
-                  )
-        doc.usage(get_property_data, resource_propertyData, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  }
-                  )
-                  
-                  
-        bu_transportation_study = doc.entity('dat:ido_jconstan_jeansolo_suitcase#bu_transportation_study', {prov.model.PROV_LABEL:'BU Transportation Study', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(bu_transportation_study, this_script)
-        doc.wasGeneratedBy(bu_transportation_study, get_bu_transport_study, endTime)
-        doc.wasDerivedFrom(bu_transportation_study, resource_transportStudy, get_bu_transport_study, get_bu_transport_study, get_bu_transport_study)
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('dbg', 'https://data.boston.gov/dataset/greenhouse-gas-emissions/resource/')
+        doc.add_namespace('dbg2', 'https://data.boston.gov/dataset/public-works-active-work-zones/resource/')
+        doc.add_namespace('oda', 'https://opendata.arcgis.com/datasets/')
 
-        property_data = doc.entity('dat:ido_jconstan_jeansolo_suitcase#property_data', {prov.model.PROV_LABEL:'Property Data', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(property_data, this_script)
-        doc.wasGeneratedBy(property_data, get_property_data, endTime)
-        doc.wasDerivedFrom(property_data, resource_propertyData, get_property_data, get_property_data, get_property_data)
+
+
+        this_script = doc.agent('alg:ido_jconstan_jeansolo_suitcase#nonBusRiders', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource_nonBusRiders = doc.entity('dat:nonBusRiders', {'prov:label':'Non Bus Riders', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_nonBusRiders = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+
+        doc.wasAssociatedWith(get_nonBusRiders, this_script)
+        doc.usage(get_nonBusRiders, resource_nonBusRiders, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval',
+                  }
+                  )
+
+        non_Bus_Riders = doc.entity('dat:ido_jconstan_jeansolo_suitcase#non_Bus_Riders', {prov.model.PROV_LABEL:'Traffic Count', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(non_Bus_Riders, this_script)
+        doc.wasGeneratedBy(non_Bus_Riders, get_traffic_count, endTime)
+        doc.wasDerivedFrom(non_Bus_Riders, resource_nonBusRiders, get_nonBusRiders, get_nonBusRiders, get_nonBusRiders)
         
         repo.logout()
                   
