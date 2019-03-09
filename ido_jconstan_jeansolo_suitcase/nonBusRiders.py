@@ -26,8 +26,11 @@ class nonBusRiders(dml.Algorithm):
 		repo.dropCollection("PropertyValueNonRiders")
 		repo.createCollection("PropertyValueNonRiders")
 
-		r = repo.ido_jconstan_jeansolo_suitcase.bu_transportation_study.find()
-
+		#r = repo.ido_jconstan_jeansolo_suitcase.bu_transportation_study.find()
+		# OBTAINING FIRST DATASET [Bu Transportation Study]
+		url = 'http://datamechanics.io/data/ido_jconstan_jeansolo_suitcase/bu_transportation_study.json'
+		response = urllib.request.urlopen(url).read().decode("utf-8")
+		r = json.loads(response)
 		for i in r:
 			i['Address'] = i['Address'].upper()
 
@@ -50,7 +53,11 @@ class nonBusRiders(dml.Algorithm):
 			if "PARK" in i['Address']:
 			    i['Address'] = i['Address'].replace("PARK", "PK")
 
-		r1 = repo.ido_jconstan_jeansolo_suitcase.property_data.find()
+		#r1 = repo.ido_jconstan_jeansolo_suitcase.property_data.find()
+		# OBTAINING SECOND DATA SET [Spark Property Data]
+		url = 'http://datamechanics.io/data/ido_jconstan_jeansolo_suitcase/property_data.json'
+		response = urllib.request.urlopen(url).read().decode("utf-8")
+		r1 = json.loads(response)
 		for i in r1:
 			i['Address 1'] = i['Address 1'].upper()
 
@@ -78,7 +85,6 @@ class nonBusRiders(dml.Algorithm):
 		notBusRiders = []
 		tempFlag = False
 		for x in r1:
-			print(x)
 			for y in r:
 			    # if the student does ride the bus
 			    if x['Address 1'] in y['Address']:
@@ -87,7 +93,7 @@ class nonBusRiders(dml.Algorithm):
 			    notBusRiders.append(x)
 			else:
 			    tempFlag = False
-
+		
 		# Get the house price of students who do NOT ride the bus
 		nbrHouseValue = []
 		for x in notBusRiders:
