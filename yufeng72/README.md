@@ -1,4 +1,4 @@
-CS 504 Project #1
+<h2>CS 504 Project #1</h2>
 
 ----Inspiration----
 
