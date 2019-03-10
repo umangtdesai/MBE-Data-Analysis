@@ -41,8 +41,8 @@ class grab_neighborhoods(dml.Algorithm):
         endTime = datetime.datetime.now()
         return {"start": startTime, "end": endTime}
 
-        @staticmethod
-        def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
+    @staticmethod
+    def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
             client = dml.pymongo.MongoClient()
             repo = client.repo
             repo.authenticate('smithnj', 'smithnj')

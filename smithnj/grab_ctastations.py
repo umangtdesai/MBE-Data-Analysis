@@ -4,9 +4,10 @@ import dml
 import prov.model
 import datetime
 import uuid
+import pandas as pd
 
 ############################################
-# grab_stationstats.py
+# grab_ctastations.py
 # Script for collecting CTA Stations data
 ############################################
 

@@ -4,6 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
+import pandas as pd
 
 ############################################
 # grab_censusstats.py
@@ -42,8 +43,8 @@ class grab_censusstats(dml.Algorithm):
         return {"start": startTime, "end": endTime}
 
 
-        @staticmethod
-        def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
+    @staticmethod
+    def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
             client = dml.pymongo.MongoClient()
             repo = client.repo
             repo.authenticate('smithnj', 'smithnj')

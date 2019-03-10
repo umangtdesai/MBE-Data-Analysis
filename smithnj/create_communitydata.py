@@ -4,13 +4,14 @@ import prov.model
 import uuid
 import pandas as pd
 import datetime
+import geopandas
 
 ############################################
 # create_communitydata.py
 # Script for merging Census Socioeconomic Hardship data with Community Geospatial Data
 ############################################
 
-class grab_ctastations(dml.Algorithm):
+class create_communitydata(dml.Algorithm):
     contributor = 'smithnj'
     reads = []
     writes = ['smithnj.communitydata']
@@ -58,8 +59,8 @@ class grab_ctastations(dml.Algorithm):
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
         this_script = doc.agent('alg:smithnj#communitydata', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        community_areas = doc.entity('dat:smithnj#communityareas', {prov.model.PROV.LABEL:'Chicago Community Areas Data', prov.model.PROV_TYPE:'ont:DataSet'})
-        census = doc.entity('dat:smithnj#census', {prov.model.PROV.LABEL:'Chicago Socioeconomic Hardship Census Data', prov.model.PROV_TYPE:'ont:DataSet'})
+        community_areas = doc.entity('dat:smithnj#communityareas', {'prov:label':'Chicago Community Areas Data', prov.model.PROV_TYPE:'ont:DataSet'})
+        census = doc.entity('dat:smithnj#census', {'prov:label':'Chicago Socioeconomic Hardship Census Data', prov.model.PROV_TYPE:'ont:DataSet'})
         merge = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
         doc.wasAssociatedWith(merge, this_script)

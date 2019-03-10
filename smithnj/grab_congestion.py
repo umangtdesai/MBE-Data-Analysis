@@ -4,13 +4,14 @@ import dml
 import prov.model
 import datetime
 import uuid
+import pandas as pd
 
 ############################################
-# grab_neighborhoods.py
+# grab_congestion.py
 # Script for collecting Chicago neighborhoods
 ############################################
 
-class grab_neighborhoods(dml.Algorithm):
+class grab_congestion(dml.Algorithm):
     contributor = 'smithnj'
     reads = []
     writes = ['smithnj.congestion']
@@ -40,8 +41,8 @@ class grab_neighborhoods(dml.Algorithm):
         endTime = datetime.datetime.now()
         return {"start": startTime, "end": endTime}
 
-        @staticmethod
-        def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
+    @staticmethod
+    def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
             client = dml.pymongo.MongoClient()
             repo = client.repo
             repo.authenticate('smithnj', 'smithnj')

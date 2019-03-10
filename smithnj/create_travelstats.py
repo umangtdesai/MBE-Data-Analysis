@@ -4,13 +4,14 @@ import prov.model
 import uuid
 import pandas as pd
 import datetime
+import geopandas
 
 ############################################
 # create_travelstats.py
 # Script for transforming CTA Station Satistics
 ############################################
 
-class grab_ctastations(dml.Algorithm):
+class create_travelstats(dml.Algorithm):
     contributor = 'smithnj'
     reads = []
     writes = ['smithnj.travelstats']
@@ -62,9 +63,7 @@ class grab_ctastations(dml.Algorithm):
 
         this_script = doc.agent('alg:smithnj#travelstats',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        stationstats = doc.entity('dat:smithnj#stationstats',
-                                     {prov.model.PROV.LABEL: 'Chicago L-Station Statistics',
-                                      prov.model.PROV_TYPE: 'ont:DataSet'})
+        stationstats = doc.entity('dat:smithnj#stationstats', {'prov:label': 'Chicago L-Station Statistics', prov.model.PROV_TYPE:'ont:DataSet'})
         merge = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
         doc.wasAssociatedWith(merge, this_script)

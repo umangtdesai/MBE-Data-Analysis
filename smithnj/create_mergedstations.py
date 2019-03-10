@@ -4,13 +4,14 @@ import prov.model
 import uuid
 import pandas as pd
 import datetime
+import geopandas
 
 ############################################
-# create_communitydata.py
+# create_mergedstations.py
 # Script for merging L-station GeoSpatial Data with Community Area Number GeoSpatial Data
 ############################################
 
-class grab_ctastations(dml.Algorithm):
+class create_mergedstations(dml.Algorithm):
     contributor = 'smithnj'
     reads = []
     writes = ['smithnj.merged_stations']
@@ -59,9 +60,9 @@ class grab_ctastations(dml.Algorithm):
         this_script = doc.agent('alg:smithnj#merged_stations',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         communityareas = doc.entity('dat:smithnj#communityareas',
-                                     {prov.model.PROV.LABEL: 'Chicago Community Areas Data',
+                                     {'prov:label': 'Chicago Community Areas Data',
                                       prov.model.PROV_TYPE: 'ont:DataSet'})
-        stationlocation = doc.entity('dat:smithnj#stations', {prov.model.PROV.LABEL: 'Chicago L-Station Location',
+        stationlocation = doc.entity('dat:smithnj#stations', {'prov:label': 'Chicago L-Station Location',
                                                    prov.model.PROV_TYPE: 'ont:DataSet'})
         merge = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
@@ -72,7 +73,7 @@ class grab_ctastations(dml.Algorithm):
         merged_stations_with_geo = doc.entity('dat:smithnj#merged_stations', {
             prov.model.PROV_LABEL: 'Chicago L Stations',
             prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(merged_stations, this_script)
+        doc.wasAttributedTo(merge, this_script)
         doc.wasGeneratedBy(merged_stations_with_geo, merge, endTime)
         doc.wasDerivedFrom(merged_stations_with_geo, communityareas)
         doc.wasDerivedFrom(merged_stations_with_geo, stationlocation)

@@ -3,7 +3,8 @@ import json
 import dml
 import prov.model
 import datetime
-import geopandas
+import pandas as pd
+import uuid
 
 ############################################
 # grab_stations.py
@@ -39,8 +40,8 @@ class grab_stations(dml.Algorithm):
         endTime = datetime.datetime.now()
         return {"start": startTime, "end": endTime}
 
-        @staticmethod
-        def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
+    @staticmethod
+    def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
             client = dml.pymongo.MongoClient()
             repo = client.repo
             repo.authenticate('smithnj', 'smithnj')
