@@ -53,19 +53,19 @@ class grab_neighborhoods(dml.Algorithm):
             doc.add_namespace('ont',
                               'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
             doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-            doc.add_namespace('bdp', 'https://data.cityofchicago.org/api/geospatial/cauq-8yn6?method=export&format=GeoJSON')
+            doc.add_namespace('bdp', 'https://data.cityofchicago.org/api/views/t2qc-9pjd/rows.csv?accessType=DOWNLOAD')
 
-            this_script = doc.agent('alg:smithnj#congestion',
+            this_script = doc.agent('alg:smithnj#communityareas',
                                     {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
             resource = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
-            get_congestion = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+            get_communityareas = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
-            doc.wasAssociatedWith(get_congestion, this_script)
-            doc.usage(get_congestion, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
-            doc.wasAttributedTo(get_congestion, this_script)
-            doc.wasGeneratedBy(get_congestion, resource, endTime)
-            doc.wasDerivedFrom(get_congestion, resource)
+            doc.wasAssociatedWith(get_communityareas, this_script)
+            doc.usage(get_communityareas, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+            doc.wasAttributedTo(get_communityareas, this_script)
+            doc.wasGeneratedBy(get_communityareas, resource, endTime)
+            doc.wasDerivedFrom(get_communityareas, resource)
 
             repo.logout()
 

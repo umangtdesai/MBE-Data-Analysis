@@ -13,7 +13,7 @@ import datetime
 class grab_ctastations(dml.Algorithm):
     contributor = 'smithnj'
     reads = []
-    writes = ['smithnj.ctastats']
+    writes = ['smithnj.communitydata']
 
     @staticmethod
     def execute(trial=False):
