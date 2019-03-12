@@ -11,7 +11,8 @@ import sys
 class getData(dml.Algorithm):
     contributor = 'asadeg02_gxy9598'
     reads = []
-    writes = ['asadeg02_gxy9598.building_permits', 'asadeg02_gxy9598.property_details', 'asadeg02_gxy9598.crime_incident_report', 'asadeg02_gxy9598.active_food_stablishment']
+    writes = ['asadeg02_gxy9598.building_permits', 'asadeg02_gxy9598.crime_incident_report', 
+              'asadeg02_gxy9598.active_food_stablishment', 'asadeg02_gxy9598.Get_Boston_Streets', 'asadeg02_gxy9598.Get_Zillow_Search']
 
     @staticmethod
     def execute(trial = False):
