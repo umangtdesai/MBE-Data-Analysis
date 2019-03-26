@@ -101,3 +101,4 @@ python execute.py alice_bob
 To execute the algorithms for a particular contributor in trial mode, use the `-t` or `--trial` option:
 ```
 python execute.py alice_bob --trial
+
