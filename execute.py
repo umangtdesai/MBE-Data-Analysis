@@ -20,6 +20,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("contributor_folder")
 parser.add_argument("-t", "--trial", help="run all algorithms in trial mode", action="store_true")
 args = parser.parse_args()
+
 # Extract the algorithm classes from the modules in the
 # subdirectory specified on the command line.
 path = args.contributor_folder
@@ -30,6 +31,7 @@ for r,d,f in os.walk(path):
             name_module = ".".join(file.split(".")[0:-1])
             module = importlib.import_module(path + "." + name_module)
             algorithms.append(module.__dict__[name_module])
+
 # Create an ordering of the algorithms based on the data
 # sets that they read and write.
 datasets = set()
@@ -41,6 +43,7 @@ while len(algorithms) > 0:
             ordered.append(algorithms[i])
             del algorithms[i]
             break
+
 # Execute the algorithms in order.
 provenance = prov.model.ProvDocument()
 for algorithm in ordered:
