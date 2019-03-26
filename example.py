@@ -5,6 +5,7 @@ import prov.model
 import datetime
 import uuid
 
+
 class example(dml.Algorithm):
     contributor = 'alice_bob'
     reads = []
@@ -42,10 +43,10 @@ class example(dml.Algorithm):
 
         endTime = datetime.datetime.now()
 
-        return {"start":startTime, "end":endTime}
+        return {"start": startTime, "end": endTime}
     
     @staticmethod
-    def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
+    def provenance(doc = prov.model.ProvDocument(), startTime= None, endTime= None):
         '''
             Create the provenance document describing everything happening
             in this script. Each run of the script will generate a new
@@ -93,13 +94,13 @@ class example(dml.Algorithm):
                   
         return doc
 
-'''
+
 # This is example code you might use for debugging this module.
 # Please remove all top-level function calls before submitting.
 example.execute()
 doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
-'''
+
 
 ## eof

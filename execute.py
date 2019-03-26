@@ -1,6 +1,5 @@
 ###############################################################################
-## 
-## execute.py
+##
 ##
 ## Script for running a single project's data and provenance workflows.
 ##
@@ -9,12 +8,12 @@
 ##
 ##
 
-import sys
 import os
 import importlib
 import json
 import argparse
 import prov.model
+import protoql
 
 parser = argparse.ArgumentParser()
 parser.add_argument("contributor_folder")
@@ -37,7 +36,7 @@ for r,d,f in os.walk(path):
 datasets = set()
 ordered = []
 while len(algorithms) > 0:
-    for i in range(0,len(algorithms)):
+    for i in range(0, len(algorithms)):
         if set(algorithms[i].reads).issubset(datasets):
             datasets = datasets | set(algorithms[i].writes)
             ordered.append(algorithms[i])
@@ -55,15 +54,25 @@ print(provenance.get_provn())
 
 # Render the provenance document as an interactive graph.
 prov_json = json.loads(provenance.serialize())
-import protoql
+
 agents = [[a] for a in prov_json['agent']]
 entities = [[e] for e in prov_json['entity']]
 activities = [[v] for v in prov_json['activity']]
-wasAssociatedWith = [(v['prov:activity'], v['prov:agent'], 'wasAssociatedWith') for v in prov_json['wasAssociatedWith'].values()]
-wasAttributedTo = [(v['prov:entity'], v['prov:agent'], 'wasAttributedTo') for v in prov_json['wasAttributedTo'].values()]
-wasDerivedFrom = [(v['prov:usedEntity'], v['prov:generatedEntity'], 'wasDerivedFrom') for v in prov_json['wasDerivedFrom'].values()]
-wasGeneratedBy = [(v['prov:entity'], v['prov:activity'], 'wasGeneratedBy') for v in prov_json['wasGeneratedBy'].values()]
+wasAssociatedWith = [(v['prov:activity'], v['prov:agent'], 'wasAssociatedWith') for v in
+                     prov_json['wasAssociatedWith'].values()]
+
+wasAttributedTo = [(v['prov:entity'], v['prov:agent'], 'wasAttributedTo') for v in
+                   prov_json['wasAttributedTo'].values()]
+
+wasDerivedFrom = [(v['prov:usedEntity'], v['prov:generatedEntity'], 'wasDerivedFrom') for v in
+                  prov_json['wasDerivedFrom'].values()]
+
+wasGeneratedBy = [(v['prov:entity'], v['prov:activity'], 'wasGeneratedBy') for v in
+                  prov_json['wasGeneratedBy'].values()]
+
 used = [(v['prov:activity'], v['prov:entity'], 'used') for v in prov_json['used'].values()]
-open('provenance.html', 'w').write(protoql.html("graph(" + str(entities + agents + activities) + ", " + str(wasAssociatedWith + wasAttributedTo + wasDerivedFrom + wasGeneratedBy + used) + ")"))
+open('provenance.html', 'w').write(protoql.html("graph(" + str(entities + agents + activities) + ", " +
+                                                str(wasAssociatedWith + wasAttributedTo + wasDerivedFrom +
+                                                    wasGeneratedBy + used) + ")"))
 
 ## eof
