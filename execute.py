@@ -1,5 +1,5 @@
 ###############################################################################
-## 
+##
 ## execute.py
 ##
 ## Script for running a single project's data and provenance workflows.
@@ -50,8 +50,10 @@ for algorithm in ordered:
     algorithm.execute(trial=args.trial)
     provenance = algorithm.provenance(provenance)
 
+
 # Display a provenance record of the overall execution process.
 print(provenance.get_provn())
+
 
 # Render the provenance document as an interactive graph.
 prov_json = json.loads(provenance.serialize())
