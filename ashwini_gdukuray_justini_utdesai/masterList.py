@@ -8,7 +8,7 @@ import uuid
 
 class masterList(dml.Algorithm):
     contributor = 'ashwini_gdukuray_justini_utdesai'
-    reads = ['ashwini_gdukuray_justini_utdesai.massHousing', 'ashwini_gdukuray_justini_utdesai.SDO', 'ashwini_gdukuray_justini_utdesai.validZipCodes']
+    reads = ['ashwini_gdukuray_justini_utdesai.massHousing', 'ashwini_gdukuray_justini_utdesai.secretary', 'ashwini_gdukuray_justini_utdesai.validZipCodes']
     writes = ['ashwini_gdukuray_justini_utdesai.masterList']
 
     @staticmethod
@@ -25,32 +25,32 @@ class masterList(dml.Algorithm):
         # in order to create a master MBE list, and then store it in the DB
 
         massHousing = repo['ashwini_gdukuray_justini_utdesai.massHousing']
-        SDO = repo['ashwini_gdukuray_justini_utdesai.SDO']
+        secretary = repo['ashwini_gdukuray_justini_utdesai.secretary']
         validZips = repo['ashwini_gdukuray_justini_utdesai.validZipCodes']
 
 
         massHousingDF = pd.DataFrame(list(massHousing.find()))
-        SDODF = pd.DataFrame(list(SDO.find()))
+        secretaryDF = pd.DataFrame(list(secretary.find()))
         validZipsDF = pd.DataFrame(list(validZips.find()))
 
 
         # clean up secretary dataset
         # convert zip codes to strings and 5 digits long
-        SDODF['Zip'] = SDODF['Zip'].astype('str')
-        SDODF['Zip'] = SDODF['Zip'].apply(lambda zipCode: ((5 - len(zipCode))*'0' + zipCode \
+        secretaryDF['Zip'] = secretaryDF['Zip'].astype('str')
+        secretaryDF['Zip'] = secretaryDF['Zip'].apply(lambda zipCode: ((5 - len(zipCode))*'0' + zipCode \
                                                         if len(zipCode) < 5 else zipCode)[:5])
-        SDODF = SDODF.loc[SDODF['MBE - Y/N'] == 'Y']
-        SDODF = SDODF[['Business Name', 'Address', 'City', 'Zip', 'State', 'Description of Services']]
-        SDODF = SDODF.rename(index=str, columns={'Description of Services': 'Industry'})
+        secretaryDF = secretaryDF.loc[secretaryDF['MBE - Y/N'] == 'Y']
+        secretaryDF = secretaryDF[['Business Name', 'Address', 'City', 'Zip', 'State', 'Description of Services']]
+        secretaryDF = secretaryDF.rename(index=str, columns={'Description of Services': 'Industry'})
 
         # create a more uniform ID
         businessIDs = []
-        for index, row in SDODF.iterrows():
+        for index, row in secretaryDF.iterrows():
             busName = row['Business Name']
             cleanedText = busName.upper().strip().replace(' ','').replace('.','').replace(',','').replace('-','')
             businessIDs.append(cleanedText)
 
-        SDODF['B_ID'] = pd.Series(businessIDs, index=SDODF.index)
+        secretaryDF['B_ID'] = pd.Series(businessIDs, index=secretaryDF.index)
 
 
         # clean up massHousing dataset
@@ -74,7 +74,7 @@ class masterList(dml.Algorithm):
 
 
         # merge and create masterList
-        preMasterList = pd.merge(massHousingDF, SDODF, how='outer', on=['B_ID', 'City', 'Zip'])
+        preMasterList = pd.merge(massHousingDF, secretaryDF, how='outer', on=['B_ID', 'City', 'Zip'])
 
         preDict = {'B_ID': [], 'Business Name': [], 'Address': [], 'City': [], 'Zip': [], 'State': [], 'Industry': []}
 
