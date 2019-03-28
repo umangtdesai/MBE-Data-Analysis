@@ -28,7 +28,7 @@ class industryTotal(dml.Algorithm):
         # build sum of each industry
         data = {}
         for index, row in masterListDF.iterrows():
-            industry = row['Description of Services']
+            industry = row['Industry']
             if (industry in data):
                 data[industry] += 1
             else:
