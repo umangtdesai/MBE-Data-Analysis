@@ -64,7 +64,7 @@ class masterList(dml.Algorithm):
             cleanedText = busName.upper().strip().replace(' ','').replace('.','').replace(',','').replace('-','')
             businessIDs.append(cleanedText)
 
-            if (row['Primary Trade'] == 'Other: Specify'):
+            if (row['Primary Trade'] == 'Other: Specify' or row['Primary Trade'] == 'Consultant: Specify'):
                 row['Primary Trade'] = row['Primary Other/Consulting Description']
 
         massHousingDF['B_ID'] = pd.Series(businessIDs, index=massHousingDF.index)
