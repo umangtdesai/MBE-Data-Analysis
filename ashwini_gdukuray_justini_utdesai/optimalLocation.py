@@ -61,8 +61,7 @@ class optimalLocation(dml.Algorithm):
         optimalLocationsDF = optimalLocationsDF.sort_values('Number of MBE Additions', ascending=False)
         optimalLocationsDF = optimalLocationsDF.reset_index(drop=True)
 
-        print(optimalLocationsDF)
-
+        #print(optimalLocationsDF)
 
         #records = json.loads(industryDF.T.to_json()).values()
 

@@ -36,9 +36,9 @@ class mergedList(dml.Algorithm):
 
         # Standardize industry column
         categories = {
-                        'Finance': ['financial', 'finance', 'accounting', 'bank', 'money', 'equity', 'asset', 'payroll', 'economics', 'stock', 'fine art', 'novelties'],
+                        'Finance': ['financial', 'finance', 'accounting', 'bank', 'money', 'equity', 'asset', 'payroll', 'economic', 'stock', 'fine art', 'novelties'],
                         'Technology': ['information', 'technology', 'tech', 'computer', 'software', 'data', 'it professional'],
-                        'Architecture': ['architecture', 'architectural', 'engineering', 'architect', 'urban', 'building', 'interior design'],
+                        'Architecture': ['architecture', 'architectural', 'engineering', 'architect',  'interior design'],
                         'Carpentry': ['carpentry', 'wood', 'drywall'],
                         'HVAC': ['hvac', 'air conditioning', 'heating', 'insulation'],
                         'Landscaping': ['landscaping', 'landscape', 'snow'],
@@ -48,7 +48,7 @@ class mergedList(dml.Algorithm):
                         'Home': ['cabinet', 'appliance', 'kitchen', 'bath', 'door', 'home', 'window', 'remodel', 'flag'],
                         'Hospitality': ['catering', 'wedding', 'party', 'event planner', 'cater', 'planning', 'hospitality'],
                         'Construction': ['concrete', 'construction', 'operat', 'glass', 'scaffold'],
-                        'Environment': ['environment'],
+                        'Environment': ['environment', 'sustainability', 'sustainable'],
                         'Electrical': ['electric', 'electronic'],
                         'Marketing/Advertising': ['marketing', 'advertising', 'leadership', 'strategic planning', 'relations', 'community', 'brand', 'presentation'],
                         'Maintenance/Repairs': ['elevator', 'hardware', 'maintenance'],
@@ -70,14 +70,14 @@ class mergedList(dml.Algorithm):
                         'Security/Safety': ['security', 'watch guard', 'safety', 'fire'],
                         'Site Improvements': ['road', 'paving', 'sidewalk', 'site util', 'sign procure'],
                         'Transportation': ['bus', 'car', 'taxi', 'transport', 'airplane', 'travel', 'delivery', 'livery', 'trucking', 'moving', 'shuttle'],
-                        'Services': ['translation', 'resident', 'supplier', 'language'],
+                        'Services': ['translation', 'resident', 'language', 'supplier'],
                         'Floral': ['flower', 'floral'],
                         'Fitness/Health': ['fitness', 'health', 'recreational', 'medical', 'yoga', 'barre'],
                         'Food': ['food', 'pantry', 'beverage', 'produce'],
                         'Municipality': ['poverty', 'permit', 'parking', 'state', 'court'],
                         'Counseling': ['counseling', 'therapy'],
                         'Research': ['research', 'testing', 'laboratory'],
-                        'Non Profit/Community': ['community', 'housing', 'treatment', 'shelter', 'mental', 'domestic'],
+                        'Non Profit/Community': ['community', 'housing', 'treatment', 'shelter', 'mental', 'domestic', 'habitat'],
                         'Consumer Services': ['hair', 'salon', 'nail'],
                         'Automobile': ['vehicle', 'automobile', 'body shop', 'auto damage'],
                         'Apparel': ['clothes', 'uniform', 'apparel'],
@@ -94,7 +94,10 @@ class mergedList(dml.Algorithm):
                 for cat in categories[key]:
                     if (cat in industry):
                         row['IndustryID'] = key
-
+                        break
+                # check if company was sorted into a category already
+                if (row['IndustryID'] != 'Temp'):
+                    break
 
         combinedDF = combinedDF.reset_index(drop=True)
         combinedDF = combinedDF.drop(columns=['Industry'])
