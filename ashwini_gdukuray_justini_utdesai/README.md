@@ -47,3 +47,19 @@ Our portals include:
  transform the top company dataset and add a new column to represent a unique business ID that our master list uses. Our
  resulting data set contains 2 companies, which tells us they are the only two according to our master list that are MBE
  certified.
+ 
+ ### Project 2 Justification
+ For project 2, we combined suggestions from our professor and our partner and came up with an optimization/constraint
+ problem that we can solve. We wanted to figure out which zip codes could best use an MBE injection into the area, primarily
+ due to an overwhelming amount of non MBE businesses as well as a lack of a specific industry. This thus creates an opportunity
+ for an MBE to come in and fill a niche role in this specific neighborhood. To do this, we used our master list of MBE businesses
+ as well as our master list of non MBE businesses and merged the two together. We added back a column specifying their MBE
+ status as this metadata is necessary to solve our constraint problem. We then employed a massive sorting algorithm to place
+ each business in a respective industry 'bucket' as a way to standardize the industry that each company represents. With
+ all 1000 companies sorted into their respective industries, we finally were able to run our optimization/constraint algorithm,
+ located in optimalLocation.py, which broke our dataset into groups of datasets based on zip code. By doing this, this allows us
+ to hone in on each area and attempt to add MBEs that fit our constraints of that area until there are no more MBEs left to add
+ (by add, we mean get an MBE from a different zip code and 'move' them into the current zip code to fit a new role in a new area).
+ The number of MBEs that we are able to add is the important metric that we track for each zip code and the algorithm emits
+ a new dataset with each tuple being a zip code and the corresponding count of possible MBE additions. Thus, as a  result,
+ we can clearly see which areas can best do with more MBE businesses!
