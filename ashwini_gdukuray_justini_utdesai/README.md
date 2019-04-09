@@ -48,7 +48,7 @@ Our portals include:
  resulting data set contains 2 companies, which tells us they are the only two according to our master list that are MBE
  certified.
  
- ### Project 2 Justification
+ ### Project 2 Justification (2b)
  For project 2, we combined suggestions from our professor and our partner and came up with an optimization/constraint
  problem that we can solve. We wanted to figure out which zip codes could best use an MBE injection into the area, primarily
  due to an overwhelming amount of non MBE businesses as well as a lack of a specific industry. This thus creates an opportunity
@@ -63,3 +63,9 @@ Our portals include:
  The number of MBEs that we are able to add is the important metric that we track for each zip code and the algorithm emits
  a new dataset with each tuple being a zip code and the corresponding count of possible MBE additions. Thus, as a  result,
  we can clearly see which areas can best do with more MBE businesses!
+ 
+ ### Project 2 Statistical Analysis (2c)
+ In the file labeled correlationIndustries.py, we have completed some statistical analysis on the industries within each zipcode.
+ We did this to better understand the relationships between industries. The metric we used is the correlation coefficient
+ between two particular industries. This value tells us how correlated it is for two industries to be present in the same
+ zip code (or absent). The file outputs a data set sorted by the correlation coefficient.
