@@ -24,8 +24,13 @@ class mergedList(dml.Algorithm):
         MBElist = repo['ashwini_gdukuray_justini_utdesai.masterList']
         NMBElist = repo['ashwini_gdukuray_justini_utdesai.nonMBEmasterList']
 
-        MBElistDF = pd.DataFrame(list(MBElist.find()))
-        NMBElistDF = pd.DataFrame(list(NMBElist.find()))
+        # Trial mode implementation
+        if (trial):
+            MBElistDF = pd.DataFrame(list(MBElist.find()))[:100]
+            NMBElistDF = pd.DataFrame(list(NMBElist.find()))[:100]
+        else:
+            MBElistDF = pd.DataFrame(list(MBElist.find()))
+            NMBElistDF = pd.DataFrame(list(NMBElist.find()))
 
         # Add back a column for MBE status
         MBElistDF['MBE Status'] = 'Y'

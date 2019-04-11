@@ -29,9 +29,14 @@ class nonMBEmasterList(dml.Algorithm):
         validZips = repo['ashwini_gdukuray_justini_utdesai.validZipCodes']
 
 
-        massHousingDF = pd.DataFrame(list(massHousing.find()))
-        secretaryDF = pd.DataFrame(list(secretary.find()))
-        validZipsDF = pd.DataFrame(list(validZips.find()))
+        if (trial):
+            massHousingDF = pd.DataFrame(list(massHousing.find()))[:100]
+            secretaryDF = pd.DataFrame(list(secretary.find()))[:100]
+            validZipsDF = pd.DataFrame(list(validZips.find()))[:100]
+        else:
+            massHousingDF = pd.DataFrame(list(massHousing.find()))
+            secretaryDF = pd.DataFrame(list(secretary.find()))
+            validZipsDF = pd.DataFrame(list(validZips.find()))
 
 
         # clean up secretary dataset

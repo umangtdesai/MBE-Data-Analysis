@@ -24,7 +24,10 @@ class correlationIndustries(dml.Algorithm):
 
         mergedList = repo['ashwini_gdukuray_justini_utdesai.mergedList']
 
-        mergedListDF = pd.DataFrame(list(mergedList.find()))
+        if (trial):
+            mergedListDF = pd.DataFrame(list(mergedList.find()))[:100]
+        else:
+            mergedListDF = pd.DataFrame(list(mergedList.find()))
 
         # Break dataframe into separate dataframes by zip code
         zipCodeDF = mergedListDF.groupby('Zip')
@@ -147,7 +150,7 @@ class correlationIndustries(dml.Algorithm):
         correlationDF = correlationDF.sort_values('Correlation Coefficient', ascending=False)
         correlationDF = correlationDF.reset_index(drop=True)
 
-        print(correlationDF)
+        #print(correlationDF)
 
         #records = json.loads(industryDF.T.to_json()).values()
 

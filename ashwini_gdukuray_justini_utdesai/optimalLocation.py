@@ -23,7 +23,10 @@ class optimalLocation(dml.Algorithm):
 
         mergedList = repo['ashwini_gdukuray_justini_utdesai.mergedList']
 
-        mergedListDF = pd.DataFrame(list(mergedList.find()))
+        if (trial):
+            mergedListDF = pd.DataFrame(list(mergedList.find()))[:100]
+        else:
+            mergedListDF = pd.DataFrame(list(mergedList.find()))
 
         # Break dataframe into separate dataframes by zip code
         zipCodeDF = mergedListDF.groupby('Zip')

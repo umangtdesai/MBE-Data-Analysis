@@ -23,7 +23,10 @@ class industryTotal(dml.Algorithm):
 
         mergedList = repo['ashwini_gdukuray_justini_utdesai.mergedList']
 
-        mergedListDF = pd.DataFrame(list(mergedList.find()))
+        if (trial):
+            mergedListDF = pd.DataFrame(list(mergedList.find()))[:100]
+        else:
+            mergedListDF = pd.DataFrame(list(mergedList.find()))
 
         # build sum of each industry
         data = {}
