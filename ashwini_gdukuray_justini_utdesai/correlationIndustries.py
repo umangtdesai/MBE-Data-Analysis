@@ -50,12 +50,10 @@ class correlationIndustries(dml.Algorithm):
 
         industries = list(set(mergedListDF['IndustryID']))
 
+        # Build 2 vectors per industry pairing to reflect the number of times each industry occurs in a particular zip code
+        # The vector length will be the number of zip codes as each value represents the number of times that industry occurs there
         vectorDict = {}
         for ind in industries:
-
-            # Idea: {'Food:Architecture': [(), ()]}
-            # Then use split on key, build opposite key, and remove this from dictionary
-
             for grp in zipGroups:
                 zip = grp.iloc[0]['Zip']
 
@@ -65,18 +63,10 @@ class correlationIndustries(dml.Algorithm):
                     if (ind != i):
                         key = ind + ':' + i
                         if (key in vectorDict):
-                            # the current industry might not be in the current zip, so just use a 0
-                            if (ind not in indTotalsPerZip[zip]):
-                                vectorDict[key][0] += (0,)
-                            else:
-                                vectorDict[key][0] += (indTotalsPerZip[zip][ind],)
+                            vectorDict[key][0] += (indTotalsPerZip[zip].get(ind, 0),)
                             vectorDict[key][1] += (indTotalsPerZip[zip][i],)
                         else:
-                            # the current industry might not be in the current zip, so just use a 0
-                            if (ind not in indTotalsPerZip[zip]):
-                                vectorDict[key] = [(0,)]
-                            else:
-                                vectorDict[key] = [(indTotalsPerZip[zip][ind],)]
+                            vectorDict[key] = [(indTotalsPerZip[zip].get(ind, 0),)]
                             vectorDict[key].append((indTotalsPerZip[zip][i],))
 
                 # add 0s for industries that did not exist in current zip
@@ -86,18 +76,10 @@ class correlationIndustries(dml.Algorithm):
                     if (ind != j):
                         key = ind + ':' + j
                         if (key in vectorDict):
-                            # the current industry might not be in the current zip, so just use a 0
-                            if (ind not in indTotalsPerZip[zip]):
-                                vectorDict[key][0] += (0,)
-                            else:
-                                vectorDict[key][0] += (indTotalsPerZip[zip][ind],)
+                            vectorDict[key][0] += (indTotalsPerZip[zip].get(ind, 0),)
                             vectorDict[key][1] += (0,)
                         else:
-                            # the current industry might not be in the current zip, so just use a 0
-                            if (ind not in indTotalsPerZip[zip]):
-                                vectorDict[key] = [(0,)]
-                            else:
-                                vectorDict[key] = [(indTotalsPerZip[zip][ind],)]
+                            vectorDict[key] = [(indTotalsPerZip[zip].get(ind, 0),)]
                             vectorDict[key].append((0,))
 
         # Remove duplicates from vectorDict (i.e. if we have Food:Services, Services:Food also exists in dictionary with identical values
