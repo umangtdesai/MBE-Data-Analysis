@@ -52,7 +52,8 @@ class optimalLocation(dml.Algorithm):
             count = 0
             for index, row in mergedListDF.iterrows():
                 ind = row['IndustryID']
-                if (row['Zip'] != currentZip and ind in industryList and ind not in bannedIndustries):
+                if (row['Zip'] != currentZip and ind in industryList and ind not in bannedIndustries and row['MBE Status'] == 'Y'):
+                    # have all the row info as well (business name, industry, location)
                     bannedIndustries.add(ind)
                     count += 1
 

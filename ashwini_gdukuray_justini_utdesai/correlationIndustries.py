@@ -52,6 +52,8 @@ class correlationIndustries(dml.Algorithm):
 
         # Build 2 vectors per industry pairing to reflect the number of times each industry occurs in a particular zip code
         # The vector length will be the number of zip codes as each value represents the number of times that industry occurs there
+        # Food:Architecture -> key
+        # [(1,2,3), (0,4,6)] -> value
         vectorDict = {}
         for ind in industries:
             for grp in zipGroups:
