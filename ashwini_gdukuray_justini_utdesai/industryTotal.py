@@ -8,7 +8,7 @@ import uuid
 
 class industryTotal(dml.Algorithm):
     contributor = 'ashwini_gdukuray_justini_utdesai'
-    reads = ['ashwini_gdukuray_justini_utdesai.mergedList']
+    reads = ['ashwini_gdukuray_justini_utdesai.masterList']
     writes = ['ashwini_gdukuray_justini_utdesai.industryTotal']
 
     @staticmethod
@@ -21,25 +21,18 @@ class industryTotal(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
 
-        mergedList = repo['ashwini_gdukuray_justini_utdesai.mergedList']
+        masterList = repo['ashwini_gdukuray_justini_utdesai.masterList']
 
-        if (trial):
-            mergedListDF = pd.DataFrame(list(mergedList.find()))[:100]
-        else:
-            mergedListDF = pd.DataFrame(list(mergedList.find()))
+        masterListDF = pd.DataFrame(list(masterList.find()))
 
         # build sum of each industry
         data = {}
-        for index, row in mergedListDF.iterrows():
-            industry = row['IndustryID']
-            MBEstatus = row['MBE Status']
-
-            # only count industries for MBEs
-            if (MBEstatus == 'Y'):
-                if (industry in data):
-                    data[industry] += 1
-                else:
-                    data[industry] = 1
+        for index, row in masterListDF.iterrows():
+            industry = row['Description of Services']
+            if (industry in data):
+                data[industry] += 1
+            else:
+                data[industry] = 1
 
         listOfIndustries = list(data)
         listOfTuples = []
@@ -49,7 +42,6 @@ class industryTotal(dml.Algorithm):
         industryDF = pd.DataFrame(listOfTuples, columns = ['Industry', 'Number of Businesses'])
 
         industryDF = industryDF.sort_values(by=['Number of Businesses'], ascending=False)
-        industryDF = industryDF.reset_index(drop=True)
 
         #print(industryDF)
 
@@ -120,5 +112,7 @@ doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 '''
+
+## eof
 
 ## eof

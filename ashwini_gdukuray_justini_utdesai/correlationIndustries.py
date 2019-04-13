@@ -168,12 +168,12 @@ class correlationIndustries(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'http://datamechanics.io/?prefix=ashwini_gdukuray_justini_utdesai/')
 
-        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#industryTotal',
+        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#correlationIndustries()',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        masterList = doc.entity('dat:ashwini_gdukuray_justini_utdesai#masterList',
+        mergedList = doc.entity('dat:ashwini_gdukuray_justini_utdesai#mergedList',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
                                'ont:Extension': 'json'})
-        industryTotal = doc.entity('dat:ashwini_gdukuray_justini_utdesai#industryTotal',
+        correlations = doc.entity('dat:ashwini_gdukuray_justini_utdesai#correlations',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
                                'ont:Extension': 'json'})
         act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
@@ -184,9 +184,9 @@ class correlationIndustries(dml.Algorithm):
                    }
                   )
 
-        #doc.wasAttributedTo(industryTotal, this_script)
-        doc.wasGeneratedBy(industryTotal, act, endTime)
-        doc.wasDerivedFrom(industryTotal, masterList, act, act, act)
+        doc.wasAttributedTo(correlations, this_script)
+        doc.wasGeneratedBy(correlations, act, endTime)
+        doc.wasDerivedFrom(correlations, mergedList, act, act, act)
 
         repo.logout()
 

@@ -99,26 +99,26 @@ class optimalLocation(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'http://datamechanics.io/?prefix=ashwini_gdukuray_justini_utdesai/')
 
-        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#industryTotal',
+        this_script = doc.agent('alg:ashwini_gdukuray_justini_utdesai#optimalLocation()',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        masterList = doc.entity('dat:ashwini_gdukuray_justini_utdesai#masterList',
+        mergedList = doc.entity('dat:ashwini_gdukuray_justini_utdesai#mergedList',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
                                'ont:Extension': 'json'})
-        industryTotal = doc.entity('dat:ashwini_gdukuray_justini_utdesai#industryTotal',
+        optimalLocations = doc.entity('dat:ashwini_gdukuray_justini_utdesai#optimalLocations',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataSet',
                                'ont:Extension': 'json'})
         act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(act, this_script)
-        doc.usage(act, masterList, startTime, None,
+        doc.usage(act, mergedList, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
                    }
                   )
 
-        #doc.wasAttributedTo(industryTotal, this_script)
-        doc.wasGeneratedBy(industryTotal, act, endTime)
-        doc.wasDerivedFrom(industryTotal, masterList, act, act, act)
-
+        doc.wasAttributedTo(optimalLocations, this_script)
+        doc.wasGeneratedBy(optimalLocations, act, endTime)
+        doc.wasDerivedFrom(optimalLocations, mergedList, act, act, act)
+        
         repo.logout()
 
         return doc
