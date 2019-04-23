@@ -8,7 +8,7 @@ import uuid
 
 class industryTotal(dml.Algorithm):
     contributor = 'ashwini_gdukuray_justini_utdesai'
-    reads = ['ashwini_gdukuray_justini_utdesai.masterList']
+    reads = ['ashwini_gdukuray_justini_utdesai.mergedList']
     writes = ['ashwini_gdukuray_justini_utdesai.industryTotal']
 
     @staticmethod
@@ -21,18 +21,25 @@ class industryTotal(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashwini_gdukuray_justini_utdesai', 'ashwini_gdukuray_justini_utdesai')
 
-        masterList = repo['ashwini_gdukuray_justini_utdesai.masterList']
+        mergedList = repo['ashwini_gdukuray_justini_utdesai.mergedList']
 
-        masterListDF = pd.DataFrame(list(masterList.find()))
+        if (trial):
+            mergedListDF = pd.DataFrame(list(mergedList.find()))[:100]
+        else:
+            mergedListDF = pd.DataFrame(list(mergedList.find()))
 
         # build sum of each industry
         data = {}
-        for index, row in masterListDF.iterrows():
-            industry = row['Description of Services']
-            if (industry in data):
-                data[industry] += 1
-            else:
-                data[industry] = 1
+        for index, row in mergedListDF.iterrows():
+            industry = row['IndustryID']
+            MBEstatus = row['MBE Status']
+
+            # only count industries for MBEs
+            if (MBEstatus == 'Y'):
+                if (industry in data):
+                    data[industry] += 1
+                else:
+                    data[industry] = 1
 
         listOfIndustries = list(data)
         listOfTuples = []
@@ -42,6 +49,7 @@ class industryTotal(dml.Algorithm):
         industryDF = pd.DataFrame(listOfTuples, columns = ['Industry', 'Number of Businesses'])
 
         industryDF = industryDF.sort_values(by=['Number of Businesses'], ascending=False)
+        industryDF = industryDF.reset_index(drop=True)
 
         #print(industryDF)
 

@@ -178,7 +178,7 @@ class correlationIndustries(dml.Algorithm):
                                'ont:Extension': 'json'})
         act = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(act, this_script)
-        doc.usage(act, masterList, startTime, None,
+        doc.usage(act, mergedList, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
                    }
