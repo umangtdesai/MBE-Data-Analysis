@@ -6,6 +6,24 @@
 - Umang Desai
 - Gahouray Dukuray
 
+ ##Running the Code (and using the API)
+ There are several steps in order to get the datasets loaded into mongodb and then to have access to the web service where
+ the API is supplied. First, start your mongodb server. Next, cd into the root of this project directory and run the following command:
+ 
+ ```python execute.py ashwini_gdukuray_justini_utdesai```
+ 
+ Next, on a separate terminal (you should essentially have 3 open now!) cd into the folder 'ashwini_gdukuray_justini_utdesai'
+ and then cd into the folder WebService. Here, run the following command:
+ 
+  ```python app.py```
+  
+  Now the server is running. You can connect to the app via the browser using the url:
+  
+   ```http://localhost:5000/```
+   
+   Then, feel free to make your selection to load in a dataset using our API! The API will grab the data from the mongodb
+   server running, and the datasets will be in there from the first command (execute.py) you ran. Enjoy!
+
 ### Datasets Used
 The datasets we chose will be extremely valuable in order to help our partner learn more about the MBE world. They are as follows:
 - MBE certification list from massHousing

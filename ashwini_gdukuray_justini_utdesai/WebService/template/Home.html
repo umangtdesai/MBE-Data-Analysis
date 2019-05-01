@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MBE Data</title>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        .info {
+            background-color: dodgerblue; /* Blue background */
+            border: none; /* Remove borders */
+            color: white; /* White text */
+            font-size: 20px; /* Set a font size */
+            cursor: pointer; /* Mouse pointer on hover */
+            border-radius: 30px;
+            padding: 15px;
+            width: 50px;
+            height: 50px;
+            border-color: dodgerblue;
+            border-width: 3px;
+            border-style: solid;
+        }
+
+        .info:hover {
+            background-color: white;
+            color: dodgerblue;
+            text-decoration: none;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .btnGroup {
+            text-align: center;
+
+        }
+
+        .btnContainer {
+            padding: 30px;
+        }
+
+        .datasetBtn {
+            cursor: pointer;
+            background-color: darkorange;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            border-width: 5px;
+            border-style: solid;
+            font-size: 20px;
+            height: 75px;
+            width: 230px;
+            border-color: darkorange;
+            text-align: center;
+
+        }
+
+        .datasetBtn:hover {
+            background-color: white;
+            color: darkorange;
+            text-decoration: none;
+        }
+
+        .title{
+            font-family: arial, sans-serif;
+            font-size: 45px;
+        }
+
+        .infoBlock {
+            text-align: center;
+            font-family: arial, sans-serif;
+        }
+
+
+    </style>
+
+    <script>
+        function showInfo() {
+            var x = document.getElementById("Information");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+
+</head>
+<body>
+
+
+    <h1 class="title">Datasets for Minority Business Enterprises</h1>
+
+    <div class="btnGroup">
+    <a href='/app/api/v0.1/masterList' class="btnContainer"><button class="datasetBtn">Master List</button></a>
+    <a href='/app/api/v0.1/industryTotals' class="btnContainer"><button class="datasetBtn">Industry Totals</button></a>
+    <a href='/app/api/v0.1/correlationCoefficients' class="btnContainer"><button class="datasetBtn">Correlation Coefficients</button></a>
+    <a href='/app/api/v0.1/optimalLocations' class="btnContainer"><button class="datasetBtn">Optimal Locations</button></a>
+    <a href='/app/api/v0.1/topCompanies' class="btnContainer"><button class="datasetBtn">Top Companies</button></a>
+    <button onclick="showInfo()" class="info"><i class="fas fa-info"></i></button>
+    </div>
+
+    <div id="Information" style="display: none" class="infoBlock">
+        <br/>
+        <br/>
+        <h3>Please click one of the above buttons to generate a corresponding dataset. Descriptions of datasets are provided below.</h3>
+        <li>Master List: A list of all the businesses, MBE or not, and their location as well as industry.</li>
+        <li>Industry Totals: A list showing the number of businesses for each particular industry.</li>
+        <li>Correlation Coefficients: A list showing the most correlated industries, in descending order.</li>
+        <li>Optimal Locations: A list containing the zip codes and number of MBEs that could potentially be added until the area becomes 'saturated'.</li>
+        <li>Top Companies: A list of MBE certified companies that rank in the top 25 of businesses in the target areas.</li>
+    </div>
+    <br/>
+    <br/>
+    <div id="Data"></div>
+
+    <script type="text/javascript">
+        if ('{{data}}' != "") {
+            var lines = "{{data}}".split('+++');
+
+            // Set up column names
+            var toAdd = "<table><tr><th>Index</th>";
+            var colNames = lines[0].split('$$$');
+            for (var j = 0; j < colNames.length; j++) {
+                toAdd += "<th>";
+                toAdd += colNames[j];
+                toAdd += "</th>";
+            }
+            toAdd += "</tr>";
+
+            //Loop through each row and create a <tr> tag with the various fields in <td> tags
+            lines = lines.slice(1, lines.length - 1);
+            for (var i = 0; i < lines.length; i++) {
+                toAdd += "<tr><td>" + i + "</td>";
+                var row = lines[i];
+                var fields = row.split('$$$');
+                for (var k = 0; k < fields.length; k++) {
+                    toAdd += "<td>";
+                    toAdd += fields[k]
+                    toAdd += "</td>";
+                }
+                toAdd += "</tr>";
+            }
+            toAdd += "</table>";
+
+            //Append table to Data div element
+            var x = document.getElementById("Data");
+            x.innerHTML += toAdd;
+        }
+    </script>
+</body>
+</html>

@@ -5,6 +5,7 @@ import datetime
 import pandas as pd
 import uuid
 import statistics as st
+import matplotlib.pyplot as plt
 
 
 class correlationIndustries(dml.Algorithm):
@@ -133,6 +134,40 @@ class correlationIndustries(dml.Algorithm):
         correlationDF = pd.DataFrame(correlationDict)
         correlationDF = correlationDF.sort_values('Correlation Coefficient', ascending=False)
         correlationDF = correlationDF.reset_index(drop=True)
+
+        # Code to plot
+        # These industries occur so infrequently that the correlation coefficients may not be super accurate
+        excludedInds = ['Music', 'Answering Services', 'Consumer Services', 'Education', 'Counseling', 'Fencing', 'Floral', 'Research', 'Environment', 'Automobile']
+
+        count = 0
+        xVals = []
+        yVals = []
+        for index, row in correlationDF.iterrows():
+            flag = True
+            if count == 10:
+                break
+
+            pairOfInds = row['Industries']
+
+            # make sure the pair doesn't included an excluded industry, set the flag if this happens
+            for ban in excludedInds:
+                if ban in pairOfInds:
+                    flag = False
+                    break
+
+            if flag:
+                xVals.append(pairOfInds)
+                yVals.append(row['Correlation Coefficient'])
+                count += 1
+        '''
+        inds = pd.Series(data=yVals, index=xVals)
+        plt.figure(figsize=(12, 8))
+        plt.title("Most Correlated Industries")
+        #plt.gcf().subplots_adjust(bottom=0.30)
+        inds.head(n=15).plot.bar()
+        plt.savefig("Plot.png")
+        plt.show()
+        '''
 
         #print(correlationDF)
 
