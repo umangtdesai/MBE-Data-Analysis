@@ -5,94 +5,9 @@
     <title>MBE Data</title>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/homeStyle.css" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-
-        .info {
-            background-color: dodgerblue; /* Blue background */
-            border: none; /* Remove borders */
-            color: white; /* White text */
-            font-size: 20px; /* Set a font size */
-            cursor: pointer; /* Mouse pointer on hover */
-            border-radius: 30px;
-            padding: 15px;
-            width: 50px;
-            height: 50px;
-            border-color: dodgerblue;
-            border-width: 3px;
-            border-style: solid;
-        }
-
-        .info:hover {
-            background-color: white;
-            color: dodgerblue;
-            text-decoration: none;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        .btnGroup {
-            text-align: center;
-
-        }
-
-        .btnContainer {
-            padding: 30px;
-        }
-
-        .datasetBtn {
-            cursor: pointer;
-            background-color: darkorange;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            border-width: 5px;
-            border-style: solid;
-            font-size: 20px;
-            height: 75px;
-            width: 230px;
-            border-color: darkorange;
-            text-align: center;
-
-        }
-
-        .datasetBtn:hover {
-            background-color: white;
-            color: darkorange;
-            text-decoration: none;
-        }
-
-        .title{
-            font-family: arial, sans-serif;
-            font-size: 45px;
-        }
-
-        .infoBlock {
-            text-align: center;
-            font-family: arial, sans-serif;
-        }
-
-
-    </style>
 
     <script>
         function showInfo() {
@@ -112,23 +27,27 @@
     <h1 class="title">Datasets for Minority Business Enterprises</h1>
 
     <div class="btnGroup">
-    <a href='/app/api/v0.1/masterList' class="btnContainer"><button class="datasetBtn">Master List</button></a>
-    <a href='/app/api/v0.1/industryTotals' class="btnContainer"><button class="datasetBtn">Industry Totals</button></a>
-    <a href='/app/api/v0.1/correlationCoefficients' class="btnContainer"><button class="datasetBtn">Correlation Coefficients</button></a>
-    <a href='/app/api/v0.1/optimalLocations' class="btnContainer"><button class="datasetBtn">Optimal Locations</button></a>
-    <a href='/app/api/v0.1/topCompanies' class="btnContainer"><button class="datasetBtn">Top Companies</button></a>
+        <a href='/app/api/v0.1/masterList' class="btnContainer"><button class="datasetBtn">Master List</button></a>
+        <a href='/app/api/v0.1/industryTotals' class="btnContainer"><button class="datasetBtn">Industry Totals</button></a>
+        <a href='/app/api/v0.1/correlationCoefficients' class="btnContainer"><button class="datasetBtn">Correlation Coefficients</button></a>
+        <a href='/app/api/v0.1/optimalLocations' class="btnContainer"><button class="datasetBtn">Optimal Locations</button></a>
+        <a href='/app/api/v0.1/topCompanies' class="btnContainer"><button class="datasetBtn">Top Companies</button></a>
+        <a href='/app/api/v0.1/geoMap' class="btnContainer"><button class="datasetBtn geoBtn">GeoJson Map</button></a>
     <button onclick="showInfo()" class="info"><i class="fas fa-info"></i></button>
     </div>
 
     <div id="Information" style="display: none" class="infoBlock">
         <br/>
         <br/>
-        <h3>Please click one of the above buttons to generate a corresponding dataset. Descriptions of datasets are provided below.</h3>
-        <li>Master List: A list of all the businesses, MBE or not, and their location as well as industry.</li>
-        <li>Industry Totals: A list showing the number of businesses for each particular industry.</li>
-        <li>Correlation Coefficients: A list showing the most correlated industries, in descending order.</li>
-        <li>Optimal Locations: A list containing the zip codes and number of MBEs that could potentially be added until the area becomes 'saturated'.</li>
-        <li>Top Companies: A list of MBE certified companies that rank in the top 25 of businesses in the target areas.</li>
+        <hr />
+        <h3>Please click one of the above <span class="dataSelect">buttons</span> to generate a corresponding dataset. Descriptions of datasets are provided below.</h3>
+        <h3>A <span class="geoSelect">button</span> is also available to view a data visualization of the number of MBEs/nonMBEs per zip code.</h3>
+        <li><span class="def">Master List:</span> A list of all the businesses, MBE or not, and their location as well as industry.</li>
+        <li><span class="def">Industry Totals:</span> A list showing the number of businesses for each particular industry.</li>
+        <li><span class="def">Correlation Coefficients:</span> A list showing the most correlated industries, in descending order.</li>
+        <li><span class="def">Optimal Locations:</span> A list containing the zip codes and number of MBEs that could potentially be added until the area becomes 'saturated'.</li>
+        <li><span class="def">Top Companies:</span> A list of MBE certified companies that rank in the top 25 of businesses in the target areas.</li>
+        <hr />
     </div>
     <br/>
     <br/>

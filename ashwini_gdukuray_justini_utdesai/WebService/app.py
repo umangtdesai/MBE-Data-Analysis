@@ -3,7 +3,10 @@ from flask import Flask, jsonify, abort, make_response, request, render_template
 from pymongo import MongoClient
 import pandas as pd
 
-app = Flask(__name__, template_folder='template')
+app = Flask(__name__,
+            static_url_path='', 
+            static_folder='static',
+            template_folder='template')
 
 @app.route('/')
 def index():
@@ -104,6 +107,10 @@ def getTopCompanies():
         data += '+++'
         
     return render_template('Home.html', data = data)
+
+@app.route('/app/api/v0.1/geoMap', methods=['GET'])
+def getGeoMap(): 
+    return render_template('geojson.html')
 
 
 

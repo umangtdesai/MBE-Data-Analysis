@@ -15,14 +15,31 @@
  Next, on a separate terminal (you should essentially have 3 open now!) cd into the folder 'ashwini_gdukuray_justini_utdesai'
  and then cd into the folder WebService. Here, run the following command:
  
-  ```python app.py```
+ ```python app.py```
   
-  Now the server is running. You can connect to the app via the browser using the url:
+Now the server is running. You can connect to the app via the browser using the url:
   
-   ```http://localhost:5000/```
+```http://localhost:5000/```
    
-   Then, feel free to make your selection to load in a dataset using our API! The API will grab the data from the mongodb
-   server running, and the datasets will be in there from the first command (execute.py) you ran. Enjoy!
+Then, feel free to make your selection to load in a dataset using our API! The API will grab the data from the mongodb
+server running, and the datasets will be in there from the first command (execute.py) you ran. Enjoy!
+   
+There is also a button to check out our data visualization. This map is a visualization of data we were able to pull 
+together about MBEs and nonMBEs in the Boston Area by zip code. The map visualization was produced with code mostly
+provided by Leaflet.  
+
+References:
+
+Leaflet site: https://leaflet.github.io/Leaflet.markercluster/
+"Leaflet.markercluster
+=====================
+
+Provides Beautiful Animated Marker Clustering functionality for [Leaflet](http://leafletjs.com), a JS library for interactive maps.
+
+## License
+
+Leaflet.markercluster is free software, and may be redistributed under the MIT-LICENSE.
+"
 
 ### Datasets Used
 The datasets we chose will be extremely valuable in order to help our partner learn more about the MBE world. They are as follows:
