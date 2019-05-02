@@ -6,7 +6,7 @@
 - Umang Desai
 - Gahouray Dukuray
 
- ##Running the Code (and using the API)
+ ## Running the Code (and using the API)
  There are several steps in order to get the datasets loaded into mongodb and then to have access to the web service where
  the API is supplied. First, start your mongodb server. Next, cd into the root of this project directory and run the following command:
  
@@ -28,18 +28,9 @@ There is also a button to check out our data visualization. This map is a visual
 together about MBEs and nonMBEs in the Boston Area by zip code. The map visualization was produced with code mostly
 provided by Leaflet.  
 
-References:
-
-Leaflet site: https://leaflet.github.io/Leaflet.markercluster/
-"Leaflet.markercluster
-=====================
-
-Provides Beautiful Animated Marker Clustering functionality for [Leaflet](http://leafletjs.com), a JS library for interactive maps.
-
 ## License
 
 Leaflet.markercluster is free software, and may be redistributed under the MIT-LICENSE.
-"
 
 ### Datasets Used
 The datasets we chose will be extremely valuable in order to help our partner learn more about the MBE world. They are as follows:
