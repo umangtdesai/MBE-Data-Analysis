@@ -1,6 +1,8 @@
 # course-2019-spr-proj
 Joint repository for the collection of student course projects in the Spring 2019 iteration of the Data Mechanics course at Boston University.
 
+### My group project is in the folder named:
+
 In this project, you will implement platform components that can obtain a some data sets from web services of your choice, and platform components that combine these data sets into at least two additional derived data sets. These components will interact with the backend repository by inserting and retrieving data sets as necessary. They will also satisfy a standard interface by supporting specified capabilities (such as generation of dependency information and provenance records).
 
 **This project description will be updated as we continue work on the infrastructure.**
