@@ -1,6 +1,6 @@
 # course-2019-spr-proj
 
-### My group project is in the folder named: ashwini_gdukuray_justini_utdesai. It includes, a README about the project and instructions to execute the scipt and the group's final report.
+### My group project is in the folder named: '''ashwini_gdukuray_justini_utdesai'''. It includes, a README about the project and instructions to execute the scipt and the group's final report.
 
 Joint repository for the collection of student course projects in the Spring 2019 iteration of the Data Mechanics course at Boston University.
 
